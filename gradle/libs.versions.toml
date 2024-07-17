@@ -2,16 +2,17 @@
 # -----------------------------------------------------------------------------
 # All of the following should be updated in sync.
 # -----------------------------------------------------------------------------
-androidGradlePlugin = "8.6.0-beta01"
+androidGradlePlugin = "8.8.0-alpha01"
 # NOTE: When updating the lint version we also need to update the `api` version
 # supported by `IssueRegistry`'s.' For e.g. r.android.com/1331903
-androidLint = "31.6.0-beta01"
+androidLint = "31.8.0-alpha01"
 # Once you have a chosen version of AGP to upgrade to, go to
 # https://developer.android.com/studio/archive and find the matching version of Studio.
-androidStudio = "2024.1.2.9"
+androidStudio = "2024.2.2.1"
 # -----------------------------------------------------------------------------
 
 androidLintMin = "31.1.0"
+androidLintPrev = "31.7.0-alpha02"
 androidxTestRunner = "1.6.1"
 androidxTestRules = "1.6.1"
 androidxTestMonitor = "1.7.1"
@@ -22,7 +23,7 @@ annotationVersion = "1.7.0"
 atomicFu = "0.17.0"
 autoService = "1.0-rc6"
 autoValue = "1.6.3"
-binaryCompatibilityValidator = "0.15.0-Beta.2"
+binaryCompatibilityValidator = "0.16.2"
 builder = "8.6.0-alpha05"
 byteBuddy = "1.14.9"
 asm = "9.7"
@@ -30,9 +31,8 @@ cmake = "3.22.1"
 composeCompilerPlugin = "1.5.14"  # Update when pulling in new stable binaries
 dagger = "2.49"
 dependencyAnalysisGradlePlugin = "1.32.0"
-dexmaker = "2.28.3"
+dexmaker = "2.28.4"
 dokka = "1.8.20-dev-214"
-dynamicanimation = "1.0.0"
 espresso = "3.6.1"
 espressoDevice = "1.0.1"
 grpc = "1.52.0"
@@ -45,33 +45,32 @@ jcodec = "0.2.5"
 kotlin17 = "1.7.10"
 kotlin18 = "1.8.22"
 kotlin19 = "1.9.24"
-kotlin = "1.9.24"
+kotlin = "2.0.21-RC"
 kotlinBenchmark = "0.4.11"
 kotlinGradlePluginAnnotations = "1.9.24"
 kotlinGradlePluginApi = "1.9.24"
-kotlinNative = "1.9.24"
 kotlinCompileTesting = "1.4.9"
 kotlinCoroutines = "1.7.3"
 kotlinNativeUtils = "1.9.24"
 kotlinSerialization = "1.6.3"
 kotlinToolingCore = "1.9.24"
-ksp = "1.9.24-1.0.20"
+ksp = "2.0.20-1.0.25"
 ktfmt = "0.50"
 leakcanary = "2.13"
-media3 = "1.1.0"
-metalava = "1.0.0-alpha10"
+media3 = "1.4.1"
+metalava = "1.0.0-alpha12"
 mockito = "2.25.0"
 moshi = "1.13.0"
+node = "16.20.2"
 protobuf = "3.22.3"
-shadow = "8.1.1"
 skiko = "0.7.7"
 spdxGradlePlugin = "0.6.0"
 sqldelight = "1.3.0"
 retrofit = "2.7.2"
-wire = "4.9.7"
+wire = "5.0.0"
 core = "1.12.0"
 xmlApis = "1.4.01"
-tracing = "1.2.0"
+yarn = "1.22.17"
 
 [libraries]
 agpTestingPlatformCoreProto =  { module = "com.google.testing.platform:core-proto", version = "0.0.8-alpha08" }
@@ -81,11 +80,14 @@ androidGradlePluginz = { module = "com.android.tools.build:gradle", version.ref 
 androidLayoutlibApi = { module = "com.android.tools.layoutlib:layoutlib-api", version.ref = "androidLint" }
 androidLint = { module = "com.android.tools.lint:lint", version.ref = "androidLint" }
 androidLintMin = { module = "com.android.tools.lint:lint", version.ref = "androidLintMin" }
+androidLintPrev = { module = "com.android.tools.lint:lint", version.ref = "androidLintPrev" }
+androidLintPrevApi = { module = "com.android.tools.lint:lint-api", version.ref = "androidLintPrev" }
 androidLintApi = { module = "com.android.tools.lint:lint-api", version.ref = "androidLint" }
 androidLintMinApi = { module = "com.android.tools.lint:lint-api", version.ref = "androidLintMin" }
 androidLintChecks = { module = "com.android.tools.lint:lint-checks", version.ref = "androidLint" }
 androidLintChecksMin = { module = "com.android.tools.lint:lint-checks", version.ref = "androidLintMin" }
 androidLintTests = { module = "com.android.tools.lint:lint-tests", version.ref = "androidLint" }
+androidLintPrevTests = { module = "com.android.tools.lint:lint-tests", version.ref = "androidLintPrev" }
 androidToolsCommon = { module = "com.android.tools:common", version.ref = "androidLint" }
 androidToolsNinepatch = { module = "com.android.tools:ninepatch", version.ref = "androidLint" }
 androidToolsRepository= { module = "com.android.tools:repository", version.ref = "androidLint" }
@@ -93,7 +95,6 @@ androidToolsSdkCommon = { module = "com.android.tools:sdk-common", version.ref =
 androidToolsAnalyticsProtos = { module = "com.android.tools.analytics-library:protos", version.ref = "androidLint" }
 androidKotlinMultiplatform = { module = "com.android.kotlin.multiplatform.library:com.android.kotlin.multiplatform.library.gradle.plugin", version.ref = "androidGradlePlugin" }
 androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "annotationVersion" }
-androidx-dynamicanimation = { module = "androidx.dynamicanimation:dynamicanimation", version.ref = "dynamicanimation" }
 autoCommon = { module = "com.google.auto:auto-common", version = "1.2.1" }
 atomicFu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "atomicFu" }
 atomicFuPluginz = { module = "org.jetbrains.kotlinx:atomicfu-gradle-plugin", version.ref = "atomicFu" }
@@ -145,10 +146,11 @@ espressoIdlingResource = { module = "androidx.test.espresso:espresso-idling-reso
 espressoIntents = { module = "androidx.test.espresso:espresso-intents", version.ref = "espresso" }
 espressoRemote = { module = "androidx.test.espresso:espresso-remote", version.ref = "espresso" }
 espressoWeb = { module = "androidx.test.espresso:espresso-web", version.ref = "espresso" }
-errorProne = { module = "com.google.errorprone:error_prone_core", version = "2.23.0" }
+errorProne = { module = "com.google.errorprone:error_prone_core", version = "2.30.0" }
 findbugs = { module = "com.google.code.findbugs:jsr305", version = "3.0.2" }
 firebaseAppindexing = { module = "com.google.firebase:firebase-appindexing", version = "19.2.0" }
 freemarker = { module = "org.freemarker:freemarker", version = "2.3.31"}
+googlejavaformat = { module = "com.google.googlejavaformat:google-java-format", version = "1.22.0" }
 googletest = { module = "com.android.ndk.thirdparty:googletest", version = "1.11.0-beta-1" }
 hamcrestCore = { module = "org.hamcrest:hamcrest-core", version.ref = "hamcrestCore" }
 hiltAndroid = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
@@ -162,7 +164,6 @@ javapoet = { module = "com.squareup:javapoet", version = "1.13.0" }
 javaxInject = { module = "javax.inject:javax.inject", version.ref = "javaxInject" }
 jcodec = { module = "org.jcodec:jcodec", version.ref = "jcodec" }
 jcodecJavaSe = { module = "org.jcodec:jcodec-javase", version.ref = "jcodec" }
-johnrengelmanShadow = { module = "com.github.johnrengelman:shadow", version.ref = "shadow" }
 json = { module = "org.json:json", version = "20180813" }
 jsoup = { module = "org.jsoup:jsoup", version = "1.16.2" }
 jspecify = { module = "org.jspecify:jspecify", version = "1.0.0" }
@@ -189,11 +190,11 @@ kotlinNativeUtils = { module = "org.jetbrains.kotlin:kotlin-native-utils", versi
 kotlinGradlePluginApi = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin-api", version.ref = "kotlinGradlePluginApi" }
 kotlinToolingCore = { module = "org.jetbrains.kotlin:kotlin-tooling-core", version.ref = "kotlinToolingCore" }
 kotlinGradlePluginAnnotations = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin-annotations", version.ref = "kotlinGradlePluginAnnotations" }
-kotlinAnnotationProcessingEmbeddable = { module = "org.jetbrains.kotlin:kotlin-annotation-processing-embeddable" }
+kotlinAnnotationProcessingEmbeddable = { module = "org.jetbrains.kotlin:kotlin-annotation-processing-embeddable", version.ref = "kotlin"  }
 kotlinBenchmarkRuntime = { module = "org.jetbrains.kotlinx:kotlinx-benchmark-runtime", version.ref = "kotlinBenchmark" }
 kotlinBom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = "kotlin" }
 kotlinCompiler = { module = "org.jetbrains.kotlin:kotlin-compiler", version.ref = "kotlin" }
-kotlinCompilerEmbeddable = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable" }
+kotlinCompilerEmbeddable = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable", version.ref = "kotlin" }
 kotlinCompileTesting = { module = "com.github.tschuchortdev:kotlin-compile-testing", version.ref = "kotlinCompileTesting" }
 kotlinCompileTestingKsp = { module = "com.github.tschuchortdev:kotlin-compile-testing-ksp", version.ref = "kotlinCompileTesting" }
 kotlinCoroutinesAndroid = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinCoroutines" }
@@ -204,9 +205,9 @@ kotlinCoroutinesPlayServices = { module = "org.jetbrains.kotlinx:kotlinx-corouti
 kotlinCoroutinesTest = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinCoroutines" }
 kotlinCoroutinesRx2 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-rx2", version.ref = "kotlinCoroutines" }
 kotlinCoroutinesRx3 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-rx3", version.ref = "kotlinCoroutines" }
-kotlinDaemonEmbeddable = { module = "org.jetbrains.kotlin:kotlin-daemon-embeddable" }
-kotlinKlibCommonizer = { module = "org.jetbrains.kotlin:kotlin-klib-commonizer" }
-kotlinMetadataJvm = { module = "org.jetbrains.kotlinx:kotlinx-metadata-jvm", version = "0.9.0" }
+kotlinDaemonEmbeddable = { module = "org.jetbrains.kotlin:kotlin-daemon-embeddable", version.ref = "kotlin"  }
+kotlinKlibCommonizer = { module = "org.jetbrains.kotlin:kotlin-klib-commonizer", version.ref = "kotlin"  }
+kotlinMetadataJvm = { module = "org.jetbrains.kotlin:kotlin-metadata-jvm", version.ref = "kotlin" }
 kotlinSerializationCore = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinSerialization" }
 kotlinSerializationJson = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinSerialization" }
 kotlinSerializationJsonOkio = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json-okio", version.ref = "kotlinSerialization" }
@@ -227,6 +228,8 @@ kotlinPoetJavaPoet = { module = "com.squareup:kotlinpoet-javapoet", version = "1
 kotlinXHtml = { module = "org.jetbrains.kotlinx:kotlinx-html-jvm", version = "0.7.3" }
 ksp = { module = "com.google.devtools.ksp:symbol-processing", version.ref = "ksp" }
 kspApi = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
+kspCommon = { module = "com.google.devtools.ksp:symbol-processing-common-deps", version.ref = "ksp" }
+kspEmbeddable = { module = "com.google.devtools.ksp:symbol-processing-aa-embeddable", version.ref = "ksp" }
 kspGradlePluginz = { module = "com.google.devtools.ksp:symbol-processing-gradle-plugin", version.ref = "ksp" }
 ktfmt = { module = "com.facebook:ktfmt", version.ref = "ktfmt" }
 kxml2 = { module = "net.sf.kxml:kxml2", version = "2.3.0" }
@@ -264,8 +267,10 @@ playCore = { module = "com.google.android.play:core", version = "1.10.3" }
 playServicesAuth = {module = "com.google.android.gms:play-services-auth", version = "21.1.1"}
 playServicesBase = { module = "com.google.android.gms:play-services-base", version = "17.0.0" }
 playServicesBasement = { module = "com.google.android.gms:play-services-basement", version = "17.0.0" }
+playServicesBlockstore = {module = "com.google.android.gms:play-services-auth-blockstore", version = "16.4.0"}
 playServicesDevicePerformance = { module = "com.google.android.gms:play-services-deviceperformance", version = "16.0.0" }
 playServicesFido = {module = "com.google.android.gms:play-services-fido", version = "21.0.0"}
+playServicesIdentityCredentials = {module = "com.google.android.gms:play-services-identity-credentials", version = "16.0.0-alpha02"}
 playServicesWearable = { module = "com.google.android.gms:play-services-wearable", version = "17.1.0" }
 protobuf = { module = "com.google.protobuf:protobuf-java", version.ref = "protobuf" }
 protobufCompiler = { module = "com.google.protobuf:protoc", version.ref = "protobuf" }
@@ -279,7 +284,7 @@ robolectric = { module = "org.robolectric:robolectric", version = "4.12.2" }
 rxjava2 = { module = "io.reactivex.rxjava2:rxjava", version = "2.2.9" }
 rxjava3 = { module = "io.reactivex.rxjava3:rxjava", version = "3.0.0" }
 sdklib = { module = "com.android.tools:sdklib", version.ref = "androidLint" }
-shadow = { module = "com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin", version = "8.1.1" }
+shadow = { module = "com.gradleup.shadow:shadow-gradle-plugin", version = "8.3.1" }
 skiko = { module = "org.jetbrains.skiko:skiko-awt", version.ref = "skiko" }
 skikoCommon = { module = "org.jetbrains.skiko:skiko", version.ref = "skiko" }
 skikoMacOsArm64 = { module = "org.jetbrains.skiko:skiko-awt-runtime-macos-arm64", version.ref = "skiko" }
@@ -312,7 +317,8 @@ xmlApis = { module = "xml-apis:xml-apis", version.ref = "xmlApis" }
 xpp3 = { module = "xpp3:xpp3", version = "1.1.4c" }
 xmlpull = { module = "xmlpull:xmlpull", version = "1.1.3.1" }
 androidx-core = { group = "androidx.core", name = "core", version.ref = "core" }
-androidx-tracing = { group = "androidx.tracing", name = "tracing", version.ref = "tracing" }
+androidx-tracing = { group = "androidx.tracing", name = "tracing", version = "1.2.0" }
+androidx-dynamicanimation = { module = "androidx.dynamicanimation:dynamicanimation", version = "1.0.0" }
 
 [plugins]
 kotlinBenchmark = { id = "org.jetbrains.kotlinx.benchmark", version.ref = "kotlinBenchmark" }
