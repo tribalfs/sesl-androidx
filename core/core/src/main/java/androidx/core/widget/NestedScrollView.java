@@ -2153,6 +2153,11 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
 
         final int range = getScrollRange();
 
+        if (BuildCompat.isAtLeastV()) {
+            Api35Impl.setFrameContentVelocity(NestedScrollView.this,
+                    Math.abs(mScroller.getCurrVelocity()));
+        }
+
         if (unconsumed != 0) {
             // Internal Scroll
             final int oldScrollY = getScrollY();
@@ -2517,6 +2522,10 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
                     Integer.MIN_VALUE, Integer.MAX_VALUE, // y
                     0, 0); // overscroll
             runAnimatedScroll(true);
+            if (BuildCompat.isAtLeastV()) {
+                Api35Impl.setFrameContentVelocity(NestedScrollView.this,
+                        Math.abs(mScroller.getCurrVelocity()));
+            }
         }
     }
 
@@ -2807,6 +2816,16 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
         }
     }
 
+    @RequiresApi(35)
+    private static final class Api35Impl {
+        public static void setFrameContentVelocity(View view, float velocity) {
+            try {
+                view.setFrameContentVelocity(velocity);
+            } catch (LinkageError e) {
+                // The setFrameContentVelocity method is unavailable on this device.
+            }
+        }
+    }
 
     //Sesl7
     private boolean initGoToTop(boolean enabled, boolean isWhiteStyle) {
