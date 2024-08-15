@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
 import android.view.WindowInsetsAnimation;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.view.animation.PathInterpolator;
@@ -530,7 +531,7 @@ public final class WindowInsetsAnimationCompat {
         private float mFraction;
         private final @Nullable Interpolator mInterpolator;
         private final long mDurationMillis;
-        private float mAlpha;
+        private float mAlpha = 1f;
 
         Impl(int typeMask, @Nullable Interpolator interpolator, long durationMillis) {
             mTypeMask = typeMask;
@@ -595,10 +596,24 @@ public final class WindowInsetsAnimationCompat {
                 new FastOutLinearInInterpolator();
 
         /**
-         * The fallback interpolator for animating non-IME insets.
+         * A fixed interpolator to use when simulating the window insets animation for showing
+         * system bars.
+         *
+         * This interpolator and the factor was to align with the legacy animation described in
+         * dock_[side]_enter.xml before API 30.
          */
-        private static final Interpolator DEFAULT_INSET_INTERPOLATOR =
-                new DecelerateInterpolator();
+        private static final Interpolator SHOW_SYSTEM_BAR_INTERPOLATOR =
+                new DecelerateInterpolator(1.5f /* factor */);
+
+        /**
+         * A fixed interpolator to use when simulating the window insets animation for hiding
+         * system bars.
+         *
+         * This interpolator and the factor was to align with the legacy animation described in
+         * dock_[side]_exit.xml before API 30.
+         */
+        private static final Interpolator HIDE_SYSTEM_BAR_INTERPOLATOR =
+                new AccelerateInterpolator(1.5f /* factor */);
 
         Impl21(int typeMask, @Nullable Interpolator interpolator, long durationMillis) {
             super(typeMask, interpolator, durationMillis);
@@ -648,16 +663,30 @@ public final class WindowInsetsAnimationCompat {
         }
 
         @SuppressLint("WrongConstant") // We iterate over all the constants.
-        static int buildAnimationMask(@NonNull WindowInsetsCompat targetInsets,
-                @NonNull WindowInsetsCompat currentInsets) {
-            int animatingMask = 0;
+        static void buildAnimationMask(@NonNull WindowInsetsCompat targetInsets,
+                @NonNull WindowInsetsCompat currentInsets, int[] showingTypes, int[] hidingTypes) {
             for (int i = WindowInsetsCompat.Type.FIRST; i <= WindowInsetsCompat.Type.LAST;
                     i = i << 1) {
-                if (!targetInsets.getInsets(i).equals(currentInsets.getInsets(i))) {
-                    animatingMask |= i;
+                final Insets target = targetInsets.getInsets(i);
+                final Insets current = currentInsets.getInsets(i);
+                final boolean showing = target.left > current.left
+                        || target.top > current.top
+                        || target.right > current.right
+                        || target.bottom > current.bottom;
+                final boolean hiding = target.left < current.left
+                        || target.top < current.top
+                        || target.right < current.right
+                        || target.bottom < current.bottom;
+                // If both showing and hiding are true, it can be the side change of navigation bar.
+                // Don't consider that it is playing an animation.
+                if (showing != hiding) {
+                    if (showing) {
+                        showingTypes[0] |= i;
+                    } else {
+                        hidingTypes[0] |= i;
+                    }
                 }
             }
-            return animatingMask;
         }
 
         /**
@@ -666,21 +695,18 @@ public final class WindowInsetsAnimationCompat {
          * This allows for a smoother animation especially in the common case of showing and hiding
          * the IME.
          */
-        static Interpolator createInsetInterpolator(
-                int animationMask,
-                WindowInsetsCompat targetInsets,
-                WindowInsetsCompat startingInsets) {
-            if ((animationMask & WindowInsetsCompat.Type.IME) != 0) {
-                // If the target insets are larger than the starting, we're showing the IME
-                if (targetInsets.getInsets(WindowInsetsCompat.Type.ime()).bottom
-                        > startingInsets.getInsets(WindowInsetsCompat.Type.ime()).bottom) {
-                    return SHOW_IME_INTERPOLATOR;
-                } else {
-                    return HIDE_IME_INTERPOLATOR;
-                }
-            } else {
-                return DEFAULT_INSET_INTERPOLATOR;
+        @Nullable
+        static Interpolator createInsetInterpolator(int showingTypes, int hidingTypes) {
+            if ((showingTypes & WindowInsetsCompat.Type.ime()) != 0) {
+                return SHOW_IME_INTERPOLATOR;
+            } else if ((hidingTypes & WindowInsetsCompat.Type.ime()) != 0) {
+                return HIDE_IME_INTERPOLATOR;
+            } else if ((showingTypes & WindowInsetsCompat.Type.systemBars()) != 0) {
+                return SHOW_SYSTEM_BAR_INTERPOLATOR;
+            } else if ((hidingTypes & WindowInsetsCompat.Type.systemBars()) != 0) {
+                return HIDE_SYSTEM_BAR_INTERPOLATOR;
             }
+            return null;
         }
 
         @SuppressLint("WrongConstant")
@@ -718,7 +744,8 @@ public final class WindowInsetsAnimationCompat {
         private static class Impl21OnApplyWindowInsetsListener implements
                 View.OnApplyWindowInsetsListener {
 
-            private static final int COMPAT_ANIMATION_DURATION = 160;
+            private static final int COMPAT_ANIMATION_DURATION_IME = 160;
+            private static final int COMPAT_ANIMATION_DURATION_SYSTEM_BAR = 250;
 
             final Callback mCallback;
             // We save the last insets to compute the starting insets for the animation.
@@ -768,27 +795,34 @@ public final class WindowInsetsAnimationCompat {
                 // that have been dispatched first as a marker to avoid dispatching the callback
                 // in children.
                 Callback callback = getCallback(v);
-                if (callback != null && Objects.equals(callback.mDispachedInsets, insets)) {
+                if (callback != null && Objects.equals(callback.mDispachedInsets, targetInsets)) {
                     return forwardToViewIfNeeded(v, insets);
                 }
 
                 // We only run the animation when the some insets are animating
-                final int animationMask = buildAnimationMask(targetInsets, mLastInsets);
+                final int[] showingTypes = new int[1];
+                final int[] hidingTypes = new int[1];
+                buildAnimationMask(targetInsets, mLastInsets, showingTypes, hidingTypes);
+                final int animationMask = showingTypes[0] | hidingTypes[0];
+
                 if (animationMask == 0) {
                     if (DEBUG) {
-                        Log.d(TAG, "Insets applied bug no window animation to run");
+                        Log.d(TAG, "Insets applied but no window animation to run");
                     }
+                    mLastInsets = targetInsets;
                     return forwardToViewIfNeeded(v, insets);
                 }
 
                 final WindowInsetsCompat startingInsets = this.mLastInsets;
 
-                final Interpolator interpolator =
-                        createInsetInterpolator(animationMask, targetInsets, startingInsets);
+                final Interpolator interpolator = createInsetInterpolator(
+                        showingTypes[0], hidingTypes[0]);
 
                 final WindowInsetsAnimationCompat anim =
                         new WindowInsetsAnimationCompat(animationMask, interpolator,
-                                COMPAT_ANIMATION_DURATION);
+                                (animationMask & WindowInsetsCompat.Type.ime()) != 0
+                                        ? COMPAT_ANIMATION_DURATION_IME
+                                        : COMPAT_ANIMATION_DURATION_SYSTEM_BAR);
                 anim.setFraction(0);
 
                 final ValueAnimator animator = ValueAnimator.ofFloat(0f, 1f).setDuration(
@@ -799,7 +833,7 @@ public final class WindowInsetsAnimationCompat {
                         startingInsets, animationMask
                 );
 
-                dispatchOnPrepare(v, anim, insets, false);
+                dispatchOnPrepare(v, anim, targetInsets, false);
 
                 animator.addUpdateListener(
                         new ValueAnimator.AnimatorUpdateListener() {
@@ -856,7 +890,7 @@ public final class WindowInsetsAnimationCompat {
         }
 
         static void dispatchOnPrepare(View v, WindowInsetsAnimationCompat anim,
-                WindowInsets insets, boolean stopDispatch) {
+                WindowInsetsCompat insets, boolean stopDispatch) {
             final Callback callback = getCallback(v);
             if (callback != null) {
                 callback.mDispachedInsets = insets;
@@ -987,6 +1021,16 @@ public final class WindowInsetsAnimationCompat {
         @Override
         public float getInterpolatedFraction() {
             return mWrapped.getInterpolatedFraction();
+        }
+
+        @Override
+        public float getAlpha() {
+            return mWrapped.getAlpha();
+        }
+
+        @Override
+        public void setAlpha(float alpha) {
+            mWrapped.setAlpha(alpha);
         }
 
         @RequiresApi(30)
