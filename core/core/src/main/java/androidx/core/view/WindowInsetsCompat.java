@@ -2114,6 +2114,32 @@ public class WindowInsetsCompat {
         }
     }
 
+    /**
+     * Class that defines different sides for insets.
+     */
+    public static final class Side {
+        public static final int LEFT = 1 << 0;
+        public static final int TOP = 1 << 1;
+        public static final int RIGHT = 1 << 2;
+        public static final int BOTTOM = 1 << 3;
+
+        private Side() {
+        }
+
+        @RestrictTo(LIBRARY_GROUP)
+        @Retention(RetentionPolicy.SOURCE)
+        @IntDef(flag = true, value = {LEFT, TOP, RIGHT, BOTTOM})
+        public @interface InsetsSide {
+        }
+
+        /**
+         * @return all four sides.
+         */
+        public static @InsetsSide int all() {
+            return LEFT | TOP | RIGHT | BOTTOM;
+        }
+    }
+
     @RequiresApi(30)
     private static final class TypeImpl30 {
         private TypeImpl30() {}
