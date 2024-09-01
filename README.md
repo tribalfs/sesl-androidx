@@ -8,6 +8,25 @@ Info: Samsung’s One UI apps are created using heavily modified versions of som
 
 
 ## Available modules (as GithubPackages)
+#### SESL7(OneUI 7) Android Jetpack
+- [![latest version](https://img.shields.io/badge/sesl.androidx.core:core-1.15.0%2B1.0.15--sesl7%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110024)
+- [![latest version](https://img.shields.io/badge/sesl.androidx.core:core--ktx-1.15.0%2B1.0.0--sesl7%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110025)
+- [![latest version](https://img.shields.io/badge/sesl.androidx.customview:customview-1.2.0--alpha02%2B1.0.0--sesl7%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110026)
+- [![latest version](https://img.shields.io/badge/sesl.androidx.drawerlayout:drawerlayout-1.2.0%2B1.0.0--sesl7%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110027)
+- [![latest version](https://img.shields.io/badge/sesl.androidx.viewpager:viewpager-1.1.0--beta01%2B1.0.1--sesl7%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110037)
+- [![latest version](https://img.shields.io/badge/sesl.androidx.swiperefreshlayout:swiperefreshlayout-1.2.0--alpha01%2B1.0.1--sesl7%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110035)
+- [![latest version](https://img.shields.io/badge/sesl.androidx.coordinatorlayout:coordinatorlayout-1.3.0--alpha02%2B1.0.0--sesl7%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110023)
+- [![latest version](https://img.shields.io/badge/sesl.androidx.fragment:fragment-1.8.6%2B1.0.6--sesl7%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110028)
+- [![latest version](https://img.shields.io/badge/sesl.androidx.recyclerview:recyclerview-1.4.0%2B1.0.31--sesl7%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110033)
+- [![latest version](https://img.shields.io/badge/sesl.androidx.appcompat:appcompat-1.7.0%2B1.0.43000--sesl7%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110021)
+- [![latest version](https://img.shields.io/badge/sesl.androidx.viewpager2:viewpager2-1.1.0%2B1.0.4--sesl7%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110041)
+- [![latest version](https://img.shields.io/badge/sesl.androidx.slidingpanelayout:slidingpanelayout-1.2.0%2B1.0.5--sesl7%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110034)
+- [![latest version](https://img.shields.io/badge/sesl.androidx.preference:preference-1.2.1%2B1.0.11--sesl7%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110032)
+- [![latest version](https://img.shields.io/badge/sesl.androidx.indexscroll:indexscroll-1.0.6%2B1.0.6--sesl7%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110029)
+- [![latest version](https://img.shields.io/badge/sesl.androidx.picker:picker--basic-1.0.11%2B1.0.11--sesl7%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110030)
+- [![latest version](https://img.shields.io/badge/sesl.androidx.picker:picker--color-1.0.6%2B1.0.6--sesl7%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110031)
+- [![latest version](https://img.shields.io/badge/sesl.androidx.apppickerview:apppickerview-1.0.1%2B1.0.1--sesl7%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110022)
+
 #### SESL6(OneUI 6) Android Jetpack
 - [![latest version](https://img.shields.io/badge/sesl.androidx.core:core-1.15.0%2B1.0.11--sesl6%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110024)
 - [![latest version](https://img.shields.io/badge/sesl.androidx.core:core--ktx-1.15.0%2B1.0.0--sesl6%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110025)
@@ -22,17 +41,14 @@ Info: Samsung’s One UI apps are created using heavily modified versions of som
 - [![latest version](https://img.shields.io/badge/sesl.androidx.viewpager2:viewpager2-1.1.0%2B1.0.0--sesl6%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110041)
 - [![latest version](https://img.shields.io/badge/sesl.androidx.slidingpanelayout:slidingpanelayout-1.2.0%2B1.0.2--sesl6%2Brev7-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110034)
 - [![latest version](https://img.shields.io/badge/sesl.androidx.preference:preference-1.2.1%2B1.0.4--sesl6%2Brev3-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110032)
-#### SESL6(OneUI 6) Samsung
 - [![latest version](https://img.shields.io/badge/sesl.androidx.indexscroll:indexscroll-1.0.3%2B1.0.3--sesl6%2Brev5-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110029)
 - [![latest version](https://img.shields.io/badge/sesl.androidx.picker:picker--basic-1.0.17%2B1.0.17--sesl6%2Brev2-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110030)
 - [![latest version](https://img.shields.io/badge/sesl.androidx.picker:picker--color-1.0.6%2B1.0.6--sesl6%2Brev3-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110031)
 - [![latest version](https://img.shields.io/badge/sesl.androidx.apppickerview:apppickerview-1.0.1%2B1.0.1--sesl6%2Brev3-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110022)
-
-
 #### These modules are intended for use together with [sesl-material-components-android](https://github.com/tribalfs/sesl-material-components-android?tab=readme-ov-file#sesloneui-material-components-for-android-unofficial) library.
 
 ### Group id and versioning scheme
-In order to provide direct information about the equivalent official Android Jetpack module and the applied SESL version, `sesl.` is prepended to the existing group id. 
+In order to provide direct information about the equivalent official Android Jetpack module and the applied SESL version, `sesl.` is prepended to the existing group id.
 We also apply a versioning scheme that's a combination of the `[Android Jetpack module version]`, `[SESL version]`, and `[internal version]`:
 
 Example:
