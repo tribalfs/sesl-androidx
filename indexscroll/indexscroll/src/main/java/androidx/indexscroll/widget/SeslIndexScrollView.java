@@ -1336,6 +1336,17 @@ public class SeslIndexScrollView extends FrameLayout {
             mShapePaint.setStyle(Paint.Style.FILL);
             mShapePaint.setAntiAlias(true);
 
+            if (mSECRobotoLightRegularFont == null) {
+                if (Build.VERSION.SDK_INT >= 28) {
+                    mSECRobotoLightRegularFont = Typeface.create(
+                            Typeface.create("sec", Typeface.NORMAL), 400, false);
+                } else {
+                    mSECRobotoLightRegularFont = Typeface.create(mContext
+                            .getString(androidx.appcompat.R.string.sesl_font_family_regular),
+                            Typeface.NORMAL);
+                }
+            }
+
             mTextSize
                     = (int) rsrc.getDimension(R.dimen.sesl_index_scroll_preview_text_size);
             mTextWidthLimit
