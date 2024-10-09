@@ -38,11 +38,14 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 import androidx.appcompat.R;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.view.ViewCompat;
+
+import org.jspecify.annotations.NonNull;
+
+import org.jspecify.annotations.NonNull;
 
 /**
  * <p><b>SESL variant.</b></p><br>

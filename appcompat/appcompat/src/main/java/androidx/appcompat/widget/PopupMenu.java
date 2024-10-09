@@ -29,8 +29,6 @@ import android.widget.PopupWindow;
 
 import androidx.annotation.AttrRes;
 import androidx.annotation.MenuRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
@@ -39,6 +37,9 @@ import androidx.appcompat.view.SupportMenuInflater;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.appcompat.view.menu.ShowableListMenu;
+
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 /**
  * <p><b>SESL variant.</b></p><br>
@@ -66,7 +67,7 @@ public class PopupMenu {
 
     /**
      * Constructor to create a new popup menu with an anchor view.
-     *
+         *
      * @param context Context the popup menu is running in, through which it
      *        can access the current theme, resources, etc.
      * @param anchor Anchor view for this popup. The popup will appear below
@@ -129,7 +130,7 @@ public class PopupMenu {
         });
 
         mPopup = new MenuPopupHelper(context, mMenu, anchor, false, popupStyleAttr, popupStyleRes);
-        mPopup.seslSetOverflowOnly(true);
+        mPopup.seslSetOverflowOnly(true);//sesl
         mPopup.setGravity(gravity);
         mPopup.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
@@ -178,8 +179,7 @@ public class PopupMenu {
      *
      * @return a touch listener that controls drag-to-open behavior
      */
-    @NonNull
-    public View.OnTouchListener getDragToOpenListener() {
+    public View.@NonNull OnTouchListener getDragToOpenListener() {
         if (mDragListener == null) {
             mDragListener = new ForwardingListener(mAnchor) {
                 @Override
@@ -213,8 +213,7 @@ public class PopupMenu {
      * @see #show()
      * @see #getMenuInflater()
      */
-    @NonNull
-    public Menu getMenu() {
+    public @NonNull Menu getMenu() {
         return mMenu;
     }
 
@@ -223,8 +222,7 @@ public class PopupMenu {
      *         from XML into the menu returned by {@link #getMenu()}
      * @see #getMenu()
      */
-    @NonNull
-    public MenuInflater getMenuInflater() {
+    public @NonNull MenuInflater getMenuInflater() {
         return new SupportMenuInflater(mContext);
     }
 
@@ -246,7 +244,6 @@ public class PopupMenu {
     public void show() {
         mPopup.show(mXOffset, mYOffset);//sesl
     }
-
 
     /**
      * Dismiss the menu popup.
@@ -288,7 +285,6 @@ public class PopupMenu {
     public void setForceShowIcon(boolean forceShowIcon) {
         mPopup.setForceShowIcon(forceShowIcon);
     }
-
 
     /**
      * Interface responsible for receiving menu item click events if the items

@@ -16,7 +16,6 @@
 
 package androidx.appcompat.widget;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
@@ -57,8 +56,6 @@ import android.widget.TextView;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.appcompat.R;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -70,6 +67,9 @@ import androidx.emoji2.text.EmojiCompat;
 import androidx.reflect.view.SeslHapticFeedbackConstantsReflector;
 import androidx.reflect.view.SeslViewReflector;
 import androidx.resourceinspection.annotation.Attribute;
+
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
@@ -208,14 +208,11 @@ public class SwitchCompat extends CompoundButton implements EmojiCompatConfigura
     private ColorStateList mTextColors;
     private Layout mOnLayout;
     private Layout mOffLayout;
-    @Nullable
-    private TransformationMethod mSwitchTransformationMethod;
+    private @Nullable TransformationMethod mSwitchTransformationMethod;
 
     private final AppCompatTextHelper mTextHelper;
-    @NonNull
-    private AppCompatEmojiTextHelper mAppCompatEmojiTextHelper;
-    @Nullable
-    private EmojiCompatInitCallback mEmojiCompatInitCallback;
+    private @NonNull AppCompatEmojiTextHelper mAppCompatEmojiTextHelper;
+    private @Nullable EmojiCompatInitCallback mEmojiCompatInitCallback;
 
     @SuppressWarnings("hiding")
     private final Rect mTempRect = new Rect();
@@ -633,8 +630,7 @@ public class SwitchCompat extends CompoundButton implements EmojiCompatConfigura
      * @see android.R.attr#trackTint
      */
     @Attribute("androidx.appcompat:trackTint")
-    @Nullable
-    public ColorStateList getTrackTintList() {
+    public @Nullable ColorStateList getTrackTintList() {
         return mTrackTintList;
     }
 
@@ -649,7 +645,7 @@ public class SwitchCompat extends CompoundButton implements EmojiCompatConfigura
      * @see #getTrackTintMode()
      * @see android.R.attr#trackTintMode
      */
-    public void setTrackTintMode(@Nullable PorterDuff.Mode tintMode) {
+    public void setTrackTintMode(PorterDuff.@Nullable Mode tintMode) {
         mTrackTintMode = tintMode;
         mHasTrackTintMode = true;
 
@@ -664,8 +660,7 @@ public class SwitchCompat extends CompoundButton implements EmojiCompatConfigura
      * @see android.R.attr#trackTintMode
      */
     @Attribute("androidx.appcompat:trackTintMode")
-    @Nullable
-    public PorterDuff.Mode getTrackTintMode() {
+    public PorterDuff.@Nullable Mode getTrackTintMode() {
         return mTrackTintMode;
     }
 
@@ -761,8 +756,7 @@ public class SwitchCompat extends CompoundButton implements EmojiCompatConfigura
      * @see android.R.attr#thumbTint
      */
     @Attribute("androidx.appcompat:thumbTint")
-    @Nullable
-    public ColorStateList getThumbTintList() {
+    public @Nullable ColorStateList getThumbTintList() {
         return mThumbTintList;
     }
 
@@ -778,7 +772,7 @@ public class SwitchCompat extends CompoundButton implements EmojiCompatConfigura
      * @see android.R.attr#thumbTintMode
      * @see Drawable#setTintMode(PorterDuff.Mode)
      */
-    public void setThumbTintMode(@Nullable PorterDuff.Mode tintMode) {
+    public void setThumbTintMode(PorterDuff.@Nullable Mode tintMode) {
         mThumbTintMode = tintMode;
         mHasThumbTintMode = true;
 
@@ -793,8 +787,7 @@ public class SwitchCompat extends CompoundButton implements EmojiCompatConfigura
      * @see android.R.attr#thumbTintMode
      */
     @Attribute("androidx.appcompat:thumbTintMode")
-    @Nullable
-    public PorterDuff.Mode getThumbTintMode() {
+    public PorterDuff.@Nullable Mode getThumbTintMode() {
         return mThumbTintMode;
     }
 
@@ -865,6 +858,7 @@ public class SwitchCompat extends CompoundButton implements EmojiCompatConfigura
         }
     }
 
+
     /**
      * Sets the text displayed when the button is in the checked state.
      *
@@ -878,7 +872,6 @@ public class SwitchCompat extends CompoundButton implements EmojiCompatConfigura
             // on/off-text are updated.
             setOnStateDescriptionOnRAndAbove();
         }
-
     }
 
     /**
@@ -919,15 +912,13 @@ public class SwitchCompat extends CompoundButton implements EmojiCompatConfigura
         }
     }
 
-    @Nullable
-    private CharSequence doTransformForOnOffText(@Nullable CharSequence onOffText) {
+    private @Nullable CharSequence doTransformForOnOffText(@Nullable CharSequence onOffText) {
         TransformationMethod transformationMethod =
                 getEmojiTextViewHelper().wrapTransformationMethod(mSwitchTransformationMethod);
         return ((transformationMethod != null)
                 ? transformationMethod.getTransformation(onOffText, this)
                 : onOffText);
     }
-
 
     /**
      * Sets whether the on/off text should be displayed.
@@ -1020,8 +1011,6 @@ public class SwitchCompat extends CompoundButton implements EmojiCompatConfigura
         final int switchHeight = Math.max(trackHeight, thumbHeight);
 //        mSwitchWidth = switchWidth;
         mSwitchHeight = switchHeight;
-//        mTrackMargin = ((float) mThumbWidth) / ((float) mSwitchWidth) > THUMB_TRACK_WIDTH_RATIO
-//        ? (int) Math.ceil(i6 - (i7 * 0.5714286f)) : 0;
 
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
@@ -1154,7 +1143,6 @@ public class SwitchCompat extends CompoundButton implements EmojiCompatConfigura
         cancel.recycle();
     }
 
-
     /**
      * Called from onTouchEvent to end a drag operation.
      *
@@ -1225,10 +1213,8 @@ public class SwitchCompat extends CompoundButton implements EmojiCompatConfigura
 
     private void cancelPositionAnimator() {
         if (mPositionAnimator != null) {
-            //Sesl
-            clearAnimation();
+            clearAnimation();//sesl
             mPositionAnimator = null;
-            //sesl
         }
     }
 
@@ -1271,6 +1257,7 @@ public class SwitchCompat extends CompoundButton implements EmojiCompatConfigura
         // Calling the super method may result in setChecked() getting called
         // recursively with a different value, so load the REAL value...
         checked = isChecked();
+
         if (checked) {
             setOnStateDescriptionOnRAndAbove();
         } else {
@@ -1341,7 +1328,6 @@ public class SwitchCompat extends CompoundButton implements EmojiCompatConfigura
         mSwitchBottom = switchBottom;
         mSwitchRight = switchRight;
     }
-
 
     @Override
     public void draw(@NonNull Canvas c) {
@@ -1541,7 +1527,7 @@ public class SwitchCompat extends CompoundButton implements EmojiCompatConfigura
                 insets = DrawableUtils.INSETS_NONE;
             }
 
-            return (mSwitchWidth + mTrackMargin) - mThumbWidth - padding.left - padding.right
+            return (mSwitchWidth + mTrackMargin/*sesl*/) - mThumbWidth - padding.left - padding.right
                     - insets.left - insets.right;
         } else {
             return 0;
@@ -1647,14 +1633,13 @@ public class SwitchCompat extends CompoundButton implements EmojiCompatConfigura
      */
     @Override
     public void setCustomSelectionActionModeCallback(
-            @Nullable ActionMode.Callback actionModeCallback) {
+            ActionMode.@Nullable Callback actionModeCallback) {
         super.setCustomSelectionActionModeCallback(
                 TextViewCompat.wrapCustomSelectionActionModeCallback(this, actionModeCallback));
     }
 
     @Override
-    @Nullable
-    public ActionMode.Callback getCustomSelectionActionModeCallback() {
+    public ActionMode.@Nullable Callback getCustomSelectionActionModeCallback() {
         return TextViewCompat.unwrapCustomSelectionActionModeCallback(
                 super.getCustomSelectionActionModeCallback());
     }
@@ -1702,15 +1687,14 @@ public class SwitchCompat extends CompoundButton implements EmojiCompatConfigura
     }
 
     @Override
-    public void setFilters(@SuppressWarnings("ArrayReturn") @NonNull InputFilter[] filters) {
+    public void setFilters(@SuppressWarnings("ArrayReturn") InputFilter @NonNull [] filters) {
         super.setFilters(getEmojiTextViewHelper().getFilters(filters));
     }
 
     /**
      * This may be called from super constructors.
      */
-    @NonNull
-    private AppCompatEmojiTextHelper getEmojiTextViewHelper() {
+    private @NonNull AppCompatEmojiTextHelper getEmojiTextViewHelper() {
         //noinspection ConstantConditions
         if (mAppCompatEmojiTextHelper == null) {
             mAppCompatEmojiTextHelper = new AppCompatEmojiTextHelper(this);
@@ -1731,6 +1715,7 @@ public class SwitchCompat extends CompoundButton implements EmojiCompatConfigura
     public boolean isEmojiCompatEnabled() {
         return getEmojiTextViewHelper().isEnabled();
     }
+
 
     /**
      * Call this before caching the text in mOnLayout or mOffLayout to ensure the layouts get
@@ -1775,21 +1760,22 @@ public class SwitchCompat extends CompoundButton implements EmojiCompatConfigura
             mOuterWeakRef = new WeakReference<>(view);
         }
 
+
         @Override
         public void onInitialized() {
-            SwitchCompat view  = mOuterWeakRef.get();
-            if (view  != null) {
-                view .onEmojiCompatInitializedForSwitchText();
-            }
-        }
-        @Override
-        public void onFailed(@Nullable Throwable throwable) {
-            SwitchCompat view  = mOuterWeakRef.get();
-            if (view  != null) {
-                view .onEmojiCompatInitializedForSwitchText();
+            SwitchCompat view = mOuterWeakRef.get();
+            if (view != null) {
+                view.onEmojiCompatInitializedForSwitchText();
             }
         }
 
+        @Override
+        public void onFailed(@Nullable Throwable throwable) {
+            SwitchCompat view = mOuterWeakRef.get();
+            if (view != null) {
+                view.onEmojiCompatInitializedForSwitchText();
+            }
+        }
     }
 
     //Sesl

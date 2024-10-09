@@ -33,15 +33,17 @@ import android.view.ViewOutlineProvider;
 import android.widget.PopupWindow;
 
 import androidx.annotation.AttrRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
 import androidx.appcompat.R;
 import androidx.appcompat.view.ActionBarPolicy;
 import androidx.core.widget.PopupWindowCompat;
+import androidx.reflect.DeviceInfo;
 import androidx.reflect.view.SeslViewReflector;
 import androidx.reflect.widget.SeslPopupWindowReflector;
+
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 /**
  * <p><b>SESL variant</b></p>
@@ -122,7 +124,7 @@ class AppCompatPopupWindow extends PopupWindow {
         }
         super.showAsDropDown(anchor, xoff, yoff);
 
-        fixRoundedCorners();
+        fixRoundedCorners();//custom
     }
 
     @Override
@@ -133,7 +135,7 @@ class AppCompatPopupWindow extends PopupWindow {
         }
         super.showAsDropDown(anchor, xoff, yoff, gravity);
 
-        fixRoundedCorners();
+        fixRoundedCorners();//custom
     }
 
     @Override
@@ -230,10 +232,10 @@ class AppCompatPopupWindow extends PopupWindow {
 
 
     /**
-     * Ensure selector/ripple have rounded corners in non-Samsung Basic Interaction devices.
+     * Custom: Ensure selector/ripple have rounded corners in non-Samsung Basic Interaction devices.
      */
     private void fixRoundedCorners() {
-        if (!mIsReplacedPoupBackground) {
+        if (!DeviceInfo.isOneUI() && !mIsReplacedPoupBackground) {
             View contentView = getContentView();
             ViewOutlineProvider outlineProvider = contentView.getOutlineProvider();
 

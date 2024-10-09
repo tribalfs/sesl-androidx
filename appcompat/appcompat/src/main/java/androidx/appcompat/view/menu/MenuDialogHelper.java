@@ -24,9 +24,10 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.R;
 import androidx.appcompat.app.AlertDialog;
+
+import org.jspecify.annotations.NonNull;
 
 /**
  * <p><b></b>SESL variant</b></p><br>

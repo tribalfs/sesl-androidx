@@ -34,8 +34,6 @@ import android.view.ViewDebug;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
 import androidx.appcompat.R;
@@ -48,6 +46,9 @@ import androidx.appcompat.widget.ActionMenuPresenter.ActionMenuItemViewBadgedWra
 import androidx.reflect.os.SeslBuildReflector;
 
 import java.util.ArrayList;
+
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 /**
  * <p><b>SESL variant.</b></p><br>
@@ -689,8 +690,7 @@ public class ActionMenuView extends LinearLayoutCompat implements MenuBuilder.It
      *
      * @return The overflow icon drawable
      */
-    @Nullable
-    public Drawable getOverflowIcon() {
+    public @Nullable Drawable getOverflowIcon() {
         getMenu();
         return mPresenter.getOverflowIcon();
     }

@@ -57,13 +57,14 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.R;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.reflect.widget.SeslAdapterViewReflector;
 import androidx.reflect.widget.SeslTextViewReflector;
+
+import org.jspecify.annotations.Nullable;
 
 import java.lang.ref.WeakReference;
 
@@ -446,8 +447,8 @@ class AlertController {
      * @param defaultPanel the default panel
      * @return the panel to use
      */
-    @Nullable
-    private ViewGroup resolvePanel(@Nullable View customPanel, @Nullable View defaultPanel) {
+    private @Nullable ViewGroup resolvePanel(
+            @Nullable View customPanel, @Nullable View defaultPanel) {
         if (customPanel == null) {
             // Inflate the default panel, if needed.
             if (defaultPanel instanceof ViewStub) {

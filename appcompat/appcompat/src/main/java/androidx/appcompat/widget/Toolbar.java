@@ -55,8 +55,6 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.FloatRange;
 import androidx.annotation.MainThread;
 import androidx.annotation.MenuRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
@@ -87,6 +85,9 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.reflect.view.SeslViewReflector;
 import androidx.reflect.widget.SeslHoverPopupWindowReflector;
 import androidx.resourceinspection.annotation.Attribute;
+
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -181,7 +182,7 @@ public class Toolbar extends ViewGroup implements MenuHost {
     private int mUserTopPadding = -1; //sesl6
     //sesl
 
-    private ActionMenuView mMenuView;
+    ActionMenuView mMenuView;
     private TextView mTitleTextView;
     private TextView mSubtitleTextView;
     private ImageButton mNavButtonView;
@@ -256,6 +257,7 @@ public class Toolbar extends ViewGroup implements MenuHost {
     private ExpandedActionViewMenuPresenter mExpandedMenuPresenter;
     private MenuPresenter.Callback mActionMenuPresenterCallback;
     MenuBuilder.Callback mMenuBuilderCallback;
+
     private boolean mCollapsible;
 
     // The callback handling back events. If this is non-null, the
@@ -269,7 +271,6 @@ public class Toolbar extends ViewGroup implements MenuHost {
     // Whether this Toolbar should register a back invocation handler
     // when its action view is expanded.
     private boolean mBackInvokedCallbackEnabled;
-
 
     private final Runnable mShowOverflowMenuRunnable = new Runnable() {
         @Override public void run() {
@@ -292,7 +293,7 @@ public class Toolbar extends ViewGroup implements MenuHost {
         final TintTypedArray a = TintTypedArray.obtainStyledAttributes(getContext(), attrs,
                 R.styleable.Toolbar, defStyleAttr, 0);
         ViewCompat.saveAttributeDataForStyleable(this, context, R.styleable.Toolbar, attrs,
-                a.getWrappedTypeArray(), defStyleAttr, 0);
+                    a.getWrappedTypeArray(), defStyleAttr, 0);
 
         mTitleTextAppearance = a.getResourceId(R.styleable.Toolbar_titleTextAppearance, 0);
         mSubtitleTextAppearance = a.getResourceId(R.styleable.Toolbar_subtitleTextAppearance, 0);
@@ -472,9 +473,6 @@ public class Toolbar extends ViewGroup implements MenuHost {
     public int getPopupTheme() {
         return mPopupTheme;
     }
-
-
-
 
     /**
      * Sets the title margin.
@@ -1015,8 +1013,7 @@ public class Toolbar extends ViewGroup implements MenuHost {
      * {@link androidx.appcompat.R.attr#navigationContentDescription}
      */
     @Attribute("androidx.appcompat:navigationContentDescription")
-    @Nullable
-    public CharSequence getNavigationContentDescription() {
+    public @Nullable CharSequence getNavigationContentDescription() {
         return mNavButtonView != null ? mNavButtonView.getContentDescription() : null;
     }
 
@@ -1110,8 +1107,7 @@ public class Toolbar extends ViewGroup implements MenuHost {
      * {@link androidx.appcompat.R.attr#navigationIcon}
      */
     @Attribute("androidx.appcompat:navigationIcon")
-    @Nullable
-    public Drawable getNavigationIcon() {
+    public @Nullable Drawable getNavigationIcon() {
         return mNavButtonView != null ? mNavButtonView.getDrawable() : null;
     }
 
@@ -1139,8 +1135,7 @@ public class Toolbar extends ViewGroup implements MenuHost {
      * {@link androidx.appcompat.R.attr#collapseContentDescription}
      */
     @Attribute("androidx.appcompat:collapseContentDescription")
-    @Nullable
-    public CharSequence getCollapseContentDescription() {
+    public @Nullable CharSequence getCollapseContentDescription() {
         return mCollapseButtonView != null ? mCollapseButtonView.getContentDescription() : null;
     }
 
@@ -1189,8 +1184,7 @@ public class Toolbar extends ViewGroup implements MenuHost {
      * {@link androidx.appcompat.R.attr#collapseIcon}
      */
     @Attribute("androidx.appcompat:collapseIcon")
-    @Nullable
-    public Drawable getCollapseIcon() {
+    public @Nullable Drawable getCollapseIcon() {
         return mCollapseButtonView != null ? mCollapseButtonView.getDrawable() : null;
     }
 
@@ -1257,8 +1251,7 @@ public class Toolbar extends ViewGroup implements MenuHost {
      *
      * @return The overflow icon drawable
      */
-    @Nullable
-    public Drawable getOverflowIcon() {
+    public @Nullable Drawable getOverflowIcon() {
         ensureMenu();
         return mMenuView.getOverflowIcon();
     }
@@ -1287,30 +1280,30 @@ public class Toolbar extends ViewGroup implements MenuHost {
             mMenuView.setMenuCallbacks(mActionMenuPresenterCallback,
                     // Have Toolbar insert a Callback to ensure onPrepareMenu is called properly
                     new MenuBuilder.Callback() {
-                        // The mMenuView item does not call into the mMenuBuilderCallback when
-                        // menuItems are selected, so this should not get called, but we implement it
-                        // anyway
-                        @Override
-                        public boolean onMenuItemSelected(@NonNull MenuBuilder menu,
-                                @NonNull MenuItem item) {
-                            // Check if there is a mMenuBuilderCallback and if so, forward the call.
-                            return mMenuBuilderCallback != null
-                                    && mMenuBuilderCallback.onMenuItemSelected(menu, item);
-                        }
+                    // The mMenuView item does not call into the mMenuBuilderCallback when
+                    // menuItems are selected, so this should not get called, but we implement it
+                    // anyway
+                    @Override
+                    public boolean onMenuItemSelected(@NonNull MenuBuilder menu,
+                            @NonNull MenuItem item) {
+                        // Check if there is a mMenuBuilderCallback and if so, forward the call.
+                        return mMenuBuilderCallback != null
+                                && mMenuBuilderCallback.onMenuItemSelected(menu, item);
+                    }
 
-                        @Override
-                        public void onMenuModeChange(@NonNull MenuBuilder menu) {
-                            // If the menu is not showing, we are about to show it, so we need to
-                            // make the prepare call.
-                            if (!mMenuView.isOverflowMenuShowing()) {
-                                mMenuHostHelper.onPrepareMenu(menu);
-                            }
-                            // If there is a mMenuBuilderCallback, forward the onMenuModeChanged call.
-                            if (mMenuBuilderCallback != null) {
-                                mMenuBuilderCallback.onMenuModeChange(menu);
-                            }
+                    @Override
+                    public void onMenuModeChange(@NonNull MenuBuilder menu) {
+                        // If the menu is not showing, we are about to show it, so we need to
+                        // make the prepare call.
+                        if (!mMenuView.isOverflowMenuShowing()) {
+                            mMenuHostHelper.onPrepareMenu(menu);
+                        }
+                        // If there is a mMenuBuilderCallback, forward the onMenuModeChanged call.
+                        if (mMenuBuilderCallback != null) {
+                            mMenuBuilderCallback.onMenuModeChange(menu);
                         }
                     }
+                }
             );
             final LayoutParams lp = generateDefaultLayoutParams();
             lp.gravity = GravityCompat.END | (mButtonGravity & Gravity.VERTICAL_GRAVITY_MASK);
@@ -1650,8 +1643,7 @@ public class Toolbar extends ViewGroup implements MenuHost {
      *
      */
     @VisibleForTesting
-    @Nullable
-    View getNavButtonView() {
+    @Nullable View getNavButtonView() {
         return mNavButtonView;
     }
 
@@ -1713,8 +1705,6 @@ public class Toolbar extends ViewGroup implements MenuHost {
         return state;
     }
 
-
-
     @Override
     protected void onRestoreInstanceState(Parcelable state) {
         if (!(state instanceof SavedState)) {
@@ -1743,13 +1733,12 @@ public class Toolbar extends ViewGroup implements MenuHost {
         post(mShowOverflowMenuRunnable);
     }
 
-
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         removeCallbacks(mShowOverflowMenuRunnable);
         updateBackInvokedCallbackState();
-        seslRemoveListenerForTouchDelegate();
+        seslRemoveListenerForTouchDelegate();//sesl
     }
 
     @Override
@@ -2544,16 +2533,14 @@ public class Toolbar extends ViewGroup implements MenuHost {
     /**
      */
     @VisibleForTesting
-    @Nullable
-    public final TextView getTitleTextView() {
+    public final @Nullable TextView getTitleTextView() {
         return mTitleTextView;
     }
 
     /**
      */
     @VisibleForTesting
-    @Nullable
-    public final TextView getSubtitleTextView() {
+    public final @Nullable TextView getSubtitleTextView() {
         return mSubtitleTextView;
     }
 
@@ -2605,7 +2592,7 @@ public class Toolbar extends ViewGroup implements MenuHost {
     @MainThread
     @SuppressLint("LambdaLast")
     public void addMenuProvider(@NonNull MenuProvider provider, @NonNull LifecycleOwner owner,
-            @NonNull Lifecycle.State state) {
+            Lifecycle.@NonNull State state) {
         mMenuHostHelper.addMenuProvider(provider, owner, state);
     }
 
@@ -2660,7 +2647,6 @@ public class Toolbar extends ViewGroup implements MenuHost {
             }
         }
     }
-
 
     /**
      * Interface responsible for receiving menu item click events if the items themselves
@@ -2880,6 +2866,7 @@ public class Toolbar extends ViewGroup implements MenuHost {
 
             // mCurrentExpandedItem has changed.
             updateBackInvokedCallbackState();
+
             return true;
         }
 
@@ -2940,13 +2927,11 @@ public class Toolbar extends ViewGroup implements MenuHost {
             dispatcher.unregisterOnBackInvokedCallback((OnBackInvokedCallback) callbackObj);
         }
 
-        @Nullable
-        static OnBackInvokedDispatcher findOnBackInvokedDispatcher(@NonNull View view) {
+        static @Nullable OnBackInvokedDispatcher findOnBackInvokedDispatcher(@NonNull View view) {
             return view.findOnBackInvokedDispatcher();
         }
 
-        @NonNull
-        static OnBackInvokedCallback newOnBackInvokedCallback(@NonNull Runnable action) {
+        static @NonNull OnBackInvokedCallback newOnBackInvokedCallback(@NonNull Runnable action) {
             return action::run;
         }
     }
@@ -3126,8 +3111,7 @@ public class Toolbar extends ViewGroup implements MenuHost {
     //sesl
 
     //Sesl7
-    @Nullable
-    public ActionMenuView seslGetMenuView() {
+    public @Nullable ActionMenuView seslGetMenuView() {
         return mMenuView;
     }
 

@@ -40,8 +40,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.appcompat.R;
 import androidx.appcompat.util.SeslMisc;
@@ -63,6 +61,10 @@ import androidx.core.view.GravityCompat;
 import androidx.core.widget.TextViewCompat;
 
 import java.text.NumberFormat;
+
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -88,9 +90,8 @@ class ActionMenuPresenter extends BaseMenuPresenter
     private boolean mStrictWidthLimit;
     private boolean mWidthLimitSet;
     private boolean mExpandedActionViewsExclusive;
+
     private int mMinCellSize;
-
-
 
     // Group IDs that have been added as actions - used temporarily, allocated here for reuse.
     private final SparseBooleanArray mActionButtonGroups = new SparseBooleanArray();
@@ -282,7 +283,7 @@ class ActionMenuPresenter extends BaseMenuPresenter
             final ArrayList<MenuItemImpl> actionItems = mMenu.getActionItems();
             final int count = actionItems.size();
             for (int i = 0; i < count; i++) {
-                final MenuItemImpl menuItem = actionItems.get(i);
+                final MenuItemImpl menuItem = actionItems.get(i);//custom
                 final ActionProvider provider = menuItem.getSupportActionProvider();
                 if (provider != null) {
                     provider.setSubUiVisibilityListener(this);
@@ -585,7 +586,7 @@ class ActionMenuPresenter extends BaseMenuPresenter
     public boolean flagActionItems() {
         final ArrayList<MenuItemImpl> visibleItems;
         final int itemsSize;
-        if (mMenu != null) {//sesl
+        if (mMenu != null) {
             visibleItems = mMenu.getVisibleItems();
             itemsSize = visibleItems.size();
         } else {
@@ -959,6 +960,7 @@ class ActionMenuPresenter extends BaseMenuPresenter
 
             setClickable(true);
             setFocusable(true);
+            //Sesl
             setLongClickable(true);
 
             final Resources res = getResources();
@@ -973,9 +975,10 @@ class ActionMenuPresenter extends BaseMenuPresenter
                         getBackground());
             }
             mConfiguration = res.getConfiguration();
-
+            //sesl
         }
 
+        //sesl
         @Override
         protected void onConfigurationChanged(Configuration newConfig) {
             super.onConfigurationChanged(newConfig);
@@ -1033,9 +1036,11 @@ class ActionMenuPresenter extends BaseMenuPresenter
             }
 
             playSoundEffect(SoundEffectConstants.CLICK);
+            //Sesl
             if (showOverflowMenu() && isHovered()) {
                 TooltipCompat.setTooltipNull(true);
             }
+            //sesl
             return true;
         }
 
@@ -1050,9 +1055,11 @@ class ActionMenuPresenter extends BaseMenuPresenter
                 final int width = getWidth();
                 final int height = getHeight();
                 final int offsetX = getPaddingLeft() - getPaddingRight();
+                //Sesl
                 final int halfOffsetX = offsetX / 2;
                 DrawableCompat.setHotspotBounds(bg, halfOffsetX, 0,
                         halfOffsetX + width, height);
+                //sesl
             }
 
             return changed;
@@ -1121,6 +1128,7 @@ class ActionMenuPresenter extends BaseMenuPresenter
     }
     //sesl
 
+    //sesl
     private class OverflowPopup extends MenuPopupHelper {
         public OverflowPopup(Context context, MenuBuilder menu, View anchorView,
                 boolean overflowOnly) {
