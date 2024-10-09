@@ -49,7 +49,6 @@ import android.view.View;
 import android.view.View.MeasureSpec;
 import android.widget.ImageView;
 
-import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.test.R;
 import androidx.coordinatorlayout.testutils.CoordinatorLayoutUtils;
 import androidx.coordinatorlayout.testutils.CoordinatorLayoutUtils.DependentBehavior;
@@ -61,6 +60,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 import androidx.test.filters.SdkSuppress;
 
+import org.jspecify.annotations.NonNull;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -867,8 +867,7 @@ public class CoordinatorLayoutTest {
         assertThat(dependencySortedChildren, is(Arrays.asList(anchor, ship)));
     }
 
-    @NonNull
-    private View createViewWithHashCode(final Context context, final int hashCode) {
+    private @NonNull View createViewWithHashCode(final Context context, final int hashCode) {
         return new View(context) {
             @Override
             public int hashCode() {
