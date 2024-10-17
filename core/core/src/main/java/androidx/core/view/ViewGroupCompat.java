@@ -19,6 +19,7 @@ package androidx.core.view;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowInsets;
 import android.view.accessibility.AccessibilityEvent;
 
 import androidx.annotation.NonNull;
@@ -46,6 +47,8 @@ public final class ViewGroupCompat {
      * such as shadows and glows, to be drawn.
      */
     public static final int LAYOUT_MODE_OPTICAL_BOUNDS = 1;
+
+    private static final WindowInsets CONSUMED = WindowInsetsCompat.CONSUMED.toWindowInsets();
 
     /*
      * Hide the constructor.
@@ -191,6 +194,55 @@ public final class ViewGroupCompat {
             return ((NestedScrollingParent) group).getNestedScrollAxes();
         }
         return ViewCompat.SCROLL_AXIS_NONE;
+    }
+
+    /**
+     * Installs a custom {@link View.OnApplyWindowInsetsListener} which dispatches WindowInsets to
+     * the given root and its descendants in a way compatible with Android R+ that consuming or
+     * modifying insets will only affect the descendants.
+     * <P>
+     * Note: When using this method, ensure that ViewCompat.setOnApplyWindowInsetsListener() is used
+     * instead of the platform call.
+     *
+     * @param root The root view that the custom listener is installed on. Note: the listener will
+     *             consume the insets, so make sure the given root is the root view of the window,
+     *             or its siblings might not be able to get insets dispatched.
+     */
+    public static void installCompatInsetsDispatch(@NonNull View root) {
+        if (Build.VERSION.SDK_INT >= 30) {
+            return;
+        }
+        final View.OnApplyWindowInsetsListener listener = (view, insets) -> {
+            dispatchApplyWindowInsets(view, insets);
+
+            // The insets have been dispatched to descendants of the given view. Here returns the
+            // consumed insets to prevent redundant dispatching by the framework.
+            return CONSUMED;
+        };
+        root.setTag(R.id.tag_compat_insets_dispatch, listener);
+        root.setOnApplyWindowInsetsListener(listener);
+    }
+
+    static WindowInsets dispatchApplyWindowInsets(View view, WindowInsets insets) {
+        final Object wrappedUserListener = view.getTag(R.id.tag_on_apply_window_listener);
+        final Object animCallback = view.getTag(R.id.tag_window_insets_animation_callback);
+        final View.OnApplyWindowInsetsListener listener =
+                (wrappedUserListener instanceof View.OnApplyWindowInsetsListener)
+                        ? (View.OnApplyWindowInsetsListener) wrappedUserListener
+                        : (animCallback instanceof View.OnApplyWindowInsetsListener)
+                                ? (View.OnApplyWindowInsetsListener) animCallback
+                                : null;
+        final WindowInsets outInsets = listener != null
+                ? listener.onApplyWindowInsets(view, insets)
+                : view.onApplyWindowInsets(insets);
+        if (outInsets != null && !outInsets.isConsumed() && view instanceof ViewGroup) {
+            final ViewGroup parent = (ViewGroup) view;
+            final int count = parent.getChildCount();
+            for (int i = 0; i < count; i++) {
+                dispatchApplyWindowInsets(parent.getChildAt(i), outInsets);
+            }
+        }
+        return outInsets;
     }
 
     @RequiresApi(21)
