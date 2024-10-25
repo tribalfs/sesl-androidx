@@ -939,6 +939,11 @@ public class FileProvider extends ContentProvider {
             String path = uri.getEncodedPath();
 
             final int splitIndex = path.indexOf('/', 1);
+            if (splitIndex == -1) {
+                // If the URI is trying to access a root path (e.g. content://authority/tag)
+                // there will be no trailing slash in `path`, returning root paths is not allowed.
+                throw new IllegalArgumentException("Unable to find path from root: " + uri);
+            }
             final String tag = Uri.decode(path.substring(1, splitIndex));
             path = Uri.decode(path.substring(splitIndex + 1));
 
@@ -962,21 +967,17 @@ public class FileProvider extends ContentProvider {
         }
 
         /**
-         * Check if the given file is located "under" the given root.
+         * Check if the given `filePath` is located as a descendant of the supplied `rootPath`.
          */
         private boolean belongsToRoot(@NonNull String filePath, @NonNull String rootPath) {
-            // If we naively did the
-            //    filePath.startsWith(rootPath)
-            // check, we would miss cases such as the following:
-            //    rootPath="files/data"
-            //    filePath="files/data2"
-            // Thus we'll have to do more here.
-
-            // Remove trailing '/'s (if any) first.
+            // Both `filePath` and `rootPath` are typically gained via methods (e.g.
+            // `getCanonicalPath`) which strip trailing slashes already. However this may not
+            // always be true in the future, so retain this defensive check.
             filePath = removeTrailingSlash(filePath);
             rootPath = removeTrailingSlash(rootPath);
 
-            return filePath.equals(rootPath) || filePath.startsWith(rootPath + '/');
+            // The `filePath` _must_ reside as a descendant of the `rootPath`
+            return filePath.startsWith(rootPath + '/');
         }
     }
 

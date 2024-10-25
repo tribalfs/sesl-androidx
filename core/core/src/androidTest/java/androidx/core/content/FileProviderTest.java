@@ -159,6 +159,32 @@ public class FileProviderTest {
     }
 
     @Test
+    public void testStrategyUriRootPathShouldNotBeReturned() throws Exception {
+        final SimplePathStrategy strat = new SimplePathStrategy("authority");
+        strat.addRoot("tag", buildPath(mContext.getFilesDir(), "tag"));
+
+        File file = buildPath(mContext.getFilesDir(), "tag");
+        try {
+            strat.getUriForFile(file);
+            fail("root path returned");
+        } catch (IllegalArgumentException e) {
+        }
+    }
+
+    @Test
+    public void testStrategyUriRootPathShouldNotBeReturnedUsingPathTraversal() throws Exception {
+        final SimplePathStrategy strat = new SimplePathStrategy("authority");
+        strat.addRoot("my_tag", buildPath(mContext.getFilesDir(), "tag"));
+
+        File file = buildPath(mContext.getFilesDir(), "my_tag", "..", "tag");
+        try {
+            strat.getUriForFile(file);
+            fail("root path returned");
+        } catch (IllegalArgumentException e) {
+        }
+    }
+
+    @Test
     public void testStrategyUriShortestRoot() throws Exception {
         SimplePathStrategy strat = new SimplePathStrategy("authority");
         strat.addRoot("tag1", mContext.getFilesDir());
@@ -198,6 +224,31 @@ public class FileProviderTest {
         try {
             strat.getFileForUri(Uri.parse("content://authority/tag/../file.test"));
             fail("file escaped!");
+        } catch (SecurityException e) {
+        }
+    }
+
+    @Test
+    public void testStrategyRootFolderShouldNotBeReturnedAsFileDirectly() throws Exception {
+        final SimplePathStrategy strat = new SimplePathStrategy("authority");
+        strat.addRoot("tag", buildPath(mContext.getFilesDir(), "tag"));
+
+        try {
+            strat.getFileForUri(Uri.parse("content://authority/tag"));
+            fail("root folder returned");
+        } catch (IllegalArgumentException e) {
+        }
+    }
+
+    @Test
+    public void testStrategyRootFolderShouldNotBeReturnedAsFileUsingPathTraversal()
+            throws Exception {
+        final SimplePathStrategy strat = new SimplePathStrategy("authority");
+        strat.addRoot("my_tag", buildPath(mContext.getFilesDir(), "tag"));
+
+        try {
+            strat.getFileForUri(Uri.parse("content://authority/my_tag/../tag"));
+            fail("root folder returned");
         } catch (SecurityException e) {
         }
     }
