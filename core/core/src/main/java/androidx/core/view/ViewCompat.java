@@ -3026,7 +3026,9 @@ public class ViewCompat {
         if (Build.VERSION.SDK_INT >= 21) {
             final WindowInsets unwrapped = insets.toWindowInsets();
             if (unwrapped != null) {
-                final WindowInsets result = Api20Impl.dispatchApplyWindowInsets(view, unwrapped);
+                final WindowInsets result = Build.VERSION.SDK_INT >= 30
+                        ? Api30Impl.dispatchApplyWindowInsets(view, unwrapped)
+                        : Api20Impl.dispatchApplyWindowInsets(view, unwrapped);
                 if (!result.equals(unwrapped)) {
                     // If the value changed, return a newly wrapped instance
                     return WindowInsetsCompat.toWindowInsetsCompat(result, view);
@@ -5558,6 +5560,10 @@ public class ViewCompat {
         static int getImportantForContentCapture(View view) {
             return view.getImportantForContentCapture();
         }
+
+        static WindowInsets dispatchApplyWindowInsets(View view, WindowInsets insets) {
+            return view.dispatchApplyWindowInsets(insets);
+        }
     }
 
     @RequiresApi(26)
@@ -5757,7 +5763,15 @@ public class ViewCompat {
         }
 
         static WindowInsets dispatchApplyWindowInsets(View view, WindowInsets insets) {
-            return view.dispatchApplyWindowInsets(insets);
+            return ViewGroupCompat.sCompatInsetsDispatchInstalled
+                    // Dispatches insets in a way compatible with API 30+, but ignores
+                    // View.OnApplyWindowInsetsListener set by the app. They should use
+                    // ViewCompat.OnApplyWindowInsetsListener instead.
+                    ? ViewGroupCompat.dispatchApplyWindowInsets(view, insets)
+                    // Dispatches insets in the legacy way that a view can consume or modify insets
+                    // to be dispatched to its siblings, but View.OnApplyWindowInsetsListener set
+                    // by the app will be respected.
+                    : view.dispatchApplyWindowInsets(insets);
         }
     }
 }

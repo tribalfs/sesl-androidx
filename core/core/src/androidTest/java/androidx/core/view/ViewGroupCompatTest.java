@@ -92,15 +92,22 @@ public class ViewGroupCompatTest extends BaseInstrumentationTestCase<ViewCompatA
 
     @Test
     public void installCompatInsetsDispatch() {
-        final Insets[] insetsRoot = new Insets[1];
-        final Insets[] insetsA = new Insets[1];
-        final Insets[] insetsA1 = new Insets[1];
-        final Insets[] insetsA2 = new Insets[1];
-        final Insets[] insetsB = new Insets[1];
-        final Insets[] insetsB1 = new Insets[1];
-        final Insets[] insetsB2 = new Insets[1];
-
         InstrumentationRegistry.getInstrumentation().runOnMainSync(() -> {
+            final Insets[] insetsRoot = new Insets[1];
+            final Insets[] insetsA = new Insets[1];
+            final Insets[] insetsA1 = new Insets[1];
+            final Insets[] insetsA2 = new Insets[1];
+            final Insets[] insetsB = new Insets[1];
+            final Insets[] insetsB1 = new Insets[1];
+            final Insets[] insetsB2 = new Insets[1];
+            final int[] countRoot = new int[1];
+            final int[] countA = new int[1];
+            final int[] countA1 = new int[1];
+            final int[] countA2 = new int[1];
+            final int[] countB = new int[1];
+            final int[] countB1 = new int[1];
+            final int[] countB2 = new int[1];
+
             final Context context = mViewGroup.getContext();
             final FrameLayout viewA = new FrameLayout(context);
             final FrameLayout viewA1 = new FrameLayout(context);
@@ -113,7 +120,8 @@ public class ViewGroupCompatTest extends BaseInstrumentationTestCase<ViewCompatA
                 public WindowInsets onApplyWindowInsets(WindowInsets insets) {
                     insetsB2[0] = WindowInsetsCompat.toWindowInsetsCompat(insets)
                             .getSystemWindowInsets();
-                    return insets;
+                    countB2[0]++;
+                    return super.onApplyWindowInsets(insets);
                 }
             };
 
@@ -133,26 +141,32 @@ public class ViewGroupCompatTest extends BaseInstrumentationTestCase<ViewCompatA
 
             ViewCompat.setOnApplyWindowInsetsListener(mViewGroup, (v, insets) -> {
                 insetsRoot[0] = insets.getSystemWindowInsets();
+                countRoot[0]++;
                 return insets;
             });
             ViewCompat.setOnApplyWindowInsetsListener(viewA, (v, insets) -> {
                 insetsA[0] = insets.getSystemWindowInsets();
+                countA[0]++;
                 return WindowInsetsCompat.CONSUMED;
             });
             ViewCompat.setOnApplyWindowInsetsListener(viewA1, (v, insets) -> {
                 insetsA1[0] = insets.getSystemWindowInsets();
+                countA1[0]++;
                 return insets;
             });
             ViewCompat.setOnApplyWindowInsetsListener(viewA2, (v, insets) -> {
                 insetsA2[0] = insets.getSystemWindowInsets();
+                countA2[0]++;
                 return insets;
             });
             ViewCompat.setOnApplyWindowInsetsListener(viewB, (v, insets) -> {
                 insetsB[0] = insets.getSystemWindowInsets();
+                countB[0]++;
                 return insets.replaceSystemWindowInsets(5, 5, 5, 5);
             });
             ViewCompat.setOnApplyWindowInsetsListener(viewB1, (v, insets) -> {
                 insetsB1[0] = insets.getSystemWindowInsets();
+                countB1[0]++;
                 return insets;
             });
 
@@ -160,15 +174,28 @@ public class ViewGroupCompatTest extends BaseInstrumentationTestCase<ViewCompatA
 
             ViewCompat.dispatchApplyWindowInsets(mViewGroup, new InsetsObtainer(context).obtain(
                     10, 10, 10, 10));
-        });
 
-        assertEquals(Insets.of(10, 10, 10, 10), insetsRoot[0]);
-        assertEquals(Insets.of(10, 10, 10, 10), insetsA[0]);
-        assertNull(insetsA1[0]);
-        assertNull(insetsA2[0]);
-        assertEquals(Insets.of(10, 10, 10, 10), insetsB[0]);
-        assertEquals(Insets.of(5, 5, 5, 5), insetsB1[0]);
-        assertEquals(Insets.of(5, 5, 5, 5), insetsB2[0]);
+            // viewA consumes the insets, so its child views (viewA1 and viewA2) shouldn't receive
+            // any insets; viewB returns the modified insets which should be received by its child
+            // views (viewB1 and viewB2).
+            assertEquals(Insets.of(10, 10, 10, 10), insetsRoot[0]);
+            assertEquals(Insets.of(10, 10, 10, 10), insetsA[0]);
+            assertNull(insetsA1[0]);
+            assertNull(insetsA2[0]);
+            assertEquals(Insets.of(10, 10, 10, 10), insetsB[0]);
+            assertEquals(Insets.of(5, 5, 5, 5), insetsB1[0]);
+            assertEquals(Insets.of(5, 5, 5, 5), insetsB2[0]);
+
+            // viewA consumes the insets, so the listeners of its child views (viewA1 and viewA2)
+            // shouldn't get called.
+            assertEquals(1, countRoot[0]);
+            assertEquals(1, countA[0]);
+            assertEquals(0, countA1[0]);
+            assertEquals(0, countA2[0]);
+            assertEquals(1, countB[0]);
+            assertEquals(1, countB1[0]);
+            assertEquals(1, countB2[0]);
+        });
     }
 
     private static class InsetsObtainer extends View {
