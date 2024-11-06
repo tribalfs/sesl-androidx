@@ -16,6 +16,8 @@
 
 package androidx.core.view;
 
+import static androidx.core.view.WindowInsetsAnimationCompat.Callback.DISPATCH_MODE_STOP;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
@@ -32,6 +34,7 @@ import android.view.ViewGroup;
 import android.view.WindowInsets;
 import android.widget.FrameLayout;
 
+import androidx.annotation.NonNull;
 import androidx.core.graphics.Insets;
 import androidx.core.test.R;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -41,6 +44,8 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.List;
 
 
 @RunWith(AndroidJUnit4.class)
@@ -125,6 +130,20 @@ public class ViewGroupCompatTest extends BaseInstrumentationTestCase<ViewCompatA
                 }
             };
 
+            ViewGroupCompat.installCompatInsetsDispatch(mViewGroup);
+
+            // This is to test if ViewCompat#setWindowInsetsAnimationCallback would overwrite the
+            // View.OnApplyWindowInsetsListener set by ViewGroupCompat#installCompatInsetsDispatch
+            ViewCompat.setWindowInsetsAnimationCallback(mViewGroup,
+                    new WindowInsetsAnimationCompat.Callback(DISPATCH_MODE_STOP) {
+                        @NonNull
+                        @Override
+                        public WindowInsetsCompat onProgress(@NonNull WindowInsetsCompat insets,
+                                @NonNull List<WindowInsetsAnimationCompat> runningAnimations) {
+                            return insets;
+                        }
+                    });
+
             // mViewGroup --+-- viewA --+-- viewA1
             //              |           |
             //              |           +-- viewA2
@@ -170,9 +189,7 @@ public class ViewGroupCompatTest extends BaseInstrumentationTestCase<ViewCompatA
                 return insets;
             });
 
-            ViewGroupCompat.installCompatInsetsDispatch(mViewGroup);
-
-            ViewCompat.dispatchApplyWindowInsets(mViewGroup, new InsetsObtainer(context).obtain(
+            mViewGroup.dispatchApplyWindowInsets(new InsetsObtainer(context).obtain(
                     10, 10, 10, 10));
 
             // viewA consumes the insets, so its child views (viewA1 and viewA2) shouldn't receive
@@ -212,12 +229,12 @@ public class ViewGroupCompatTest extends BaseInstrumentationTestCase<ViewCompatA
             return insets;
         }
 
-        public WindowInsetsCompat obtain(int left, int top, int right, int bottom) {
+        public WindowInsets obtain(int left, int top, int right, int bottom) {
             // Before API 28, there is no other way to create an unconsumed WindowInsets instance.
             // Calling fitSystemWindows here makes the framework dispatch a WindowInsets with the
             // given system window insets to this view.
             fitSystemWindows(new Rect(left, top, right, bottom));
-            return WindowInsetsCompat.toWindowInsetsCompat(mWindowInsets);
+            return mWindowInsets;
         }
     }
 
