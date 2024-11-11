@@ -1679,6 +1679,8 @@ public class AccessibilityNodeInfoCompat {
     private static final String MIN_DURATION_BETWEEN_CONTENT_CHANGES_KEY =
             "androidx.view.accessibility.AccessibilityNodeInfoCompat."
                     + "MIN_DURATION_BETWEEN_CONTENT_CHANGES_KEY";
+    private static final String IS_REQUIRED_KEY =
+            "androidx.view.accessibility.AccessibilityNodeInfoCompat.IS_REQUIRED_KEY";
 
     // These don't line up with the internal framework constants, since they are independent
     // and we might as well get all 32 bits of utility here.
@@ -3029,6 +3031,30 @@ public class AccessibilityNodeInfoCompat {
      */
     public void setChecked(boolean checked) {
         mInfo.setChecked(checked);
+    }
+
+    /**
+     * Gets whether a node representing a form field requires input or selection.
+     *
+     * @return {@code true} if {@code this} node represents a form field that requires input or
+     *     selection, {@code false} otherwise.
+     */
+    public boolean isFieldRequired() {
+        return mInfo.getExtras().getBoolean(IS_REQUIRED_KEY);
+    }
+
+    /**
+     * Sets whether {@code this} node represents a form field that requires input or selection.
+     *
+     * <p><strong>Note:</strong> Cannot be called from an AccessibilityService. This class is made
+     * immutable before being delivered to an AccessibilityService.
+     *
+     * @param required {@code true} if input or selection of this node should be required, {@code
+     *     false} otherwise.
+     * @throws IllegalStateException If called from an AccessibilityService
+     */
+    public void setFieldRequired(boolean required) {
+        mInfo.getExtras().putBoolean(IS_REQUIRED_KEY, required);
     }
 
     /**
@@ -5109,6 +5135,7 @@ public class AccessibilityNodeInfoCompat {
 
         builder.append("; checkable: ").append(isCheckable());
         builder.append("; checked: ").append(isChecked());
+        builder.append("; fieldRequired: ").append(isFieldRequired());
         builder.append("; focusable: ").append(isFocusable());
         builder.append("; focused: ").append(isFocused());
         builder.append("; selected: ").append(isSelected());
