@@ -2366,6 +2366,11 @@ package androidx.core.os {
     ctor public OperationCanceledException(String?);
   }
 
+  public interface OutcomeReceiverCompat<R, E extends java.lang.Throwable> {
+    method public default void onError(E);
+    method public void onResult(R!);
+  }
+
   public final class ParcelCompat {
     method public static <T> Object![]? readArray(android.os.Parcel, ClassLoader?, Class<T!>);
     method public static <T> java.util.ArrayList<T!>? readArrayList(android.os.Parcel, ClassLoader?, Class<? extends T!>);
