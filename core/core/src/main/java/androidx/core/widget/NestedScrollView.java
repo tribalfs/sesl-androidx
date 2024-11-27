@@ -73,6 +73,7 @@ import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.R;
+import androidx.core.os.BuildCompat;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.DifferentialMotionFlingController;
 import androidx.core.view.DifferentialMotionFlingTarget;
@@ -81,6 +82,7 @@ import androidx.core.view.NestedScrollingChild3;
 import androidx.core.view.NestedScrollingChildHelper;
 import androidx.core.view.NestedScrollingParent3;
 import androidx.core.view.NestedScrollingParentHelper;
+import androidx.core.view.ScrollFeedbackProviderCompat;
 import androidx.core.view.ScrollingView;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
@@ -161,6 +163,10 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
     @VisibleForTesting
     @NonNull
     public EdgeEffect mEdgeGlowBottom;
+
+    @VisibleForTesting
+    ScrollFeedbackProviderCompat mScrollFeedbackProvider =
+            ScrollFeedbackProviderCompat.createProvider(this);
 
     /**
      * Position of the last motion event; only used with touch related events (usually to assist
@@ -1102,7 +1108,9 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
 
                 if (mIsBeingDragged) {
                     final int x = (int) motionEvent.getX(activePointerIndex);
-                    int scrollOffset = scrollBy(deltaY, x, ViewCompat.TYPE_TOUCH, false);
+                    int scrollOffset =
+                            scrollBy(deltaY, MotionEvent.AXIS_Y, motionEvent, x,
+                                    ViewCompat.TYPE_TOUCH, false);
                     // Updates the global positions (used by later move events to properly scroll).
                     mLastMotionY = y - scrollOffset;
                     mNestedYOffset += scrollOffset;
@@ -1181,7 +1189,24 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
         mEdgeGlowBottom.onRelease();
     }
 
-    /*
+    /**
+     * Same as {@link #scrollBy(int, int, MotionEvent, int, int, boolean)}, but with no entry for
+     * the vertical motion axis as well as the {@link MotionEvent}.
+     *
+     * <p>Use this method (instead of the other overload) if the {@link MotionEvent} that caused
+     * this scroll request is not known.
+     */
+    private int scrollBy(
+            int verticalScrollDistance,
+            int x,
+            int touchType,
+            boolean isSourceMouseOrKeyboard
+    ) {
+        return scrollBy(verticalScrollDistance, /* verticalScrollAxis= */ -1, null, x, touchType,
+                isSourceMouseOrKeyboard);
+    }
+
+    /**
      * Handles scroll events for both touch and non-touch events (mouse scroll wheel,
      * rotary button, keyboard, etc.).
      *
@@ -1189,12 +1214,28 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
      * for calculating the total scroll between multiple move events (touch). This returned value
      * is NOT needed for non-touch events since a scroll is a one time event (vs. touch where a
      * drag may be triggered multiple times with the movement of the finger).
+     *
+     * @param verticalScrollDistance the amount of distance (in pixels) to scroll vertically.
+     * @param verticalScrollAxis the motion axis that triggered the vertical scroll. This is not
+     *                           always {@link MotionEvent#AXIS_Y}, because there could be other
+     *                           axes that trigger a vertical scroll on the view. For example,
+     *                           generic motion events reported via {@link MotionEvent#AXIS_SCROLL}
+     *                           or {@link MotionEvent#AXIS_VSCROLL}. Use {@code -1} if the vertical
+     *                           scroll axis is not known.
+     * @param ev the {@link MotionEvent} that caused this scroll. {@code null} if the event is not
+     *           known.
+     * @param x the target location on the x axis.
+     * @param touchType the {@link ViewCompat.NestedScrollType} for this scroll.
+     * @param isSourceMouseOrKeyboard whether or not the scroll was caused by a mouse or a keyboard.
      */
     // TODO: You should rename this to nestedScrollBy() so it is different from View.scrollBy
-    private int scrollBy(
+    @VisibleForTesting
+    int scrollBy(
             int verticalScrollDistance,
+            int verticalScrollAxis,
+            @Nullable MotionEvent ev,
             int x,
-            int touchType,
+            @ViewCompat.NestedScrollType int touchType,
             boolean isSourceMouseOrKeyboard
     ) {
         int totalScrollOffset = 0;
@@ -1250,6 +1291,10 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
 
         // The position may have been adjusted in the previous call, so we must revise our values.
         final int scrollYDelta = getScrollY() - initialScrollY;
+        if (ev != null && scrollYDelta != 0) {
+            mScrollFeedbackProvider.onScrollProgress(
+                    ev.getDeviceId(),  ev.getSource(), verticalScrollAxis, scrollYDelta);
+        }
         final int unconsumedY = verticalScrollDistance - scrollYDelta;
 
         // Reset the Y consumed scroll to zero
@@ -1279,6 +1324,12 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
                         (float) -verticalScrollDistance / getHeight(),
                         (float) x / getWidth()
                 );
+                if (ev != null) {
+                    mScrollFeedbackProvider.onScrollLimit(
+                            ev.getDeviceId(), ev.getSource(), verticalScrollAxis,
+                            /* isStart= */ true);
+                }
+
                 if (!mEdgeGlowBottom.isFinished()) {
                     mEdgeGlowBottom.onRelease();
                 }
@@ -1291,7 +1342,19 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
                         (float) verticalScrollDistance / getHeight(),
                         1.f - ((float) x / getWidth())
                 );
+                if (ev != null) {
+                    mScrollFeedbackProvider.onScrollLimit(
+                            ev.getDeviceId(), ev.getSource(), verticalScrollAxis,
+                            /* isStart= */ false);
+                }
+
                 showGoToTop();//sesl
+                if (ev != null) {
+                    mScrollFeedbackProvider.onScrollLimit(
+                            ev.getDeviceId(), ev.getSource(), verticalScrollAxis,
+                            /* isStart= */ false);
+                }
+
                 if (!mEdgeGlowTop.isFinished()) {
                     mEdgeGlowTop.onRelease();
                 }
@@ -1456,12 +1519,12 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
         if (motionEvent.getAction() == MotionEvent.ACTION_SCROLL && !mIsBeingDragged) {
             final float verticalScroll;
             final int x;
-            final int flingAxis;
+            final int axis;
 
             if (MotionEventCompat.isFromSource(motionEvent, InputDevice.SOURCE_CLASS_POINTER)) {
                 verticalScroll = motionEvent.getAxisValue(MotionEvent.AXIS_VSCROLL);
                 x = (int) motionEvent.getX();
-                flingAxis = MotionEvent.AXIS_VSCROLL;
+                axis = MotionEvent.AXIS_VSCROLL;
             } else if (
                     MotionEventCompat.isFromSource(motionEvent, InputDevice.SOURCE_ROTARY_ENCODER)
             ) {
@@ -1469,11 +1532,11 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
                 // Since a Wear rotary event doesn't have a true X and we want to support proper
                 // overscroll animations, we put the x at the center of the screen.
                 x = getWidth() / 2;
-                flingAxis = MotionEvent.AXIS_SCROLL;
+                axis = MotionEvent.AXIS_SCROLL;
             } else {
                 verticalScroll = 0;
                 x = 0;
-                flingAxis = 0;
+                axis = 0;
             }
 
             if (verticalScroll != 0) {
@@ -1483,9 +1546,9 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
                 final boolean isSourceMouse =
                         MotionEventCompat.isFromSource(motionEvent, InputDevice.SOURCE_MOUSE);
 
-                scrollBy(-invertedDelta, x, ViewCompat.TYPE_NON_TOUCH, isSourceMouse);
-                if (flingAxis != 0) {
-                    mDifferentialMotionFlingController.onMotionEvent(motionEvent, flingAxis);
+                scrollBy(-invertedDelta, axis, motionEvent, x, ViewCompat.TYPE_NON_TOUCH, isSourceMouse);
+                if (axis != 0) {
+                    mDifferentialMotionFlingController.onMotionEvent(motionEvent, axis);
                 }
 
                 return true;
@@ -2103,17 +2166,6 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
             //Sesl
             seslDispatchNestedScroll(0, scrolledByMe, 0, unconsumed, mScrollOffset,
                     ViewCompat.TYPE_NON_TOUCH, mScrollConsumed);
-//            if (seslDispatchNestedScroll(0, scrolledByMe, 0, unconsumed, mScrollOffset,
-//                    ViewCompat.TYPE_NON_TOUCH, mScrollConsumed)) {
-//                mScrollOffset[0] = 0;
-//                mScrollOffset[1] = 0;
-//            }
-//
-//            if (mScrollOffset[0] < 0 || mScrollOffset[1] < 0) {
-//                mScrollOffset[0] = 0;
-//                mScrollOffset[1] = 0;
-//            }
-
             unconsumed -= mScrollConsumed[1];
         }
 
