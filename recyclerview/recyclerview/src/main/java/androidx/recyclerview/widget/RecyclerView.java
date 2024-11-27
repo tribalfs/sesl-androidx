@@ -1211,8 +1211,8 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
             new DifferentialMotionFlingController(getContext(), mDifferentialMotionFlingTarget);
 
     @VisibleForTesting
-    ScrollFeedbackProviderCompat mScrollFeedbackProvider =
-            ScrollFeedbackProviderCompat.createProvider(this);
+    @Nullable
+    ScrollFeedbackProviderCompat mScrollFeedbackProvider;
 
     public RecyclerView(@NonNull Context context) {
         this(context, null);
@@ -2865,11 +2865,11 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
 
         if (ev != null) {
             if (consumedX != 0) {
-                mScrollFeedbackProvider.onScrollProgress(
+                getScrollFeedbackProvider().onScrollProgress(
                         ev.getDeviceId(), ev.getSource(), horizontalAxis, consumedX);
             }
             if (consumedY != 0) {
-                mScrollFeedbackProvider.onScrollProgress(
+                getScrollFeedbackProvider().onScrollProgress(
                         ev.getDeviceId(), ev.getSource(), verticalAxis, consumedY);
             }
         }
@@ -3678,7 +3678,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
             EdgeEffectCompat.onPullDistance(mLeftGlow, -overscrollX / getWidth(),
                     1f - y / getHeight());
             if (ev != null) {
-                mScrollFeedbackProvider.onScrollLimit(
+                getScrollFeedbackProvider().onScrollLimit(
                         ev.getDeviceId(), ev.getSource(), horizontalAxis, /* isStart= */ true);
             }
             invalidate = true;
@@ -3686,7 +3686,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
             ensureRightGlow();
             EdgeEffectCompat.onPullDistance(mRightGlow, overscrollX / getWidth(), y / getHeight());
             if (ev != null) {
-                mScrollFeedbackProvider.onScrollLimit(
+                getScrollFeedbackProvider().onScrollLimit(
                         ev.getDeviceId(), ev.getSource(), horizontalAxis, /* isStart= */ false);
             }
             invalidate = true;
@@ -3696,7 +3696,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
             ensureTopGlow();
             EdgeEffectCompat.onPullDistance(mTopGlow, -overscrollY / getHeight(), x / getWidth());
             if (ev != null) {
-                mScrollFeedbackProvider.onScrollLimit(
+                getScrollFeedbackProvider().onScrollLimit(
                         ev.getDeviceId(), ev.getSource(), verticalAxis, /* isStart= */ true);
             }
             invalidate = true;
@@ -3705,7 +3705,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
             EdgeEffectCompat.onPullDistance(mBottomGlow, overscrollY / getHeight(),
                     1f - x / getWidth());
             if (ev != null) {
-                mScrollFeedbackProvider.onScrollLimit(
+                getScrollFeedbackProvider().onScrollLimit(
                         ev.getDeviceId(), ev.getSource(), verticalAxis, /* isStart= */ false);
             }
             invalidate = true;
@@ -15700,6 +15700,13 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
             mScrollingChildHelper = new NestedScrollingChildHelper(this);
         }
         return mScrollingChildHelper;
+    }
+
+    private ScrollFeedbackProviderCompat getScrollFeedbackProvider() {
+        if (mScrollFeedbackProvider == null) {
+            mScrollFeedbackProvider = ScrollFeedbackProviderCompat.createProvider(this);
+        }
+        return mScrollFeedbackProvider;
     }
 
     @RequiresApi(35)
