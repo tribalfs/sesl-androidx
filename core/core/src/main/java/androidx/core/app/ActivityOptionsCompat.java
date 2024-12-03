@@ -26,6 +26,7 @@ import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.View;
 
 import androidx.annotation.IntDef;
@@ -323,6 +324,24 @@ public class ActivityOptionsCompat {
             }
             return this;
         }
+
+        @Override
+        public int getLaunchDisplayId() {
+            if (Build.VERSION.SDK_INT >= 26) {
+                return mActivityOptions.getLaunchDisplayId();
+            } else {
+                return 0;
+            }
+        }
+
+        @NonNull
+        @Override
+        public ActivityOptionsCompat setLaunchDisplayId(int launchDisplayId) {
+            if (Build.VERSION.SDK_INT >= 26) {
+                mActivityOptions.setLaunchDisplayId(launchDisplayId);
+            }
+            return this;
+        }
     }
 
     protected ActivityOptionsCompat() {
@@ -440,6 +459,38 @@ public class ActivityOptionsCompat {
     @NonNull
     public ActivityOptionsCompat setPendingIntentBackgroundActivityStartMode(
             @BackgroundActivityStartMode int state) {
+        return this;
+    }
+
+    /**
+     * Gets the id of the display where activity should be launched.
+     * <p>
+     * On API 25 and below, this method always returns {@link Display#INVALID_DISPLAY}.
+     *
+     * @return The id of the display where activity should be launched,
+     *         {@link android.view.Display#INVALID_DISPLAY} if not set.
+     * @see #setLaunchDisplayId(int)
+     */
+    public int getLaunchDisplayId() {
+        return Display.INVALID_DISPLAY;
+    }
+
+    /**
+     * Sets the id of the display where the activity should be launched.
+     * An app can launch activities on public displays or displays where the app already has
+     * activities. Otherwise, trying to launch on a private display or providing an invalid display
+     * id will result in an exception.
+     * <p>
+     * Setting launch display id will be ignored on devices that don't have
+     * {@link android.content.pm.PackageManager#FEATURE_ACTIVITIES_ON_SECONDARY_DISPLAYS}.
+     * <p>
+     * On API 25 and below, calling this method has no effect.
+     *
+     * @param launchDisplayId The id of the display where the activity should be launched.
+     * @return {@code this} {@link ActivityOptions} instance.
+     */
+    @NonNull
+    public ActivityOptionsCompat setLaunchDisplayId(int launchDisplayId) {
         return this;
     }
 }
