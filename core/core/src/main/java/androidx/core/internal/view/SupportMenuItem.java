@@ -26,10 +26,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.core.view.ActionProvider;
+
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 /**
  *  (SESL modified) Interface for direct access to a previously created menu item.
@@ -107,9 +108,8 @@ public interface SupportMenuItem extends android.view.MenuItem {
      * @see android.app.ActionBar
      * @see #setActionView(View)
      */
-    @NonNull
     @Override
-    MenuItem setShowAsActionFlags(int actionEnum);
+    @NonNull MenuItem setShowAsActionFlags(int actionEnum);
 
     /**
      * Set an action view for this menu item. An action view will be displayed in place
@@ -123,9 +123,8 @@ public interface SupportMenuItem extends android.view.MenuItem {
      * @return This Item so additional setters can be called.
      * @see #setShowAsAction(int)
      */
-    @NonNull
     @Override
-    MenuItem setActionView(@Nullable View view);
+    @NonNull MenuItem setActionView(@Nullable View view);
 
     /**
      * Set an action view for this menu item. An action view will be displayed in place
@@ -139,9 +138,8 @@ public interface SupportMenuItem extends android.view.MenuItem {
      * @return This Item so additional setters can be called.
      * @see #setShowAsAction(int)
      */
-    @NonNull
     @Override
-    MenuItem setActionView(int resId);
+    @NonNull MenuItem setActionView(int resId);
 
     /**
      * Returns the currently set action view for this menu item.
@@ -150,9 +148,8 @@ public interface SupportMenuItem extends android.view.MenuItem {
      * @see #setActionView(View)
      * @see #setShowAsAction(int)
      */
-    @Nullable
     @Override
-    View getActionView();
+    @Nullable View getActionView();
 
     /**
      * Sets the {@link ActionProvider} responsible for creating an action view if
@@ -167,8 +164,7 @@ public interface SupportMenuItem extends android.view.MenuItem {
      * @return This Item so additional setters can be called.
      * @see ActionProvider
      */
-    @NonNull
-    SupportMenuItem setSupportActionProvider(@Nullable ActionProvider actionProvider);
+    @NonNull SupportMenuItem setSupportActionProvider(@Nullable ActionProvider actionProvider);
 
     /**
      * Gets the {@link ActionProvider}.
@@ -177,8 +173,7 @@ public interface SupportMenuItem extends android.view.MenuItem {
      * @see ActionProvider
      * @see #setSupportActionProvider(ActionProvider)
      */
-    @Nullable
-    ActionProvider getSupportActionProvider();
+    @Nullable ActionProvider getSupportActionProvider();
 
     /**
      * Expand the action view associated with this menu item. The menu item must have an action view
@@ -226,18 +221,16 @@ public interface SupportMenuItem extends android.view.MenuItem {
      * @param contentDescription The new content description.
      * @return This menu item instance for call chaining.
      */
-    @NonNull
     @Override
-    SupportMenuItem setContentDescription(@Nullable CharSequence contentDescription);
+    @NonNull SupportMenuItem setContentDescription(@Nullable CharSequence contentDescription);
 
     /**
      * Retrieve the content description associated with this menu item.
      *
      * @return The content description.
      */
-    @Nullable
     @Override
-    CharSequence getContentDescription();
+    @Nullable CharSequence getContentDescription();
 
     /**
      * Change the tooltip text associated with this menu item.
@@ -245,18 +238,16 @@ public interface SupportMenuItem extends android.view.MenuItem {
      * @param tooltipText The new tooltip text.
      * @return This menu item instance for call chaining.
      */
-    @NonNull
     @Override
-    SupportMenuItem setTooltipText(@Nullable CharSequence tooltipText);
+    @NonNull SupportMenuItem setTooltipText(@Nullable CharSequence tooltipText);
 
     /**
      * Retrieve the tooltip text associated with this menu item.
      *
      * @return The tooltip text.
      */
-    @Nullable
     @Override
-    CharSequence getTooltipText();
+    @Nullable CharSequence getTooltipText();
 
     /**
      * Change both the numeric and alphabetic shortcut associated with this
@@ -281,9 +272,8 @@ public interface SupportMenuItem extends android.view.MenuItem {
      *        {@link KeyEvent#META_SYM_ON}, {@link KeyEvent#META_FUNCTION_ON}.
      * @return This Item so additional setters can be called.
      */
-    @NonNull
     @Override
-    MenuItem setShortcut(char numericChar, char alphaChar, int numericModifiers,
+    @NonNull MenuItem setShortcut(char numericChar, char alphaChar, int numericModifiers,
             int alphaModifiers);
 
     /**
@@ -299,9 +289,8 @@ public interface SupportMenuItem extends android.view.MenuItem {
      *        {@link KeyEvent#META_SYM_ON}, {@link KeyEvent#META_FUNCTION_ON}.
      * @return This Item so additional setters can be called.
      */
-    @NonNull
     @Override
-    MenuItem setNumericShortcut(char numericChar, int numericModifiers);
+    @NonNull MenuItem setNumericShortcut(char numericChar, int numericModifiers);
 
     /**
      * Return the modifiers for this menu item's numeric (12-key) shortcut.
@@ -334,9 +323,8 @@ public interface SupportMenuItem extends android.view.MenuItem {
      *        {@link KeyEvent#META_SYM_ON}, {@link KeyEvent#META_FUNCTION_ON}.
      * @return This Item so additional setters can be called.
      */
-    @NonNull
     @Override
-    MenuItem setAlphabeticShortcut(char alphaChar, int alphaModifiers);
+    @NonNull MenuItem setAlphabeticShortcut(char alphaChar, int alphaModifiers);
 
     /**
      * Return the modifier for this menu item's alphabetic shortcut.
@@ -363,17 +351,15 @@ public interface SupportMenuItem extends android.view.MenuItem {
      *
      * @see #getIconTintList()
      */
-    @NonNull
     @Override
-    MenuItem setIconTintList(@Nullable ColorStateList tint);
+    @NonNull MenuItem setIconTintList(@Nullable ColorStateList tint);
 
     /**
      * @return the tint applied to this item's icon
      * @see #setIconTintList(ColorStateList)
      */
-    @Nullable
     @Override
-    ColorStateList getIconTintList();
+    @Nullable ColorStateList getIconTintList();
 
     /**
      * Specifies the blending mode used to apply the tint specified by
@@ -384,9 +370,8 @@ public interface SupportMenuItem extends android.view.MenuItem {
      *                 {@code null} to clear tint
      * @see #setIconTintList(ColorStateList)
      */
-    @NonNull
     @Override
-    MenuItem setIconTintMode(@Nullable PorterDuff.Mode tintMode);
+    @NonNull MenuItem setIconTintMode(PorterDuff.@Nullable Mode tintMode);
 
     /**
      * Returns the blending mode used to apply the tint to this item's icon, if specified.
@@ -394,9 +379,8 @@ public interface SupportMenuItem extends android.view.MenuItem {
      * @return the blending mode used to apply the tint to this item's icon
      * @see #setIconTintMode(PorterDuff.Mode)
      */
-    @Nullable
     @Override
-    PorterDuff.Mode getIconTintMode();
+    PorterDuff.@Nullable Mode getIconTintMode();
 
     /**
      * Returns true if {@link #setShowAsAction(int)} was set to {@link #SHOW_AS_ACTION_ALWAYS}.
