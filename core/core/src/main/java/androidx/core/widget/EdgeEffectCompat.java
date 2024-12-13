@@ -25,10 +25,11 @@ import android.widget.EdgeEffect;
 import android.widget.OverScroller;
 import android.widget.Scroller;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.reflect.view.SeslViewRuneReflector;
+
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 /**
  * <b>SESL Variant</b><br/><br/>
@@ -66,8 +67,8 @@ public final class EdgeEffectCompat {
      * @param context Context to use for theming the effect
      * @param attrs The attributes of the XML tag that is inflating the view
      */
-    @NonNull
-    public static EdgeEffect create(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public static @NonNull EdgeEffect create(@NonNull Context context,
+            @Nullable AttributeSet attrs) {
         if (SDK_INT >= 31 && SeslViewRuneReflector.isEdgeEffectStretchType()) {
             return Api31Impl.create(context, attrs);
         }

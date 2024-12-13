@@ -23,6 +23,7 @@ dependencies {
     implementation(libs.androidx.interpolator)
     api(libs.kotlinStdlib)
     implementation(libs.androidx.tracing)
+    api(libs.jspecify)
 }
 
 android {
