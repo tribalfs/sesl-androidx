@@ -1481,9 +1481,10 @@ public class ViewDragHelper {
      * the specified ID. If there is no currently active gesture or if there is no pointer with
      * the given ID currently down this method will return false.
      *
-     * @param edges Edges to check for an initial edge touch. See {@link #EDGE_LEFT},
-     *              {@link #EDGE_TOP}, {@link #EDGE_RIGHT}, {@link #EDGE_BOTTOM} and
-     *              {@link #EDGE_ALL}
+     * @param edges     Edges to check for an initial edge touch. See {@link #EDGE_LEFT},
+     *                  {@link #EDGE_TOP}, {@link #EDGE_RIGHT}, {@link #EDGE_BOTTOM} and
+     *                  {@link #EDGE_ALL}
+     * @param pointerId The pointer that will be checked; returns false if there is no such pointer
      * @return true if any of the edges specified were initially touched in the current gesture
      */
     public boolean isEdgeTouched(int edges, int pointerId) {
