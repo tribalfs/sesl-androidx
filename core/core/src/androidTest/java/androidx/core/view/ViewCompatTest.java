@@ -40,6 +40,7 @@ import static androidx.core.view.accessibility.AccessibilityNodeInfoCompat.Acces
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
@@ -58,6 +59,7 @@ import static org.mockito.Mockito.verify;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
@@ -652,5 +654,45 @@ public class ViewCompatTest extends BaseInstrumentationTestCase<ViewCompatActivi
                 int dyUnconsumed, int @Nullable [] offsetInWindow, int type,
                 int @NonNull [] consumed) {
         }
+    }
+
+    @Test
+    public void testTransformMatrixToGlobal() throws Throwable {
+        View container = mActivityTestRule.getActivity().findViewById(R.id.container);
+        View view = mActivityTestRule.getActivity().findViewById(R.id.view);
+        mActivityTestRule.runOnUiThread(() -> {
+            container.setScrollX(1);
+            container.setScrollY(2);
+            container.setScaleX(3);
+            container.setScaleY(4);
+            container.setLeft(6);
+            container.setRight(7);
+            view.setScrollX(10);
+            view.setScrollY(20);
+            view.setScaleX(30);
+            view.setScaleY(40);
+            view.setLeft(60);
+            view.setRight(70);
+        });
+        Matrix resultMatrix = new Matrix();
+        ViewCompat.transformMatrixToGlobal(view, resultMatrix);
+        float[] resultVals = new float[9];
+        resultMatrix.getValues(resultVals);
+
+        int[] viewTopLeftScreenPositionOldInt = new int[2];
+        view.getLocationOnScreen(viewTopLeftScreenPositionOldInt);
+        float[] viewTopLeftScreenPositionOld = new float[]{
+                viewTopLeftScreenPositionOldInt[0], viewTopLeftScreenPositionOldInt[1]};
+        float[] viewTopLeftScreenPositionNew = new float[]{0.0f, 0.0f};
+        resultMatrix.mapPoints(viewTopLeftScreenPositionNew);
+        assertArrayEquals(viewTopLeftScreenPositionOld, viewTopLeftScreenPositionNew, 1.0f);
+
+        Matrix expectedMatrix = new Matrix();
+        expectedMatrix.setScale(30.0f * 3.0f, 40.0f * 4.0f);
+        expectedMatrix.postTranslate(
+                viewTopLeftScreenPositionOld[0], viewTopLeftScreenPositionOld[1]);
+        float[] expectedVals = new float[9];
+        expectedMatrix.getValues(expectedVals);
+        assertArrayEquals(expectedVals, resultVals, 1.0f);
     }
 }
