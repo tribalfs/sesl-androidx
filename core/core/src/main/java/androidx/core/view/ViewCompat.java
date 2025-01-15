@@ -4643,6 +4643,32 @@ public class ViewCompat {
     }
 
     /**
+     * Modifies the input matrix such that it maps on-screen coordinates to
+     * view-local coordinates for the provided view.
+     *
+     * @param view view to examine
+     * @param matrix input matrix to modify
+     */
+    public static void transformMatrixToGlobal(@NonNull View view, @NonNull Matrix matrix) {
+        if (Build.VERSION.SDK_INT >= 29) {
+            Api29Impl.transformMatrixToGlobal(view, matrix);
+        } else {
+            fallbackTransformMatrixToGlobal(view, matrix);
+        }
+    }
+
+    private static void fallbackTransformMatrixToGlobal(View view, Matrix matrix) {
+        ViewParent parent = view.getParent();
+        if (parent instanceof View) {
+            View parentView = (View) parent;
+            fallbackTransformMatrixToGlobal(parentView, matrix);
+            matrix.preTranslate(-parentView.getScrollX(), -parentView.getScrollY());
+        }
+        matrix.preTranslate(view.getLeft(), view.getTop());
+        matrix.preConcat(view.getMatrix());
+    }
+
+    /**
      * Sets whether this View should be a focusable element for screen readers
      * and include non-focusable Views from its subtree when providing feedback.
      * <p>
@@ -5497,6 +5523,10 @@ public class ViewCompat {
                 ContentCaptureSessionCompat contentCaptureSession) {
             view.setContentCaptureSession(contentCaptureSession == null
                     ? null : contentCaptureSession.toContentCaptureSession());
+        }
+
+        static void transformMatrixToGlobal(View view, Matrix matrix) {
+            view.transformMatrixToGlobal(matrix);
         }
     }
 
