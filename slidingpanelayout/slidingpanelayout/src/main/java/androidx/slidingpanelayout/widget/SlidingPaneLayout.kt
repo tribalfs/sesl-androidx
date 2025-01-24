@@ -1387,7 +1387,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
         when (mPendingAction) {
             PENDING_ACTION_EXPANDED -> {//1
                 if (mIsLock) {
-                    resizeSlideableView(1.0f)
+                    if (!mResizeOff) resizeSlideableView(1.0f)
                     preservedOpenState = true
                 }else {
                     openPane(0, false)
@@ -1396,7 +1396,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
             }
             PENDING_ACTION_COLLAPSED -> {//2
                 if (mIsLock) {
-                    resizeSlideableView(0.0f)
+                    if (!mResizeOff) resizeSlideableView(0.0f)
                     preservedOpenState = false
                 }else{
                     closePane(0, false)
