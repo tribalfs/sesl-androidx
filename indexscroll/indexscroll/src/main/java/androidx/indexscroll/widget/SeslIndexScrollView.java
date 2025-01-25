@@ -210,6 +210,10 @@ public class SeslIndexScrollView extends FrameLayout {
 
         if (mIndexScroll != null) {
             mIndexScroll.setDimensions(getWidth(), getHeight());
+
+            //custom - don't draw if no index to show
+            if (mIndexScroll.mIndexBarTextAttrs.count == 0) return;
+
             if (mCurrentIndex != null
                     && !mCurrentIndex.isEmpty() && mIndexScrollPreview != null) {
                 mIndexScrollPreview.setLayout(0, 0, getWidth(), getHeight());
@@ -429,6 +433,12 @@ public class SeslIndexScrollView extends FrameLayout {
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         super.onTouchEvent(ev);
+
+        //custom
+        if (mIndexScroll.mIndexBarTextAttrs.count == 0) {
+            return false;
+        }
+
         if (mNeedToHandleA11yEvent) {
             return handleA11yEvent(ev);
         } else {
@@ -907,6 +917,9 @@ public class SeslIndexScrollView extends FrameLayout {
         }
 
         private void adjustSeparatorHeight() {
+            //custom to prevent divide by 0 exception
+            if (mIndexBarTextAttrs.count == 0) return;
+
             mIndexBarTextAttrs.separatorHeight = mHeight / mIndexBarTextAttrs.count;
             if (mIndexBarTextAttrs.separatorHeight < mContentMinHeight) {
                 mIndexBarTextAttrs.separatorHeight = mContentMinHeight;
@@ -955,7 +968,7 @@ public class SeslIndexScrollView extends FrameLayout {
 
             // Updating the count after optimization
             values.count = adjustedCount;
-            this.adjustSeparatorHeight();
+            adjustSeparatorHeight();
         }
 
         public String getIndexByPosition(int x, int y, boolean pressed) {
