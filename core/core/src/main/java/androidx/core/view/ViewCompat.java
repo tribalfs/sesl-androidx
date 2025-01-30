@@ -69,6 +69,7 @@ import androidx.annotation.Px;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.UiThread;
+import androidx.annotation.VisibleForTesting;
 import androidx.collection.SimpleArrayMap;
 import androidx.core.R;
 import androidx.core.util.Preconditions;
@@ -545,6 +546,8 @@ public class ViewCompat {
     private static Method sChildrenDrawingOrderMethod;
     private static Field sAccessibilityDelegateField;
     private static boolean sAccessibilityDelegateCheckFailed = false;
+
+    private static boolean sTryHiddenViewTransformMatrixToGlobal = true;
 
     private static ThreadLocal<Rect> sThreadLocalRect;
 
@@ -4649,15 +4652,28 @@ public class ViewCompat {
      * @param view view to examine
      * @param matrix input matrix to modify
      */
+    @SuppressLint("NewApi") // Lint doesn't know about the hidden method.
     public static void transformMatrixToGlobal(@NonNull View view, @NonNull Matrix matrix) {
         if (Build.VERSION.SDK_INT >= 29) {
             Api29Impl.transformMatrixToGlobal(view, matrix);
         } else {
+            // The View method in question is available as a public (but hidden) method all the way
+            // back to API 21, but we check that it's actually present, since conformance testing
+            // does not assert about methods that are not in the public API.
+            if (sTryHiddenViewTransformMatrixToGlobal) {
+                try {
+                    Api29Impl.transformMatrixToGlobal(view, matrix);
+                    return;
+                } catch (NoSuchMethodError e) {
+                    sTryHiddenViewTransformMatrixToGlobal = false;
+                }
+            }
             fallbackTransformMatrixToGlobal(view, matrix);
         }
     }
 
-    private static void fallbackTransformMatrixToGlobal(View view, Matrix matrix) {
+    @VisibleForTesting
+    static void fallbackTransformMatrixToGlobal(View view, Matrix matrix) {
         ViewParent parent = view.getParent();
         if (parent instanceof View) {
             View parentView = (View) parent;
