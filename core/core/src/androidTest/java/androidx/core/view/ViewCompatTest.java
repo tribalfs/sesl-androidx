@@ -679,6 +679,11 @@ public class ViewCompatTest extends BaseInstrumentationTestCase<ViewCompatActivi
         float[] resultVals = new float[9];
         resultMatrix.getValues(resultVals);
 
+        Matrix fallbackResultMatrix = new Matrix();
+        ViewCompat.fallbackTransformMatrixToGlobal(view, fallbackResultMatrix);
+        float[] fallbackResultVals = new float[9];
+        fallbackResultMatrix.getValues(fallbackResultVals);
+
         int[] viewTopLeftScreenPositionOldInt = new int[2];
         view.getLocationOnScreen(viewTopLeftScreenPositionOldInt);
         float[] viewTopLeftScreenPositionOld = new float[]{
@@ -694,5 +699,6 @@ public class ViewCompatTest extends BaseInstrumentationTestCase<ViewCompatActivi
         float[] expectedVals = new float[9];
         expectedMatrix.getValues(expectedVals);
         assertArrayEquals(expectedVals, resultVals, 1.0f);
+        assertArrayEquals(expectedVals, fallbackResultVals, 1.0f);
     }
 }
