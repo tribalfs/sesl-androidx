@@ -478,13 +478,22 @@ public class ViewCompatTest extends BaseInstrumentationTestCase<ViewCompatActivi
         assertFallbackHapticFeedbackPerformed(CLOCK_TICK, GESTURE_THRESHOLD_DEACTIVATE);
     }
 
-    @SdkSuppress(minSdkVersion = 27, maxSdkVersion = 29)
+    @SdkSuppress(minSdkVersion = 23, maxSdkVersion = 29)
     @Test
     public void testPerformHapticFeedback_useFallbackForConstantsFromSdk30() {
-        // Maintain constants supported in SDK >= 27
-        assertHapticFeedbackPerformed(TEXT_HANDLE_MOVE);
-        assertHapticFeedbackPerformed(KEYBOARD_RELEASE);
-        assertHapticFeedbackPerformed(VIRTUAL_KEY_RELEASE);
+        // Maintain constants supported in SDK >= 23
+        assertHapticFeedbackPerformed(CONTEXT_CLICK);
+
+        if (Build.VERSION.SDK_INT >= 27) {
+            // Maintain constants supported in SDK >= 27
+            assertHapticFeedbackPerformed(TEXT_HANDLE_MOVE);
+            assertHapticFeedbackPerformed(KEYBOARD_RELEASE);
+            assertHapticFeedbackPerformed(VIRTUAL_KEY_RELEASE);
+        } else {
+            assertNoHapticFeedbackPerformed(TEXT_HANDLE_MOVE);
+            assertNoHapticFeedbackPerformed(KEYBOARD_RELEASE);
+            assertNoHapticFeedbackPerformed(VIRTUAL_KEY_RELEASE);
+        }
 
         // Fallbacks for constants from SDK >= 30
         assertFallbackHapticFeedbackPerformed(LONG_PRESS, DRAG_START);
@@ -498,29 +507,6 @@ public class ViewCompatTest extends BaseInstrumentationTestCase<ViewCompatActivi
         assertFallbackHapticFeedbackPerformed(CLOCK_TICK, TOGGLE_OFF);
         assertFallbackHapticFeedbackPerformed(CLOCK_TICK, SEGMENT_FREQUENT_TICK);
         assertFallbackHapticFeedbackPerformed(CLOCK_TICK, GESTURE_THRESHOLD_DEACTIVATE);
-    }
-
-    @SdkSuppress(minSdkVersion = 23, maxSdkVersion = 26)
-    @Test
-    public void testPerformHapticFeedback_useFallbackForConstantsFromSdk27() {
-        // Maintain constants supported in SDK >= 23
-        assertHapticFeedbackPerformed(CONTEXT_CLICK);
-
-        // Fallbacks for constants from SDK >= 27
-        assertFallbackHapticFeedbackPerformed(LONG_PRESS, DRAG_START);
-        assertFallbackHapticFeedbackPerformed(LONG_PRESS, REJECT);
-        assertFallbackHapticFeedbackPerformed(VIRTUAL_KEY, CONFIRM);
-        assertFallbackHapticFeedbackPerformed(VIRTUAL_KEY, GESTURE_START);
-        assertFallbackHapticFeedbackPerformed(CONTEXT_CLICK, GESTURE_END);
-        assertFallbackHapticFeedbackPerformed(CONTEXT_CLICK, TOGGLE_ON);
-        assertFallbackHapticFeedbackPerformed(CONTEXT_CLICK, SEGMENT_TICK);
-        assertFallbackHapticFeedbackPerformed(CONTEXT_CLICK, GESTURE_THRESHOLD_ACTIVATE);
-        assertFallbackHapticFeedbackPerformed(CLOCK_TICK, TOGGLE_OFF);
-        assertFallbackHapticFeedbackPerformed(CLOCK_TICK, SEGMENT_FREQUENT_TICK);
-        assertFallbackHapticFeedbackPerformed(CLOCK_TICK, GESTURE_THRESHOLD_DEACTIVATE);
-        assertNoHapticFeedbackPerformed(TEXT_HANDLE_MOVE);
-        assertNoHapticFeedbackPerformed(KEYBOARD_RELEASE);
-        assertNoHapticFeedbackPerformed(VIRTUAL_KEY_RELEASE);
     }
 
     @SdkSuppress(minSdkVersion = 21, maxSdkVersion = 22)
