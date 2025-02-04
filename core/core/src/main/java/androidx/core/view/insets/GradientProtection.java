@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 The Android Open Source Project
+ * Copyright 2025 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package androidx.core.view.insetscontrast;
+package androidx.core.view.insets;
 
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -27,7 +27,7 @@ import androidx.core.view.WindowInsetsCompat.Side.InsetsSide;
 /**
  * A type of protection which draws the gradient color.
  */
-public class GradientProtection extends ContrastProtection {
+public class GradientProtection extends Protection {
 
     private static final float[] ALPHAS = new float[100];
     static {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 The Android Open Source Project
+ * Copyright 2025 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package androidx.core.view.insetscontrast;
+package androidx.core.view.insets;
 
 import static androidx.core.view.WindowInsetsAnimationCompat.Callback.DISPATCH_MODE_STOP;
 import static androidx.core.view.WindowInsetsCompat.Side.BOTTOM;
@@ -27,17 +27,13 @@ import android.graphics.Color;
 import android.graphics.RectF;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.view.Window;
-import android.view.WindowInsets;
 
 import androidx.annotation.NonNull;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsAnimationCompat;
 import androidx.core.view.WindowInsetsCompat;
 
@@ -47,52 +43,29 @@ import java.util.List;
 
 /**
  * Monitors and provides necessary information of system bars that need to be protected by
- * {@link ContrastProtection}. This is used to create {@link ProtectionView}.
+ * {@link Protection}.
  */
-public class SystemBarStateMonitor {
+class SystemBarStateMonitor {
 
     private final View mDetector;
     private final ArrayList<Callback> mCallbacks = new ArrayList<>();
     private Insets mInsets = Insets.NONE;
     private Insets mInsetsIgnoringVisibility = Insets.NONE;
     private int mColorHint;
-    private boolean mDisposed;
 
-    /**
-     * Creates an instance of SystemBarState associating with a window. This should be called
-     * before the window is attached to window manager. Otherwise, it might miss callbacks of
-     * {@link View.OnApplyWindowInsetsListener#onApplyWindowInsets(View, WindowInsets)}.
-     *
-     * @param window the window that the {@link ContrastProtection}s should be attached to.
-     */
-    public SystemBarStateMonitor(@NonNull Window window) {
-        final ViewGroup decor = (ViewGroup) window.getDecorView();
-        if (decor.isAttachedToWindow()) {
-            throw new IllegalStateException(
-                    "The given window must not be attached when creating the SystemBarState.");
-        }
-
-        // Make the window go edge-to-edge and prevent the system from adding the color views.
-        WindowCompat.setDecorFitsSystemWindows(window, false);
-        window.setStatusBarColor(Color.TRANSPARENT);
-        window.setNavigationBarColor(Color.TRANSPARENT);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            window.setStatusBarContrastEnforced(false);
-            window.setNavigationBarContrastEnforced(false);
-        }
-
-        final Drawable drawable = decor.getBackground();
+    SystemBarStateMonitor(@NonNull ViewGroup rootView) {
+        final Drawable drawable = rootView.getBackground();
         mColorHint = drawable instanceof ColorDrawable
                 ? ((ColorDrawable) drawable).getColor()
                 : Color.TRANSPARENT;
 
         // Add a view to detect the insets and configuration change, and to monitor the insets
         // animation.
-        mDetector = new View(decor.getContext()) {
+        mDetector = new View(rootView.getContext()) {
 
             @Override
             protected void onConfigurationChanged(Configuration newConfig) {
-                final Drawable drawable = decor.getBackground();
+                final Drawable drawable = rootView.getBackground();
                 final int color = drawable instanceof ColorDrawable
                         ? ((ColorDrawable) drawable).getColor()
                         : Color.TRANSPARENT;
@@ -209,7 +182,7 @@ public class SystemBarStateMonitor {
                         return (anim.getTypeMask() & WindowInsetsCompat.Type.systemBars()) != 0;
                     }
                 });
-        decor.addView(mDetector, 0);
+        rootView.addView(mDetector, 0);
     }
 
     private Insets getInsets(WindowInsetsCompat w) {
@@ -232,9 +205,6 @@ public class SystemBarStateMonitor {
      * @param callback the given {@link Callback}.
      */
     void addCallback(@NonNull Callback callback) {
-        if (mDisposed) {
-            throw new IllegalArgumentException("The SystemBarProtector has been disposed.");
-        }
         if (mCallbacks.contains(callback)) {
             return;
         }
@@ -252,9 +222,20 @@ public class SystemBarStateMonitor {
         mCallbacks.remove(callback);
     }
 
+    boolean hasCallback() {
+        return mCallbacks.isEmpty();
+    }
+
+    void detachFromWindow() {
+        final ViewParent parent = mDetector.getParent();
+        if (parent instanceof ViewGroup) {
+            ((ViewGroup) parent).removeView(mDetector);
+        }
+    }
+
     /**
      * Listens to the changes of system bars that need to be protected by
-     * {@link ContrastProtection}.
+     * {@link Protection}.
      */
     interface Callback {
 
@@ -291,20 +272,5 @@ public class SystemBarStateMonitor {
          * Called when the system bar animation is finished.
          */
         void onAnimationEnd();
-    }
-
-    /**
-     * Removes all the objects added by this class from the associated window.
-     */
-    public void dispose() {
-        if (mDisposed) {
-            return;
-        }
-        mDisposed = true;
-        final ViewParent parent = mDetector.getParent();
-        if (parent instanceof ViewGroup) {
-            ((ViewGroup) parent).removeView(mDetector);
-        }
-        mCallbacks.clear();
     }
 }

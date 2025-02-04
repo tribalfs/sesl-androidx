@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 The Android Open Source Project
+ * Copyright 2025 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package androidx.core.view.insetscontrast;
+package androidx.core.view.insets;
 
 import static androidx.core.view.WindowInsetsCompat.Side.BOTTOM;
 import static androidx.core.view.WindowInsetsCompat.Side.LEFT;
@@ -23,42 +23,43 @@ import static androidx.core.view.WindowInsetsCompat.Side.TOP;
 
 import android.graphics.RectF;
 
-import androidx.annotation.NonNull;
 import androidx.core.graphics.Insets;
+
+import org.jspecify.annotations.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A group of {@link ContrastProtection}s.
+ * A group of {@link Protection}s.
  *
  * <p>The protections in this group are ordered by z-order. The protection at the end of the list
  * has the highest z-order.
  * <p>If there are adjacent protections in the same group, up to only one protection can occupy the
  * sharing corner.
  *
- * @see ContrastProtection#occupiesCorners()
+ * @see Protection#occupiesCorners()
  */
 class ProtectionGroup implements SystemBarStateMonitor.Callback {
 
-    private final ArrayList<ContrastProtection> mProtections = new ArrayList<>();
+    private final ArrayList<Protection> mProtections = new ArrayList<>();
     private final SystemBarStateMonitor mMonitor;
     private Insets mInsets = Insets.NONE;
     private Insets mInsetsIgnoringVisibility = Insets.NONE;
     private int mAnimationCount;
     private boolean mDisposed;
 
-    ProtectionGroup(SystemBarStateMonitor monitor, List<ContrastProtection> protections) {
+    ProtectionGroup(SystemBarStateMonitor monitor, List<Protection> protections) {
         addProtections(protections, false /* occupiesCorners */);
         addProtections(protections, true /* occupiesCorners */);
         monitor.addCallback(this);
         mMonitor = monitor;
     }
 
-    private void addProtections(List<ContrastProtection> protections, boolean occupiesCorners) {
+    private void addProtections(List<Protection> protections, boolean occupiesCorners) {
         final int size = protections.size();
         for (int i = 0; i < size; i++) {
-            final ContrastProtection protection = protections.get(i);
+            final Protection protection = protections.get(i);
             if (protection.occupiesCorners() != occupiesCorners) {
                 continue;
             }
@@ -76,7 +77,7 @@ class ProtectionGroup implements SystemBarStateMonitor.Callback {
     private void updateInsets() {
         Insets consumed = Insets.NONE;
         for (int i = mProtections.size() - 1; i >= 0; i--) {
-            final ContrastProtection protection = mProtections.get(i);
+            final Protection protection = mProtections.get(i);
             consumed = Insets.max(consumed, protection.dispatchInsets(
                     mInsets, mInsetsIgnoringVisibility, consumed));
         }
@@ -105,7 +106,7 @@ class ProtectionGroup implements SystemBarStateMonitor.Callback {
     public void onAnimationProgress(int sides, Insets insets, RectF alpha) {
         final Insets insetsStable = mInsetsIgnoringVisibility;
         for (int i = mProtections.size() - 1; i >= 0; i--) {
-            final ContrastProtection protection = mProtections.get(i);
+            final Protection protection = mProtections.get(i);
             final int side = protection.getSide();
             if ((side & sides) == 0) {
                 continue;
@@ -170,13 +171,12 @@ class ProtectionGroup implements SystemBarStateMonitor.Callback {
      * @param index the index of the protection to return.
      * @return the protection at the specified position in this group.
      */
-    @NonNull
-    ContrastProtection getProtection(int index) {
+    @NonNull Protection getProtection(int index) {
         return mProtections.get(index);
     }
 
     /**
-     * Disconnects from the given {@link SystemBarStateMonitor} and the {@link ContrastProtection}s.
+     * Disconnects from the given {@link SystemBarStateMonitor} and the {@link Protection}s.
      */
     void dispose() {
         if (mDisposed) {
