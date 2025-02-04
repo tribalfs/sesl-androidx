@@ -4143,17 +4143,26 @@ package androidx.core.view.inputmethod {
 
 }
 
-package androidx.core.view.insetscontrast {
+package androidx.core.view.insets {
 
-  public class ColorProtection extends androidx.core.view.insetscontrast.ContrastProtection {
+  public class ColorProtection extends androidx.core.view.insets.Protection {
     ctor public ColorProtection(int);
     ctor public ColorProtection(int, @ColorInt int);
     method @ColorInt public int getColor();
     method public void setColor(@ColorInt int);
   }
 
-  public abstract class ContrastProtection {
-    ctor public ContrastProtection(int);
+  public class GradientProtection extends androidx.core.view.insets.Protection {
+    ctor public GradientProtection(int);
+    ctor public GradientProtection(int, @ColorInt int);
+    method @ColorInt public int getColor();
+    method public float getScale();
+    method public void setColor(@ColorInt int);
+    method public void setScale(float);
+  }
+
+  public abstract class Protection {
+    ctor public Protection(int);
     method public void animateAlpha(float);
     method public void animateInsetsAmount(float);
     method @FloatRange(from=0.0, to=1.0) public float getAlpha();
@@ -4163,23 +4172,13 @@ package androidx.core.view.insetscontrast {
     method public void setInsetAmount(@FloatRange(from=0.0, to=1.0) float);
   }
 
-  public class GradientProtection extends androidx.core.view.insetscontrast.ContrastProtection {
-    ctor public GradientProtection(int);
-    ctor public GradientProtection(int, @ColorInt int);
-    method @ColorInt public int getColor();
-    method public float getScale();
-    method public void setColor(@ColorInt int);
-    method public void setScale(float);
-  }
-
-  public class ProtectionView extends android.widget.FrameLayout {
-    ctor public ProtectionView(android.content.Context, androidx.core.view.insetscontrast.SystemBarStateMonitor, java.util.List<androidx.core.view.insetscontrast.ContrastProtection!>);
-    method public void dispose();
-  }
-
-  public class SystemBarStateMonitor {
-    ctor public SystemBarStateMonitor(android.view.Window);
-    method public void dispose();
+  public class ProtectionLayout extends android.widget.FrameLayout {
+    ctor public ProtectionLayout(android.content.Context);
+    ctor public ProtectionLayout(android.content.Context, android.util.AttributeSet?);
+    ctor public ProtectionLayout(android.content.Context, android.util.AttributeSet?, @AttrRes int);
+    ctor public ProtectionLayout(android.content.Context, android.util.AttributeSet?, @AttrRes int, @StyleRes int);
+    ctor public ProtectionLayout(android.content.Context, java.util.List<androidx.core.view.insets.Protection!>);
+    method public void setProtections(java.util.List<androidx.core.view.insets.Protection!>);
   }
 
 }
