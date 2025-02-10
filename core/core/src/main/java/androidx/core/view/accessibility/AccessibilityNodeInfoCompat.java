@@ -42,6 +42,7 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.accessibility.AccessibilityNodeInfo.TouchDelegateInfo;
 
+import androidx.annotation.IntDef;
 import androidx.annotation.IntRange;
 import androidx.annotation.OptIn;
 import androidx.annotation.RequiresApi;
@@ -61,6 +62,8 @@ import androidx.core.view.accessibility.AccessibilityViewCommand.SetTextArgument
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -1648,6 +1651,9 @@ public class AccessibilityNodeInfoCompat {
     private static final String BOUNDS_IN_WINDOW_KEY =
             "androidx.view.accessibility.AccessibilityNodeInfoCompat.BOUNDS_IN_WINDOW_KEY";
 
+    private static final String EXPANDED_STATE_KEY =
+            "androidx.view.accessibility.AccessibilityNodeInfoCompat.EXPANDED_STATE_KEY";
+
     private static final String MIN_DURATION_BETWEEN_CONTENT_CHANGES_KEY =
             "androidx.view.accessibility.AccessibilityNodeInfoCompat."
                     + "MIN_DURATION_BETWEEN_CONTENT_CHANGES_KEY";
@@ -2323,6 +2329,17 @@ public class AccessibilityNodeInfoCompat {
     @SuppressLint("MinMaxConstant")
     public static final int MAX_NUMBER_OF_PREFETCHED_NODES = 50;
 
+    @IntDef(
+            flag = false,
+            value = {
+                AccessibilityNodeInfo.EXPANDED_STATE_UNDEFINED,
+                AccessibilityNodeInfo.EXPANDED_STATE_COLLAPSED,
+                AccessibilityNodeInfo.EXPANDED_STATE_PARTIAL,
+                AccessibilityNodeInfo.EXPANDED_STATE_FULL,
+            })
+    @Retention(RetentionPolicy.SOURCE)
+    private @interface ExpandedState {}
+
     private static int sClickableSpanId = 0;
 
     /**
@@ -2744,6 +2761,53 @@ public class AccessibilityNodeInfoCompat {
      */
     public int getMovementGranularities() {
         return mInfo.getMovementGranularities();
+    }
+
+    /**
+     * Gets the expanded state for this node.
+     *
+     * @return The expanded state, one of:
+     *     <ul>
+     *       <li>{@link AccessibilityNodeInfo#EXPANDED_STATE_UNDEFINED}
+     *       <li>{@link AccessibilityNodeInfo#EXPANDED_STATE_COLLAPSED}
+     *       <li>{@link AccessibilityNodeInfo#EXPANDED_STATE_FULL}
+     *       <li>{@link AccessibilityNodeInfo#EXPANDED_STATE_PARTIAL}
+     *     </ul>
+     */
+    @ExpandedState
+    public int getExpandedState() {
+        if (Build.VERSION.SDK_INT >= 36) {
+            return Api36Impl.getExpandedState(mInfo);
+        } else {
+            return mInfo.getExtras().getInt(EXPANDED_STATE_KEY,
+                AccessibilityNodeInfo.EXPANDED_STATE_UNDEFINED);
+        }
+    }
+
+    /**
+     * Sets the expanded state of the node.
+     *
+     * <p><strong>Note:</strong> Cannot be called from an {@link
+     * android.accessibilityservice.AccessibilityService}. This class is made immutable before being
+     * delivered to an {@link android.accessibilityservice.AccessibilityService}.
+     *
+     * @param state new expanded state of this node.
+     * @throws IllegalArgumentException If state is not one of:
+     *     <ul>
+     *       <li>{@link AccessibilityNodeInfo#EXPANDED_STATE_UNDEFINED}
+     *       <li>{@link AccessibilityNodeInfo#EXPANDED_STATE_COLLAPSED}
+     *       <li>{@link AccessibilityNodeInfo#EXPANDED_STATE_PARTIAL}
+     *       <li>{@link AccessibilityNodeInfo#EXPANDED_STATE_FULL}
+     *     </ul>
+     *
+     * @throws IllegalStateException If called from an AccessibilityService
+     */
+    public void setExpandedState(@ExpandedState int state) {
+        if (Build.VERSION.SDK_INT >= 36) {
+            Api36Impl.setExpandedState(mInfo, state);
+        } else {
+            mInfo.getExtras().putInt(EXPANDED_STATE_KEY, state);
+        }
     }
 
     /**
@@ -5154,6 +5218,8 @@ public class AccessibilityNodeInfoCompat {
         builder.append("; clickable: ").append(isClickable());
         builder.append("; longClickable: ").append(isLongClickable());
         builder.append("; contextClickable: ").append(isContextClickable());
+        builder.append("; expandedState: ").append(
+                getExpandedStateSymbolicName(getExpandedState()));
         builder.append("; enabled: ").append(isEnabled());
         builder.append("; password: ").append(isPassword());
         builder.append("; scrollable: " + isScrollable());
@@ -5286,6 +5352,21 @@ public class AccessibilityNodeInfoCompat {
                 return "ACTION_SCROLL_IN_DIRECTION";
             default:
                 return "ACTION_UNKNOWN";
+        }
+    }
+
+    static String getExpandedStateSymbolicName(@ExpandedState int state) {
+        switch(state) {
+            case AccessibilityNodeInfo.EXPANDED_STATE_UNDEFINED:
+                return "UNDEFINED";
+            case AccessibilityNodeInfo.EXPANDED_STATE_COLLAPSED:
+                return "COLLAPSED";
+            case AccessibilityNodeInfo.EXPANDED_STATE_PARTIAL:
+                return "PARTIAL";
+            case AccessibilityNodeInfo.EXPANDED_STATE_FULL:
+                return "FULL";
+            default:
+                return "UNKNOWN";
         }
     }
 
@@ -5466,6 +5547,15 @@ public class AccessibilityNodeInfoCompat {
     private static class Api36Impl {
         private Api36Impl() {
             // This class is non instantiable.
+        }
+
+        @ExpandedState
+        public static int getExpandedState(AccessibilityNodeInfo info) {
+            return info.getExpandedState();
+        }
+
+        public static void setExpandedState(AccessibilityNodeInfo info, @ExpandedState int state) {
+            info.setExpandedState(state);
         }
 
         @Nullable
