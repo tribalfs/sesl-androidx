@@ -1660,6 +1660,9 @@ public class AccessibilityNodeInfoCompat {
     private static final String IS_REQUIRED_KEY =
             "androidx.view.accessibility.AccessibilityNodeInfoCompat.IS_REQUIRED_KEY";
 
+    private static final String CHECKED_KEY =
+            "androidx.view.accessibility.AccessibilityNodeInfoCompat.CHECKED_KEY";
+
     // These don't line up with the internal framework constants, since they are independent
     // and we might as well get all 32 bits of utility here.
     private static final int BOOLEAN_PROPERTY_SCREEN_READER_FOCUSABLE = 0x00000001;
@@ -2339,6 +2342,16 @@ public class AccessibilityNodeInfoCompat {
             })
     @Retention(RetentionPolicy.SOURCE)
     private @interface ExpandedState {}
+
+    @IntDef(
+            flag = false,
+            value = {
+                AccessibilityNodeInfo.CHECKED_STATE_FALSE,
+                AccessibilityNodeInfo.CHECKED_STATE_TRUE,
+                AccessibilityNodeInfo.CHECKED_STATE_PARTIAL,
+            })
+    @Retention(RetentionPolicy.SOURCE)
+    private @interface CheckedState {}
 
     private static int sClickableSpanId = 0;
 
@@ -3058,7 +3071,10 @@ public class AccessibilityNodeInfoCompat {
      * Gets whether this node is checked.
      *
      * @return True if the node is checked.
+     *
+     * @deprecated Use {@link #getChecked()} instead.
      */
+    @Deprecated
     public boolean isChecked() {
         return mInfo.isChecked();
     }
@@ -3073,9 +3089,76 @@ public class AccessibilityNodeInfoCompat {
      *
      * @param checked True if the node is checked.
      * @throws IllegalStateException If called from an AccessibilityService.
+     *
+     * @deprecated Use {@link #setChecked(int)} instead.
      */
+    @Deprecated
     public void setChecked(boolean checked) {
         mInfo.setChecked(checked);
+    }
+
+    /**
+     * Gets the checked state of this node.
+     * <p>
+     * Note that this is only meaningful when {@link #isCheckable()} returns {@code true}.
+     *
+     * @see #setCheckable(boolean)
+     * @see #isCheckable()
+     * @see #setChecked(int)
+     * @return The checked state, one of:
+     *          <ul>
+     *          <li>{@link AccessibilityNodeInfo#CHECKED_STATE_FALSE}
+     *          <li>{@link AccessibilityNodeInfo#CHECKED_STATE_TRUE}
+     *          <li>{@link AccessibilityNodeInfo#CHECKED_STATE_PARTIAL}
+     *          </ul>
+     */
+    @CheckedState
+    public int getChecked() {
+        if (Build.VERSION.SDK_INT >= 36) {
+            return Api36Impl.getChecked(mInfo);
+        } else {
+            return mInfo.getExtras().getInt(CHECKED_KEY,
+                    mInfo.isChecked() ? AccessibilityNodeInfo.CHECKED_STATE_TRUE
+                            : AccessibilityNodeInfo.CHECKED_STATE_FALSE);
+        }
+    }
+
+    /**
+     * Sets the checked state of this node. This is only meaningful
+     * when {@link #isCheckable()} returns {@code true}.
+     * <p><strong>Note:</strong> Cannot be called from an
+     *   {@link android.accessibilityservice.AccessibilityService}. This class is made immutable
+     *   before being delivered to an AccessibilityService.
+     *
+     * @see #setCheckable(boolean)
+     * @see #isCheckable()
+     * @see #getChecked()
+     * @param checked The checked state. One of
+     *          <ul>
+     *          <li>{@link AccessibilityNodeInfo#CHECKED_STATE_FALSE}
+     *          <li>{@link AccessibilityNodeInfo#CHECKED_STATE_TRUE}
+     *          <li>{@link AccessibilityNodeInfo#CHECKED_STATE_PARTIAL}
+     *          </ul>
+     * @throws IllegalStateException If called from an AccessibilityService.
+     * @throws IllegalArgumentException if {@code checked} is not one of
+     * {@link AccessibilityNodeInfo#CHECKED_STATE_FALSE},
+     *          {@link AccessibilityNodeInfo#CHECKED_STATE_TRUE}, or
+     *          {@link AccessibilityNodeInfo#CHECKED_STATE_PARTIAL}.
+     */
+    public void setChecked(@CheckedState int checked) {
+        if (Build.VERSION.SDK_INT >= 36) {
+            Api36Impl.setChecked(mInfo, checked);
+            return;
+        }
+
+        if (checked == AccessibilityNodeInfo.CHECKED_STATE_TRUE
+                || checked == AccessibilityNodeInfo.CHECKED_STATE_PARTIAL
+                || checked == AccessibilityNodeInfo.CHECKED_STATE_FALSE) {
+            mInfo.setChecked(checked == AccessibilityNodeInfo.CHECKED_STATE_TRUE);
+            mInfo.getExtras().putInt(CHECKED_KEY, checked);
+        } else {
+            throw new IllegalArgumentException("Unknown checked argument: " + checked);
+        }
     }
 
     /**
@@ -5210,7 +5293,7 @@ public class AccessibilityNodeInfoCompat {
         builder.append("; uniqueId: ").append(getUniqueId());
 
         builder.append("; checkable: ").append(isCheckable());
-        builder.append("; checked: ").append(isChecked());
+        builder.append("; checked: ").append(getCheckedString());
         builder.append("; fieldRequired: ").append(isFieldRequired());
         builder.append("; focusable: ").append(isFocusable());
         builder.append("; focused: ").append(isFocused());
@@ -5262,6 +5345,17 @@ public class AccessibilityNodeInfoCompat {
         Bundle extras = getExtras();
         if (extras == null) return false;
         return (extras.getInt(BOOLEAN_PROPERTY_KEY, 0) & property) == property;
+    }
+
+    private String getCheckedString() {
+        @CheckedState int checkedState = getChecked();
+        if (checkedState == AccessibilityNodeInfo.CHECKED_STATE_TRUE) {
+            return "TRUE";
+        } else if (checkedState == AccessibilityNodeInfo.CHECKED_STATE_PARTIAL) {
+            return "PARTIAL";
+        } else {
+            return "FALSE";
+        }
     }
 
     static String getActionSymbolicName(int action) {
@@ -5566,6 +5660,15 @@ public class AccessibilityNodeInfoCompat {
         public static void setSupplementalDescription(
                 AccessibilityNodeInfo info, @Nullable CharSequence supplementalDescription) {
             info.setSupplementalDescription(supplementalDescription);
+        }
+
+        @CheckedState
+        private static int getChecked(AccessibilityNodeInfo info) {
+            return info.getChecked();
+        }
+
+        private static void setChecked(AccessibilityNodeInfo info, @CheckedState int checked) {
+            info.setChecked(checked);
         }
     }
 }
