@@ -315,6 +315,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
     private var mSmoothWidth = 0
     private var isAnimating = false
     private var mStartOffset = 0f
+    private var hasPrefContentWidth = false//custom
     //sesl
 
     /**
@@ -733,6 +734,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
                 val contentWidthVal = TypedValue()
                 getValue(prefContentWidthSize, contentWidthVal)
                 mPrefContentWidth = contentWidthVal
+                hasPrefContentWidth = true
             }
             //sesl
         }
@@ -2990,6 +2992,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
 
     override fun onConfigurationChanged(configuration: Configuration) {
         super.onConfigurationChanged(configuration)
+        if (!hasPrefContentWidth) mPrefContentWidth = null//to update value
         if (!mSetCustomPendingAction) {
             val rotatedToPortrait = configuration.orientation == ORIENTATION_PORTRAIT
                 && mPrevOrientation == ORIENTATION_LANDSCAPE
