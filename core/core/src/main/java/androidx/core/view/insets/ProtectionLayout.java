@@ -125,7 +125,21 @@ public class ProtectionLayout extends FrameLayout {
         return monitor;
     }
 
-
+    private void maybeUninstallSystemBarStateMonitor() {
+        final ViewGroup rootView = (ViewGroup) getRootView();
+        final Object tag = rootView.getTag(R.id.tag_system_bar_state_monitor);
+        if (!(tag instanceof SystemBarStateMonitor)) {
+            // The monitor hasn't been installed.
+            return;
+        }
+        final SystemBarStateMonitor monitor = (SystemBarStateMonitor) tag;
+        if (monitor.hasCallback()) {
+            // Don't uninstall the monitor because other ProtectionLayout still needs it.
+            return;
+        }
+        monitor.detachFromWindow();
+        rootView.setTag(R.id.tag_system_bar_state_monitor, null);
+    }
 
     @Override
     protected void onAttachedToWindow() {
@@ -138,11 +152,7 @@ public class ProtectionLayout extends FrameLayout {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         removeProtectionViews();
-        final SystemBarStateMonitor monitor = getOrInstallSystemBarStateMonitor();
-        if (!monitor.hasCallback()) {
-            // This was the last ProtectionLayout in the window.
-            monitor.detachFromWindow();
-        }
+        maybeUninstallSystemBarStateMonitor();
     }
 
     private void addProtectionViews() {
