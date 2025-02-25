@@ -278,12 +278,11 @@ public class ActionBarContextView extends AbsActionBarView {
         final int topPadding =
                 getResources().getDimensionPixelSize(R.dimen.sesl_action_bar_top_padding);//sesl
 
-        int maxHeight = mContentHeight > 0 ?
-                mContentHeight + topPadding : MeasureSpec.getSize(heightMeasureSpec);
+        final int maxHeight = MeasureSpec.getSize(heightMeasureSpec);
 
         final int verticalPadding = getPaddingTop() + getPaddingBottom();
         int availableWidth = contentWidth - getPaddingLeft() - getPaddingRight();
-        final int height = maxHeight - verticalPadding;
+        final int height = mContentHeight > 0 ? mContentHeight + topPadding : maxHeight;
         final int childSpecHeight = MeasureSpec.makeMeasureSpec(height, MeasureSpec.AT_MOST);
 
         if (mClose != null && mClose.getVisibility() == View.VISIBLE) {//sesl
@@ -382,7 +381,7 @@ public class ActionBarContextView extends AbsActionBarView {
             }
             setMeasuredDimension(contentWidth, measuredHeight);
         } else {
-            setMeasuredDimension(contentWidth, maxHeight);
+            setMeasuredDimension(contentWidth, mContentHeight + topPadding + verticalPadding);
         }
     }
 
