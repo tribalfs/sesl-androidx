@@ -156,6 +156,9 @@ public class ProtectionLayout extends FrameLayout {
     }
 
     private void addProtectionViews() {
+        if (mProtections.isEmpty()) {
+            return;
+        }
         final SystemBarStateMonitor monitor = getOrInstallSystemBarStateMonitor();
         mGroup = new ProtectionGroup(monitor, mProtections);
         final int nonProtectionChildCount = getChildCount();
