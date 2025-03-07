@@ -4133,6 +4133,8 @@ package androidx.core.view.accessibility {
     method public void addAction(int);
     method public void addChild(android.view.View!);
     method public void addChild(android.view.View!, int);
+    method public void addLabeledBy(android.view.View);
+    method public void addLabeledBy(android.view.View, int);
     method @RestrictTo(androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP_PREFIX) public void addSpansToExtras(CharSequence!, android.view.View!);
     method public boolean canOpenPopup();
     method public java.util.List<androidx.core.view.accessibility.AccessibilityNodeInfoCompat!>! findAccessibilityNodeInfosByText(String!);
@@ -4164,7 +4166,8 @@ package androidx.core.view.accessibility {
     method @Deprecated public Object! getInfo();
     method public int getInputType();
     method public androidx.core.view.accessibility.AccessibilityNodeInfoCompat! getLabelFor();
-    method public androidx.core.view.accessibility.AccessibilityNodeInfoCompat! getLabeledBy();
+    method @Deprecated public androidx.core.view.accessibility.AccessibilityNodeInfoCompat! getLabeledBy();
+    method public java.util.List<androidx.core.view.accessibility.AccessibilityNodeInfoCompat!> getLabeledByList();
     method public int getLiveRegion();
     method public int getMaxTextLength();
     method public long getMinDurationBetweenContentChangesMillis();
@@ -4226,6 +4229,8 @@ package androidx.core.view.accessibility {
     method public boolean removeAction(androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat!);
     method public boolean removeChild(android.view.View!);
     method public boolean removeChild(android.view.View!, int);
+    method public boolean removeLabeledBy(android.view.View);
+    method public boolean removeLabeledBy(android.view.View, int);
     method public void setAccessibilityDataSensitive(boolean);
     method public void setAccessibilityFocused(boolean);
     method public void setAvailableExtraData(java.util.List<java.lang.String!>);
@@ -4260,8 +4265,8 @@ package androidx.core.view.accessibility {
     method public void setInputType(int);
     method public void setLabelFor(android.view.View!);
     method public void setLabelFor(android.view.View!, int);
-    method public void setLabeledBy(android.view.View!);
-    method public void setLabeledBy(android.view.View!, int);
+    method @Deprecated public void setLabeledBy(android.view.View!);
+    method @Deprecated public void setLabeledBy(android.view.View!, int);
     method public void setLiveRegion(int);
     method public void setLongClickable(boolean);
     method public void setMaxTextLength(int);
