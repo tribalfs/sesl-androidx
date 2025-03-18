@@ -59,6 +59,7 @@ public class ActionBarContextView extends AbsActionBarView {
     private int mSubtitleStyleRes;
     private boolean mTitleOptional;
     private int mCloseItemLayout;
+    private final int mInternalVerticalPadding;
 
     //Sesl
     private static final String TAG = "ActionBarContextView";
@@ -95,6 +96,8 @@ public class ActionBarContextView extends AbsActionBarView {
                 R.layout.sesl_action_mode_close_item);
 
         a.recycle();
+
+        mInternalVerticalPadding = getPaddingTop() + getPaddingBottom();
     }
 
 
@@ -105,6 +108,24 @@ public class ActionBarContextView extends AbsActionBarView {
             mActionMenuPresenter.hideOverflowMenu();
             mActionMenuPresenter.hideSubMenus();
         }
+    }
+
+    @Override
+    protected void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        // Action bar can change size on configuration changes.
+        // Reread the desired height from the theme-specified style.
+        final TypedArray a = getContext().obtainStyledAttributes(null, R.styleable.ActionMode,
+                R.attr.actionModeStyle, 0);
+        setContentHeight(a.getLayoutDimension(R.styleable.ActionMode_height, 0));
+        a.recycle();
+
+        //sesl
+        setPadding(0,
+                getResources().getDimensionPixelSize(R.dimen.sesl_action_bar_top_padding),
+                0,
+                0);
     }
 
     @Override
@@ -278,11 +299,14 @@ public class ActionBarContextView extends AbsActionBarView {
         final int topPadding =
                 getResources().getDimensionPixelSize(R.dimen.sesl_action_bar_top_padding);//sesl
 
-        final int maxHeight = MeasureSpec.getSize(heightMeasureSpec);
+        int availableWidth = contentWidth - getPaddingLeft() - getPaddingRight();
 
         final int verticalPadding = getPaddingTop() + getPaddingBottom();
-        int availableWidth = contentWidth - getPaddingLeft() - getPaddingRight();
-        final int height = mContentHeight > 0 ? mContentHeight + topPadding : maxHeight;
+        final int externalVerticalPadding = Math.max(0, verticalPadding - mInternalVerticalPadding);
+        final int maxHeight = mContentHeight > 0
+                ? mContentHeight + externalVerticalPadding + topPadding //sesl
+                : MeasureSpec.getSize(heightMeasureSpec);
+        final int height = maxHeight - verticalPadding;
         final int childSpecHeight = MeasureSpec.makeMeasureSpec(height, MeasureSpec.AT_MOST);
 
         if (mClose != null && mClose.getVisibility() == View.VISIBLE) {//sesl
@@ -381,7 +405,7 @@ public class ActionBarContextView extends AbsActionBarView {
             }
             setMeasuredDimension(contentWidth, measuredHeight);
         } else {
-            setMeasuredDimension(contentWidth, mContentHeight + topPadding + verticalPadding);
+            setMeasuredDimension(contentWidth, maxHeight);
         }
     }
 
@@ -434,26 +458,6 @@ public class ActionBarContextView extends AbsActionBarView {
 
 
     //Sesl
-    @Override
-    protected void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-
-        TypedArray a = getContext().obtainStyledAttributes(null, R.styleable.ActionMode,
-                android.R.attr.actionModeStyle, 0);
-
-        final int height = a.getDimensionPixelSize(R.styleable.ActionMode_height, -1);
-        if (height >= 0) {
-            setContentHeight(height);
-        }
-
-        setPadding(0,
-                getResources().getDimensionPixelSize(R.dimen.sesl_action_bar_top_padding),
-                0,
-                0);
-
-        a.recycle();
-    }
-
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
