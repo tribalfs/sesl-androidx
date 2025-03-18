@@ -31,12 +31,16 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
+import androidx.appcompat.graphics.drawable.SeslRecoilDrawable;
 import androidx.core.view.TintableBackgroundView;
 import androidx.core.widget.ImageViewCompat;
 import androidx.core.widget.TintableImageSourceView;
 import androidx.resourceinspection.annotation.AppCompatShadowedAttributes;
 
 /**
+ *
+ *  <p><b>SESL variant</b></p><br>
+ *
  * A {@link ImageView} which supports compatible features on older versions of the platform,
  * including:
  * <ul>
@@ -64,6 +68,9 @@ public class AppCompatImageView extends ImageView implements TintableBackgroundV
     private final AppCompatImageHelper mImageHelper;
 
     private boolean mHasLevel = false;
+
+    private boolean isNeedToSkipRefreshDrawable;//sesl7
+
 
     public AppCompatImageView(@NonNull Context context) {
         this(context, null);
@@ -276,4 +283,23 @@ public class AppCompatImageView extends ImageView implements TintableBackgroundV
         super.setImageLevel(level);
         mHasLevel = true;
     }
+
+    //Sesl7
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (getBackground() instanceof SeslRecoilDrawable) {
+            isNeedToSkipRefreshDrawable = true;
+        }
+    }
+
+    @Override
+    public final void refreshDrawableState() {
+        super.refreshDrawableState();
+        if (isNeedToSkipRefreshDrawable && getStateListAnimator() != null) {
+            getStateListAnimator().jumpToCurrentState();
+            isNeedToSkipRefreshDrawable = false;
+        }
+    }
+    //sesl7
 }

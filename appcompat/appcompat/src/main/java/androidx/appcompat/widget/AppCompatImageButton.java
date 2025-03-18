@@ -33,12 +33,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.appcompat.R;
+import androidx.appcompat.graphics.drawable.SeslRecoilDrawable;
 import androidx.core.view.TintableBackgroundView;
 import androidx.core.widget.ImageViewCompat;
 import androidx.core.widget.TintableImageSourceView;
 import androidx.resourceinspection.annotation.AppCompatShadowedAttributes;
 
 /**
+ * <p><b>SESL variant</b></p><br>
+ *
  * A {@link ImageButton} which supports compatible features on older versions of the platform,
  * including:
  * <ul>
@@ -64,6 +67,8 @@ public class AppCompatImageButton extends ImageButton implements TintableBackgro
     private final AppCompatBackgroundHelper mBackgroundTintHelper;
     private final AppCompatImageHelper mImageHelper;
     private boolean mHasLevel = false;
+
+    private boolean isNeedToSkipRefreshDrawable;//sesl7
 
     public AppCompatImageButton(@NonNull Context context) {
         this(context, null);
@@ -264,4 +269,26 @@ public class AppCompatImageButton extends ImageButton implements TintableBackgro
         super.setImageLevel(level);
         mHasLevel = true;
     }
+
+
+    //Sesl7
+    @Override
+    public final void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (getBackground() instanceof SeslRecoilDrawable) {
+            isNeedToSkipRefreshDrawable = true;
+        }
+    }
+
+    @Override
+    public final void refreshDrawableState() {
+        super.refreshDrawableState();
+        if (isNeedToSkipRefreshDrawable && getStateListAnimator() != null) {
+            getStateListAnimator().jumpToCurrentState();
+            isNeedToSkipRefreshDrawable = false;
+        }
+    }
+
+    //sesl7
+
 }

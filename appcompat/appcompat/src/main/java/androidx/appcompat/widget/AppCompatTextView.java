@@ -47,6 +47,7 @@ import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.UiThread;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.graphics.drawable.SeslRecoilDrawable;
 import androidx.core.graphics.TypefaceCompat;
 import androidx.core.text.PrecomputedTextCompat;
 import androidx.core.view.TintableBackgroundView;
@@ -98,6 +99,7 @@ public class AppCompatTextView extends TextView implements TintableBackgroundVie
     @SuppressWarnings("NotNullFieldNotInitialized") // initialized in getter
     @NonNull
     private AppCompatEmojiTextHelper mEmojiTextViewHelper;
+    private boolean isNeedToSkipRefreshDrawable;//sesl7
 
     private boolean mIsSetTypefaceProcessing = false;
 
@@ -1028,4 +1030,24 @@ public class AppCompatTextView extends TextView implements TintableBackgroundVie
         SeslTextViewReflector.semSetButtonShapeEnabled(this, enabled, textColor);
     }
     //sesl
+
+    //Sesl7
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (getBackground() instanceof SeslRecoilDrawable) {
+            isNeedToSkipRefreshDrawable = true;
+        }
+    }
+
+    @Override
+    public final void refreshDrawableState() {
+        super.refreshDrawableState();
+        if (isNeedToSkipRefreshDrawable && getStateListAnimator() != null) {
+            getStateListAnimator().jumpToCurrentState();
+            isNeedToSkipRefreshDrawable = false;
+        }
+    }
+    //sesl7
+
 }

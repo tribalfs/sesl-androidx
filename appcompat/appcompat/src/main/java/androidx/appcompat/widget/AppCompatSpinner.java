@@ -60,6 +60,7 @@ import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.R;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.graphics.drawable.SeslRecoilDrawable;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.view.menu.ShowableListMenu;
 import androidx.core.util.ObjectsCompat;
@@ -119,6 +120,8 @@ public class AppCompatSpinner extends Spinner implements TintableBackgroundView 
     int mDropDownGravity = Gravity.NO_GRAVITY;
 
     final Rect mTempRect = new Rect();
+
+    private boolean isNeedToSkipRefreshDrawable;//sesl7
 
     /**
      * Construct a new spinner with the given context's theme.
@@ -1196,4 +1199,23 @@ public class AppCompatSpinner extends Spinner implements TintableBackgroundView 
         nodeInfo.setClassName(Spinner.class.getName());
     }
     //sesl
+
+    //Sesl7
+    @Override
+    public final void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (getBackground() instanceof SeslRecoilDrawable) {
+            isNeedToSkipRefreshDrawable = true;
+        }
+    }
+
+    @Override
+    public final void refreshDrawableState() {
+        super.refreshDrawableState();
+        if (isNeedToSkipRefreshDrawable && getStateListAnimator() != null) {
+            getStateListAnimator().jumpToCurrentState();
+            isNeedToSkipRefreshDrawable = false;
+        }
+    }
+    //sesl7
 }

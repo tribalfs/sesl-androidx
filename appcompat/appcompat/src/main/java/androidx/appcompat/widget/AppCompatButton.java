@@ -37,6 +37,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.appcompat.R;
+import androidx.appcompat.graphics.drawable.SeslRecoilDrawable;
 import androidx.core.view.TintableBackgroundView;
 import androidx.core.widget.AutoSizeableTextView;
 import androidx.core.widget.TextViewCompat;
@@ -70,6 +71,8 @@ public class AppCompatButton extends Button implements TintableBackgroundView,
     private final AppCompatTextHelper mTextHelper;
     @NonNull
     private AppCompatEmojiTextHelper mAppCompatEmojiTextHelper;
+
+    private boolean isNeedToSkipRefreshDrawable;//sesl
 
     public AppCompatButton(@NonNull Context context) {
         this(context, null);
@@ -472,4 +475,24 @@ public class AppCompatButton extends Button implements TintableBackgroundView,
         SeslTextViewReflector.semSetButtonShapeEnabled(this, enabled, textColor);
     }
     //sesl
+
+    //Sesl7
+    @Override
+    public final void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (getBackground() instanceof SeslRecoilDrawable) {
+            isNeedToSkipRefreshDrawable = true;
+        }
+    }
+
+    @Override
+    public final void refreshDrawableState() {
+        super.refreshDrawableState();
+        if (isNeedToSkipRefreshDrawable && getStateListAnimator() != null) {
+            getStateListAnimator().jumpToCurrentState();
+            isNeedToSkipRefreshDrawable = false;
+        }
+    }
+    //sesl7
+
 }
