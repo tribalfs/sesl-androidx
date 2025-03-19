@@ -190,6 +190,7 @@ subprojects {
 
                 when (compileSdk) {
                     35 -> buildToolsVersion = "35.0.1"//https://issuetracker.google.com/issues/354735915
+                    36 -> buildToolsVersion = "36.0.0"
                 }
 
                 if (isAndroidLibrary) {
