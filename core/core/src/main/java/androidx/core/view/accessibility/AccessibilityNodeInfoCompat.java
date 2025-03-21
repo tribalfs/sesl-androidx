@@ -1667,6 +1667,9 @@ public class AccessibilityNodeInfoCompat {
     private static final String STATE_DESCRIPTION_KEY =
             "androidx.view.accessibility.AccessibilityNodeInfoCompat.STATE_DESCRIPTION_KEY";
 
+    private static final String SUPPLEMENTAL_DESCRIPTION_KEY =
+            "androidx.view.accessibility.AccessibilityNodeInfoCompat.SUPPLEMENTAL_DESCRIPTION_KEY";
+
     private static final String UNIQUE_ID_KEY =
             "androidx.view.accessibility.AccessibilityNodeInfoCompat.UNIQUE_ID_KEY";
 
@@ -5105,6 +5108,64 @@ public class AccessibilityNodeInfoCompat {
         }
     }
 
+    /**
+     * Returns the supplemental description of this {@link AccessibilityNodeInfoCompat}.
+     * <p>
+     * A supplemental description provides brief supplemental information for this node, such as
+     * the purpose of the node when that purpose is not conveyed within its textual representation.
+     * For example, if a dropdown select has a purpose of setting font family, the supplemental
+     * description could be "font family". If this node has children, its supplemental description
+     * serves as additional information and is not intended to replace any existing information in
+     * the subtree. This is different from the {@link #getContentDescription()} in that this
+     * description is purely supplemental while a content description may be used to replace a
+     * description for a node or its subtree that an assistive technology would otherwise compute
+     * based on other properties of the node and its descendants.
+     *
+     * @return The supplemental description.
+     * @see #setSupplementalDescription(CharSequence)
+     * @see #getContentDescription()
+     */
+    @Nullable
+    public CharSequence getSupplementalDescription() {
+        if (Build.VERSION.SDK_INT >= 36) {
+            return Api36Impl.getSupplementalDescription(mInfo);
+        } else {
+            return mInfo.getExtras().getCharSequence(SUPPLEMENTAL_DESCRIPTION_KEY);
+        }
+    }
+
+    /**
+     * Sets the supplemental description of this {@link AccessibilityNodeInfoCompat}.
+     * <p>
+     * A supplemental description provides brief supplemental information for this node, such as
+     * the purpose of the node when that purpose is not conveyed within its textual representation.
+     * For example, if a dropdown select has a purpose of setting font family, the supplemental
+     * description could be "font family". If this node has children, its supplemental description
+     * serves as additional information and is not intended to replace any existing information in
+     * the subtree. This is different from the {@link #setContentDescription(CharSequence)} in that
+     * this description is purely supplemental while a content description may be used to replace a
+     * description for a node or its subtree that an assistive technology would otherwise compute
+     * based on other properties of the node and its descendants.
+     *
+     * <p>
+     * <strong>Note:</strong> Cannot be called from an {@link
+     * android.accessibilityservice.AccessibilityService}. This class is made immutable before being
+     * delivered to an AccessibilityService.
+     *
+     * @param supplementalDescription The supplemental description.
+     * @throws IllegalStateException If called from an AccessibilityService.
+     * @see #getSupplementalDescription()
+     * @see #setContentDescription(CharSequence)
+     */
+    public void setSupplementalDescription(@Nullable CharSequence supplementalDescription) {
+        if (Build.VERSION.SDK_INT >= 36) {
+            Api36Impl.setSupplementalDescription(mInfo, supplementalDescription);
+        } else {
+            mInfo.getExtras()
+                    .putCharSequence(SUPPLEMENTAL_DESCRIPTION_KEY, supplementalDescription);
+        }
+    }
+
     @Override
     public int hashCode() {
         return (mInfo == null) ? 0 : mInfo.hashCode();
@@ -5162,6 +5223,7 @@ public class AccessibilityNodeInfoCompat {
         builder.append("; maxTextLength: ").append(getMaxTextLength());
         builder.append("; stateDescription: ").append(getStateDescription());
         builder.append("; contentDescription: ").append(getContentDescription());
+        builder.append("; supplementalDescription: ").append(getSupplementalDescription());
         builder.append("; tooltipText: ").append(getTooltipText());
         builder.append("; viewIdResName: ").append(getViewIdResourceName());
         builder.append("; uniqueId: ").append(getUniqueId());
@@ -5505,6 +5567,23 @@ public class AccessibilityNodeInfoCompat {
                     .setItemCount(itemCount)
                     .setImportantForAccessibilityItemCount(importantForAccessibilityItemCount)
                     .build());
+        }
+    }
+
+    @RequiresApi(36)
+    private static class Api36Impl {
+        private Api36Impl() {
+            // This class is non instantiable.
+        }
+
+        @Nullable
+        public static CharSequence getSupplementalDescription(AccessibilityNodeInfo info) {
+            return info.getSupplementalDescription();
+        }
+
+        public static void setSupplementalDescription(
+                AccessibilityNodeInfo info, @Nullable CharSequence supplementalDescription) {
+            info.setSupplementalDescription(supplementalDescription);
         }
     }
 }
