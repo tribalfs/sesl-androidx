@@ -3168,7 +3168,11 @@ public class AccessibilityNodeInfoCompat {
      *     selection, {@code false} otherwise.
      */
     public boolean isFieldRequired() {
-        return mInfo.getExtras().getBoolean(IS_REQUIRED_KEY);
+        if (Build.VERSION.SDK_INT >= 36) {
+            return Api36Impl.isFieldRequired(mInfo);
+        } else {
+            return mInfo.getExtras().getBoolean(IS_REQUIRED_KEY);
+        }
     }
 
     /**
@@ -3182,7 +3186,11 @@ public class AccessibilityNodeInfoCompat {
      * @throws IllegalStateException If called from an AccessibilityService
      */
     public void setFieldRequired(boolean required) {
-        mInfo.getExtras().putBoolean(IS_REQUIRED_KEY, required);
+        if (Build.VERSION.SDK_INT >= 36) {
+            Api36Impl.setFieldRequired(mInfo, required);
+        } else {
+            mInfo.getExtras().putBoolean(IS_REQUIRED_KEY, required);
+        }
     }
 
     /**
@@ -5650,6 +5658,14 @@ public class AccessibilityNodeInfoCompat {
 
         public static void setExpandedState(AccessibilityNodeInfo info, @ExpandedState int state) {
             info.setExpandedState(state);
+        }
+
+        public static boolean isFieldRequired(AccessibilityNodeInfo info) {
+            return info.isFieldRequired();
+        }
+
+        public static void setFieldRequired(AccessibilityNodeInfo info, boolean required) {
+            info.setFieldRequired(required);
         }
 
         @Nullable
