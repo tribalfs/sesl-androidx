@@ -18,7 +18,7 @@ Info: Samsung’s One UI apps are created using heavily modified versions of som
 - [![latest version](https://img.shields.io/badge/sesl.androidx.coordinatorlayout:coordinatorlayout-1.3.0%2B1.0.0--sesl7%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110023)
 - [![latest version](https://img.shields.io/badge/sesl.androidx.fragment:fragment-1.8.6%2B1.0.6--sesl7%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110028)
 - [![latest version](https://img.shields.io/badge/sesl.androidx.recyclerview:recyclerview-1.4.0%2B1.0.31--sesl7%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110033)
-- [![latest version](https://img.shields.io/badge/sesl.androidx.appcompat:appcompat-1.7.0%2B1.0.46000--sesl7%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110021)
+- [![latest version](https://img.shields.io/badge/sesl.androidx.appcompat:appcompat-1.7.0%2B1.0.46000--sesl7%2Brev1-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110021)
 - [![latest version](https://img.shields.io/badge/sesl.androidx.viewpager2:viewpager2-1.1.0%2B1.0.4--sesl7%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110041)
 - [![latest version](https://img.shields.io/badge/sesl.androidx.slidingpanelayout:slidingpanelayout-1.2.0%2B1.0.5--sesl7%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110034)
 - [![latest version](https://img.shields.io/badge/sesl.androidx.preference:preference-1.2.1%2B1.0.11--sesl7%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110032)
