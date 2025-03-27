@@ -46,7 +46,7 @@ import java.io.IOException;
 @RequiresApi(api = 29)
 public class SeslRecoilDrawable extends LayerDrawable {
 
-    private static final int DEFAULT_TINT_COLOR = Color.parseColor("#66FFFFFF");
+    private static final int DEFAULT_TINT_COLOR = 0x19000000;
     private static final int RADIUS_AUTO = -1;
     private static final String TAG = "SeslRecoilDrawable";
     private static final int ID_MASK = android.R.id.mask;
@@ -72,6 +72,25 @@ public class SeslRecoilDrawable extends LayerDrawable {
         this.mIsPressed = false;
         mAnimator = ValueAnimator.ofFloat(0.0f);
         init();
+    }
+
+    public SeslRecoilDrawable(@NonNull Drawable[] drawableArr) {
+        super(drawableArr);
+        this.mIsActive = false;
+        this.mIsPressed = false;
+        mAnimator = ValueAnimator.ofFloat(0.0f);
+        init();
+    }
+
+
+    public SeslRecoilDrawable(@ColorInt int i, @NonNull Drawable[] drawableArr, @Nullable Drawable drawable) {
+        this(drawableArr);
+        init();
+        this.mTintColor = i;
+        if (drawable != null) {
+            this.mMask = drawable;
+            setId(addLayer(drawable), ID_MASK);
+        }
     }
 
     private void drawHotspot(Canvas canvas) {
@@ -108,7 +127,7 @@ public class SeslRecoilDrawable extends LayerDrawable {
         mPressDuration = PRESS_ANIMATION_DURATION;
         mReleaseDuration = RELEASE_ANIMATION_DURATION;
         initAnimator();
-        setPaddingMode(1);
+        setPaddingMode(PADDING_MODE_STACK);
     }
 
     private void initAnimator() {
@@ -141,9 +160,9 @@ public class SeslRecoilDrawable extends LayerDrawable {
     private void setTint() {
         BlendMode blendMode;
         int animatingTintColor = getAnimatingTintColor();
-        Drawable findDrawableByLayerId = findDrawableByLayerId(ID_MASK);
-        if (findDrawableByLayerId != null) {
-            findDrawableByLayerId.setTint(animatingTintColor);
+        Drawable mask = findDrawableByLayerId(ID_MASK);
+        if (mask != null) {
+            mask.setTint(animatingTintColor);
             return;
         }
         blendMode = BlendMode.HARD_LIGHT;
@@ -173,11 +192,11 @@ public class SeslRecoilDrawable extends LayerDrawable {
 
     private void updateMaskLayer() {
         BlendMode blendMode;
-        Drawable findDrawableByLayerId = findDrawableByLayerId(ID_MASK);
-        if (findDrawableByLayerId != null) {
-            findDrawableByLayerId.setTint(0);
+        Drawable mask = findDrawableByLayerId(ID_MASK);
+        if (mask != null) {
+            mask.setTint(0);
             blendMode = BlendMode.SRC_IN;
-            findDrawableByLayerId.setTintBlendMode(blendMode);
+            mask.setTintBlendMode(blendMode);
         }
     }
 
@@ -246,21 +265,28 @@ public class SeslRecoilDrawable extends LayerDrawable {
     }
 
     @Override
-    public boolean onStateChange(@NonNull int[] iArr) {
+    public boolean onStateChange(@NonNull int[] state) {
         boolean isPressed = false;
         boolean isFocused = false;
         boolean isHovered = false;
-        for (int i : iArr) {
-            if (i == android.R.attr.state_pressed) {
-                isPressed = true;
-            } else if (i == android.R.attr.state_hovered) {
-                isHovered = true;
-            } else if (i == android.R.attr.state_focused) {
-                isFocused = true;
+        for (int s : state) {
+            switch (s) {
+                case android.R.attr.state_focused:
+                    isFocused = true;
+                    break;
+                case android.R.attr.state_window_focused,
+                     android.R.attr.state_enabled:
+                    break;
+                case android.R.attr.state_pressed:
+                    isPressed = true;
+                    break;
+                case android.R.attr.state_hovered:
+                    isHovered = true;
+                    break;
             }
         }
         setActive(isPressed, isFocused, isHovered);
-        return super.onStateChange(iArr);
+        return super.onStateChange(state);
     }
 
     public void setCancel() {
@@ -268,46 +294,28 @@ public class SeslRecoilDrawable extends LayerDrawable {
     }
 
     @Override
-    public void setHotspot(float f, float f4) {
-        super.setHotspot(f, f4);
-        mHotspotPointX = f;
-        mHotspotPointY = f4;
+    public void setHotspot(float x, float y) {
+        super.setHotspot(x, y);
+        mHotspotPointX = x;
+        mHotspotPointY = y;
     }
 
     @Override
     public void setTintBlendMode(@NonNull BlendMode blendMode) {
         super.setTintBlendMode(blendMode);
-        Drawable findDrawableByLayerId = findDrawableByLayerId(ID_MASK);
-        if (findDrawableByLayerId != null) {
-            findDrawableByLayerId.setTintBlendMode(BlendMode.SRC_IN);
+        Drawable mask = findDrawableByLayerId(ID_MASK);
+        if (mask != null) {
+            mask.setTintBlendMode(BlendMode.SRC_IN);
         }
     }
 
     @Override
     public void setTintList(@NonNull ColorStateList colorStateList) {
         super.setTintList(colorStateList);
-        Drawable findDrawableByLayerId = findDrawableByLayerId(ID_MASK);
-        if (findDrawableByLayerId != null) {
-            findDrawableByLayerId.setTint(getAnimatingTintColor());
+        Drawable mask = findDrawableByLayerId(ID_MASK);
+        if (mask != null) {
+            mask.setTint(getAnimatingTintColor());
         }
     }
 
-    public SeslRecoilDrawable(@NonNull Drawable[] drawableArr) {
-        super(drawableArr);
-        this.mIsActive = false;
-        this.mIsPressed = false;
-        mAnimator = ValueAnimator.ofFloat(0.0f);
-        init();
-    }
-
-
-    public SeslRecoilDrawable(@ColorInt int i, @NonNull Drawable[] drawableArr, @Nullable Drawable drawable) {
-        this(drawableArr);
-        init();
-        this.mTintColor = i;
-        if (drawable != null) {
-            this.mMask = drawable;
-            setId(addLayer(drawable), ID_MASK);
-        }
-    }
 }
