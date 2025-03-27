@@ -18,12 +18,14 @@ package androidx.appcompat.widget;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 
+import androidx.annotation.RestrictTo;
 import androidx.appcompat.R;
 import androidx.appcompat.util.SeslMisc;
 import androidx.core.content.res.ResourcesCompat;
@@ -35,8 +37,11 @@ import androidx.core.content.res.ResourcesCompat;
 /**
  * Samsung DropDownItemTextView class.
  */
+@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP_PREFIX})
 public class SeslDropDownItemTextView extends SeslCheckedTextView {
-    private static final String TAG = SeslDropDownItemTextView.class.getSimpleName();
+    private static final int FONT_WEIGHT_REGULAR = 400;
+    private static final int FONT_WEIGHT_SEMIBOLD = 600;
+    private static final String TAG = "SeslDropDownItemTextView";
 
     public SeslDropDownItemTextView(Context context) {
         this(context, null);
@@ -48,6 +53,9 @@ public class SeslDropDownItemTextView extends SeslCheckedTextView {
 
     public SeslDropDownItemTextView(Context context, AttributeSet attributeSet, int defStyleAttr) {
         super(context, attributeSet, defStyleAttr);
+        Resources res = context.getResources();
+        setMaxWidth(res.getDisplayMetrics().widthPixels -
+                (res.getDimensionPixelSize(R.dimen.sesl_menu_popup_offset_horizontal) * 2));
     }
 
     @Override
@@ -56,7 +64,7 @@ public class SeslDropDownItemTextView extends SeslCheckedTextView {
 
         if (Build.VERSION.SDK_INT >= 34) {
             Typeface sec = Typeface.create("sec", Typeface.NORMAL);
-            setTypeface(Typeface.create(sec, checked ? 600 : 400, false));
+            setTypeface(Typeface.create(sec, checked ? FONT_WEIGHT_SEMIBOLD : FONT_WEIGHT_REGULAR, false));
         }else{
             setTypeface(Typeface.create("sec-roboto-light", checked ? Typeface.BOLD : Typeface.NORMAL));
         }
