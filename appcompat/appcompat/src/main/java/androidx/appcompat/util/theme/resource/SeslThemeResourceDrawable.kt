@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package androidx.appcompat.util.theme
+package androidx.appcompat.util.theme.resource
 
 import android.content.Context
 import androidx.appcompat.util.SeslMisc

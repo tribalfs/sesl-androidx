@@ -28,8 +28,11 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
 import androidx.appcompat.R
+import androidx.appcompat.util.theme.resource.SeslThemeResourceColor
+import androidx.appcompat.util.theme.SeslThemeResourceHelper.getColorInt
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 
+//Added in sesl7
 @RequiresApi(23)
 class SeslIndicator @JvmOverloads constructor(
     context: Context,
@@ -129,7 +132,6 @@ class SeslIndicator @JvmOverloads constructor(
                     host: View,
                     info: AccessibilityNodeInfo
                 ) {
-                    //var list: List<PageIndicatorMarker?>
                     super.onInitializeAccessibilityNodeInfo(host, info)
                     val infoCompat = AccessibilityNodeInfoCompat.wrap(info)
                     infoCompat.contentDescription = resources.getString(
@@ -155,11 +157,38 @@ class SeslIndicator @JvmOverloads constructor(
 
 
     init {
-        this.defaultCircle = context.getDrawable(R.drawable.sesl_viewpager_indicator_off)?.mutate()
-        this.selectCircle = context.getDrawable(R.drawable.sesl_viewpager_indicator_on)?.mutate()
+        context.getDrawable(R.drawable.sesl_viewpager_indicator_on_off)?.let {
+            this.defaultCircle = it.mutate().apply { setTint(getAppBarViewPagerIndicatorOffColor(context)) }
+            this.selectCircle = it.mutate().apply { setTint(getAppBarViewPagerIndicatorOnColor(context)) }
+        }
         this.selectedPosition = -1
     }
 
+    private fun getAppBarViewPagerIndicatorOffColor(context: Context): Int {
+        return getColorInt(
+            context,
+            SeslThemeResourceColor.OpenThemeResourceColor(
+                SeslThemeResourceColor.ThemeResourceColor(
+                    R.color.sesl_appbar_viewpager_indicator_off,
+                    R.color.sesl_appbar_viewpager_indicator_off_dark
+                ),
+                SeslThemeResourceColor.ThemeResourceColor(
+                    R.color.sesl_appbar_viewpager_indicator_off_for_theme,
+                    R.color.sesl_appbar_viewpager_indicator_off_dark_for_theme
+                )
+            )
+        )
+    }
+
+    private fun getAppBarViewPagerIndicatorOnColor(context: Context): Int {
+        return getColorInt(
+            context,
+            SeslThemeResourceColor.OpenThemeResourceColor(
+                SeslThemeResourceColor.ThemeResourceColor(R.color.sesl_appbar_viewpager_indicator_on),
+                SeslThemeResourceColor.ThemeResourceColor(R.color.sesl_appbar_viewpager_indicator_on_for_theme)
+            )
+        )
+    }
 
     class PageIndicatorMarker @JvmOverloads constructor(
         context: Context,

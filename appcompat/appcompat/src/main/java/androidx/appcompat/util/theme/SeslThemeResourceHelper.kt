@@ -17,6 +17,8 @@ package androidx.appcompat.util.theme
 
 import android.content.Context
 import android.graphics.drawable.Drawable
+import androidx.appcompat.util.theme.resource.SeslThemeResourceColor
+import androidx.appcompat.util.theme.resource.SeslThemeResourceDrawable
 import androidx.core.content.ContextCompat
 
 object SeslThemeResourceHelper {
