@@ -32,6 +32,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.os.SystemClock;
 import android.text.TextUtils;
@@ -41,6 +42,7 @@ import android.util.Property;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
+import android.view.VelocityTracker;
 import android.view.View;
 import android.view.View.MeasureSpec;
 import android.view.ViewConfiguration;
@@ -53,13 +55,25 @@ import android.widget.ImageView.ScaleType;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.appcompat.animation.SeslAnimationUtils;
+import androidx.appcompat.util.SeslMisc;
+import androidx.core.graphics.ColorUtils;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.math.MathUtils;
+import androidx.core.view.animation.PathInterpolatorCompat;
 import androidx.recyclerview.R;
-import androidx.reflect.content.res.SeslConfigurationReflector;
+import androidx.recyclerview.animation.SeslAnimatable;
+import androidx.recyclerview.animation.SeslColorAnimatable;
+import androidx.recyclerview.animation.SeslFloatAnimatable;
+import androidx.recyclerview.sesl.drawable.SeslFastScrollerBgDrawable;
 import androidx.reflect.view.SeslHapticFeedbackConstantsReflector;
+
+import kotlin.Unit;
+
+import kotlinx.coroutines.DisposableHandle;
 
 /*
  * Original code by Samsung, all rights reserved to the original author.
@@ -73,7 +87,6 @@ class SeslRecyclerViewFastScroller {
     // Sesl
     private static final String TAG = "SeslFastScroller";
 
-    private static final int FASTSCROLL_VIBRATE_INDEX = 26;
     private static final Interpolator LINEAR_INTERPOLATOR = new LinearInterpolator();
 
     public static final int EFFECT_STATE_CLOSE = 0;
@@ -101,9 +114,6 @@ class SeslRecyclerViewFastScroller {
     private final int mThumbMarginEnd;
     private final int mTrackBottomPadding;
     private final int mTrackTopPadding;
-    private final int mVibrateIndex;
-
-    private final boolean mIsDexMode;
     // Sesl
 
     /** Duration of fade-out animation. */
@@ -174,7 +184,9 @@ class SeslRecyclerViewFastScroller {
     /** Theme-specified text color. Used only if text appearance is not set. */
     private final ColorStateList mTextColor;
 
+    @Nullable
     private final Drawable mThumbDrawable;
+    @Nullable
     private final Drawable mTrackDrawable;
     private final int mTextAppearance;
     private final int mThumbPosition;
@@ -274,6 +286,88 @@ class SeslRecyclerViewFastScroller {
         }
     };
 
+    //Sesl7
+    private static final int NORMAL_VIBRATE_INDEX = 26;
+    private static final int FASTSCROLL_VIBRATE_INDEX = 24;
+    private static final float MIN_FAST_VIBRATE_VELOCITY = 1000.0f;
+
+    private VelocityTracker mVelocityTracker;
+
+    private final int mNormalVibrateIndex;
+    private final int mFastVibrateIndex;
+
+    private int mListScrollRange = -1;
+    private int mListScrollExtent = -1;
+
+    @Nullable
+    private final SeslFastScrollThumbAnimator mThumbWidthAnimator;
+
+
+    public static class SeslFastScrollThumbAnimator implements DisposableHandle {
+        private static final float DEFAULT_SCROLL_BAR_VALUE = 0.0f;
+        private static final float FAST_SCROLL_BAR_VALUE = 1.0f;
+        private final int mActivatedColor;
+
+        @NonNull
+        private SeslFastScrollerBgDrawable mBgDrawable;
+        private final SeslColorAnimatable mColorAnimator;
+        private final int mDefaultColor;
+        private final float mMaxWidthPx;
+        private final float mMinWidthPx;
+        private final SeslFloatAnimatable mWidthAnimator;
+
+        public SeslFastScrollThumbAnimator(@NonNull Context context, @NonNull LayerDrawable layerDrawable) {
+            mBgDrawable = (SeslFastScrollerBgDrawable) layerDrawable.findDrawableByLayerId(R.id.thumb_bg);
+            Resources res = context.getResources();
+            mMinWidthPx = res.getDimension(R.dimen.sesl_fast_scroller_thumb_min_width);
+            mMaxWidthPx = res.getDimension(R.dimen.sesl_fast_scroller_thumb_max_width);
+            mDefaultColor = ColorUtils.setAlphaComponent(
+                    res.getColor(SeslMisc.isLightTheme(context)
+                            ? androidx.appcompat.R.color.sesl_scrollbar_handle_tint_color_light
+                            : androidx.appcompat.R.color.sesl_scrollbar_handle_tint_color_dark), 255);
+
+            TypedValue typedValue = new TypedValue();
+            context.getTheme().resolveAttribute(androidx.appcompat.R.attr.colorPrimary, typedValue, true);
+            mActivatedColor = ColorUtils.setAlphaComponent(context.getResources().getColor(typedValue.resourceId), 153);
+
+            Interpolator widthInterpolator = PathInterpolatorCompat.create(0.22f, 0.25f, 0.0f, 1.0f);
+            mWidthAnimator = new SeslFloatAnimatable(
+                    -1.0f,
+                    new SeslAnimatable.SimpleAnimationSpec(350L, widthInterpolator),
+                    widthValue -> {
+                        mBgDrawable.setValue((widthValue * (mMaxWidthPx - mMinWidthPx)) + mMinWidthPx);
+                        mBgDrawable.invalidateSelf();
+                        return Unit.INSTANCE;
+                    });
+
+            Interpolator colorInterpolator = PathInterpolatorCompat.create(0.0f, 0.0f, 1.0f, 1.0f);
+            mColorAnimator = new SeslColorAnimatable(
+                    -1,
+                    new SeslAnimatable.SimpleAnimationSpec(150L, colorInterpolator),
+                    colorValue -> {
+                        mBgDrawable.setArgb(colorValue);
+                        mBgDrawable.invalidateSelf();
+                        return Unit.INSTANCE;
+                    });
+
+            mWidthAnimator.tryAnimateTo(0.0f);
+            mColorAnimator.tryAnimateTo(mDefaultColor);
+        }
+
+
+        @Override
+        public void dispose() {
+            mWidthAnimator.dispose();
+            mColorAnimator.dispose();
+        }
+
+        public void setDragging(boolean isDragging) {
+            mWidthAnimator.tryAnimateTo(isDragging ? FAST_SCROLL_BAR_VALUE : DEFAULT_SCROLL_BAR_VALUE);
+            mColorAnimator.tryAnimateTo(isDragging ? mActivatedColor : mDefaultColor);
+        }
+    }
+    //sesl7
+
     public SeslRecyclerViewFastScroller(RecyclerView listView) {
         mRecyclerView = listView;
         mOldItemCount = listView.getAdapter().getItemCount();
@@ -302,64 +396,79 @@ class SeslRecyclerViewFastScroller {
         TypedArray a = mContext.getTheme().obtainStyledAttributes(null,
                 R.styleable.FastScroll, 0, R.style.Widget_RecyclerView_FastScroll);
 
-        mOverlayPosition = a.getInt(R.styleable.FastScroll_position, OVERLAY_FLOATING);
+        try{
+            mOverlayPosition = a.getInt(R.styleable.FastScroll_position, OVERLAY_FLOATING);
 
-        mPreviewResId[0] = a.getResourceId(R.styleable.FastScroll_backgroundLeft, 0);
-        mPreviewResId[1] = a.getResourceId(R.styleable.FastScroll_backgroundRight, 0);
+            mPreviewResId[0] = a.getResourceId(R.styleable.FastScroll_backgroundLeft, 0);
+            mPreviewResId[1] = a.getResourceId(R.styleable.FastScroll_backgroundRight, 0);
 
-        mThumbDrawable = a.getDrawable(R.styleable.FastScroll_thumbDrawable);
-        mTrackDrawable = a.getDrawable(R.styleable.FastScroll_trackDrawable);
+            mThumbDrawable = a.getDrawable(R.styleable.FastScroll_thumbDrawable);
+            mTrackDrawable = a.getDrawable(R.styleable.FastScroll_trackDrawable);
 
-        mTextAppearance = a.getResourceId(R.styleable.FastScroll_android_textAppearance, 0);
-        mTextColor = a.getColorStateList(R.styleable.FastScroll_android_textColor);
-        mTextSize = a.getDimensionPixelSize(R.styleable.FastScroll_android_textSize, 0);
+            mTextAppearance = a.getResourceId(R.styleable.FastScroll_android_textAppearance, 0);
+            mTextColor = a.getColorStateList(R.styleable.FastScroll_android_textColor);
+            mTextSize = a.getDimensionPixelSize(R.styleable.FastScroll_android_textSize, 0);
 
-        mPreviewMinWidth = a.getDimensionPixelSize(R.styleable.FastScroll_android_minWidth, 0);
-        mPreviewMinHeight = a.getDimensionPixelSize(R.styleable.FastScroll_android_minHeight, 0);
+            mPreviewMinWidth = a.getDimensionPixelSize(R.styleable.FastScroll_android_minWidth, 0);
+            mPreviewMinHeight = a.getDimensionPixelSize(R.styleable.FastScroll_android_minHeight, 0);
 
-        mThumbMinWidth = a.getDimensionPixelSize(R.styleable.FastScroll_thumbMinWidth, 0);
-        mThumbMinHeight = a.getDimensionPixelSize(R.styleable.FastScroll_thumbMinHeight, 0);
+            mThumbMinWidth = a.getDimensionPixelSize(R.styleable.FastScroll_thumbMinWidth, 0);
+            mThumbMinHeight = a.getDimensionPixelSize(R.styleable.FastScroll_thumbMinHeight, 0);
 
-        /*
-         * Padding in pixels around the preview text. Applied as layout margins to
-         * the preview text and padding to the preview image.
-         */
-        int mPreviewPadding = a.getDimensionPixelSize(R.styleable.FastScroll_android_padding, 0);
+            /*
+             * Padding in pixels around the preview text. Applied as layout margins to
+             * the preview text and padding to the preview image.
+             */
+            int mPreviewPadding = a.getDimensionPixelSize(R.styleable.FastScroll_android_padding, 0);
 
-        mThumbPosition = a.getInt(R.styleable.FastScroll_thumbPosition, THUMB_POSITION_MIDPOINT);
+            mThumbPosition = a.getInt(R.styleable.FastScroll_thumbPosition, THUMB_POSITION_MIDPOINT);
+            a.recycle();
 
-        a.recycle();
+            //Sesl7
+            if (mThumbDrawable instanceof LayerDrawable) {
+                mThumbWidthAnimator = new SeslFastScrollThumbAnimator(context, (LayerDrawable) mThumbDrawable);
+            } else {
+                mThumbWidthAnimator = null;
+            }
+            //sesl7
 
-        updateAppearance();
+            updateAppearance();
 
-        final ViewGroupOverlay overlay = listView.getOverlay();
-        mOverlay = overlay;
-        overlay.add(mTrackImage);
-        overlay.add(mThumbImage);
-        overlay.add(mPreviewImage);
-        overlay.add(mPrimaryText);
-        overlay.add(mSecondaryText);
+            mOverlay = listView.getOverlay();
+            mOverlay.add(mTrackImage);
+            mOverlay.add(mThumbImage);
+            mOverlay.add(mPreviewImage);
+            mOverlay.add(mPrimaryText);
+            mOverlay.add(mSecondaryText);
 
-        final Resources resources = mContext.getResources();
-        mPreviewMarginEnd = resources.getDimensionPixelOffset(R.dimen.sesl_fast_scroll_preview_margin_end);
-        mThumbMarginEnd = resources.getDimensionPixelOffset(R.dimen.sesl_fast_scroll_thumb_margin_end);
-        mAdditionalTouchArea = resources.getDimension(R.dimen.sesl_fast_scroll_additional_touch_area);
-        mTrackTopPadding = resources.getDimensionPixelOffset(R.dimen.sesl_fast_scroller_track_top_padding);
-        mTrackBottomPadding = resources.getDimensionPixelOffset(R.dimen.sesl_fast_scroller_track_bottom_padding);
-        mAdditionalBottomPadding = 0;
-        mAdditionalTopPadding = 0;
-        mImmersiveBottomPadding = 0;
-        mIsDexMode = SeslConfigurationReflector.isDexEnabled(resources.getConfiguration());
+            final Resources resources = mContext.getResources();
+            mPreviewMarginEnd = resources.getDimensionPixelOffset(R.dimen.sesl_fast_scroll_preview_margin_end);
+            mThumbMarginEnd = 0;
+            mAdditionalTouchArea = resources.getDimension(R.dimen.sesl_fast_scroll_additional_touch_area);
+            mTrackTopPadding = resources.getDimensionPixelOffset(R.dimen.sesl_fast_scroller_track_top_padding);
+            mTrackBottomPadding = resources.getDimensionPixelOffset(R.dimen.sesl_fast_scroller_track_bottom_padding);
+            mAdditionalBottomPadding = 0;
+            mAdditionalTopPadding = 0;
+            mImmersiveBottomPadding = 0;
 
-        mPrimaryText.setPadding(mPreviewPadding, 0, mPreviewPadding, 0);
-        mSecondaryText.setPadding(mPreviewPadding, 0, mPreviewPadding, 0);
+            mPrimaryText.setPadding(mPreviewPadding, 0, mPreviewPadding, 0);
+            mSecondaryText.setPadding(mPreviewPadding, 0, mPreviewPadding, 0);
 
-        getSectionsFromIndexer();
-        updateLongList(mOldChildCount, mOldItemCount);
-        setScrollbarPosition(listView.getVerticalScrollbarPosition());
-        postAutoHide();
+            getSectionsFromIndexer();
+            updateLongList(mOldChildCount, mOldItemCount);
+            setScrollbarPosition(listView.getVerticalScrollbarPosition());
+            postAutoHide();
 
-        mVibrateIndex = SeslHapticFeedbackConstantsReflector.semGetVibrationIndex(FASTSCROLL_VIBRATE_INDEX);
+            //Sesl7
+            mNormalVibrateIndex = SeslHapticFeedbackConstantsReflector.semGetVibrationIndex(NORMAL_VIBRATE_INDEX);
+            mFastVibrateIndex = SeslHapticFeedbackConstantsReflector.semGetVibrationIndex(FASTSCROLL_VIBRATE_INDEX);
+            //sesl7
+
+        } catch (Throwable th) {
+            a.recycle();
+            throw th;
+        }
+
     }
 
     private void updateAppearance() {
@@ -430,6 +539,11 @@ class SeslRecyclerViewFastScroller {
         mOverlay.remove(mPreviewImage);
         mOverlay.remove(mPrimaryText);
         mOverlay.remove(mSecondaryText);
+        //Sesl7
+        if (mThumbWidthAnimator != null) {
+            mThumbWidthAnimator.dispose();
+        }
+        //sesl7
     }
 
     /**
@@ -495,9 +609,14 @@ class SeslRecyclerViewFastScroller {
     public void setScrollBarStyle(int style) {
         if (mScrollBarStyle != style) {
             mScrollBarStyle = style;
-
+            resetScrollDatas();//sesl7
             updateLayout();
         }
+    }
+
+    private void resetScrollDatas() {
+        mListScrollRange = -1;
+        mListScrollExtent = -1;
     }
 
     /**
@@ -522,6 +641,7 @@ class SeslRecyclerViewFastScroller {
             DrawableCompat.setTintMode(mPreviewImage.getBackground(), PorterDuff.Mode.MULTIPLY);
             DrawableCompat.setTintList(mPreviewImage.getBackground(), ColorStateList.valueOf(mColorPrimary));
 
+            resetScrollDatas();//sesl7
             // Requires re-layout.
             updateLayout();
         }
@@ -556,6 +676,7 @@ class SeslRecyclerViewFastScroller {
 
     public void onSizeChanged(int w, int h, int oldw, int oldh) {
         mLongList = canScrollList(1) || canScrollList(-1);
+        resetScrollDatas();//sesl7
         updateLayout();
     }
 
@@ -609,13 +730,29 @@ class SeslRecyclerViewFastScroller {
      * Measures and layouts the scrollbar and decorations.
      */
     public void updateLayout() {
+        if (mState == STATE_DRAGGING) {//sesl7
+            return;
+        }
+
         // Prevent re-entry when RTL properties change as a side-effect of
         // resolving padding.
         if (mUpdatingLayout) {
             return;
         }
 
+        //Sesl7
+        int scrollRange = mRecyclerView.computeVerticalScrollRange();
+        int scrollExtent = mRecyclerView.computeVerticalScrollExtent();
+
+        if (mListScrollRange > 0 && scrollRange == mListScrollRange
+                && mListScrollExtent > 0 && scrollExtent == mListScrollExtent
+                && mContainerRect.width() > 0) return;
+        //sesl7
+
         mUpdatingLayout = true;
+
+        mListScrollRange = scrollRange;//sesl7
+        mListScrollExtent = scrollExtent;//sesl7
 
         updateContainerRect();
 
@@ -638,6 +775,14 @@ class SeslRecyclerViewFastScroller {
         bounds.right += mPreviewImage.getPaddingRight();
         bounds.bottom += mPreviewImage.getPaddingBottom();
         applyLayout(mPreviewImage, bounds);
+
+        //Sesl7
+        float oldThumbPosition = mOldThumbPosition;
+        if (oldThumbPosition != -1.0f) {
+            setThumbPos(oldThumbPosition);
+            mOldThumbPosition = -1.0f;
+        }
+        //sesl7
     }
 
     /**
@@ -688,7 +833,6 @@ class SeslRecyclerViewFastScroller {
      */
     private void measureViewToSide(View view, View adjacent, Rect margins, Rect out) {
         final int marginLeft;
-        final int marginTop = 0;
         final int marginRight;
         if (mLayoutFromRight) {
             if (adjacent == null) {
@@ -737,7 +881,7 @@ class SeslRecyclerViewFastScroller {
         }
 
         // Don't adjust the vertical position.
-        final int bottom = marginTop + view.getMeasuredHeight();
+        final int bottom = view.getMeasuredHeight();
         out.set(left, 0, right, bottom);
     }
 
@@ -814,6 +958,7 @@ class SeslRecyclerViewFastScroller {
     public void setAdditionalPadding(int top, int bottom) {
         mAdditionalTopPadding = top;
         mAdditionalBottomPadding = bottom;
+        resetScrollDatas();//sesl7
         updateLayout();
     }
 
@@ -822,8 +967,32 @@ class SeslRecyclerViewFastScroller {
      */
     private void layoutThumb() {
         final Rect bounds = mTempBounds;
-        measureViewToSide(mThumbImage, null, null, bounds);
+        measureThumb(bounds);//sesl7
         applyLayout(mThumbImage, bounds);
+    }
+
+   private void measureThumb(Rect bounds) {
+       Resources res = mContext.getResources();
+       if (mLayoutFromRight) {
+           int width = this.mContainerRect.width();
+           bounds.right = width;
+           bounds.left = width - res.getDimensionPixelOffset(R.dimen.sesl_fast_scroll_thumb_width);
+       } else {
+           bounds.right = res.getDimensionPixelOffset(R.dimen.sesl_fast_scroll_thumb_width);
+           bounds.left = 0;
+       }
+       bounds.top = 0;
+       bounds.bottom = getThumbLength(
+               mRecyclerView.getHeight(),
+               mContext.getResources().getDimensionPixelOffset(R.dimen.sesl_fast_scroll_thumb_min_height),
+               mListScrollExtent,
+               mListScrollRange
+       );
+   }
+
+    private int getThumbLength(int height, int minHeight, int scrollExtent, int scrollRange) {
+        int round = Math.round((float) (height * scrollExtent) / scrollRange);
+        return Math.max(round, minHeight);
     }
 
     /**
@@ -916,6 +1085,11 @@ class SeslRecyclerViewFastScroller {
                 }
                 transitionPreviewLayout(mCurrentSection);
                 break;
+        }
+
+        SeslFastScrollThumbAnimator animator = mThumbWidthAnimator;
+        if (animator != null) {
+            animator.setDragging(state == STATE_DRAGGING);
         }
 
         mState = state;
@@ -1064,6 +1238,15 @@ class SeslRecyclerViewFastScroller {
      * @param position
      */
     private void scrollTo(float position) {
+        scrollTo(position, 0.0f);
+    }
+
+    /**
+     * Scrolls to a specific position within the section
+     * @param position
+     * @param velocity
+     */
+    private void scrollTo(float position, float velocity/*sesl7*/) {
         mScrollCompleted = false;
 
         final int count = mRecyclerView.getAdapter().getItemCount();
@@ -1164,7 +1347,7 @@ class SeslRecyclerViewFastScroller {
 
         mCurrentSection = sectionIndex;
 
-        final boolean hasPreview = transitionPreviewLayout(sectionIndex);
+        final boolean hasPreview = transitionPreviewLayout(sectionIndex, velocity);
         Log.d(TAG, "scrollTo() called transitionPreviewLayout() sectionIndex ="
                 + sectionIndex + ", position = " + position);
         if (!mShowingPreview && hasPreview) {
@@ -1183,6 +1366,19 @@ class SeslRecyclerViewFastScroller {
      * @return False if the new preview text is empty.
      */
     private boolean transitionPreviewLayout(int sectionIndex) {
+        return transitionPreviewLayout(sectionIndex, 0.0f);
+    }
+
+    /**
+     * Transitions the preview text to a new section. Handles animation,
+     * measurement, and layout. If the new preview text is empty, returns false.
+     *
+     * @param sectionIndex The section index to which the preview should
+     *            transition.
+     * @param velocity
+     * @return False if the new preview text is empty.
+     */
+    private boolean transitionPreviewLayout(int sectionIndex, float velocity/* sesl7*/) {
         final Object[] sections = mSections;
         String text = null;
         if (sections != null && sectionIndex >= 0 && sectionIndex < sections.length) {
@@ -1219,9 +1415,15 @@ class SeslRecyclerViewFastScroller {
             mPreviewAnimation.cancel();
         }
 
+        //Sesl7
         if (!showing.getText().equals("")) {
-            mRecyclerView.performHapticFeedback(mVibrateIndex);
+            if (velocity > MIN_FAST_VIBRATE_VELOCITY) {
+                this.mRecyclerView.performHapticFeedback(mFastVibrateIndex);
+            } else {
+                this.mRecyclerView.performHapticFeedback(mNormalVibrateIndex);
+            }
         }
+        //sesl7
 
         // Cross-fade preview text.
         final Animator showTarget = animateAlpha(target, 1f).setDuration(DURATION_CROSS_FADE);
@@ -1502,8 +1704,8 @@ class SeslRecyclerViewFastScroller {
                     // need to allow the parent time to decide whether it wants
                     // to intercept events. If it does, we will receive a CANCEL
                     // event.
-                    mRecyclerView.performHapticFeedback(mVibrateIndex);
-                    if (!mRecyclerView.isInScrollingContainer() || mIsDexMode) {
+                    mRecyclerView.performHapticFeedback(mNormalVibrateIndex);
+                    if (!mRecyclerView.isInScrollingContainer()) {
                         // This will get dispatched to onTouchEvent(). Start
                         // dragging there.
                         return true;
@@ -1567,10 +1769,15 @@ class SeslRecyclerViewFastScroller {
             return false;
         }
 
+        if (mVelocityTracker == null) {
+            mVelocityTracker = VelocityTracker.obtain();
+        }
+        mVelocityTracker.addMovement(me);
+
         switch (me.getActionMasked()) {
             case MotionEvent.ACTION_DOWN: {
                 if (isPointInside(me.getX(), me.getY())) {
-                    if (!mRecyclerView.isInScrollingContainer() || mIsDexMode) {
+                    if (!mRecyclerView.isInScrollingContainer()) {
                         beginDrag();
                         mEffectState = EFFECT_STATE_OPEN;
                         return true;
@@ -1582,15 +1789,17 @@ class SeslRecyclerViewFastScroller {
                 if (mPendingDrag >= 0) {
                     // Allow a tap to scroll.
                     beginDrag();
-
+                    mVelocityTracker.computeCurrentVelocity(1_000);
+                    float yVelocity = mVelocityTracker.getYVelocity();
                     final float pos = getPosFromMotionEvent(me.getY());
                     mOldThumbPosition = pos;
                     setThumbPos(pos);
-                    scrollTo(pos);
+                    scrollTo(pos, Math.abs(yVelocity));
                     mEffectState = EFFECT_STATE_OPEN;
 
                     // Will hit the STATE_DRAGGING check below
                 }
+                mVelocityTracker.clear();
 
                 if (mState == STATE_DRAGGING) {
                     // ViewGroup does the right thing already, but there might
@@ -1637,7 +1846,10 @@ class SeslRecyclerViewFastScroller {
 
                     // If the previous scrollTo is still pending
                     if (mScrollCompleted) {
-                        scrollTo(pos);
+                        //Sesl7
+                        mVelocityTracker.computeCurrentVelocity(1000);
+                        scrollTo(pos, Math.abs(mVelocityTracker.getYVelocity()));
+                        //sesl7
                     }
 
                     if (mScrollY > containerTop && mScrollY < containerBottom) {
@@ -1656,6 +1868,7 @@ class SeslRecyclerViewFastScroller {
 
             case MotionEvent.ACTION_CANCEL: {
                 cancelPendingDrag();
+                mVelocityTracker.clear();
 
                 if (mState == STATE_DRAGGING) {
                     setState(STATE_NONE);

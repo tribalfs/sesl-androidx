@@ -8,15 +8,18 @@ import kotlin.coroutines.resumeWithException
 import kotlinx.coroutines.DisposableHandle
 import kotlinx.coroutines.suspendCancellableCoroutine
 
+
+//Added in sesl7
 class SeslFloatAnimatable(
     initialValue: Float,
-    private val defaultAnimationSpec: AnimationSpec,
-    private val onValueUpdated: (Float) -> Unit
+    defaultAnimationSpec: AnimationSpec,
+    override val onValueUpdated: (position: Float) -> Unit
 ) : SeslAnimatable<Float>(initialValue, defaultAnimationSpec), DisposableHandle {
 
     override suspend fun animateTo(targetValue: Float, animationSpec: AnimationSpec) {
         suspendCancellableCoroutine { continuation ->
             dispose()
+
             if (getValue() != targetValue) {
                 animator = ValueAnimator.ofFloat(getValue(), targetValue).apply {
                     animationSpec.invoke(this)
@@ -49,3 +52,4 @@ class SeslFloatAnimatable(
         }
     }
 }
+

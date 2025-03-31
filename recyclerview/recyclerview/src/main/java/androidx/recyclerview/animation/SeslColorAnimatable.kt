@@ -8,13 +8,14 @@ import kotlin.coroutines.resumeWithException
 import kotlinx.coroutines.suspendCancellableCoroutine
 
 
+//Added in sesl7
 class SeslColorAnimatable(
     initialValue: Int,
-    defaultAnimationSpec: SeslAnimatable.AnimationSpec,
-    private val onValueUpdated: (Int) -> Unit
+    defaultAnimationSpec: AnimationSpec,
+    override val onValueUpdated: (position: Int) -> Unit
 ) : SeslAnimatable<Int>(initialValue, defaultAnimationSpec) {
 
-    override suspend fun animateTo(targetValue: Int, animationSpec: SeslAnimatable.AnimationSpec) {
+    override suspend fun animateTo(targetValue: Int, animationSpec: AnimationSpec) {
         suspendCancellableCoroutine { continuation ->
             dispose()
             if (getValue() != targetValue) {
