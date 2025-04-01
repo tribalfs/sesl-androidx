@@ -1674,6 +1674,32 @@ package androidx.core.database.sqlite {
 
 }
 
+package androidx.core.flagging {
+
+  public interface AconfigPackageCompat {
+    method public boolean getBooleanFlagValue(String flagName, boolean defaultValue);
+    method @kotlin.jvm.Throws(exceptionClasses=AconfigStorageReadException::class) public static androidx.core.flagging.AconfigPackageCompat load(String packageName) throws android.os.flagging.AconfigStorageReadException;
+    field public static final androidx.core.flagging.AconfigPackageCompat.Companion Companion;
+  }
+
+  public static final class AconfigPackageCompat.Companion {
+    method @kotlin.jvm.Throws(exceptionClasses=AconfigStorageReadException::class) public androidx.core.flagging.AconfigPackageCompat load(String packageName) throws android.os.flagging.AconfigStorageReadException;
+  }
+
+  @RestrictTo(androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP_PREFIX) public final class Flags {
+    ctor public Flags();
+    method public static boolean getBooleanFlagValue(String packageName, String flagName);
+    method public static boolean getBooleanFlagValue(String packageName, String flagName, optional boolean defaultValue);
+    field public static final androidx.core.flagging.Flags.Companion Companion;
+  }
+
+  public static final class Flags.Companion {
+    method public boolean getBooleanFlagValue(String packageName, String flagName);
+    method public boolean getBooleanFlagValue(String packageName, String flagName, optional boolean defaultValue);
+  }
+
+}
+
 package androidx.core.graphics {
 
   public final class BitmapCompat {
