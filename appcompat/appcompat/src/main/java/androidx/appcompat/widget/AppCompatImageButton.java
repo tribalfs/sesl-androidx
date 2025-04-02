@@ -273,7 +273,7 @@ public class AppCompatImageButton extends ImageButton implements TintableBackgro
 
     //Sesl7
     @Override
-    public final void onAttachedToWindow() {
+    protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         if (getBackground() instanceof SeslRecoilDrawable) {
             isNeedToSkipRefreshDrawable = true;
@@ -281,7 +281,7 @@ public class AppCompatImageButton extends ImageButton implements TintableBackgro
     }
 
     @Override
-    public final void refreshDrawableState() {
+    public  void refreshDrawableState() {
         super.refreshDrawableState();
         if (isNeedToSkipRefreshDrawable && getStateListAnimator() != null) {
             getStateListAnimator().jumpToCurrentState();

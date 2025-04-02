@@ -1033,7 +1033,7 @@ public class AppCompatTextView extends TextView implements TintableBackgroundVie
 
     //Sesl7
     @Override
-    public void onAttachedToWindow() {
+    protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         if (getBackground() instanceof SeslRecoilDrawable) {
             isNeedToSkipRefreshDrawable = true;
@@ -1041,7 +1041,7 @@ public class AppCompatTextView extends TextView implements TintableBackgroundVie
     }
 
     @Override
-    public final void refreshDrawableState() {
+    public void refreshDrawableState() {
         super.refreshDrawableState();
         if (isNeedToSkipRefreshDrawable && getStateListAnimator() != null) {
             getStateListAnimator().jumpToCurrentState();
