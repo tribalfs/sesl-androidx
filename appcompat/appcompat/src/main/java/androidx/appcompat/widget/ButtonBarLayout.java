@@ -15,6 +15,9 @@
  */
 package androidx.appcompat.widget;
 
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP_PREFIX;
 
 import android.content.Context;
@@ -22,6 +25,8 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -31,6 +36,8 @@ import androidx.appcompat.R;
 import androidx.core.view.ViewCompat;
 
 /**
+ * <p><b>SESL variant</b></p><br>
+ *
  * An extension of LinearLayout that automatically switches to vertical
  * orientation when it can't fit its child views horizontally.
  *
@@ -48,6 +55,8 @@ public class ButtonBarLayout extends LinearLayout {
 
     private int mLastWidthSize = -1;
 
+    private final int mButtonBarBottomMargin;//sesl
+
     public ButtonBarLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         final TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.ButtonBarLayout);
@@ -61,6 +70,7 @@ public class ButtonBarLayout extends LinearLayout {
         if (getOrientation() == LinearLayout.VERTICAL) {
             setStacked(mAllowStacking);
         }
+        mButtonBarBottomMargin = (int) getResources().getDimension(R.dimen.sesl_dialog_button_bar_margin_bottom);//sesl7
     }
 
     public void setAllowStacking(boolean allowStacking) {
@@ -81,6 +91,7 @@ public class ButtonBarLayout extends LinearLayout {
             if (widthSize > mLastWidthSize && isStacked()) {
                 // We're being measured wider this time, try un-stacking.
                 setStacked(false);
+                setDividerVisible(getNextVisibleChildIndex(0));//sesl
             }
 
             mLastWidthSize = widthSize;
@@ -112,9 +123,19 @@ public class ButtonBarLayout extends LinearLayout {
 
             if (stack) {
                 setStacked(true);
+                setDividerInvisible(0);//sesl
+                setGravity(Gravity.CENTER);//sesl
                 // Measure again in the new orientation.
                 needsRemeasure = true;
             }
+
+            //Sesl
+            if (stack) {
+                applyButtonMargin();
+            } else {
+                clearButtonMargin();
+            }
+            //sesl
         }
 
         if (needsRemeasure) {
@@ -184,4 +205,62 @@ public class ButtonBarLayout extends LinearLayout {
     private boolean isStacked() {
         return mStacked;
     }
+
+    //Sesl
+    private void applyButtonMargin() {
+        int childCount = getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            View button = getChildAt(i);
+            if (button instanceof Button) {
+                ViewGroup.LayoutParams layoutParams = button.getLayoutParams();
+                if (layoutParams instanceof MarginLayoutParams lp) {
+                    layoutParams.width = MATCH_PARENT;
+                    if (i < childCount - 1) {
+                        lp.setMargins(0, 0, 0, mButtonBarBottomMargin);
+                    }
+                    button.setLayoutParams(lp);
+                }
+            }
+        }
+    }
+
+    private void clearButtonMargin() {
+        int childCount = getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            View button = getChildAt(i);
+            if (button instanceof Button) {
+                ViewGroup.LayoutParams layoutParams = button.getLayoutParams();
+                if (layoutParams instanceof MarginLayoutParams lp) {
+                    layoutParams.width = WRAP_CONTENT;
+                    if (i < childCount - 1) {
+                        lp.setMargins(0, 0, 0, 0);
+                    }
+                    button.setLayoutParams(lp);
+                }
+            }
+        }
+    }
+
+
+    private void setDividerInvisible(int index) {
+        int childCount = getChildCount();
+        while (index < childCount) {
+            if (!(getChildAt(index) instanceof Button)) {
+                getChildAt(index).setVisibility(View.GONE);
+            }
+            index++;
+        }
+    }
+
+    private void setDividerVisible(int i) {
+        int i3;
+        int childCount = getChildCount();
+        while (i < childCount) {
+            if (!(getChildAt(i) instanceof Button) && (i3 = i + 1) < childCount && (getChildAt(i3) instanceof Button) && getChildAt(i3).getVisibility() == 0) {
+                getChildAt(i).setVisibility(0);
+            }
+            i++;
+        }
+    }
+    //sesl
 }
