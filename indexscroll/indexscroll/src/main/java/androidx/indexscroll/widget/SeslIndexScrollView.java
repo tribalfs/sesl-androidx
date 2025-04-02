@@ -33,11 +33,14 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewGroupOverlay;
 import android.view.accessibility.AccessibilityEvent;
@@ -115,6 +118,11 @@ public class SeslIndexScrollView extends FrameLayout {
 
     long mStartTouchDown = 0;
     float mTouchY = OUT_OF_BOUNDARY;
+
+    //Sesl7
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
+    private VelocityTracker mVelocityTracker;
+    //sesl7
 
     final Runnable mPreviewDelayRunnable = new Runnable() {
         @Override
@@ -220,7 +228,7 @@ public class SeslIndexScrollView extends FrameLayout {
                 mIndexScrollPreview.invalidate();
             }
             if (mIndexScroll != null
-                    && mIndexScroll.isAlphabetInit()) {
+                    && mIndexScroll.mIsAlphabetInit) {
                 mIndexScroll.draw(canvas);
             }
         }
@@ -491,6 +499,13 @@ public class SeslIndexScrollView extends FrameLayout {
         final float y = ev.getY();
         final float x = ev.getX();
 
+        //Sesl7
+        if (mVelocityTracker == null) {
+            mVelocityTracker = VelocityTracker.obtain();
+        }
+        mVelocityTracker.addMovement(ev);
+        //sesl7
+
         switch (action) {
             case MotionEvent.ACTION_DOWN: {
                 mCurrentIndex = mIndexScroll.getIndexByPosition((int) x, (int) y, true);
@@ -500,30 +515,32 @@ public class SeslIndexScrollView extends FrameLayout {
                     return false;
                 }
 
-                if (mIndexScroll.isAlphabetInit()
-                        && mCurrentIndex != null && !mCurrentIndex.isEmpty()) {
-                    mIndexScroll.setEffectText(mCurrentIndex);
-                    mIndexScroll.drawEffect(y);
-                    mIndexScrollPreview.setLayout(0, 0, getWidth(), getHeight());
-                    mIndexScrollPreview.invalidate();
-                    mTouchY = y;
-                    mIndexScroll.changeThumbAlpha(255);
-                }
+                mHandler.postDelayed(() -> {
+                    if (mIndexScroll.mIsAlphabetInit
+                            && mCurrentIndex != null && !mCurrentIndex.isEmpty()) {
+                        mIndexScroll.setEffectText(mCurrentIndex);
+                        mIndexScroll.drawEffect(y, 0f);
+                        mIndexScrollPreview.setLayout(0, 0, getWidth(), getHeight());
+                        mIndexScrollPreview.invalidate();
+                        mTouchY = y;
+                        mIndexScroll.changeThumbAlpha(255);
+                    }
 
-                final int position;
-                if (!mIsSimpleIndexScroll) {
-                    position = getListViewPosition(mCurrentIndex);
-                } else {
-                    position = mIndexScroll.getSelectedIndex();
-                }
-                if (position != RecyclerView.NO_POSITION) {
-                    notifyIndexChange(position);
-                }
+                    final int position;
+                    if (!mIsSimpleIndexScroll) {
+                        position = getListViewPosition(mCurrentIndex);
+                    } else {
+                        position = mIndexScroll.getSelectedIndex();
+                    }
+                    if (position != RecyclerView.NO_POSITION) {
+                        notifyIndexChange(position);
+                    }
+                }, 200);
             }
             break;
 
             case MotionEvent.ACTION_UP:
-            case MotionEvent.ACTION_CANCEL: {
+            case MotionEvent.ACTION_CANCEL:
                 postDelayed(() -> {
                     mCurrentIndex = null;
                     mIndexScroll.resetSelectedIndex();
@@ -534,8 +551,8 @@ public class SeslIndexScrollView extends FrameLayout {
                         mOnIndexBarEventListener.onReleased(y);
                     }
                 }, 30);
-            }
-            break;
+                mVelocityTracker.clear();
+                break;
 
             case MotionEvent.ACTION_MOVE: {
                 if (mCurrentIndex == null || !mIndexScrollPreview.mIsOpen) {
@@ -556,10 +573,12 @@ public class SeslIndexScrollView extends FrameLayout {
                 } else if (mCurrentIndex == null || calculatedIndexStr == null
                         || calculatedIndexStr.length() >= mCurrentIndex.length()) {
                     mCurrentIndex = mIndexScroll.getIndexByPosition((int) x, (int) y, false);
-                    if (mIndexScroll.isAlphabetInit()
+                    if (mIndexScroll.mIsAlphabetInit
                             && mCurrentIndex != null && !mCurrentIndex.isEmpty()) {
+                        mVelocityTracker.computeCurrentVelocity(1_000);
+                        float yVelocity = mVelocityTracker.getYVelocity();
                         mIndexScroll.setEffectText(mCurrentIndex);
-                        mIndexScroll.drawEffect(y);
+                        mIndexScroll.drawEffect(y, yVelocity);
                         mTouchY = y;
                     }
 
@@ -675,7 +694,7 @@ public class SeslIndexScrollView extends FrameLayout {
         private boolean mBgRectParamsSet = false;
         boolean mEnableScrollThumb;
         boolean mEnableTextMode;
-        private boolean mIsAlphabetInit = false;
+        boolean mIsAlphabetInit = false;
 
         private float mContentMinHeight;
         private float mDotRadius;
@@ -710,7 +729,6 @@ public class SeslIndexScrollView extends FrameLayout {
         private int mTextSize;
         int mThumbColor = Color.TRANSPARENT;
         private int mWidth;
-        private int mWidthShift = 0;
 
         final Runnable mFadeOutRunnable = () -> playThumbFadeAnimator(0);
 
@@ -777,10 +795,6 @@ public class SeslIndexScrollView extends FrameLayout {
             mPosition = position;
             mContext = context;
             init();
-        }
-
-        public boolean isAlphabetInit() {
-            return mIsAlphabetInit;
         }
 
         public int getPosition() {
@@ -852,7 +866,6 @@ public class SeslIndexScrollView extends FrameLayout {
             mTextSize = (int) res.getDimension(R.dimen.sesl_indexbar_text_size);
             mScrollTop = (int) res.getDimension(R.dimen.sesl_indexbar_margin_top);
             mScrollBottom = (int) res.getDimension(R.dimen.sesl_indexbar_margin_bottom);
-            mWidthShift = (int) res.getDimension(R.dimen.sesl_indexbar_margin_horizontal);
             mContentPadding = (int) res.getDimension(R.dimen.sesl_indexbar_content_padding);
             mContentMinHeight = res.getDimension(R.dimen.sesl_indexbar_content_min_height);
             mDotRadius = res.getDimension(R.dimen.sesl_indexbar_dot_radius);
@@ -986,12 +999,12 @@ public class SeslIndexScrollView extends FrameLayout {
             if (pressed) {
                 if (x < mBgRect.left - mAdditionalSpace || x > mBgRect.right + mAdditionalSpace) {
                     if (mPosition == 0
-                            && x >= mWidthShift + mItemWidth + mItemWidthGap) {
+                            && x >= mItemWidth + mItemWidthGap) {
                         return null;
                     }
 
                     if (mPosition == 1
-                            && x <= (mWidth - mWidthShift) - (mItemWidth + mItemWidthGap)) {
+                            && x <= mWidth - (mItemWidth + mItemWidthGap)) {
                         return null;
                     }
 
@@ -1100,9 +1113,9 @@ public class SeslIndexScrollView extends FrameLayout {
             mBigText = effectText;
         }
 
-        public void drawEffect(float effectPositionY) {
+        public void drawEffect(float effectPositionY, float velocity) {
             if (mSelectedIndex != NO_SELECTED_INDEX) {
-                mSmallText = mAlphabetArray[mSelectedIndex];
+                    mSmallText = mAlphabetArray[mSelectedIndex];
                 mTextPaint.getTextBounds(mSmallText, 0, mSmallText.length(), mTextBounds);
 
                 final float bottomDrawY;
@@ -1123,7 +1136,7 @@ public class SeslIndexScrollView extends FrameLayout {
                             ? topDrawY : effectPositionY >= bottomDrawY ? bottomDrawY : OUT_OF_BOUNDARY;
                 }
                 if (effectPositionY != OUT_OF_BOUNDARY) {
-                    mIndexScrollPreview.open(effectPositionY, mBigText);
+                    mIndexScrollPreview.open(effectPositionY, mBigText, velocity);
                     if (mOnIndexBarEventListener != null) {
                         mOnIndexBarEventListener.onPressed(effectPositionY);
                     }
@@ -1135,10 +1148,10 @@ public class SeslIndexScrollView extends FrameLayout {
             int left;
             int right;
             if (mPosition == GRAVITY_INDEX_BAR_RIGHT) {
-                right = mWidth - mWidthShift;
+                right = mWidth;
                 left = right - mBgRectWidth;
             } else {
-                left = mWidthShift;
+                left = 0;
                 right = mBgRectWidth + left;
             }
 
@@ -1309,7 +1322,6 @@ public class SeslIndexScrollView extends FrameLayout {
     }
 
     class IndexScrollPreview extends View {
-        private static final int FASTSCROLL_VIBRATE_INDEX = 26;
 
         private String mPreviewText;
         private Paint mShapePaint;
@@ -1325,7 +1337,14 @@ public class SeslIndexScrollView extends FrameLayout {
 
         private int mTextSize;
         private int mTextWidthLimit;
-        private int mVibrateIndex;
+
+        //Sesl7
+        private static final int NORMAL_VIBRATE_INDEX = 26;
+        private static final int FASTSCROLL_VIBRATE_INDEX = 24;
+        private static final float MIN_FAST_VIBRATE_VELOCITY = 1000.0f;
+        private final int mNormalVibrateIndex = SeslHapticFeedbackConstantsReflector.semGetVibrationIndex(FASTSCROLL_VIBRATE_INDEX);
+        private final int mFastVibrateIndex = SeslHapticFeedbackConstantsReflector.semGetVibrationIndex(NORMAL_VIBRATE_INDEX);
+        //sesl7
 
         public IndexScrollPreview(Context context) {
             super(context);
@@ -1358,8 +1377,6 @@ public class SeslIndexScrollView extends FrameLayout {
             mPreviewCenterMargin = rsrc.getDimension(R.dimen.sesl_index_scroll_preview_margin_center);
 
             mIsOpen = false;
-            mVibrateIndex = SeslHapticFeedbackConstantsReflector
-                    .semGetVibrationIndex(FASTSCROLL_VIBRATE_INDEX);
         }
 
         public void setLayout(int l, int t, int r, int b) {
@@ -1380,12 +1397,17 @@ public class SeslIndexScrollView extends FrameLayout {
             mTextPaint.setColor(txtColor);
         }
 
-        public void open(float y, String text) {
+        public void open(float y, String text, float velocity) {
             int textSize = mTextSize;
             mPreviewCenterY = y;
 
             if (!mIsOpen || !mPreviewText.equals(text)) {
-                performHapticFeedback(mVibrateIndex);
+                if (velocity > MIN_FAST_VIBRATE_VELOCITY) {
+                    performHapticFeedback(mFastVibrateIndex);
+                } else {
+                    performHapticFeedback(mNormalVibrateIndex);
+                }
+
             }
 
             mPreviewText = text;
