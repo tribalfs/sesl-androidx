@@ -19,10 +19,12 @@ package androidx.appcompat.widget;
 import static android.os.Build.VERSION.SDK_INT;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP_PREFIX;
+import static androidx.core.view.SemBlurCompat.BLUR_MODE_WINDOW;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.database.DataSetObserver;
 import android.graphics.Insets;
@@ -63,9 +65,11 @@ import androidx.annotation.StyleRes;
 import androidx.appcompat.R;
 import androidx.appcompat.util.SeslMisc;
 import androidx.appcompat.view.menu.ShowableListMenu;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.view.SemBlurCompat;
 import androidx.core.widget.PopupWindowCompat;
+import androidx.reflect.os.SeslBuildReflector;
 import androidx.reflect.provider.SeslSettingsReflector;
-import androidx.reflect.view.SeslSemBlurInfoReflector;
 import androidx.reflect.view.SeslSemWindowManagerReflector;
 import androidx.reflect.view.SeslViewRuneReflector;
 
@@ -99,7 +103,11 @@ public class ListPopupWindow implements ShowableListMenu {
     private static Method sGetMaxAvailableHeightMethod;
     private static Method sSetEpicenterBoundsMethod;
 
+    private static final boolean ONEUI_5_1_1;//sesl
+
     static {
+        ONEUI_5_1_1 = SeslBuildReflector.SeslVersionReflector.getField_SEM_PLATFORM_INT() >= 140500;//sesl
+
         if (SDK_INT <= 28) {
             try {
                 sSetClipToWindowEnabledMethod = PopupWindow.class.getDeclaredMethod(
@@ -1493,7 +1501,7 @@ public class ListPopupWindow implements ShowableListMenu {
             final int maxAvailableHeight = Api24Impl.getMaxAvailableHeight(mPopup, anchor, yOffset,
                     ignoreBottomDecorations);
             //Sesl
-            if (SDK_INT >= 30 && mIsOverflowPopup) {
+            if (SDK_INT >= 30 && mIsOverflowPopup && !ONEUI_5_1_1) {
                 final int foldablePopupHeight = updatePopupHeightForFoldableModel(anchor);
                 if (foldablePopupHeight > 0 && foldablePopupHeight < maxAvailableHeight) {
                     return foldablePopupHeight;
@@ -1609,28 +1617,27 @@ public class ListPopupWindow implements ShowableListMenu {
     }
 
     private void setBlurEffect() {
-        if (mPopup.getContentView() != null && mContext != null) {
-            final boolean isThemeApplied = Settings.System.getString(mContext.getContentResolver(),
-                    "current_sec_active_themepackage") != null;
+        View contentView;
+        if (mContext == null || (contentView = mPopup.getContentView()) == null || !mPopup.seslIsAvailableBlurBackground()) {
+            return;
+        }
 
-            if (!isThemeApplied && !isReduceTransparencySettingsEnabled() && mPopup.seslIsAvailableBlurBackground()) {
-                Object builder = SeslSemBlurInfoReflector.semCreateBlurBuilder(0);
+        Resources res = mContext.getResources();
 
-                if (builder != null) {
-                    SeslSemBlurInfoReflector.semSetBuilderBlurRadius(builder, 120);
-                    SeslSemBlurInfoReflector.semSetBuilderBlurBackgroundColor(builder,
-                            mContext.getResources().getColor(SeslMisc.isLightTheme(mContext)
-                                            ? R.color.sesl_popup_menu_blur_background : R.color.sesl_popup_menu_blur_background_dark,
-                                    mContext.getTheme()));
-                    SeslSemBlurInfoReflector.semSetBuilderBlurBackgroundCornerRadius(builder,
-                            mContext.getResources().getDimensionPixelSize(R.dimen.sesl_menu_popup_corner_radius));
-                    SeslSemBlurInfoReflector.semBuildSetBlurInfo(builder, mPopup.getContentView());
+        int blurBgColorRes = SeslMisc.isLightTheme(mContext)
+                ? R.color.sesl_popup_menu_blur_background : R.color.sesl_popup_menu_blur_background_dark;
 
-                    if (mDropDownList != null) {
-                        mDropDownList.setOverScrollMode(View.OVER_SCROLL_NEVER);
-                    }
-                }
-            }
+        if (!SemBlurCompat.setBlurEffect(
+                contentView,
+                ResourcesCompat.getColor(res, blurBgColorRes, mContext.getTheme()),
+                120,
+                BLUR_MODE_WINDOW,
+                res.getDimensionPixelSize(R.dimen.sesl_menu_popup_corner_radius))) {
+            return;
+        }
+
+        if (mDropDownList != null) {
+            mDropDownList.setOverScrollMode(View.OVER_SCROLL_NEVER);
         }
     }
 
