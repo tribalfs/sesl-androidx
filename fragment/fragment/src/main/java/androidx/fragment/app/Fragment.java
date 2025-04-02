@@ -28,21 +28,18 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.SparseArray;
-import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -66,7 +63,6 @@ import androidx.activity.result.contract.ActivityResultContracts.StartActivityFo
 import androidx.activity.result.contract.ActivityResultContracts.StartIntentSenderForResult;
 import androidx.annotation.AnimRes;
 import androidx.annotation.CallSuper;
-import androidx.annotation.ColorInt;
 import androidx.annotation.ContentView;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.MainThread;
@@ -107,12 +103,15 @@ import androidx.savedstate.ViewTreeSavedStateRegistryOwner;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
+import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+
+import kotlinx.coroutines.DisposableHandle;
 
 /**
  * Static library support version of the framework's {@link android.app.Fragment}.
@@ -342,6 +341,9 @@ public class Fragment implements ComponentCallbacks, OnCreateContextMenuListener
             mSavedStateRegistryController.performRestore(savedStateRegistryState);
         }
     };
+
+    @Nullable
+    DisposableHandle mDisposableHandle = null;//sesl7
 
     /**
      * {@inheritDoc}
@@ -1928,51 +1930,53 @@ public class Fragment implements ComponentCallbacks, OnCreateContextMenuListener
     @MainThread
     @Nullable
     public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
+        //Sesl7
         View view = getView();
 
         if (view == null) {
             return null;
         }
 
-        Resources res = getResources();
-        int colorBackground = getColorBackground(view.getContext());
-
-        if (nextAnim == R.anim.sesl_fragment_open_exit) {
-            view.setTranslationZ(0.0f);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                view.setForeground(new ColorDrawable(res.getColor(R.color.sesl_fragment_fgcolor,
-                        requireContext().getTheme())));
-            }
-            return null;
-        } else if (nextAnim == R.anim.sesl_fragment_open_enter) {
-            view.setTranslationZ(1.0f);
-            view.setBackgroundColor(res.getColor(android.R.color.transparent));
-            view.setBackgroundTintMode(PorterDuff.Mode.SRC);
-            view.setBackgroundTintList(ColorStateList.valueOf(colorBackground));
-            return null;
-        } else if (nextAnim == R.anim.sesl_fragment_close_enter) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                view.setForeground(new ColorDrawable(res.getColor(android.R.color.transparent)));
-            }
-            view.setBackgroundColor(res.getColor(android.R.color.transparent));
-            view.setBackgroundTintMode(PorterDuff.Mode.SRC);
-            view.setBackgroundTintList(ColorStateList.valueOf(res.getColor(R.color.sesl_fragment_bgcolor)));
-            Activity activity = getActivity();
-            if (activity != null) {
-                activity.getWindow().getDecorView().setBackgroundColor(colorBackground);
-            }
+        Context context = getContext();
+        if (context == null || !isDefaultTheme(context)) {
             return null;
         }
+
+        FragmentActivity fragmentActivity = getActivity();
+
+        if (SeslFragmentTransactionAnimationSet.isOpenExit(nextAnim)) {
+            view.setTranslationZ(0.0f);
+        } else if (SeslFragmentTransactionAnimationSet.isOpenEnter(nextAnim)) {
+            view.setTranslationZ(1.0f);
+        }
+
+        if (SeslFragmentTransactionAnimationSet.isFragmentAnimationRes(nextAnim)) {
+            if (fragmentActivity != null) {
+                fragmentActivity.getWindow().getDecorView()
+                        .setBackgroundColor(getResources().getColor(R.color.sesl_fragment_fgcolor));
+            }
+            view.setBackgroundColor(getResources().getColor(R.color.sesl_fragment_bgcolor));
+        }
+
+        final WeakReference<View> weakReference = new WeakReference<>(view);
+
+        mDisposableHandle = () -> {
+            View v = weakReference.get();
+
+            if (v != null){
+                Animation anim = v.getAnimation();
+                if (anim != null && !anim.hasEnded()) {
+                Log.d(FragmentManager.TAG, "Fragment Animation was canceled by back press");
+                    v.clearAnimation();
+            }
+                }
+            mDisposableHandle = null;
+        };
+
         return null;
+        //sesl7
     }
 
-    @ColorInt
-    private int getColorBackground(@NonNull Context context) {
-        Resources.Theme theme = context.getTheme();
-        TypedValue typedValue = new TypedValue();
-        theme.resolveAttribute(android.R.attr.colorBackground, typedValue, true);
-        return typedValue.data;
-    }
 
     /**
      * Called when a fragment loads an animator. This will be called when
@@ -3763,4 +3767,10 @@ public class Fragment implements ComponentCallbacks, OnCreateContextMenuListener
         // hasn't been called yet.
         boolean mEnterTransitionPostponed;
     }
+
+    //Sesl7
+    private static boolean isDefaultTheme(Context context) {
+        return TextUtils.isEmpty(Settings.System.getString(context.getContentResolver(), "current_sec_active_themepackage"));
+    }
+
 }
