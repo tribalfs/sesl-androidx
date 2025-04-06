@@ -1066,7 +1066,7 @@ public class SeslIndexScrollView extends FrameLayout {
                 }
 
                 if (mAlphabetArray != null
-                        && mSelectedIndex > -1 && mSelectedIndex <= mAlphabetSize) {
+                        && mSelectedIndex > NO_SELECTED_INDEX && mSelectedIndex <= mAlphabetSize) {
                     return mAlphabetArray[mSelectedIndex];
                 }
             }
@@ -1075,7 +1075,7 @@ public class SeslIndexScrollView extends FrameLayout {
         }
 
         private boolean isInSelectedIndexRect(int y) {
-            if (mSelectedIndex == -1 || mSelectedIndex >= this.mAlphabetSize) {
+            if (mSelectedIndex == NO_SELECTED_INDEX || mSelectedIndex >= this.mAlphabetSize) {
                 return false;
             }
 
@@ -1342,8 +1342,8 @@ public class SeslIndexScrollView extends FrameLayout {
         private static final int NORMAL_VIBRATE_INDEX = 26;
         private static final int FASTSCROLL_VIBRATE_INDEX = 24;
         private static final float MIN_FAST_VIBRATE_VELOCITY = 1000.0f;
-        private final int mNormalVibrateIndex = SeslHapticFeedbackConstantsReflector.semGetVibrationIndex(FASTSCROLL_VIBRATE_INDEX);
-        private final int mFastVibrateIndex = SeslHapticFeedbackConstantsReflector.semGetVibrationIndex(NORMAL_VIBRATE_INDEX);
+        private final int mNormalVibrateIndex = SeslHapticFeedbackConstantsReflector.semGetVibrationIndex(NORMAL_VIBRATE_INDEX);
+        private final int mFastVibrateIndex = SeslHapticFeedbackConstantsReflector.semGetVibrationIndex(FASTSCROLL_VIBRATE_INDEX);
         //sesl7
 
         public IndexScrollPreview(Context context) {
