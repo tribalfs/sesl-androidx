@@ -252,9 +252,7 @@ public class AppPickerView extends RecyclerView
         setLayoutManager(getLayoutManager(type));
         setAdapter(mAdapter);
         seslSetGoToTopEnabled(true);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            seslSetFastScrollerEnabled(true);
-        }
+        seslSetFastScrollerEnabled(true);
         seslSetFillBottomEnabled(true);
         mSeparators = new ArrayList<>();
         mIsAppPickerInitialized = true;
