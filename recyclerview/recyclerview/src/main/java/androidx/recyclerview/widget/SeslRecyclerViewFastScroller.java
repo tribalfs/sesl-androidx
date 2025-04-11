@@ -16,6 +16,8 @@
 
 package androidx.recyclerview.widget;
 
+import static android.window.OnBackInvokedDispatcher.PRIORITY_OVERLAY;
+
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP_PREFIX;
 
 import android.animation.Animator;
@@ -54,6 +56,8 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
+import android.window.OnBackInvokedCallback;
+import android.window.OnBackInvokedDispatcher;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -367,6 +371,12 @@ class SeslRecyclerViewFastScroller {
     }
     //sesl7
 
+    //Custom
+    private OnBackInvokedDispatcher mOnBackInvokedDispatcher;
+    private OnBackInvokedCallback mDummyOnBackInvokedCallback;
+    private boolean dummyCallbackRegistered = false;
+    //custom
+
     public SeslRecyclerViewFastScroller(RecyclerView listView) {
         mRecyclerView = listView;
         mOldItemCount = listView.getAdapter().getItemCount();
@@ -461,6 +471,11 @@ class SeslRecyclerViewFastScroller {
             mNormalVibrateIndex = SeslHapticFeedbackConstantsReflector.semGetVibrationIndex(NORMAL_VIBRATE_INDEX);
             mFastVibrateIndex = SeslHapticFeedbackConstantsReflector.semGetVibrationIndex(FASTSCROLL_VIBRATE_INDEX);
             //sesl7
+
+            //Custom
+            if (Build.VERSION.SDK_INT >= 33) {
+                mDummyOnBackInvokedCallback = () -> {};
+            }
 
         } catch (Throwable th) {
             a.recycle();
@@ -1708,6 +1723,7 @@ class SeslRecyclerViewFastScroller {
         switch (ev.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
                 if (isPointInside(ev.getX(), ev.getY())) {
+                    enableDummyBackCallback(true);//custom
                     // If the parent has requested that its children delay
                     // pressed state (e.g. is a scrolling container) then we
                     // need to allow the parent time to decide whether it wants
@@ -1741,6 +1757,7 @@ class SeslRecyclerViewFastScroller {
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
+                enableDummyBackCallback(false);//custom
                 cancelPendingDrag();
                 break;
         }
@@ -1787,6 +1804,7 @@ class SeslRecyclerViewFastScroller {
             case MotionEvent.ACTION_DOWN: {
                 if (isPointInside(me.getX(), me.getY())) {
                     if (!mRecyclerView.isInScrollingContainer()) {
+                        enableDummyBackCallback(true);//custom
                         beginDrag();
                         mEffectState = EFFECT_STATE_OPEN;
                         return true;
@@ -1795,6 +1813,7 @@ class SeslRecyclerViewFastScroller {
             } break;
 
             case MotionEvent.ACTION_UP: {
+                enableDummyBackCallback(false);//custom
                 if (mPendingDrag >= 0) {
                     // Allow a tap to scroll.
                     beginDrag();
@@ -1876,6 +1895,7 @@ class SeslRecyclerViewFastScroller {
             } break;
 
             case MotionEvent.ACTION_CANCEL: {
+                enableDummyBackCallback(false);//custom
                 cancelPendingDrag();
                 mVelocityTracker.clear();
 
@@ -2063,5 +2083,22 @@ class SeslRecyclerViewFastScroller {
             setValue(object, value.intValue());
         }
 
+    }
+
+    //Custom
+    private void enableDummyBackCallback(boolean enable){
+        if (Build.VERSION.SDK_INT >= 33) {
+            if (mOnBackInvokedDispatcher == null) {
+                mOnBackInvokedDispatcher = mRecyclerView.findOnBackInvokedDispatcher();
+            }
+            if ( enable == dummyCallbackRegistered) return;
+            dummyCallbackRegistered = enable;
+
+            if (enable){
+                mOnBackInvokedDispatcher.registerOnBackInvokedCallback(PRIORITY_OVERLAY, mDummyOnBackInvokedCallback);
+            }else{
+                mOnBackInvokedDispatcher.unregisterOnBackInvokedCallback(mDummyOnBackInvokedCallback);
+            }
+        }
     }
 }
