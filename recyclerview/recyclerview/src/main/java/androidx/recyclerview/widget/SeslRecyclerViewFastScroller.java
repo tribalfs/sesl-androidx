@@ -112,8 +112,7 @@ class SeslRecyclerViewFastScroller {
     private final int mPreviewMarginEnd;
     private int mThumbBackgroundColor = Color.WHITE;
     private final int mThumbMarginEnd;
-    private final int mTrackBottomPadding;
-    private final int mTrackTopPadding;
+    private final int mTrackVerticalPadding;//sesl7
     // Sesl
 
     /** Duration of fade-out animation. */
@@ -443,10 +442,9 @@ class SeslRecyclerViewFastScroller {
 
             final Resources resources = mContext.getResources();
             mPreviewMarginEnd = resources.getDimensionPixelOffset(R.dimen.sesl_fast_scroll_preview_margin_end);
-            mThumbMarginEnd = 0;
+            mThumbMarginEnd = resources.getDimensionPixelOffset(R.dimen.sesl_fast_scroll_thumb_margin_end);
             mAdditionalTouchArea = resources.getDimension(R.dimen.sesl_fast_scroll_additional_touch_area);
-            mTrackTopPadding = resources.getDimensionPixelOffset(R.dimen.sesl_fast_scroller_track_top_padding);
-            mTrackBottomPadding = resources.getDimensionPixelOffset(R.dimen.sesl_fast_scroller_track_bottom_padding);
+            mTrackVerticalPadding = resources.getDimensionPixelOffset(R.dimen.sesl_fast_scroller_track_vertical_padding);
             mAdditionalBottomPadding = 0;
             mAdditionalTopPadding = 0;
             mImmersiveBottomPadding = 0;
@@ -638,8 +636,14 @@ class SeslRecyclerViewFastScroller {
 
             final int previewResId = mPreviewResId[mLayoutFromRight ? PREVIEW_RIGHT : PREVIEW_LEFT];
             mPreviewImage.setBackgroundResource(previewResId);
-            DrawableCompat.setTintMode(mPreviewImage.getBackground(), PorterDuff.Mode.MULTIPLY);
-            DrawableCompat.setTintList(mPreviewImage.getBackground(), ColorStateList.valueOf(mColorPrimary));
+            if (Build.VERSION.SDK_INT >= 22) {
+                DrawableCompat.setTintMode(mPreviewImage.getBackground(), PorterDuff.Mode.MULTIPLY);
+                DrawableCompat.setTintList(mPreviewImage.getBackground(), ColorStateList.valueOf(mColorPrimary));
+            } else {
+                if (mPreviewImage.getBackground() != null) {
+                    mPreviewImage.getBackground().setColorFilter(mColorPrimary, PorterDuff.Mode.MULTIPLY);
+                }
+            }
 
             resetScrollDatas();//sesl7
             // Requires re-layout.
@@ -967,7 +971,12 @@ class SeslRecyclerViewFastScroller {
      */
     private void layoutThumb() {
         final Rect bounds = mTempBounds;
-        measureThumb(bounds);//sesl7
+        if (Build.VERSION.SDK_INT >= 24) {
+            measureThumb(bounds);//sesl7
+        }else{
+            //uses legacy thumb
+            measureViewToSide(mThumbImage, null, null, bounds);
+        }
         applyLayout(mThumbImage, bounds);
     }
 
@@ -1013,12 +1022,12 @@ class SeslRecyclerViewFastScroller {
         final int top;
         int bottom;
         if (mThumbPosition == THUMB_POSITION_INSIDE) {
-            top = container.top + mTrackTopPadding + mAdditionalTopPadding;
-            bottom = container.bottom - mTrackBottomPadding - mAdditionalBottomPadding;
+            top = container.top + mTrackVerticalPadding + mAdditionalTopPadding;
+            bottom = container.bottom - mTrackVerticalPadding - mAdditionalBottomPadding;
         } else {
             final int thumbHalfHeight = thumb.getHeight() / 2;
-            top = container.top + thumbHalfHeight + mTrackTopPadding + mAdditionalTopPadding;
-            bottom = container.bottom - thumbHalfHeight - mTrackBottomPadding - mAdditionalBottomPadding;
+            top = container.top + thumbHalfHeight + mTrackVerticalPadding + mAdditionalTopPadding;
+            bottom = container.bottom - thumbHalfHeight - mTrackVerticalPadding - mAdditionalBottomPadding;
         }
 
         if (bottom < top) {

@@ -16212,7 +16212,6 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.N)
     public void seslSetFastScrollerEnabled(boolean enabled) {
         if (mLayout instanceof StaggeredGridLayoutManager) {
             Log.e(TAG, "FastScroller cannot be used with StaggeredGridLayoutManager.");
@@ -16238,7 +16237,6 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         return mFastScrollerEnabled;
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     public void seslSetFastScrollerThreshold(float threshold) {
         SeslRecyclerViewFastScroller fastScroller = this.mFastScroller;
         if (fastScroller != null && threshold >= 0) {
@@ -16266,7 +16264,6 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         return false;
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     public void seslSetFastScrollerEventListener(@Nullable SeslFastScrollerEventListener l) {
         mFastScrollerEventListener = l;
     }
@@ -16446,7 +16443,6 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public void seslSetFastScrollerAdditionalPadding(int top, int bottom) {
         if (mFastScroller != null) {
             mFastScroller.setAdditionalPadding(top, bottom);
