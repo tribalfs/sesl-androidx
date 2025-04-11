@@ -16449,14 +16449,12 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     public void seslSetIndexTipEnabled(boolean enabled, int topMargin) {
         seslSetIndexTipEnabled(enabled);
         mIndexTip.setTopMargin(topMargin);
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
-    public void seslSetIndexTipEnabled(boolean enabled) {
+       public void seslSetIndexTipEnabled(boolean enabled) {
         if (mAdapter instanceof SectionIndexer) {
             if (enabled) {
                 if (mIndexTip == null) {
@@ -16482,12 +16480,10 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
-    public boolean seslIsIndexTipEnabled() {
+      public boolean seslIsIndexTipEnabled() {
         return mIndexTipEnabled;
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     public void seslUpdateIndexTipPosition() {
         if (mIndexTip != null) {
             if (mIndexTip.mCurrentOrientation
@@ -17481,7 +17477,6 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         return mUsePagingTouchSlopForStylus;
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     class IndexTip extends View {
         @SuppressLint("NewApi")
         private final PathInterpolator ALPHA_INTERPOLATOR =
@@ -17584,10 +17579,16 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
             mTextPaint.setColor(ContextCompat.getColor(mContext, androidx.appcompat.R.color.sesl_white));
 
             mText = "";
-            mTextLayoutDelay = mTextLayout = StaticLayout.Builder
-                    .obtain("", 0, 0, mTextPaint, (int) mTextPaint.measureText(mText))
-                    .build();//sesl7
-
+            //Sesl7
+            if (VERSION.SDK_INT >= 23) {
+                mTextLayoutDelay = mTextLayout = StaticLayout.Builder
+                        .obtain("", 0, 0, mTextPaint, (int) mTextPaint.measureText(mText))
+                        .build();
+            } else {
+                mTextLayoutDelay = new StaticLayout(mText, mTextPaint, (int) mTextPaint.measureText(mText),
+                        Layout.Alignment.ALIGN_CENTER, 1.0f, 0.0f, false);
+            }
+            //sesl7
             mPrevText = "";
             mPrevWidth = 0f;
             mAnimatingWidth = 0f;
@@ -17614,12 +17615,19 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         //Sesl7
         private void calculateTextLines() {
             int textWidth = (mWidth / 2 - mHorizontalPadding) * 2;
-            float firstLineWidth = StaticLayout.Builder.obtain(mText, 0, mText.length(), mTextPaint, textWidth)
-                    .build()
-                    .getLineWidth(0);
-            mTextLayoutBuilder = StaticLayout.Builder.obtain(mText, 0, mText.length(), mTextPaint, (int) firstLineWidth);
-            mTextLayoutBuilder.setAlignment(Layout.Alignment.ALIGN_CENTER);
-            mTextLayout = mTextLayoutBuilder.setMaxLines(2).setEllipsize(TextUtils.TruncateAt.END).build();
+            if (VERSION.SDK_INT >= 23) {
+                float firstLineWidth = StaticLayout.Builder.obtain(mText, 0, mText.length(), mTextPaint, textWidth)
+                        .build()
+                        .getLineWidth(0);
+                mTextLayoutBuilder = StaticLayout.Builder.obtain(mText, 0, mText.length(), mTextPaint, (int) firstLineWidth);
+                mTextLayoutBuilder.setAlignment(Layout.Alignment.ALIGN_CENTER);
+                mTextLayout = mTextLayoutBuilder.setMaxLines(2).setEllipsize(TextUtils.TruncateAt.END).build();
+            } else {
+                float firstLineWidth = new StaticLayout(mText, mTextPaint, textWidth, Layout.Alignment.ALIGN_CENTER, 1.0f, 0.0f, false)
+                        .getLineWidth(0);
+                mTextLayout = new StaticLayout(mText, mTextPaint, (int) firstLineWidth,
+                        Layout.Alignment.ALIGN_CENTER, 1.0f, 0.0f, false);
+            }
         }
 
         private void changeText(boolean shouldDelay) {
@@ -17700,14 +17708,21 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
                             && mSections[section] != null) {
                         mText = mSections[section].toString();
                         //Sesl7
-                        mTextLayoutBuilder = StaticLayout.Builder.obtain(
-                                mText,
-                                0,
-                                mText.length(),
-                                mTextPaint,
-                                (int) mTextPaint.measureText(mText)
-                        );
-                        mTextLayout = mTextLayoutBuilder.build();
+                        if (VERSION.SDK_INT >= 23) {
+                            mTextLayoutBuilder = StaticLayout.Builder.obtain(
+                                    mText,
+                                    0,
+                                    mText.length(),
+                                    mTextPaint,
+                                    (int) mTextPaint.measureText(mText)
+                            );
+                            mTextLayout = mTextLayoutBuilder.build();
+                        }else {
+                            float firstLineWidth = new StaticLayout(mText, mTextPaint, (int) mTextPaint.measureText(mText), Layout.Alignment.ALIGN_CENTER, 1.0f, 0.0f, false)
+                                    .getLineWidth(0);
+                            mTextLayout = new StaticLayout(mText, mTextPaint, (int) firstLineWidth,
+                                    Layout.Alignment.ALIGN_CENTER, 1.0f, 0.0f, false);
+                        }
                         //sesl7
                     }else{
                         //custom
