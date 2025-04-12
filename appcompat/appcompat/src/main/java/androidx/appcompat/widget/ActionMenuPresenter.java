@@ -31,6 +31,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.SoundEffectConstants;
@@ -361,10 +362,6 @@ class ActionMenuPresenter extends BaseMenuPresenter
                 ActionMenuItemViewBadgedWrapper
                         amvBadgedWrapper = new ActionMenuItemViewBadgedWrapper(actionMenuView.getContext(), (ActionMenuItemView)menuItemView);
                 actionMenuView.addView(amvBadgedWrapper, i);
-                if (i == count -1 && ((MenuBuilder) actionMenuView.getMenu()).getNonActionItems().isEmpty()){
-                    //For cases where setBadgeText() was set before the ActionMenuView is laid out.
-                    amvBadgedWrapper.adjustBadgeEndMargin(actionMenuView.getEndBadgeAdditionalMargin());
-                }
                 return;
             }
         }
@@ -373,8 +370,6 @@ class ActionMenuPresenter extends BaseMenuPresenter
     //Custom
     @RestrictTo(LIBRARY_GROUP_PREFIX)
     class ActionMenuItemViewBadgedWrapper extends FrameLayout {
-
-        private int defaultEndMargin;
 
         public ActionMenuItemViewBadgedWrapper(Context context, ActionMenuItemView menuItemView) {
             super(context);
@@ -396,10 +391,11 @@ class ActionMenuPresenter extends BaseMenuPresenter
             String formattedTextBadge;
             int badgeWidth;
             int badgeHeight;
-            int badgeTopMargin;
             FrameLayout.LayoutParams badgeLp = (FrameLayout.LayoutParams) badgeView.getLayoutParams();
 
             Resources res = getResources();
+            final float dpToPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics());
+            final int dotBadgeSize = (int) (dpToPx * 5.75f);
             try {
                 final int badgeCount = Math.min(Integer.parseInt(badgeText), BADGE_LIMIT_NUMBER);
                 formattedTextBadge = mNumberFormat.format(badgeCount);
@@ -408,24 +404,21 @@ class ActionMenuPresenter extends BaseMenuPresenter
                 final float additionalWidth = res.getDimension(R.dimen.sesl_badge_additional_width);
                 badgeWidth = (int) (default_width + (formattedTextBadge.length() * additionalWidth));
                 badgeHeight = (int)(default_width + additionalWidth);
-                badgeTopMargin = (int) res.getDimension(R.dimen.sesl_menu_item_number_badge_top_margin);
-                defaultEndMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2, getResources().getDisplayMetrics());
             } catch (NumberFormatException e) {
-
                 //This means `badgeText` is not a number
                 //We will show dot badge instead
                 formattedTextBadge = "";
 
-                final int badgeSize = (int) res.getDimension(R.dimen.sesl_menu_item_badge_size);
-                badgeWidth = badgeSize;
-                badgeHeight = badgeSize;
-                badgeTopMargin = (int) res.getDimension(R.dimen.sesl_menu_item_badge_top_margin);
-                defaultEndMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 6, getResources().getDisplayMetrics());
+                badgeWidth = dotBadgeSize;
+                badgeHeight = dotBadgeSize;
             }
 
             ((TextView)badgeView.getChildAt(0)).setText(formattedTextBadge);
-            badgeLp.setMarginEnd(defaultEndMargin);
-            badgeLp.topMargin = badgeTopMargin;
+            badgeLp.setMarginStart((int) (dpToPx * 26) - (badgeWidth - dotBadgeSize) / 2);
+            badgeLp.bottomMargin = (int) (dpToPx * 9);
+            badgeLp.setMarginEnd(0);
+            badgeLp.topMargin = 0;
+            badgeLp.gravity = Gravity.START | Gravity.CENTER_VERTICAL;
             badgeLp.width = badgeWidth;
             badgeLp.height = badgeHeight;
             badgeView.setLayoutParams(badgeLp);
@@ -434,14 +427,6 @@ class ActionMenuPresenter extends BaseMenuPresenter
 
         public ActionMenuItemView getInnerItemView() {
             return (ActionMenuItemView) getChildAt(0);
-        }
-
-        public void adjustBadgeEndMargin(int additionalMargin) {
-            View badgeView = getChildAt(1);
-            FrameLayout.LayoutParams badgeLp = (FrameLayout.LayoutParams) badgeView.getLayoutParams();
-            int adjustedEndMargin = defaultEndMargin + additionalMargin;
-            if (badgeLp.getMarginEnd() == adjustedEndMargin) return;
-            badgeLp.setMarginEnd(adjustedEndMargin);
         }
     }
 
