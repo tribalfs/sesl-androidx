@@ -157,10 +157,11 @@ class SeslIndicator @JvmOverloads constructor(
 
 
     init {
-        context.getDrawable(R.drawable.sesl_viewpager_indicator_on_off)?.let {
-            this.defaultCircle = it.mutate().apply { setTint(getAppBarViewPagerIndicatorOffColor(context)) }
-            this.selectCircle = it.mutate().apply { setTint(getAppBarViewPagerIndicatorOnColor(context)) }
-        }
+        this.defaultCircle = context.getDrawable(R.drawable.sesl_viewpager_indicator_on_off)?.mutate()
+            ?.apply { setTint(getAppBarViewPagerIndicatorOffColor(context)) }
+        this.selectCircle = context.getDrawable(R.drawable.sesl_viewpager_indicator_on_off)?.mutate()
+            ?.apply { setTint(getAppBarViewPagerIndicatorOnColor(context)) }
+
         this.selectedPosition = -1
     }
 
