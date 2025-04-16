@@ -124,10 +124,13 @@ internal abstract class SpecialEffectsController(val container: ViewGroup) {
         synchronized(pendingOperations) {
             val existingOperation =
                 findPendingOperation(fragmentStateManager.fragment)
-                    // Get the running operation if the fragment is current transitioning as that
-                    // means
-                    // we can reverse the effect via the merge if needed.
-                    ?: if (fragmentStateManager.fragment.mTransitioning) {
+                    // Get the running operation if the fragment is current transitioning or the
+                    // fragment is removing as that means we can reverse the effect via the merge if
+                    // needed.
+                    ?: if (
+                        fragmentStateManager.fragment.mTransitioning ||
+                            fragmentStateManager.fragment.mRemoving
+                    ) {
                         findRunningOperation(fragmentStateManager.fragment)
                     } else {
                         null
