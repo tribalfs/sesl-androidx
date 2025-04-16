@@ -29,6 +29,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Outline;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.hardware.SensorManager;
@@ -336,6 +337,11 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
     private int mSeslOverlayFeatureHeight = 0;
     public final Interpolator SINE_IN_OUT_70 = new PathInterpolator(0.33f, 0.0f, 0.3f, 1.0f);
     public final Interpolator LINEAR_INTERPOLATOR = new LinearInterpolator();
+
+    private boolean mDrawHorizontalPadding = false;
+    private int mScrollbarTopPadding = 0;
+    private int mScrollbarBottomPadding = 0;
+    private final Paint mRectPaint = new Paint();
     //sesl7
 
     public NestedScrollView(@NonNull Context context) {
@@ -3471,4 +3477,44 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
     private boolean canScrollDown() {
         return canScrollVertically(1);
     }
+
+    @Override
+    public void dispatchDraw(@NonNull Canvas canvas) {
+        super.dispatchDraw(canvas);
+        if (mDrawHorizontalPadding) {
+            int paddingLeft = getPaddingLeft();
+            int paddingRight = getPaddingRight();
+            int height = getHeight();
+            int width = getWidth();
+            int scrollY = getScrollY();
+            if (paddingLeft > 0) {
+                canvas.drawRect(0.0f, scrollY, paddingLeft, height + scrollY, mRectPaint);
+            }
+            if (paddingRight > 0) {
+                canvas.drawRect(width - paddingRight, scrollY, width, height + scrollY, mRectPaint);
+            }
+        }
+    }
+
+    public void seslSetFillHorizontalPaddingEnabled(boolean enabled, int color) {
+        mDrawHorizontalPadding = enabled;
+        mScrollbarBottomPadding = mScrollbarTopPadding = enabled
+                ? getResources().getDimensionPixelOffset(R.dimen.sesl_nestedscrollview_system_scroller_vertical_padding)
+                : 0;
+        updateScrollbarVerticalPadding();
+        mRectPaint.setColor(color);
+    }
+
+    public void seslSetScrollbarVerticalPadding(int topPadding, int bottomPadding) {
+        mScrollbarTopPadding = topPadding;
+        mScrollbarBottomPadding = bottomPadding;
+        updateScrollbarVerticalPadding();
+    }
+
+
+    private void updateScrollbarVerticalPadding() {
+        SeslViewReflector.semSetScrollBarTopPadding(this, mScrollbarTopPadding);
+        SeslViewReflector.semSetScrollBarBottomPadding(this, mScrollbarBottomPadding);
+    }
+
 }
