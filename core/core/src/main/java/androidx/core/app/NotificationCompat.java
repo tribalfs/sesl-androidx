@@ -4980,12 +4980,8 @@ public class NotificationCompat {
                         // Drops any old versions of system actions.
                     } else {
                         // Copies non-contextual actions; decrement the remaining action slots.
-                        // Only do this if there are at least two slots left; the lastAction
-                        // needs a reserved space.
-                        if (nonContextualActionSlotsRemaining > 1) {
-                            resultActions.add(action);
-                            --nonContextualActionSlotsRemaining;
-                        }
+                        resultActions.add(action);
+                        --nonContextualActionSlotsRemaining;
                     }
                     // If there's exactly one action slot left, fill it with the lastAction.
                     if (lastAction != null && nonContextualActionSlotsRemaining == 1) {
