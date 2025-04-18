@@ -4881,7 +4881,16 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
 
                 if (!dispatchNestedPreScroll(scaledHScroll, scaledVScroll, null, null,
                         TYPE_NON_TOUCH)) {
-                    nestedScrollByInternal(scaledHScroll, scaledVScroll, horizontalAxis, verticalAxis, event, TYPE_NON_TOUCH);
+                    if (useSmoothScroll) {
+                        OverScroller overScroller = mViewFlinger.mOverScroller;
+                        // Account for any remaining scroll from a previous generic motion event.
+                        scaledVScroll += overScroller.getFinalY() - overScroller.getCurrY();
+                        scaledHScroll += overScroller.getFinalX() - overScroller.getCurrX();
+                        smoothScrollBy(scaledHScroll, scaledVScroll, /* interpolator= */ null,
+                                UNDEFINED_DURATION, /* withNestedScrolling= */ true);
+                    } else {
+                        nestedScrollByInternal(scaledHScroll, scaledVScroll, horizontalAxis, verticalAxis, event, TYPE_NON_TOUCH);
+                    }
                 }
             }
             //sesl
