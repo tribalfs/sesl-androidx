@@ -25,6 +25,7 @@ import androidx.annotation.RequiresApi
 import androidx.annotation.RestrictTo
 import androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP_PREFIX
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.CopyOnWriteArraySet
 
 /**
  * Wrapper class for accessing [AconfigPackageCompat] flags from Jetpack libraries.
@@ -35,9 +36,12 @@ import java.util.concurrent.ConcurrentHashMap
 public class Flags {
     public companion object {
         @get:RequiresApi(36)
-        private val aconfigCache: MutableMap<String, AconfigPackage?> by lazy {
-            ConcurrentHashMap()
-        }
+        private val aconfigCache: MutableMap<String, AconfigPackage>? =
+            if (SDK_INT >= 36) ConcurrentHashMap() else null
+
+        @get:RequiresApi(36)
+        private val missingPackageCache: MutableSet<String>? =
+            if (SDK_INT >= 36) CopyOnWriteArraySet() else null
 
         /**
          * Retrieves the value of a boolean flag from the specified Aconfig Package.
@@ -59,6 +63,7 @@ public class Flags {
          * @param defaultValue The value to return if the flag is not found.
          * @return The boolean value of the flag, or `defaultValue` if the flag is not found.
          */
+        @Suppress("MemberExtensionConflict") // b/406991279 fixed in AGP 8.11.0-alpha05
         @JvmOverloads
         @JvmStatic
         public fun getBooleanFlagValue(
@@ -69,18 +74,22 @@ public class Flags {
             if (SDK_INT < 36) {
                 return defaultValue
             } else {
+                val aconfigPackageCache = aconfigCache!!
+                val missingPackageCache = missingPackageCache!!
                 var aconfigPackage: AconfigPackage?
-                if (aconfigCache.contains(packageName)) {
-                    aconfigPackage = aconfigCache[packageName]
+                if (aconfigPackageCache.contains(packageName)) {
+                    aconfigPackage = aconfigPackageCache[packageName]
+                } else if (missingPackageCache.contains(packageName)) {
+                    aconfigPackage = null
                 } else {
                     try {
                         aconfigPackage = AconfigPackage.load(packageName)
-                    } catch (e: AconfigStorageReadException) {
+                        aconfigPackageCache[packageName] = aconfigPackage
+                    } catch (_: AconfigStorageReadException) {
                         aconfigPackage = null
+                        missingPackageCache.add(packageName)
                     }
-                    aconfigCache[packageName] = aconfigPackage
                 }
-
                 return aconfigPackage?.getBooleanFlagValue(flagName, defaultValue) ?: defaultValue
             }
         }
