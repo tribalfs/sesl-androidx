@@ -424,7 +424,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
     }
 
     private boolean mIsRecoilEnabled = true;
-    private final boolean mIsRecoilSupported;
+    private final boolean mIsRecoilSupported = VERSION.SDK_INT >= 29;
     private SeslRecoilAnimator.Holder mItemAnimatorHolder;
     private SeslLinearLayoutCompat.ItemBackgroundHolder mItemBackgroundHolder;
 
@@ -1027,8 +1027,8 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
     private int mLastTouchY;
     private int mTouchSlop;
     private OnFlingListener mOnFlingListener;
-    private int mMinFlingVelocity;//mutable in sesl
-    private int mMaxFlingVelocity;//mutable in sesl
+    private final int mMinFlingVelocity;
+    private final int mMaxFlingVelocity;
 
     // This value is used when handling rotary encoder generic motion events.
     float mScaledHorizontalScrollFactor = Float.MIN_VALUE;
@@ -1227,24 +1227,25 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         setScrollContainer(true);
         setFocusableInTouchMode(true);
 
-        //Sesl
-        mContext = context;
-        seslInitConfigurations(context);
-        mIsRecoilSupported = VERSION.SDK_INT >= 29;
-        if (mIsRecoilSupported) {
-            mItemBackgroundHolder = new SeslLinearLayoutCompat.ItemBackgroundHolder();
-            mItemAnimatorHolder = new SeslRecoilAnimator.Holder(mContext);
-        }
-        //sesl
-
         final ViewConfiguration vc = ViewConfiguration.get(context);
-        mTouchSlop = vc.getScaledTouchSlop();
+        mTouchSlop2/*sesl*/ = mTouchSlop = vc.getScaledTouchSlop();
         mScaledHorizontalScrollFactor =
                 ViewConfigurationCompat.getScaledHorizontalScrollFactor(vc, context);
         mScaledVerticalScrollFactor =
                 ViewConfigurationCompat.getScaledVerticalScrollFactor(vc, context);
         mMinFlingVelocity = vc.getScaledMinimumFlingVelocity();
         mMaxFlingVelocity = vc.getScaledMaximumFlingVelocity();
+
+        //Sesl
+        mPagingTouchSlop = vc.getScaledPagingTouchSlop();
+        mContext = context;
+        seslInitConfigurations(context);
+        if (mIsRecoilSupported) {
+            mItemBackgroundHolder = new SeslLinearLayoutCompat.ItemBackgroundHolder();
+            mItemAnimatorHolder = new SeslRecoilAnimator.Holder(mContext);
+        }
+        //sesl
+
         final float ppi = context.getResources().getDisplayMetrics().density * 160.0f;
         mPhysicalCoef = SensorManager.GRAVITY_EARTH // g (m/s^2)
                 * 39.37f // inch/meter
@@ -5857,7 +5858,9 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         if (changed) {
             mSizeChnage = true;
             mSeslOverlayFeatureHeight = getResources().getDimensionPixelSize(R.dimen.sesl_recyclerview_overlay_feature_hidden_height);
-            seslSetImmersiveScrollBottomPadding(0);
+            if (VERSION.SDK_INT >= 24) {
+                seslSetImmersiveScrollBottomPadding(0);
+            }
             setupGoToTop(-1);
             autoHide(GTP_STATE_SHOWN);
             if (mLayout != null && !mLayout.canScrollHorizontally()) {
@@ -15906,18 +15909,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
     }
 
     void seslInitConfigurations(@NonNull Context context) {
-        final ViewConfiguration vc = ViewConfiguration.get(context);
         final Resources resources = context.getResources();
-        mTouchSlop = vc.getScaledTouchSlop();
-        mTouchSlop2 = vc.getScaledTouchSlop();
-        mPagingTouchSlop = vc.getScaledPagingTouchSlop();
-        mScaledHorizontalScrollFactor = ViewConfigurationCompat
-                .getScaledHorizontalScrollFactor(vc, context);
-        mScaledVerticalScrollFactor = ViewConfigurationCompat
-                .getScaledVerticalScrollFactor(vc, context);
-        mMinFlingVelocity = vc.getScaledMinimumFlingVelocity();
-        mMaxFlingVelocity = vc.getScaledMaximumFlingVelocity();
-
         mHoverTopAreaHeight = (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 HOVERSCROLL_HEIGHT_TOP_DP, resources.getDisplayMetrics()) + 0.5f);
         mHoverBottomAreaHeight = (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
