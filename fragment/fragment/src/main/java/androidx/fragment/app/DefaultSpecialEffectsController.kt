@@ -45,6 +45,9 @@ import androidx.fragment.app.SpecialEffectsController.Operation.State.Companion.
 internal class DefaultSpecialEffectsController(container: ViewGroup) :
     SpecialEffectsController(container) {
     override fun collectEffects(operations: List<Operation>, isPop: Boolean) {
+        if (FragmentManager.isLoggingEnabled(Log.VERBOSE)) {
+            Log.v(FragmentManager.TAG, "Collecting Effects")
+        }
         // Shared element transitions are done between the first fragment leaving and
         // the last fragment coming in. Finding these operations is the first priority
         val firstOut =
@@ -823,6 +826,9 @@ internal class DefaultSpecialEffectsController(container: ViewGroup) :
                     }
 
                 runTransition(enteringViews, container) {
+                    if (FragmentManager.isLoggingEnabled(Log.VERBOSE)) {
+                        Log.v(FragmentManager.TAG, "Attempting to create TransitionSeekController")
+                    }
                     controller =
                         transitionImpl.controlDelayedTransition(container, mergedTransition)
                     // If we fail to create a controller, it must be because of the container or
@@ -1143,7 +1149,10 @@ internal class DefaultSpecialEffectsController(container: ViewGroup) :
                 )
 
             if (FragmentManager.isLoggingEnabled(Log.VERBOSE)) {
-                Log.v(FragmentManager.TAG, "Final merged transition: $mergedTransition")
+                Log.v(
+                    FragmentManager.TAG,
+                    "Final merged transition: $mergedTransition for container $container"
+                )
             }
 
             return Pair(enteringViews, mergedTransition)

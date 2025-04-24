@@ -515,6 +515,9 @@ internal abstract class SpecialEffectsController(val container: ViewGroup) {
              * @param container The ViewGroup to add the view too if it does not have a parent.
              */
             fun applyState(view: View, container: ViewGroup) {
+                if (FragmentManager.isLoggingEnabled(Log.VERBOSE)) {
+                    Log.v(FragmentManager.TAG, "SpecialEffectsController: Calling apply state")
+                }
                 when (this) {
                     REMOVED -> {
                         val parent = view.parent as? ViewGroup
@@ -778,15 +781,30 @@ internal abstract class SpecialEffectsController(val container: ViewGroup) {
                 // for ADDING operations to properly handle cases where the
                 // exit animation was interrupted.
                 if (view.parent == null) {
+                    if (FragmentManager.isLoggingEnabled(Log.VERBOSE)) {
+                        Log.v(
+                            FragmentManager.TAG,
+                            "Adding fragment $fragment view $view to container in onStart"
+                        )
+                    }
                     fragmentStateManager.addViewToContainer()
                     view.alpha = 0f
                 }
                 // Change the view alphas back to their original values before we execute our
                 // transitions.
                 if (view.alpha == 0f && view.visibility == View.VISIBLE) {
+                    if (FragmentManager.isLoggingEnabled(Log.VERBOSE)) {
+                        Log.v(FragmentManager.TAG, "Making view $view INVISIBLE in onStart")
+                    }
                     view.visibility = View.INVISIBLE
                 }
                 view.alpha = fragment.postOnViewCreatedAlpha
+                if (FragmentManager.isLoggingEnabled(Log.VERBOSE)) {
+                    Log.v(
+                        FragmentManager.TAG,
+                        "Setting view alpha to ${fragment.postOnViewCreatedAlpha} in onStart"
+                    )
+                }
             } else if (lifecycleImpact == LifecycleImpact.REMOVING) {
                 val fragment = fragmentStateManager.fragment
                 val view = fragment.requireView()
