@@ -292,14 +292,28 @@ public class ActionBarContextView extends AbsActionBarView {
 
     @Override
     public void setPadding(int left, int top, int right, int bottom) {
-        if (mNonInsetsPaddingLeft != left || mNonInsetsPaddingTop != top
-                || mNonInsetsPaddingRight != right || mNonInsetsPaddingBottom != bottom) {
-            mNonInsetsPaddingLeft = left;
-            mNonInsetsPaddingTop = top;
-            mNonInsetsPaddingRight = right;
-            mNonInsetsPaddingBottom = bottom;
-            updatePadding();
+        mNonInsetsPaddingLeft = left;
+        mNonInsetsPaddingTop = top;
+        mNonInsetsPaddingRight = right;
+        mNonInsetsPaddingBottom = bottom;
+        updatePadding();
+    }
+
+    @Override
+    public void setPaddingRelative(int start, int top, int end, int bottom) {
+        switch(getLayoutDirection()) {
+            case LAYOUT_DIRECTION_RTL:
+                mNonInsetsPaddingLeft = end;
+                mNonInsetsPaddingRight = start;
+                break;
+            case LAYOUT_DIRECTION_LTR:
+            default:
+                mNonInsetsPaddingLeft = start;
+                mNonInsetsPaddingRight = end;
         }
+        mNonInsetsPaddingTop = top;
+        mNonInsetsPaddingBottom = bottom;
+        updatePadding();
     }
 
     /**
@@ -313,14 +327,11 @@ public class ActionBarContextView extends AbsActionBarView {
      * @param bottom the bottom padding in pixels.
      */
     public void setPaddingForInsets(int left, int top, int right, int bottom) {
-        if (mInsetsPaddingLeft != left || mInsetsPaddingTop != top
-                || mInsetsPaddingRight != right || mInsetsPaddingBottom != bottom) {
-            mInsetsPaddingLeft = left;
-            mInsetsPaddingTop = top;
-            mInsetsPaddingRight = right;
-            mInsetsPaddingBottom = bottom;
-            updatePadding();
-        }
+        mInsetsPaddingLeft = left;
+        mInsetsPaddingTop = top;
+        mInsetsPaddingRight = right;
+        mInsetsPaddingBottom = bottom;
+        updatePadding();
     }
 
     private void updatePadding() {
