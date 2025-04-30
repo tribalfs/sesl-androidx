@@ -5970,6 +5970,7 @@ public class NotificationCompat {
 
             /**
              * Optional ID used to uniquely identify the element across updates.
+             * The default is 0.
              */
             public @NonNull Segment setId(int id) {
                 mId = id;
@@ -6005,7 +6006,7 @@ public class NotificationCompat {
         public static final class Point {
 
             private int mPosition;
-            private int mId;
+            private int mId = 0;
             @ColorInt
             private int mColor = NotificationCompat.COLOR_DEFAULT;
 
@@ -6040,6 +6041,7 @@ public class NotificationCompat {
 
             /**
              * Optional ID used to uniquely identify the element across updates.
+             * The default is 0.
              */
             public @NonNull Point setId(int id) {
                 mId = id;
