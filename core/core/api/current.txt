@@ -722,16 +722,16 @@ package androidx.core.app {
     ctor public NotificationCompat.ProgressStyle();
     method public androidx.core.app.NotificationCompat.ProgressStyle addProgressPoint(androidx.core.app.NotificationCompat.ProgressStyle.Point);
     method public androidx.core.app.NotificationCompat.ProgressStyle addProgressSegment(androidx.core.app.NotificationCompat.ProgressStyle.Segment);
-    method public int getProgress();
+    method @IntRange(from=0) public int getProgress();
     method public androidx.core.graphics.drawable.IconCompat? getProgressEndIcon();
-    method public int getProgressMax();
+    method @IntRange(from=0) public int getProgressMax();
     method public java.util.List<androidx.core.app.NotificationCompat.ProgressStyle.Point!> getProgressPoints();
     method public java.util.List<androidx.core.app.NotificationCompat.ProgressStyle.Segment!> getProgressSegments();
     method public androidx.core.graphics.drawable.IconCompat? getProgressStartIcon();
     method public androidx.core.graphics.drawable.IconCompat? getProgressTrackerIcon();
     method public boolean isProgressIndeterminate();
     method public boolean isStyledByProgress();
-    method public androidx.core.app.NotificationCompat.ProgressStyle setProgress(int);
+    method public androidx.core.app.NotificationCompat.ProgressStyle setProgress(@IntRange(from=0) int);
     method public androidx.core.app.NotificationCompat.ProgressStyle setProgressEndIcon(androidx.core.graphics.drawable.IconCompat?);
     method public androidx.core.app.NotificationCompat.ProgressStyle setProgressIndeterminate(boolean);
     method public androidx.core.app.NotificationCompat.ProgressStyle setProgressPoints(java.util.List<androidx.core.app.NotificationCompat.ProgressStyle.Point!>);
@@ -745,7 +745,7 @@ package androidx.core.app {
     ctor public NotificationCompat.ProgressStyle.Point(@IntRange(from=1) int);
     method @ColorInt public int getColor();
     method public int getId();
-    method public int getPosition();
+    method @IntRange(from=1) public int getPosition();
     method public androidx.core.app.NotificationCompat.ProgressStyle.Point setColor(@ColorInt int);
     method public androidx.core.app.NotificationCompat.ProgressStyle.Point setId(int);
   }
@@ -754,7 +754,7 @@ package androidx.core.app {
     ctor public NotificationCompat.ProgressStyle.Segment(@IntRange(from=1) int);
     method @ColorInt public int getColor();
     method public int getId();
-    method public int getLength();
+    method @IntRange(from=1) public int getLength();
     method public androidx.core.app.NotificationCompat.ProgressStyle.Segment setColor(@ColorInt int);
     method public androidx.core.app.NotificationCompat.ProgressStyle.Segment setId(int);
   }
