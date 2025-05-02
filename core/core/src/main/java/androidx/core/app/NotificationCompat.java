@@ -10223,6 +10223,19 @@ public class NotificationCompat {
                 true /* filtered */);
     }
 
+    /**
+     * Returns whether the notification has any promotable characteristics.
+     *
+     * <p>This is a wrapper around {@link Notification#hasPromotableCharacteristics()}.
+     */
+    public static boolean hasPromotableCharacteristics(@NonNull Notification notification) {
+        if (Build.VERSION.SDK_INT >= 36) {
+            return Api36Impl.hasPromotableCharacteristics(notification);
+        } else {
+            return false;
+        }
+    }
+
     /** @deprecated This type should not be instantiated as it contains only static methods. */
     @Deprecated
     @SuppressWarnings("PrivateConstructorForUtilityClass")
@@ -10393,6 +10406,21 @@ public class NotificationCompat {
 
         static boolean isAuthenticationRequired(Notification.Action action) {
             return action.isAuthenticationRequired();
+        }
+
+    }
+
+    /**
+     * A class for wrapping calls to {@link Notification} methods which
+     * were added in API 36; these calls must be wrapped to avoid performance issues.
+     * See the UnsafeNewApiCall lint rule for more details.
+     */
+    @RequiresApi(36)
+    static class Api36Impl {
+        private Api36Impl() { }
+
+        static boolean hasPromotableCharacteristics(@NonNull Notification notification) {
+            return notification.hasPromotableCharacteristics();
         }
 
     }
