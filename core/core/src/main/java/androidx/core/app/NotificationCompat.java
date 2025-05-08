@@ -365,6 +365,13 @@ public class NotificationCompat {
     public static final String EXTRA_BIG_TEXT = "android.bigText";
 
     /**
+     * {@link #getExtras extras} key: very short text summarizing the most critical
+     * information contained in the notification.
+     */
+    @SuppressLint("ActionValue")  // Field & value copied from android.app.Notification
+    public static final String EXTRA_SHORT_CRITICAL_TEXT = "android.shortCriticalText";
+
+    /**
      * {@link #getExtras extras} key: this is the resource ID of the notification's main small icon,
      * as supplied to {@link Builder#setSmallIcon(int)}.
      */
@@ -1086,6 +1093,7 @@ public class NotificationCompat {
 
         CharSequence mContentTitle;
         CharSequence mContentText;
+        @Nullable String mShortCriticalText;
         PendingIntent mContentIntent;
         PendingIntent mFullScreenIntent;
         RemoteViews mTickerView;
@@ -1250,6 +1258,11 @@ public class NotificationCompat {
                     this.setColorized(extras.getBoolean(EXTRA_COLORIZED));
                 }
             }
+            if (Build.VERSION.SDK_INT >= 36) {
+                if (extras.containsKey(EXTRA_SHORT_CRITICAL_TEXT)) {
+                    this.setShortCriticalText(extras.getString(EXTRA_SHORT_CRITICAL_TEXT));
+                }
+            }
         }
 
         /** Remove all extras which have been parsed by the rest of the copy process */
@@ -1265,6 +1278,7 @@ public class NotificationCompat {
             newExtras.remove(EXTRA_TEXT);
             newExtras.remove(EXTRA_INFO_TEXT);
             newExtras.remove(EXTRA_SUB_TEXT);
+            newExtras.remove(EXTRA_SHORT_CRITICAL_TEXT);
             newExtras.remove(EXTRA_CHANNEL_ID);
             newExtras.remove(EXTRA_CHANNEL_GROUP_ID);
             newExtras.remove(EXTRA_SHOW_WHEN);
@@ -1542,6 +1556,17 @@ public class NotificationCompat {
          */
         public @NonNull Builder setContentInfo(@Nullable CharSequence info) {
             mContentInfo = limitCharSequenceLength(info);
+            return this;
+        }
+
+        /**
+         * Sets a very short string summarizing the most critical information contained in the
+         * notification. Suggested max length is 7 characters, and there is no guarantee how much or
+         * how little of this text will be shown.
+         */
+        @NonNull
+        public Builder setShortCriticalText(@Nullable String shortCriticalText) {
+            mShortCriticalText = shortCriticalText;
             return this;
         }
 
@@ -9955,6 +9980,14 @@ public class NotificationCompat {
     /** Returns the sub text provided to {@link Builder#setSubText(CharSequence)}. */
     public static @Nullable CharSequence getSubText(@NonNull Notification notification) {
         return notification.extras.getCharSequence(EXTRA_SUB_TEXT);
+    }
+
+    /**
+     * Returns the very short text summarizing the most critical information contained in the
+     * notification, or null if this field was not set.
+     */
+    public static @Nullable String getShortCriticalText(@NonNull Notification notification) {
+        return notification.extras.getString(EXTRA_SHORT_CRITICAL_TEXT);
     }
 
     /**
