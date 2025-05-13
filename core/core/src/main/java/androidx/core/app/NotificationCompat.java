@@ -1285,7 +1285,9 @@ public class NotificationCompat {
             newExtras.remove(EXTRA_TEXT);
             newExtras.remove(EXTRA_INFO_TEXT);
             newExtras.remove(EXTRA_SUB_TEXT);
-            newExtras.remove(EXTRA_SHORT_CRITICAL_TEXT);
+            if (Build.VERSION.SDK_INT >= 36) {
+                newExtras.remove(EXTRA_SHORT_CRITICAL_TEXT);
+            }
             newExtras.remove(EXTRA_CHANNEL_ID);
             newExtras.remove(EXTRA_CHANNEL_GROUP_ID);
             newExtras.remove(EXTRA_SHOW_WHEN);
@@ -1574,6 +1576,9 @@ public class NotificationCompat {
         @NonNull
         public Builder setShortCriticalText(@Nullable String shortCriticalText) {
             mShortCriticalText = shortCriticalText;
+            if (Build.VERSION.SDK_INT < 36) {
+                getExtras().putString(EXTRA_SHORT_CRITICAL_TEXT, shortCriticalText);
+            }
             return this;
         }
 
