@@ -372,6 +372,13 @@ public class NotificationCompat {
     public static final String EXTRA_SHORT_CRITICAL_TEXT = "android.shortCriticalText";
 
     /**
+     * {@link #getExtrasextras} key: If provided, should contain a boolean indicating
+     * whether the notification is requesting promoted treatment.
+     */
+    @SuppressLint("ActionValue")  // Field & value copied from android.app.Notification
+    public static final String EXTRA_REQUEST_PROMOTED_ONGOING = "android.requestPromotedOngoing";
+
+    /**
      * {@link #getExtras extras} key: this is the resource ID of the notification's main small icon,
      * as supplied to {@link Builder#setSmallIcon(int)}.
      */
@@ -1567,6 +1574,18 @@ public class NotificationCompat {
         @NonNull
         public Builder setShortCriticalText(@Nullable String shortCriticalText) {
             mShortCriticalText = shortCriticalText;
+            return this;
+        }
+
+        /**
+         * Set whether this notification is requesting to be a promoted ongoing notification.
+         *
+         * <p>This is the first requirement of {@link Notification#hasPromotableCharacteristics()}.
+         */
+        @SuppressWarnings("MissingGetterMatchingBuilder")
+        @NonNull
+        public Builder setRequestPromotedOngoing(boolean requestPromotedOngoing) {
+            getExtras().putBoolean(EXTRA_REQUEST_PROMOTED_ONGOING, requestPromotedOngoing);
             return this;
         }
 
@@ -9988,6 +10007,13 @@ public class NotificationCompat {
      */
     public static @Nullable String getShortCriticalText(@NonNull Notification notification) {
         return notification.extras.getString(EXTRA_SHORT_CRITICAL_TEXT);
+    }
+
+    /**
+     * Returns whether this notification has requested to be a promoted ongoing notification.
+     */
+    public static boolean hasRequestedPromotedOngoing(@NonNull Notification notification) {
+        return notification.extras.getBoolean(EXTRA_REQUEST_PROMOTED_ONGOING, false);
     }
 
     /**
