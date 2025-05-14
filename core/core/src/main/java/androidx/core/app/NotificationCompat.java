@@ -372,7 +372,7 @@ public class NotificationCompat {
     public static final String EXTRA_SHORT_CRITICAL_TEXT = "android.shortCriticalText";
 
     /**
-     * {@link #getExtrasextras} key: If provided, should contain a boolean indicating
+     * {@link #getExtras extras} key: If provided, should contain a boolean indicating
      * whether the notification is requesting promoted treatment.
      */
     @SuppressLint("ActionValue")  // Field & value copied from android.app.Notification
