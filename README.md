@@ -6,6 +6,7 @@ Any form of contributions, including suggestions, bug reports, corrections, and 
 
 Info: Samsung’s One UI apps are created using heavily modified versions of some [Android Jetpack](https://github.com/androidx/androidx) and [Material Components for Android](https://github.com/material-components/material-components-android) libraries. These include (but are not limited to) custom themes/styles, custom implementations, and additional APIs. These are internally referenced as SESL. Samsung also added its own androidx modules.
 
+See also: [Unofficial OneUI Design Library](https://github.com/tribalfs/oneui-design)
 
 ## Available modules (as GithubPackages)
 #### SESL7(OneUI 7) Android Jetpack
@@ -146,7 +147,7 @@ configurations.implementation {
 }
 ```
 
-## [Sample app](https://github.com/tribalfs/oneui-design-sampleapp#one-ui-sample-app-using-sesl6-modules)
+## [Unofficial OneUI Design Library](https://github.com/tribalfs/oneui-design)
 
 ## [Android studio layout editor preview fix](https://github.com/tribalfs/android-studio-sec-fonts#android-studio-sec-fonts)
 
