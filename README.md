@@ -22,7 +22,7 @@ See also: [Unofficial OneUI Design Library](https://github.com/tribalfs/oneui-de
 - [![latest version](https://img.shields.io/badge/sesl.androidx.appcompat:appcompat-1.7.0%2B1.0.47000--sesl7%2Brev1-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110021)
 - [![latest version](https://img.shields.io/badge/sesl.androidx.viewpager2:viewpager2-1.1.0%2B1.0.4--sesl7%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110041)
 - [![latest version](https://img.shields.io/badge/sesl.androidx.slidingpanelayout:slidingpanelayout-1.2.0%2B1.0.5--sesl7%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110034)
-- [![latest version](https://img.shields.io/badge/sesl.androidx.preference:preference-1.2.1%2B1.0.11--sesl7%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110032)
+- [![latest version](https://img.shields.io/badge/sesl.androidx.preference:preference-1.2.1%2B1.0.12--sesl7%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110032)
 - [![latest version](https://img.shields.io/badge/sesl.androidx.indexscroll:indexscroll-1.0.6%2B1.0.6--sesl7%2Brev3-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110029)
 - [![latest version](https://img.shields.io/badge/sesl.androidx.picker:picker--basic-1.0.11%2B1.0.11--sesl7%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110030)
 - [![latest version](https://img.shields.io/badge/sesl.androidx.picker:picker--color-1.0.6%2B1.0.6--sesl7%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110031)
