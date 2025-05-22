@@ -476,17 +476,18 @@ public class PreferenceGroupAdapter extends RecyclerView.Adapter<PreferenceViewH
             mParentWidth = width;
             if (preference instanceof SwitchPreference) {
                 ((SwitchPreference) preference).onBindViewHolder(holder, width);
-                return;
             } else if (preference instanceof SwitchPreferenceCompat) {
                 ((SwitchPreferenceCompat) preference).onBindViewHolder(holder, width);
-                return;
             } else {
                 preference.onBindViewHolder(holder);
-                return;
             }
+        } else {
+            if (preference instanceof SeekBarPreference) {
+                holder.seslSetViewHolderRecoilEffectEnabled(false);
+            }
+            preference.onBindViewHolder(holder);
         }
         //sesl
-        preference.onBindViewHolder(holder);
     }
 
     @Override
