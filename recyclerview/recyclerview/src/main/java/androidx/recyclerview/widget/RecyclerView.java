@@ -15936,11 +15936,30 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
                 dxUnconsumed, dyUnconsumed, offsetInWindow, type, consumed);
     }
 
-
+    /**
+     * Sets whether bottom rounded corner should be drawn on the last item.
+     *
+     * @param draw {@code true} to draw the last rounded corner, {@code false} otherwise.
+     */
     public void seslSetLastRoundedCorner(boolean draw) {
         mDrawLastRoundedCorner = draw;
     }
 
+  /**
+     * Enables or disables filling the bottom area of the RecyclerView with a solid color
+     * when the content height is less than the viewport height.
+     * <p>
+     * By default, this area is filled with the color specified by
+     * {@code @attr/roundedCornerColor}. You can override this color
+     * by calling {@link #seslSetFillBottomColor(int)}.
+     * </p>
+     * <p>
+     * This feature is only supported when the layout manager is an instance of
+     * {@link LinearLayoutManager}.
+     * </p>
+     *
+     * @param draw {@code true} to enable filling the bottom area; {@code false} to disable it.
+     */
     public void seslSetFillBottomEnabled(boolean draw) {
         if (mLayout instanceof LinearLayoutManager) {
             mDrawRect = draw;
@@ -15948,12 +15967,28 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         }
     }
 
+    /**
+     * Sets the custom color used to fill the bottom area and the bottom rounded corners
+     * when {@link #seslSetFillBottomEnabled} is set to {@code true}.
+     *
+     * @param color The color to use for the bottom fill and rounded corners.
+     */
     public void seslSetFillBottomColor(@ColorInt int color) {
         mRectPaint.setColor(color);
         mRoundedCorner.setRoundedCornerColor(ROUNDED_CORNER_BOTTOM_LEFT
                 | ROUNDED_CORNER_BOTTOM_RIGHT, color);
     }
 
+    /**
+     * Enables or disables horizontal padding fill and adjusts vertical scrollbar padding for the RecyclerView.
+     * <p>
+     * When enabled, the RecyclerView fills its horizontal padding area with a solid color and applies
+     * additional top and bottom padding to the vertical scrollbar, using the system-defined dimension
+     * {@code sesl_system_scroller_vertical_padding}. This also updates the fast scroller's scrollbar style if present.
+     * </p>
+     *
+     * @param enabled {@code true} to enable horizontal padding fill and scrollbar padding; {@code false} to disable them.
+     */
     public void seslSetFillHorizontalPaddingEnabled(boolean enabled) {
         mDrawHorizontalPadding = enabled;
         int dimensionPixelOffset = enabled
@@ -16291,6 +16326,13 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
     }
 
 
+    /**
+     * Enables or disables the fast scroller.
+     *
+     * <p>FastScroller cannot be used with StaggeredGridLayoutManager.
+     *
+     * @param enabled True to enable the fast scroller, false to disable it.
+     */
     public void seslSetFastScrollerEnabled(boolean enabled) {
         if (mLayout instanceof StaggeredGridLayoutManager) {
             Log.e(TAG, "FastScroller cannot be used with StaggeredGridLayoutManager.");
@@ -16312,10 +16354,23 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         }
     }
 
+    /**
+     * Returns true if fast scrolling is enabled, false otherwise.
+     *
+     * @see #seslSetFastScrollerEnabled(boolean)
+     */
     public boolean seslIsFastScrollerEnabled() {
         return mFastScrollerEnabled;
     }
 
+    /**
+     * Sets the threshold for the fast scroller to start reacting on the touch motion event it receives.
+     * This method allows customization of the sensitivity of the fast scroller. A higher threshold
+     * means the user needs to drag their finger further before the fast scroller activates.
+     *
+     * @param threshold The threshold value in pixels. Must be greater than or equal to 0.
+     *                  If a negative value is provided, the threshold will not be changed.
+     */
     public void seslSetFastScrollerThreshold(float threshold) {
         SeslRecyclerViewFastScroller fastScroller = this.mFastScroller;
         if (fastScroller != null && threshold >= 0) {
@@ -16323,6 +16378,16 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         }
     }
 
+    /**
+     * Indicates whether the vertical scrollbar is enabled.
+     * <p>
+     * If a {@link SeslRecyclerViewFastScroller} is present and enabled, this method will return {@code false},
+     * effectively hiding the default vertical scrollbar when the fast scroller is active.
+     * </p>
+     *
+     * @return {@code true} if the vertical scrollbar is enabled and the fast scroller is not enabled,
+     *         {@code false} otherwise.
+     */
     @Override
     public boolean isVerticalScrollBarEnabled() {
         SeslRecyclerViewFastScroller fastScroller = this.mFastScroller;
@@ -16343,10 +16408,20 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         return false;
     }
 
+    /**
+     * Sets a listener to receive fast scroll events.
+     *
+     * @param l The listener to set.
+     */
     public void seslSetFastScrollerEventListener(@Nullable SeslFastScrollerEventListener l) {
         mFastScrollerEventListener = l;
     }
 
+    /**
+     * Sets whether the "Go to top" button is enabled.
+     *
+     * @param enable true if the "Go to top" button should be enabled, false otherwise.
+     */
     public void seslSetGoToTopEnabled(boolean enable) {
         initGoToTop(enable, SeslMisc.isLightTheme(this.mContext));
     }
@@ -16429,6 +16504,12 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         }
     }
 
+    /**
+     * Smoothly scrolls to the specified adapter position.
+     * The item view will be aligned to the right or bottom of this RecyclerView.
+     *
+     * @param position The adapter position to scroll to.
+     */
     public void seslSnapScrollToPosition(int position) {
         final float snapRange = computeHorizontalScrollRange() * 0.2f;
 
@@ -16456,30 +16537,75 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         }
     }
 
+    /**
+     * Retrieves the bottom area for hover input.
+     * This value represents the extra space added at the bottom as the activation area
+     * for hovered inputs (e.g., mouse cursor, S Pen).
+     *
+     * @return The hover bottom padding, measured in pixels.
+     * @see #seslSetHoverBottomPadding(int)
+     */
     public int seslGetHoverBottomPadding() {
         return mHoverBottomAreaHeight;
     }
 
+    /**
+     * Sets the bottom area for hover input.
+     * This value represents the extra space added at the bottom as the activation area
+     * for hovered inputs (e.g., mouse cursor, S Pen).
+     *
+     * @param padding The bottom padding in pixels.
+     * @see #seslGetHoverBottomPadding
+     */
     public void seslSetHoverBottomPadding(int padding) {
         mHoverBottomAreaHeight = padding;
     }
 
+    /**
+     * Retrieves the top area for hover input.
+     * This value represents the extra space added at the top as the activation area
+     * for hovered inputs (e.g., mouse cursor, S Pen).
+     *
+     * @return The hover top padding, measured in pixels.
+     * @see #seslSetHoverTopPadding(int)
+     */
     public int seslGetHoverTopPadding() {
         return mHoverTopAreaHeight;
     }
 
+    /**
+     * Sets the top area for hover input.
+     * This value represents the extra space added at the top as the activation area
+     * for hovered inputs (e.g., mouse cursor, S Pen).
+     *
+     * @param padding The top padding in pixels.
+     * @see #seslGetHoverTopPadding
+     */
     public void seslSetHoverTopPadding(int padding) {
         mHoverTopAreaHeight = padding;
     }
 
+    /**
+     * Retrieves the bottom padding of the "Go To Top"  button.
+     *
+     * @return The bottom padding of the "Go To Top"  button.
+     */
     public int seslGetGoToTopBottomPadding() {
         return mGoToTopBottomPadding;
     }
 
+    /**
+     * Sets a custom bottom padding of the "Go To Top"  button.
+     */
     public void seslSetGoToTopBottomPadding(int padding) {
         mGoToTopBottomPadding = padding;
     }
 
+    /**
+     * Register a callback to be invoked when the "Go To Top"  button is clicked.
+     *
+     * @param listener The callback that will run
+     */
     public void seslSetOnGoToTopClickListener(@Nullable SeslOnGoToTopClickListener listener) {
         mOnGoToTopClickListener = listener;
     }
@@ -16489,6 +16615,17 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         postDelayed(mGoToTopEdgeEffectRunnable, (long) delayTime);
     }
 
+    /**
+     * Sets the bottom padding for immersive scroll.
+     * <p>
+     * This method adjusts the layout of the "Go To Top" button and the fast scroller
+     * to accommodate the specified bottom padding in immersive mode.
+     *
+     * @param padding The bottom padding value in pixels. Must be non-negative.
+     *                If the padding is too large and the "Go To Top" button is enabled,
+     *                the "Go To Top" button's immersive bottom padding will be set to 0,
+     *                and an error will be logged.
+     */
     @RequiresApi(api = 24)
     public void seslSetImmersiveScrollBottomPadding(int padding) {
         if (padding >= 0) {
@@ -16522,18 +16659,43 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         }
     }
 
+    /**
+     * Sets additional padding for the fast scroller.
+     * <p>
+     * This method allows you to add extra padding to the top and bottom of the fast scroller,
+     * effectively adjusting its vertical position within the view.
+     * </p>
+     *
+     * @param top    The additional padding to apply to the top of the fast scroller, in pixels.
+     * @param bottom The additional padding to apply to the bottom of the fast scroller, in pixels.
+     */
     public void seslSetFastScrollerAdditionalPadding(int top, int bottom) {
         if (mFastScroller != null) {
             mFastScroller.setAdditionalPadding(top, bottom);
         }
     }
 
+    /**
+     * Enables or disables the index tip. The index tip is an overlay displayed
+     * at the top of the RecyclerView during scrolling, showing the index character
+     * of the currently topmost visible item.
+     *
+     * @param enabled True to enable the index tip; false to disable.
+     * @param topMargin The additional top margin of the index tip.
+     */
     public void seslSetIndexTipEnabled(boolean enabled, int topMargin) {
         seslSetIndexTipEnabled(enabled);
         mIndexTip.setTopMargin(topMargin);
     }
 
-       public void seslSetIndexTipEnabled(boolean enabled) {
+    /**
+     * Enables or disables the index tip. The index tip is an overlay displayed
+     * at the top of the RecyclerView during scrolling, showing the index character
+     * of the currently topmost visible item.
+     *
+     * @param enabled True to enable the index tip; false to disable.
+     */
+   public void seslSetIndexTipEnabled(boolean enabled) {
         if (mAdapter instanceof SectionIndexer) {
             if (enabled) {
                 if (mIndexTip == null) {
@@ -16559,10 +16721,24 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         }
     }
 
-      public boolean seslIsIndexTipEnabled() {
+    /**
+     * Retrieves whether the index tip is enabled.
+     *
+     * @return true if the index tip is enabled, false otherwise
+     */
+    public boolean seslIsIndexTipEnabled() {
         return mIndexTipEnabled;
     }
 
+    /**
+     * Updates the position of the index tip.
+     *
+     * <p>This method checks the current orientation and updates the index tip's position accordingly.
+     * If the orientation is portrait, the index tip is marked for update and invalidated to trigger a redraw.
+     * If the orientation is not portrait, the update flag is set to false.
+     * This method does nothing if the index tip is null.
+     * </p>
+     */
     public void seslUpdateIndexTipPosition() {
         if (mIndexTip != null) {
             if (mIndexTip.mCurrentOrientation
@@ -16580,6 +16756,13 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         return mRecyclerViewOffsets[1];
     }
 
+    /**
+     * Call to start a long-press multi-selection session.
+     * This triggers the RecyclerView to invoke the set multi-selection listener
+     * when dragging finger over the RecyclerView items.
+     *
+     * @see #seslSetLongPressMultiSelectionListener
+     */
     public void seslStartLongPressMultiSelection() {
         mIsLongPressMultiSelection = true;
         //Immediately return `onLongPressMultiSelectionStarted` callback
@@ -16590,6 +16773,11 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         updateLongPressMultiSelection(mInitialTouchX, mInitialTouchY, true);
     }
 
+    /**
+     * Simulates a Ctrl key press. This enables multi-selection using mouse input.
+     *
+     * @param pressed {@code true} if the Ctrl key is pressed, {@code false} otherwise.
+     */
     public void seslSetCtrlkeyPressed(boolean pressed) {
         mIsCtrlKeyPressed = pressed;
     }
@@ -16914,6 +17102,20 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         }
     }
 
+    /**
+     * Finds the child view that is closest to the given coordinates.
+     *
+     * <p>This method iterates through all child views and calculates the distance
+     * between the center of each child view and the given coordinates.
+     * It returns the child view with the smallest distance.</p>
+     *
+     * <p>If no child view is found, it logs an error and returns null.</p>
+     *
+     * @param x The x-coordinate.
+     * @param y The y-coordinate.
+     * @return The child view closest to the given coordinates, or null if no child view is found.
+     */
+    @Nullable
     public View seslFindNearChildViewUnder(float x, float y) {
         int childCount = mChildHelper.getChildCount();
         int xBound = Math.round(x);
@@ -17061,12 +17263,23 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         mPointerIconRotation = rotation;
     }
 
+    /**
+     * Sets whether the recoil effect on items is enabled.
+     *
+     * @param enabled {@code true} to enable the recoil effect, {@code false} otherwise.
+     */
     public void seslSetRecoilEnabled(boolean enabled) {
         if (mIsRecoilEnabled != enabled) {
             mIsRecoilEnabled = enabled;
         }
     }
 
+    /**
+     * Sets the vertical padding for the scrollbar.
+     *
+     * @param top The top padding for the scrollbar in pixels.
+     * @param bottom The bottom padding for the scrollbar in pixels.
+     */
     public void seslSetScrollbarVerticalPadding(int top, int bottom) {
         mScrollbarTopPadding = top;
         mScrollbarBottomPadding = bottom;
@@ -17078,6 +17291,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         SeslViewReflector.semSetScrollBarBottomPadding(this, mScrollbarBottomPadding);
     }
 
+
     public void seslSetOnMultiSelectedListener(@Nullable SeslOnMultiSelectedListener listener) {
         mOnMultiSelectedListener = listener;
     }
@@ -17087,10 +17301,24 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         return mOnMultiSelectedListener;
     }
 
+    /**
+     * Sets the listener that will be called when the user starts a multi-selection by long pressing on an item.
+     *
+     * @param listener The listener to set.
+     * @see #seslStartLongPressMultiSelection
+     * @see #getLongPressMultiSelectionListener
+     */
     public void seslSetLongPressMultiSelectionListener(@Nullable SeslLongPressMultiSelectionListener listener) {
         mLongPressMultiSelectionListener = listener;
     }
 
+    /**
+     * Returns the long press multi selection listener for the RecyclerView.
+     *
+     * @return The SeslLongPressMultiSelectionListener, or null if it has not been set.
+     * @see #seslSetLongPressMultiSelectionListener
+     * @see #seslStartLongPressMultiSelection
+     */
     @Nullable
     public final SeslLongPressMultiSelectionListener getLongPressMultiSelectionListener() {
         return mLongPressMultiSelectionListener;
@@ -17125,6 +17353,13 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         return manager.inKeyguardRestrictedInputMode();
     }
 
+    /**
+     * Enable or disable the hover scroll.
+     * When hover scroll is enabled, the list automatically scrolls when the S-Pen/stylus pointer
+     * is hovering over the top/bottom portion of the list.
+     *
+     * @param enabled True to enable hover scroll, false to disable it.
+     */
     public void seslSetHoverScrollEnabled(boolean enabled) {
         mHoverScrollEnable = enabled;
         mHoverScrollStateChanged = true;
@@ -17541,6 +17776,11 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         return mHoverScrollArrows[adjustedOrdinal];
     }
 
+    /**
+     * Enables or disables smooth scrolling.
+     *
+     * @param enabled True to enable smooth scrolling, false to disable.
+     */
     public void seslSetSmoothScrollEnabled(boolean enabled) {
         if (mViewFlinger != null) {
             SeslOverScrollerReflector.setSmoothScrollEnabled(
@@ -17548,14 +17788,35 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         }
     }
 
+    /**
+     * Sets whether to use the higher touch slop distance threshold for stylus events,
+     * which corresponds to page scrolling, before its motion event is considered to be dragging.
+     * By default, this threshold is set to the default scaled touch slop configured in the system.
+     *
+     * @param enabled {@code true} to use the paging touch slop threshold for stylus,
+     *                {@code false} otherwise.
+     */
     public void seslSetPagingTouchSlopForStylus(boolean enabled) {
         mUsePagingTouchSlopForStylus = enabled;
     }
 
+    /**
+     * Checks whether the stylus input uses the page scrolling touch slop threshold
+     * when deciding if a gesture is a drag event.
+     *
+     * @return {@code true} if the stylus is configured to use the paging touch slop for drag detection, {@code false} otherwise.
+     */
     public boolean seslIsPagingTouchSlopForStylusEnabled() {
         return mUsePagingTouchSlopForStylus;
     }
 
+    /**
+     * A custom View that displays an "index tip" overlay on a scrollable list.
+     * This tip shows the current section index (e.g., "A", "B", "C") as the user scrolls,
+     * providing a visual cue for navigation within the list.
+     * <p>
+     * It works in conjunction with a {@link SectionIndexer} to determine the current section.
+     */
     class IndexTip extends View {
         @SuppressLint("NewApi")
         private final PathInterpolator ALPHA_INTERPOLATOR =

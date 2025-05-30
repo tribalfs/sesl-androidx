@@ -63,6 +63,17 @@ public class SeslOverScrollerReflector {
         overScroller.fling(startX, startY, velocityX, velocityY, minX, maxX, minY, maxY);
     }
 
+    /**
+     * Enables or disables Samsung-specific smooth scrolling behavior on the given {@link OverScroller} instance.
+     * <p>
+     * On Samsung devices running One UI (Android Oreo/API 26 or higher), this method uses Java reflection
+     * to invoke the hidden method {@code semSetSmoothScrollEnabled(boolean)} on the {@code OverScroller} class.
+     * This method enables/disables temporarily boosting the CPU/GPU frequencies and scheduling when scrolling.
+     *
+     * @param overScroller the {@link OverScroller} object whose scrolling behavior should be adjusted
+     * @param enabled      {@code true} to enable Samsung’s smooth scrolling optimization, {@code false} to disable it
+     *
+     */
     public static void setSmoothScrollEnabled(@NonNull OverScroller overScroller, boolean enabled) {
         if (isOneUI() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Method method = SeslBaseReflector.getDeclaredMethod(mClass, "semSetSmoothScrollEnabled", Boolean.TYPE);
