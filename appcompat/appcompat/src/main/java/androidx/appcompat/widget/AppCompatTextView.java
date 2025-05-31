@@ -61,7 +61,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 /**
- * <p><b>SESL variant</b></p><br>
+ * <p><b>SESL variant.</b></p><br>
  *
  * A {@link TextView} which supports compatible features on older versions of the platform,
  * including:

@@ -1,4 +1,4 @@
-# SESL(OneUI) Android Jetpack (Unofficial)
+# SESL Android Jetpack Modules (Unofficial)
 
 This fork hosts modified versions of some Android Jetpack modules and additional sesl.androidx.* modules. These are intended for implementing OneUI-styled Android applications while simultaneously enjoying the latest features and updates of Android Jetpack. This library is free for everyone to use.
 
@@ -6,7 +6,7 @@ Any form of contributions, including suggestions, bug reports, corrections, and 
 
 Info: Samsung’s One UI apps are created using heavily modified versions of some [Android Jetpack](https://github.com/androidx/androidx) and [Material Components for Android](https://github.com/material-components/material-components-android) libraries. These include (but are not limited to) custom themes/styles, custom implementations, and additional APIs. These are internally referenced as SESL. Samsung also added its own androidx modules.
 
-See also: [Unofficial OneUI Design Library](https://github.com/tribalfs/oneui-design)
+See also: [OneUI Design Library (Unofficial)](https://github.com/tribalfs/oneui-design)
 
 ## Available modules (as GithubPackages)
 #### SESL7(OneUI 7) Android Jetpack

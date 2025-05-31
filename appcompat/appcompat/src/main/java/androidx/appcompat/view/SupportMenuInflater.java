@@ -57,7 +57,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
 /**
- * <p><b>SESL variant</b></p><br>
+ * <p><b>SESL variant.</b></p><br>
  * This class is used to instantiate menu XML files into Menu objects.
  * <p>
  * For performance reasons, menu inflation relies heavily on pre-processing of

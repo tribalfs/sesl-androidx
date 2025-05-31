@@ -30,7 +30,7 @@ import androidx.annotation.RestrictTo;
 import androidx.appcompat.R;
 
 /**
- * <p><b>SESL variant</b></p><br>
+ * <p><b>SESL variant.</b></p><br>
  *
  * Used by dialogs to change the font size and number of lines to try to fit
  * the text to the available space.

@@ -39,7 +39,7 @@ import androidx.resourceinspection.annotation.AppCompatShadowedAttributes;
 
 /**
  *
- *  <p><b>SESL variant</b></p><br>
+ *  <p><b>SESL variant.</b></p><br>
  *
  * A {@link ImageView} which supports compatible features on older versions of the platform,
  * including:

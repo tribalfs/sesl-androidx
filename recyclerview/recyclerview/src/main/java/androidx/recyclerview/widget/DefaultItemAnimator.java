@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * <p><b>SESL variant</b></p><br>
+ * <p><b>SESL variant.</b></p><br>
  *
  * This implementation of {@link RecyclerView.ItemAnimator} provides basic
  * animations on remove, add, and move events that happen to the items in

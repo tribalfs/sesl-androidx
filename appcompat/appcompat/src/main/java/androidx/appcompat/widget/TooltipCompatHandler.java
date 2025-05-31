@@ -41,7 +41,7 @@ import androidx.reflect.view.SeslPointerIconReflector;
 import androidx.reflect.view.SeslViewReflector;
 
 /**
- * <p><b>SESL variant</b></p><br>
+ * <p><b>SESL variant.</b></p><br>
  *
  * Event handler used used to emulate the behavior of {@link View#setTooltipText(CharSequence)}
  * prior to API level 26.

@@ -15,7 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 /**
- * <p><b>SESL variant</b></p><br>
+ * <p><b>SESL variant.</b></p><br>
  *
  * Preference based on android.preference.SeekBarPreference but uses support preference as a base
  * . It contains a title and a {@link SeslSeekBar}

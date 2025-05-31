@@ -162,7 +162,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * <p><b>SESL variant</b></p><br>
+ * <p><b>SESL variant.</b></p><br>
  *
  * A flexible view for providing a limited window into a large data set.
  *

@@ -36,7 +36,7 @@ import androidx.appcompat.R;
 import androidx.core.view.ViewCompat;
 
 /**
- * <p><b>SESL variant</b></p><br>
+ * <p><b>SESL variant.</b></p><br>
  *
  * An extension of LinearLayout that automatically switches to vertical
  * orientation when it can't fit its child views horizontally.

@@ -43,7 +43,7 @@ import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import java.util.List;
 
 /**
- * <p><b>SESL variant</b></p><br>
+ * <p><b>SESL variant.</b></p><br>
  *
  * A {@link RecyclerView.LayoutManager} implementation which provides
  * similar functionality to {@link android.widget.ListView}.

@@ -32,7 +32,7 @@ import androidx.annotation.RequiresApi;
 import androidx.core.internal.view.SupportMenuItem;
 
 /**
- * <p><b>SESL variant</b></p><br>
+ * <p><b>SESL variant.</b></p><br>
  *
  * Helper for accessing features in {@link MenuItem}.
  * <p class="note"><strong>Note:</strong> You cannot get an instance of this class. Instead,

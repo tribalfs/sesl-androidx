@@ -41,7 +41,7 @@ import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.appcompat.view.menu.ShowableListMenu;
 
 /**
- * <p><b>SESL variant</b></p><br>
+ * <p><b>SESL variant.</b></p><br>
  *
  * Static library support version of the framework's {@link android.widget.PopupMenu}.
  * Used to write apps that run on platforms prior to Android 3.0.  When running

@@ -50,7 +50,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
- * <p><b>SESL variant</b></p><br>
+ * <p><b>SESL variant.</b></p><br>
  *
  * Shows a hierarchy of {@link Preference} objects as lists. These preferences will automatically
  * save to {@link android.content.SharedPreferences} as the user interacts with them. To retrieve

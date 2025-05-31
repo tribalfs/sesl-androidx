@@ -27,7 +27,7 @@ import androidx.annotation.RestrictTo;
 import androidx.reflect.DeviceInfo;
 
 /**
- * <p><b>SESL variant</b></p><br>
+ * <p><b>SESL variant.</b></p><br>
  *
  * Helper class used to emulate the behavior of {@link View#setTooltipText(CharSequence)} prior
  * to API level 26.

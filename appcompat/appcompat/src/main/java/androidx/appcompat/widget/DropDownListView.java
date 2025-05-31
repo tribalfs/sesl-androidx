@@ -46,7 +46,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
- * <p><b>SESL variant</b></p><br>
+ * <p><b>SESL variant.</b></p><br>
  *
  * <p>Wrapper class for a ListView. This wrapper can hijack the focus to
  * make sure the list uses the appropriate drawables and states when

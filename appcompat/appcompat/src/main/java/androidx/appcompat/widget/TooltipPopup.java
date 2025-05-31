@@ -45,7 +45,7 @@ import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.view.ViewCompat;
 
 /**
- * <p><b>SESL variant</b></p><br>
+ * <p><b>SESL variant.</b></p><br>
  *
  * A popup window displaying a text message aligned to a specified view.
  *

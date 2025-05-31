@@ -50,7 +50,7 @@ import androidx.reflect.os.SeslBuildReflector;
 import java.util.ArrayList;
 
 /**
- * <p><b>SESL variant</b></p><br>
+ * <p><b>SESL variant.</b></p><br>
  *
  * ActionMenuView is a presentation of a series of menu options as a View. It provides
  * several top level options as action buttons while spilling remaining options over as

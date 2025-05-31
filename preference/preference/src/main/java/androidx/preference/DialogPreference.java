@@ -33,7 +33,7 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.res.TypedArrayUtils;
 
 /**
- * <p><b>SESL variant</b></p><br>
+ * <p><b>SESL variant.</b></p><br>
  *
  * A base class for {@link Preference}s that are dialog-based. When clicked, these
  * preferences will open a dialog showing the actual preference controls.

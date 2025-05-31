@@ -52,7 +52,7 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 /**
- * <p><b>SESL variant</b></p><br>
+ * <p><b>SESL variant.</b></p><br>
  *
  * The item view for each item in the ListView-based MenuViews.
  *
