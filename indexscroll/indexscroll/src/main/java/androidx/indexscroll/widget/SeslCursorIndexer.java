@@ -29,6 +29,13 @@ import androidx.annotation.RestrictTo;
  * Original code by Samsung, all rights reserved to the original author.
  */
 
+/**
+ * A helper class for {@link Cursor}s that implement the {@link SeslAbsIndexer} interface.
+ * This class can provide a simple index implementation that simply examines the first
+ * letter of the section names.
+ *
+ * <p>It is assumed that the data set is already sorted on the index column.
+ */
 public class SeslCursorIndexer extends SeslAbsIndexer {
     private final String TAG = "SeslCursorIndexer";
 

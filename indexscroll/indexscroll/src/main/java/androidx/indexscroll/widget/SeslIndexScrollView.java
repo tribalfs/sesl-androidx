@@ -74,7 +74,15 @@ import java.util.List;
  * Original code by Samsung, all rights reserved to the original author.
  */
 
-/** @noinspection unused*/
+/**
+ * SeslIndexScrollView is a view that shows the scroll bar and the index bar on the right or left side of the screen.
+ * It is used to scroll the list to the position of the selected index.
+ * It can be used with {@link RecyclerView}.
+ *
+ * <p>The index bar can be shown in two modes: text mode and dot mode.
+ * In text mode, the index bar shows the text of the index.
+ * In dot mode, the index bar shows the dot of the index.
+ */
 public class SeslIndexScrollView extends FrameLayout {
     public static final int GRAVITY_INDEX_BAR_LEFT = 0;
     public static final int GRAVITY_INDEX_BAR_RIGHT = 1;
@@ -234,10 +242,22 @@ public class SeslIndexScrollView extends FrameLayout {
         }
     }
 
+    /**
+     * Sets the array indexer for the {@link SeslIndexScrollView}.
+     *
+     * @param indexer The {@link SeslArrayIndexer} to use.
+     */
     public void setIndexer(@NonNull SeslArrayIndexer indexer) {
         setAbsIndexer(indexer);
     }
 
+    /**
+     * Sets the {@link SeslCursorIndexer} for this IndexScrollView.
+     * The indexer must be initialized before being set.
+     *
+     * @param indexer The SeslCursorIndexer to use.
+     * @throws IllegalArgumentException if the indexer is not initialized.
+     */
     public void setIndexer(@NonNull SeslCursorIndexer indexer) {
         if (indexer.isInitialized()) {
             setAbsIndexer(indexer);
@@ -269,6 +289,15 @@ public class SeslIndexScrollView extends FrameLayout {
         mIndexScroll.setAlphabetArray(mIndexer.getAlphabetArray());
     }
 
+    /**
+     * Sets the index bar to a simple scroll mode with a custom character array and width.
+     *
+     * @param indexBarChar An array of strings representing the characters to be displayed in the index bar.
+     *                     If null, an IllegalArgumentException will be thrown.
+     * @param width        The desired width of the simple index scroll bar in pixels.
+     *                     If 0, a default width will be used.
+     * @throws IllegalArgumentException if {@code indexBarChar} is null.
+     */
     public void setSimpleIndexScroll(String[] indexBarChar, int width) {
         if (indexBarChar != null) {
             mIsSimpleIndexScroll = true;
@@ -297,6 +326,12 @@ public class SeslIndexScrollView extends FrameLayout {
         }
     }
 
+    /**
+     * Attaches the {@link SeslIndexScrollView} to the provided RecyclerView, by calling
+     * {@link RecyclerView#addOnScrollListener(RecyclerView.OnScrollListener)}.
+     *
+     * @param recyclerView The RecyclerView instance to which you want to add this scrollbar
+     */
     public void attachToRecyclerView(@NotNull RecyclerView recyclerView) {
         if (mIndexScroll.mRecyclerView != recyclerView) {
             if (mIndexScroll.mRecyclerView != null) {
@@ -325,6 +360,14 @@ public class SeslIndexScrollView extends FrameLayout {
         }
     }
 
+    /**
+     * Sets the text mode for the index bar.
+     * When text mode is enabled, the index bar displays text characters instead of dots.
+     * This method updates the background drawable, width, and thumb drawable
+     * of the index bar based on the specified text mode.
+     *
+     * @param textMode {@code true} to enable text mode, {@code false} to disable it.
+     */
     public void setIndexBarTextMode(boolean textMode) {
         if (mIndexScroll != null) {
             mIndexScroll.mEnableTextMode = textMode;
@@ -385,34 +428,71 @@ public class SeslIndexScrollView extends FrameLayout {
         }
     }
 
+    /**
+     * Sets the background drawable for the index bar.
+     *
+     * @param bgDrawable The drawable to use as the background.
+     */
     public void setIndexBarBackgroundDrawable(Drawable bgDrawable) {
         mIndexScroll.mBgDrawableDefault = bgDrawable;
     }
 
+    /**
+     * Sets the background color of the index bar.
+     *
+     * @param bgColor The color to set as the background.
+     */
     public void setIndexBarBackgroundColor(int bgColor) {
         mIndexScroll.mBgDrawableDefault
                 .setColorFilter(bgColor, PorterDuff.Mode.MULTIPLY);
     }
 
+    /**
+     * Sets the text color of the index bar.
+     *
+     * @param textColor The color to set for the index bar text.
+     */
     public void setIndexBarTextColor(int textColor) {
         mIndexScroll.mTextColorDimmed = textColor;
     }
 
+    /**
+     * Sets the text color of the index bar when it is pressed.
+     *
+     * @param pressedTextColor The color to set for the pressed text.
+     */
     public void setIndexBarPressedTextColor(int pressedTextColor) {
         mIndexScroll.mScrollThumbBgDrawable
                 .setColorFilter(pressedTextColor, PorterDuff.Mode.MULTIPLY);
         mIndexScroll.mThumbColor = pressedTextColor;
     }
 
+    /**
+     * Sets the text color for the effect preview.
+     *
+     * @param effectTextColor The color to set for the effect text.
+     */
     public void setEffectTextColor(int effectTextColor) {
         mIndexScrollPreview.setTextColor(effectTextColor);
     }
 
+    /**
+     * Sets the background color of the index scroll preview.
+     *
+     * @param effectBackgroundColor The color to set as the background.
+     *                              The alpha component of this color will be adjusted to 0.8f.
+     */
     public void setEffectBackgroundColor(int effectBackgroundColor) {
         mIndexScrollPreview
                 .setBackgroundColor(mIndexScroll.getColorWithAlpha(effectBackgroundColor, 0.8f));
     }
 
+    /**
+     * Sets the gravity of the index bar.
+     *
+     * @param gravity The gravity of the index bar. Can be {@link #GRAVITY_INDEX_BAR_LEFT} or
+     *                {@link #GRAVITY_INDEX_BAR_RIGHT}.
+     */
     public void setIndexBarGravity(@GravityIndexBar int gravity) {
         mIndexBarGravity = gravity;
         mIndexScroll.setPosition(gravity);
@@ -432,6 +512,12 @@ public class SeslIndexScrollView extends FrameLayout {
                 || super.verifyDrawable(drawable);
     }
 
+    /**
+     * Sets the top and bottom margins for the index scroll background.
+     *
+     * @param topMargin The top margin to set.
+     * @param bottomMargin The bottom margin to set.
+     */
     public void setIndexScrollMargin(int topMargin, int bottomMargin) {
         if (mIndexScroll != null) {
             mIndexScroll.setIndexScrollBgMargin(topMargin, bottomMargin);

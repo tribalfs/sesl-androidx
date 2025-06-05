@@ -30,6 +30,26 @@ import java.util.List;
  * Original code by Samsung, all rights reserved to the original author.
  */
 
+/**
+ * A helper class for {@link SeslIndexScrollView} that alphabetically sorts and sections a list of items.
+ *
+ * <p>This class is designed to work with a {@link List} of {@link String} objects.
+ * It provides the necessary methods for the {@link SeslIndexScrollView} to display an indexed
+ * scrollbar and allow users to quickly navigate through the list.
+ *
+ * <p>Usage:
+ * <pre>
+ * {@code
+ * List<String> myData = new ArrayList<>();
+ * // Populate myData with string items
+ *
+ * CharSequence indexCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#"; // Or your custom index characters
+ * SeslArrayIndexer arrayIndexer = new SeslArrayIndexer(myData, indexCharacters);
+ *
+ * // Pass the arrayIndexer to your SeslIndexScrollView or its adapter
+ * }
+ * </pre>
+ */
 public class SeslArrayIndexer extends SeslAbsIndexer {
     private final String TAG = "SeslArrayIndexer";
     private final boolean DEBUG = false;
