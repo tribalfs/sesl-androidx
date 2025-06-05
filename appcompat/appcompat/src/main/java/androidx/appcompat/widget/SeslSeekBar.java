@@ -16,7 +16,22 @@ import androidx.appcompat.R;
  */
 
 /**
- * Samsung SeekBar class.
+ * SeslSeekBar is an extension of  {@link SeslAbsSeekBar} that adds a draggable thumb.
+ * The user can touch the thumb and drag left or right to set the current progress level or use
+ * the arrow keys.
+ * <p>The
+ * {@link android.R.attr#thumb} attribute defines the {@link android.graphics.drawable.Drawable}
+ * that will be used to draw the thumb.
+ * </p>
+ * <p>The
+ * {@link android.R.attr#thumbOffset} attribute defines the offset (in pixels) of the thumb
+ * from the center of the SeekBar. This is useful if the thumb image has a bottom padding
+ * that would make it appear to float above the track if the offset were not supplied.
+ * </p>
+ *
+ * <p>For information about the XML attributes available for this class, see
+ * <a href="{@docRoot}reference/androidx/appcompat/R.attr.html#SeekBar">SeekBar Attributes</a>.
+ * </p>
  */
 public class SeslSeekBar extends SeslAbsSeekBar {
     /**

@@ -23,6 +23,10 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.R
 
 //Added in sesl7
+/**
+ * An extension of {@link ArrayAdapter} which adds top padding on the first item,
+ * and bottom padding on the last item.
+ */
 class SeslArrayAdapter(context: Context, @LayoutRes resource: Int) :
     ArrayAdapter<Any?>(context, resource) {
     private var mInitPaddingBottom = 0

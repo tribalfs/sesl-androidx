@@ -94,7 +94,47 @@ import java.util.Locale;
 
 /**
  * Samsung ProgressBar class.
- * @noinspection unused
+ *
+ * <p>This class provides a visual indicator of progress in some operation.
+ * It provides no user interaction. This can also be made indeterminate.
+ * In indeterminate mode, the progress bar shows a cyclic animation without an
+ * indication of progress. This mode is used by applications when the length of the
+ * task is unknown. The indeterminate progress bar can be either a spinning wheel
+ * or a horizontal bar.
+ *
+ * <p>The following code example shows how to add a progress bar to a layout:
+ *
+ * <pre>
+ * &lt;ProgressBar
+ *     android:id="@+id/progressBar"
+ *     style="?android:attr/progressBarStyleHorizontal"
+ *     android:layout_width="match_parent"
+ *     android:layout_height="wrap_content"
+ *     android:max="100"
+ *     android:progress="50" /&gt;
+ * </pre>
+ *
+ * <p>To control the current progress value, use {@link #setProgress(int)}.
+ * To control the range of values, use {@link #setMin(int)} and {@link #setMax(int)}.
+ * By default, the progress bar is full when progress reaches 100.
+ *
+ * <p>To show an indeterminate progress animation, use
+ * {@link #setIndeterminate(boolean) setIndeterminate(true)}.
+ *
+ * <p>The progress bar also supports a secondary progress value, which is
+ * useful for displaying intermediate progress, such as the buffer level
+ * during a streaming media playback. To control the secondary progress
+ * value, use {@link #setSecondaryProgress(int)}.
+ *
+ * <p>For more information, see the
+ * <a href="{@docRoot}guide/topics/ui/controls/progress.html">Progress Bar</a>
+ * guide.
+ *
+ * @attr ref android.R.styleable#ProgressBar_animationResolution
+ * @attr ref android.R.styleable#ProgressBar_background
+ * @attr ref android.R.styleable#ProgressBar_indeterminate
+ * @attr ref android.R.styleable#ProgressBar_indeterminateBehavior
+ * @attr ref android.R.styleable#ProgressBar_indeterminateDrawable
  */
 @RemoteView
 @SuppressLint("RestrictedApi")

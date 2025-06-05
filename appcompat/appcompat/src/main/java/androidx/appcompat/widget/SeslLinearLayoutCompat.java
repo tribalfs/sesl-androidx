@@ -43,7 +43,42 @@ import androidx.core.view.ViewCompat;
 
 //Added in sesl7
 /**
- * SESL variant of LinearLayoutCompat that adds support for rounded corners and recoil animation.
+ * SESL variant of {@link LinearLayoutCompat} that adds support for rounded corners and
+ * recoil animation. The rounded corners can be configured using the {@code seslLayoutRoundedCorner} attribute.
+ * The recoil animation effect that provides visual feedback during user interactions such as touch events or key presses.
+ *
+ * <p><b>Key Features:</b>
+ * <ul>
+ *     <li><b>Rounded Corners:</b> Supports customizable rounded corners via the
+ *         {@link SeslRoundedCorner} utility. The degree of rounding
+ *         can be specified through XML attributes.</li>
+ *     <li><b>Recoil Animation:</b> Implements a recoil animation using
+ *         {@link SeslRecoilAnimator} to provide dynamic feedback
+ *         on interaction with child views. This animation is triggered by touch events
+ *         (including S Pen events) and key events (specifically the Enter key).</li>
+ *     <li><b>Interaction Handling:</b> Manages touch and key events to appropriately trigger
+ *         animations and update the state of child views. It identifies the clickable child
+ *         view under the touch event and applies the press/release states accordingly.</li>
+ * </ul>
+ *
+ * <p><b>Usage:</b>
+ * This layout can be used as a direct replacement for {@link LinearLayoutCompat} in XML layouts
+ * where rounded corners and recoil animations are desired.
+ *
+ * <pre>
+ * &lt;androidx.appcompat.widget.SeslLinearLayoutCompat
+ *     xmlns:android="http://schemas.android.com/apk/res/android"
+ *     xmlns:app="http://schemas.android.com/apk/res-auto"
+ *     android:layout_width="match_parent"
+ *     android:layout_height="wrap_content"
+ *     android:orientation="vertical"
+ *     app:seslLayoutRoundedCorner="all"&gt;
+ *
+ *     &lt;!-- Child views --&gt;
+ *
+ * &lt;/androidx.appcompat.widget.SeslLinearLayoutCompat&gt;
+ * </pre>
+ *
  */
 @RequiresApi(29)
 public class SeslLinearLayoutCompat extends LinearLayoutCompat {

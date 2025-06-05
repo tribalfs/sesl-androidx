@@ -34,7 +34,15 @@ import androidx.core.content.res.ResourcesCompat;
  */
 
 /**
- * Samsung MenuDivider class.
+ * Represents a custom divider view used in Samsung-style menus.
+ *
+ * This class extends {@link ImageView} and draws a series of circles
+ * to create a visually distinct divider line. The appearance of the
+ * divider (color) adapts to the current theme (light or dark).
+ *
+ * The number and spacing of the circles are calculated based on the
+ * available width of the view, ensuring a consistent look across
+ * different screen sizes.
  */
 public class SeslMenuDivider extends ImageView {
     private static final float CIRCLE_INTERVAL = 3.0f;

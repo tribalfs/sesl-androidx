@@ -52,7 +52,10 @@ import java.util.List;
  */
 
 /**
- * Samsung SwitchBar.
+ * SeslSwitchBar is a view that provides a standard switch control similar to {@link SwitchCompat}
+ * but a more prominent one. This displays "On" or "Off" text depending on its state
+ * This view also allows to show {@link SeslProgressBar} within itself to indicate ongoing operations.
+ *
  */
 public class SeslSwitchBar extends LinearLayout implements CompoundButton.OnCheckedChangeListener {
 
@@ -159,6 +162,12 @@ public class SeslSwitchBar extends LinearLayout implements CompoundButton.OnChec
         return mSwitch.performClick();
     }
 
+    /**
+     * Set the visibility of the progress bar.
+     *
+     * @param visible {@code true} to make the progress bar visible, {@code false} to make it
+     *                gone.
+     */
     public void setProgressBarVisible(boolean visible) {
         try {
             mProgressBar.setVisibility(visible ?
@@ -168,7 +177,7 @@ public class SeslSwitchBar extends LinearLayout implements CompoundButton.OnChec
         }
     }
 
-    public void setTextViewLabelAndBackground(boolean isChecked) {
+    private void setTextViewLabelAndBackground(boolean isChecked) {
         mLabel = getResources().getString(isChecked ? mOnTextId : mOffTextId);
         DrawableCompat.setTintList(DrawableCompat.wrap(mBackground.getBackground()).mutate(),
                 ColorStateList.valueOf(isChecked ? mBackgroundActivatedColor : mBackgroundColor));
@@ -187,16 +196,25 @@ public class SeslSwitchBar extends LinearLayout implements CompoundButton.OnChec
         }
     }
 
-    public void setTextViewLabel(boolean isChecked) {
-        mLabel = getResources().getString(isChecked ? mOnTextId : mOffTextId);
-        mTextView.setText(mLabel);
-    }
 
+    /**
+     * Set the session description for accessibility.
+     * This will be used by Talkback to announce the context of the SwitchBar.
+     * For example, if the SwitchBar controls "Wi-Fi", you should set this to "Wi-Fi".
+     *
+     * @param sessionDescription The description of the session.
+     */
     public void setSessionDescription(String sessionDescription) {
         mSessionDesc = sessionDescription;
         mDelegate.setSessionName(sessionDescription);
     }
 
+    /**
+     * Set the text to display when the switch is in the on or off state.
+     *
+     * @param onTextId The string resource for when the switch is on.
+     * @param offTextId The string resource for when the switch is off.
+     */
     public void setSwitchBarText(int onTextId, int offTextId) {
         mOnTextId = onTextId;
         mOffTextId = offTextId;
@@ -226,6 +244,11 @@ public class SeslSwitchBar extends LinearLayout implements CompoundButton.OnChec
         setTextViewLabelAndBackground(isChecked());
     }
 
+    /**
+     * Returns the {@link SeslToggleSwitch switch} child view.
+     *
+     * @return The switch.
+     */
     public final SeslToggleSwitch getSwitch() {
         return mSwitch;
     }
@@ -267,6 +290,12 @@ public class SeslSwitchBar extends LinearLayout implements CompoundButton.OnChec
         propagateChecked(isChecked);
     }
 
+    /**
+     * Add a listener for switch changes
+     *
+     * @param listener The listener to add
+     * @throws IllegalStateException If the listener is already added
+     */
     public void addOnSwitchChangeListener(OnSwitchChangeListener listener) {
         if (mSwitchChangeListeners.contains(listener)) {
             throw new IllegalStateException("Cannot add twice the same OnSwitchChangeListener");
@@ -403,6 +432,10 @@ public class SeslSwitchBar extends LinearLayout implements CompoundButton.OnChec
         }
     }
 
+    /**
+     * Updates the horizontal margins of the text view and switch.
+     * This is useful when the layout direction changes.
+     */
     public void updateHorizontalMargins() {
         final Resources res = getResources();
         if (mTextView != null) {

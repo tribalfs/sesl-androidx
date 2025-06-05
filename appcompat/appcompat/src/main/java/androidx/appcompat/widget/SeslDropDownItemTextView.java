@@ -35,7 +35,14 @@ import androidx.core.content.res.ResourcesCompat;
  */
 
 /**
- * Samsung DropDownItemTextView class.
+ * Represents a text view for an item in a dropdown list.
+ * This class extends {@link SeslCheckedTextView} to provide checkable functionality.
+ *
+ * <p>It handles setting the appropriate font weight (regular or semibold) based on
+ * whether the item is checked, and also manages text color based on the current theme
+ * (light or dark).</p>
+ *
+ * @hide
  */
 @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP_PREFIX})
 public class SeslDropDownItemTextView extends SeslCheckedTextView {

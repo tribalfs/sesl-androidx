@@ -52,7 +52,9 @@ import androidx.reflect.widget.SeslTextViewReflector;
  */
 
 /**
- * Samsung CheckedTextView class.
+ * An extension of TextView that supports the {@link Checkable} interface.
+ *
+ * @hide
  */
 public class SeslCheckedTextView extends TextView implements Checkable {
     private boolean mChecked;

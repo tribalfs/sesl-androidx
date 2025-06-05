@@ -32,7 +32,21 @@ import androidx.appcompat.util.theme.resource.SeslThemeResourceColor
 import androidx.appcompat.util.theme.SeslThemeResourceHelper.getColorInt
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 
-//Added in sesl7
+/**
+ * SeslIndicator is a layout that displays a series of dots,
+ * representing pages or items in a ViewPager or similar component.
+ * It allows users to visually track their position and navigate between pages.
+ *
+ * This class was added in sesl7.
+ *
+ * @constructor Creates a new SeslIndicator.
+ * @param context The Context the view is running in, through which it can
+ *        access the current theme, resources, etc.
+ * @param attrs The attributes of the XML tag that is inflating the view.
+ * @param defStyleAttr An attribute in the current theme that contains a
+ *        reference to a style resource that supplies default values for
+ *        the view. Can be 0 to not look for defaults.
+ *///Added in sesl7
 @RequiresApi(23)
 class SeslIndicator @JvmOverloads constructor(
     context: Context,

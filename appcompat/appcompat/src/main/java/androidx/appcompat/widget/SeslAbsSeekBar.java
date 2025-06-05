@@ -37,6 +37,7 @@ import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.animation.LinearInterpolator;
+import android.widget.SeekBar;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
@@ -63,7 +64,22 @@ import java.util.List;
  */
 
 /**
- * Samsung AbsSeekBar class.
+ * An abstract class extending {@link SeslProgressBar} that can be used to set a value within a certain range.
+ * It provides the basic functionality for a {@link SeekBar}, such as setting the minimum
+ * and maximum values, the current progress, and the thumb drawable. This can be customized with
+ * different modes, such as standard, warning, vertical, split, expand, expand vertical, and level bar.
+ * Each mode provides a different visual appearance and behavior for the SeekBar.
+ *
+ * <p>SeslAbsSeekBar also supports dual color mode, which allows the track to have
+ * different colors before and after a certain overlap point. The overlap point
+ * can be set using the {@link #setOverlapPointForDualColor(int)} method.
+ *
+ * <p>SeslAbsSeekBar also supports seamless dragging, which allows the thumb to
+ * slide at a higher scale distance when the {@link #setSeamless(boolean)} method
+ * is set to true.
+ *
+ * @see SeslProgressBar
+ * @see SeslSeekBar
  */
 public abstract class SeslAbsSeekBar extends SeslProgressBar {
     private static final String TAG = "SeslAbsSeekBar";
