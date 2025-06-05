@@ -1,3 +1,5 @@
+import org.jetbrains.dokka.gradle.DokkaTask
+
 /*
  * Copyright (C) 2019 The Android Open Source Project
  *
@@ -16,25 +18,37 @@
 
 plugins {
     id("com.android.application") version '8.7.1' apply false
-    id("com.android.library") version '8.7.1' apply false
-    id("org.jetbrains.kotlin.android") version "2.0.21" apply false
+    id("com.android.library") version '8.7.1' apply true
+    id("org.jetbrains.kotlin.android") version "2.0.21" apply true
+    id("org.jetbrains.dokka") version "1.9.20" apply true
 }
 
 apply from: new File("manifest.gradle")
 
-/**Create github.properties in root project folder file with gpr.usr=GITHUB_USER_ID  & gpr.key=PERSONAL_ACCESS_TOKEN**/
-def githubProperties = new Properties()
-githubProperties.load(new FileInputStream(rootProject.file("github.properties")))
+android {
+    compileSdk = 35
+    namespace = "androidx"
+}
 
-def githubUsername = project.findProperty('githubUsername') ?:
-        githubProperties.getProperty('gpr.usr') ?:
-                System.getenv('GITHUB_USERNAME') ?:
-                        { throw new GradleException('GitHub username not found') }()
+def loadGithubProperties() {
+    def props = new Properties()
+    def propsFile = rootProject.file("github.properties")
+    if (propsFile.exists()) {
+        propsFile.withInputStream { props.load(it) }
+    }
+    return props
+}
 
-def githubAccessToken = project.findProperty('githubAccessToken') ?:
-        githubProperties.getProperty('gpr.key') ?:
-                System.getenv('GITHUB_ACCESS_TOKEN') ?:
-                        { throw new GradleException('GitHub Access Token not found') }()
+
+ext {
+    githubProps = loadGithubProperties()
+    ghUsernameResolved = System.getenv('GH_USERNAME') ?:
+            project.findProperty('ghUsername') ?:
+                    (githubProps.getProperty('ghUsername'))
+    ghAccessTokenResolved = System.getenv('GH_ACCESS_TOKEN') ?:
+            project.findProperty('ghAccessToken') ?:
+                    (githubProps.getProperty('ghAccessToken'))
+}
 
 allprojects {
     repositories {
@@ -44,22 +58,22 @@ allprojects {
         maven {
             url = uri("https://maven.pkg.github.com/tribalfs/sesl-androidx")
             credentials {
-                username = githubUsername
-                password = githubAccessToken
+                username = rootProject.ext.ghUsernameResolved
+                password = rootProject.ext.ghAccessTokenResolved
             }
         }
         maven {
             url = uri("https://maven.pkg.github.com/tribalfs/sesl-material-components-android")
             credentials {
-                username = githubUsername
-                password = githubAccessToken
+                username = rootProject.ext.ghUsernameResolved
+                password = rootProject.ext.ghAccessTokenResolved
             }
         }
         maven {
             url = uri("https://maven.pkg.github.com/tribalfs/SeslStub")
             credentials {
-                username = githubUsername
-                password = githubAccessToken
+                username = rootProject.ext.ghUsernameResolved
+                password = rootProject.ext.ghAccessTokenResolved
             }
         }
         maven { url = uri("https://jitpack.io") }
@@ -75,12 +89,28 @@ allprojects {
     }
 }
 
-tasks.register('clean', Delete) {
-    delete rootProject.buildDir
+subprojects {
+    if (!name.endsWith("-lint")) {
+        apply plugin: "kotlin-android"
+        apply plugin: "org.jetbrains.dokka"
+
+        tasks.withType(DokkaTask).configureEach { dokkaTask ->
+            dokkaTask.dokkaSourceSets.configureEach { sourceSet ->
+                def localSrcDir = file("src/main/java")
+                if (localSrcDir.exists()) {
+                    sourceSet.sourceLink {
+                        localDirectory.set(localSrcDir)
+                        def moduleDir = "${projectDir.parentFile.name}/${project.name}"
+                        remoteUrl.set("https://github.com/tribalfs/sesl-androidx/tree/sesl-androidx-main/${moduleDir}/src/main/java")
+                        remoteLineSuffix.set("#L")
+                    }
+                }
+            }
+        }
+    }
 }
 
 subprojects {
-
     project.plugins.whenPluginAdded { plugin ->
         def isAndroidLibrary = "com.android.build.gradle.LibraryPlugin" == plugin.class.name
         def isAndroidApp = "com.android.build.gradle.AppPlugin" == plugin.class.name
@@ -136,14 +166,10 @@ subprojects {
                             def readmeFile = file("${rootProject.projectDir}/README.md")
                             def readmeContent = new String(readmeFile.bytes)
 
-                            def parentDir = project.projectDir.parent.split("\\\\").last()
-                            def moduleDir = project.projectDir.name
-
-                            def escapedParentDir = parentDir.replaceAll('\\.', '\\\\.').replaceAll('-', '--')
-                            def escapedModuleDir = moduleDir.replaceAll('\\.', '\\\\.').replaceAll('-', '--')
-
-                            def badgeUrl = "https://img.shields.io/badge/sesl.androidx.$escapedParentDir:$escapedModuleDir-${version_info[0].replaceAll('-', '--')}%2B${version_info[1].replaceAll('-', '--')}%2B${version_info[2]}-blue?logo=GitHub"
-                            def pattern = ~/https:\/\/img\.shields\.io\/badge\/sesl\.androidx\.${escapedParentDir}:${escapedModuleDir}-\d+.*blue\?logo=GitHub/
+                            def escapedGroupAndName = "${projectDir.parentFile.name}:${projectDir.name}"
+                                    .replaceAll('\\.', '\\\\.').replaceAll('-', '--')
+                            def badgeUrl = "https://img.shields.io/badge/sesl.androidx.$escapedGroupAndName-${version_info[0].replaceAll('-', '--')}%2B${version_info[1].replaceAll('-', '--')}%2B${version_info[2]}-blue?logo=GitHub"
+                            def pattern = ~/https:\/\/img\.shields\.io\/badge\/sesl\.androidx\.$escapedGroupAndName-\d+.*blue\?logo=GitHub/
 
                             readmeContent = readmeContent.replaceFirst(pattern, badgeUrl)
                             new File(readmeFile.path).text = readmeContent
@@ -161,6 +187,7 @@ subprojects {
                     publications {
                         gpr(MavenPublication) {
                             version = android.defaultConfig.versionName
+                            group = "sesl.androidx." + projectDir.parentFile.name
                             afterEvaluate {
                                 from components.release
                             }
@@ -172,13 +199,13 @@ subprojects {
                         maven {
                             name = "GitHubPackages"
                             /** Configure path of your package repository on Github
-                             *  Replace GITHUB_USERID with your/organisation Github userID and REPOSITORY with the repository name on GitHub
+                             *  Replace GH_USERID with your/organisation Github userID and REPOSITORY with the repository name on GitHub
                              */
                             url = uri("https://maven.pkg.github.com/tribalfs/sesl-androidx")
 
                             credentials {
-                                username = githubUsername
-                                password = githubAccessToken
+                                username = rootProject.ext.ghUsernameResolved
+                                password = rootProject.ext.ghAccessTokenResolved
                             }
                         }
                     }
@@ -186,5 +213,4 @@ subprojects {
             }
         }
     }
-
 }

@@ -1,0 +1,79 @@
+name: Publish Changed Version
+
+on:
+  push:
+    branches:
+      - sesl-androidx-main
+    paths:
+      - 'manifest.gradle'
+  workflow_dispatch:
+jobs:
+  check-and-publish:
+    env:
+      GH_USERNAME: ${{ secrets.GH_USERNAME }}
+      GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+      - name: Detect changed modules
+        id: detect_changed_modules
+        run: |
+          PREV_COMMIT=$(git rev-parse HEAD^)
+
+          # Extract module name and all three version fields from both versions
+          OLD=$(git show "$PREV_COMMIT:manifest.gradle" | grep '^[[:space:]]*"[^"]*"[[:space:]]*:' | \
+            sed 's/^[[:space:]]*"\([^"]*\)".*"\([^"]*\)",[[:space:]]*"\([^"]*\)",[[:space:]]*"\([^"]*\)",[[:space:]]*\([0-9]*\),[[:space:]]*\([0-9]*\)],*$/\1|\2|\3|\4|/')
+
+          NEW=$(grep '^[[:space:]]*"[^"]*"[[:space:]]*:' manifest.gradle | \
+            sed 's/^[[:space:]]*"\([^"]*\)".*"\([^"]*\)",[[:space:]]*"\([^"]*\)",[[:space:]]*"\([^"]*\)",[[:space:]]*\([0-9]*\),[[:space:]]*\([0-9]*\)],*$/\1|\2|\3|\4|/')
+
+          CHANGED_MODULES=""
+
+          while IFS='|' read -r MODULE OLD_VER1 OLD_VER2 OLD_VER3 _; do
+            NEW_LINE=$(echo "$NEW" | grep "^$MODULE|")
+            NEW_VER1=$(echo "$NEW_LINE" | cut -d'|' -f2)
+            NEW_VER2=$(echo "$NEW_LINE" | cut -d'|' -f3)
+            NEW_VER3=$(echo "$NEW_LINE" | cut -d'|' -f4)
+            if { [ "$OLD_VER1" != "$NEW_VER1" ] || [ "$OLD_VER2" != "$NEW_VER2" ] || [ "$OLD_VER3" != "$NEW_VER3" ]; } && [ -n "$NEW_LINE" ]; then
+              CHANGED_MODULES="$CHANGED_MODULES $MODULE"
+              echo "::notice::Detected change in $MODULE: old=[$OLD_VER1,$OLD_VER2,$OLD_VER3], new=[$NEW_VER1,$NEW_VER2,$NEW_VER3]"
+            fi
+          done <<< "$OLD"
+
+          CHANGED_MODULES=$(echo $CHANGED_MODULES | xargs) # trim
+          echo "Changed modules: $CHANGED_MODULES"
+          echo "changed_modules=$CHANGED_MODULES" >> $GITHUB_OUTPUT
+          if [ -n "$CHANGED_MODULES" ]; then
+            echo "any_changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "any_changed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Publish changed modules
+        if: steps.detect_changed_modules.outputs.any_changed == 'true'
+        run: |
+          for module in ${{ steps.detect_changed_modules.outputs.changed_modules }}; do
+            gradle_project=${module#androidx.}
+            echo "Publishing $gradle_project..."
+              ./gradlew :$gradle_project:publish
+          done
+
+      - name: Generate and publish Dokka docs
+        if: steps.detect_changed_modules.outputs.any_changed == 'true'
+        run: |
+          ./gradlew dokkaHtmlMultiModule
+
+      - name: Publish to GitHub Pages
+        if: steps.detect_changed_modules.outputs.any_changed == 'true'
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          BRANCH: gh-pages
+          FOLDER: build/dokka/htmlMultiModule
