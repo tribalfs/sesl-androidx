@@ -274,6 +274,10 @@ public class ActionMenuView extends LinearLayoutCompat implements MenuBuilder.It
                                 itemView.setPaddingRelative(mOverflowButtonPaddingStart, 0,
                                         Math.max(mOverflowButtonPaddingEnd, 0), 0);
                             }
+                            if (isWrapped) {
+                                ((ActionMenuItemViewBadgedWrapper) child).adjustBadgeEndMargin(
+                                        mOverflowButtonPaddingEnd - mActionButtonPaddingEnd);
+                            }
                         }
                     } else if (i < childCount - 1) {
                         if (!itemView.hasText()) {
