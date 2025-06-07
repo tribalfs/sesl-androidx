@@ -1,0 +1,85 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>setShareHistoryFileName</title>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+<a class="library-name--link" href="../../../index.html">
+                            sesl.androidx
+                    </a>            </div>
+            <div class="library-version">
+            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":appcompat:dokkaHtmlPartial/release">androidJvm</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="member" id="content" pageids="appcompat::androidx.appcompat.widget/ShareActionProvider/setShareHistoryFileName/#java.lang.String/PointingToDeclaration//841391970">
+  <div class="breadcrumbs"><a href="../../index.html">appcompat</a><span class="delimiter">/</span><a href="../index.html">androidx.appcompat.widget</a><span class="delimiter">/</span><a href="index.html">ShareActionProvider</a><span class="delimiter">/</span><span class="current">setShareHistoryFileName</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>set</span><wbr><span>Share</span><wbr><span>History</span><wbr><span>File</span><wbr><span><span>Name</span></span></h1>
+  </div>
+  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-share-history-file-name.html"><span class="token function">setShareHistoryFileName</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">shareHistoryFile<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a></span></span><span class="token punctuation">)</span></div><p class="paragraph">Sets the file name of a file for persisting the share history which history will be used for ordering share targets. This file will be used for all view created by <a href="on-create-action-view.html">onCreateActionView</a>. Defaults to <a href="-d-e-f-a-u-l-t_-s-h-a-r-e_-h-i-s-t-o-r-y_-f-i-l-e_-n-a-m-e.html">DEFAULT_SHARE_HISTORY_FILE_NAME</a>. Set to <code class="lang-kotlin">null</code> if share history should not be persisted between sessions. </p><p class="paragraph">Note: The history file name can be set any time, however only the action views created by <a href="on-create-action-view.html">onCreateActionView</a> after setting the file name will be backed by the provided file. Therefore, if you want to use different history files for sharing specific types of content, every time you change the history file with <a href="set-share-history-file-name.html">setShareHistoryFileName</a> you must call <a href="../../androidx.appcompat.app/-app-compat-activity/support-invalidate-options-menu.html">supportInvalidateOptionsMenu</a> to recreate the action view. You should not call <a href="../../androidx.appcompat.app/-app-compat-activity/support-invalidate-options-menu.html">supportInvalidateOptionsMenu</a> from <a href="../../androidx.appcompat.app/-app-compat-activity/index.html#-825108757%2FFunctions%2F841391970">onCreateOptionsMenu</a>. </p><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">private void doShare(Intent intent) {
+    if (IMAGE.equals(intent.getMimeType())) {
+        mShareActionProvider.setHistoryFileName(SHARE_IMAGE_HISTORY_FILE_NAME);
+    } else if (TEXT.equals(intent.getMimeType())) {
+        mShareActionProvider.setHistoryFileName(SHARE_TEXT_HISTORY_FILE_NAME);
+    }
+    mShareActionProvider.setIntent(intent);
+    supportInvalidateOptionsMenu();
+}
+</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><h4 class="">Parameters</h4><div class="table"><div class="table-row" data-filterable-current=":appcompat:dokkaHtmlPartial/release" data-filterable-set=":appcompat:dokkaHtmlPartial/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>share</span><wbr><span>History</span><wbr><span><span>File</span></span></u></div></span></div><div><div class="title"><p class="paragraph">The share history file name.</p></div></div></div></div></div></div></div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2025 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

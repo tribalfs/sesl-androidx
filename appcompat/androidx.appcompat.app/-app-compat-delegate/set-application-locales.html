@@ -1,0 +1,85 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>setApplicationLocales</title>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+<a class="library-name--link" href="../../../index.html">
+                            sesl.androidx
+                    </a>            </div>
+            <div class="library-version">
+            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":appcompat:dokkaHtmlPartial/release">androidJvm</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="member" id="content" pageids="appcompat::androidx.appcompat.app/AppCompatDelegate/setApplicationLocales/#androidx.core.os.LocaleListCompat/PointingToDeclaration//841391970">
+  <div class="breadcrumbs"><a href="../../index.html">appcompat</a><span class="delimiter">/</span><a href="../index.html">androidx.appcompat.app</a><span class="delimiter">/</span><a href="index.html">AppCompatDelegate</a><span class="delimiter">/</span><span class="current">setApplicationLocales</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>set</span><wbr><span>Application</span><wbr><span><span>Locales</span></span></h1>
+  </div>
+  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-application-locales.html"><span class="token function">setApplicationLocales</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>locales<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/androidx/core/os/LocaleListCompat.html">LocaleListCompat</a></span></span><span class="token punctuation">)</span></div><p class="paragraph">Sets the current locales for the calling app. </p><p class="paragraph">If this method is called after any host components with attached <a href="index.html">AppCompatDelegate</a>s have been 'created', a <a href="https://developer.android.com/reference/kotlin/android/os/LocaleList.html">LocaleList</a> configuration change will occur in each. This may result in those components being recreated, depending on their manifest configuration.</p><p class="paragraph">This method accepts <a href="https://developer.android.com/reference/kotlin/androidx/core/os/LocaleListCompat.html">LocaleListCompat</a> as an input parameter.</p><p class="paragraph">Apps should continue to read Locales via their in-process <a href="https://developer.android.com/reference/kotlin/android/os/LocaleList.html">LocaleList</a>s.</p><p class="paragraph">Pass a <a href="https://developer.android.com/reference/kotlin/androidx/core/os/LocaleListCompat.html#getemptylocalelist">getEmptyLocaleList</a> to reset to the system locale.</p><p class="paragraph"><strong>Note: This API should always be called after Activity.onCreate(), apart from any exceptions explicitly mentioned in this documentation.</strong></p><p class="paragraph">On API level 33 and above, this API will handle storage automatically.</p><p class="paragraph">For API levels below that, the developer has two options:</p><ul><li>They can opt-in to automatic storage handled through the library. They can do this by adding a special metaData entry in their <code class="lang-kotlin">AndroidManifest.xml</code>, similar to : <div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">
+    &lt;service
+        android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
+        android:enabled="false"
+        android:exported="false"&gt;
+        &lt;meta-data
+            android:name="autoStoreLocales"
+            android:value="true" /&gt;
+    &lt;/service&gt;
+</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div> They should be mindful that this will cause a blocking diskRead and diskWrite strictMode violation, and they might need to suppress it at their end.</li><li>The second option is that they can choose to handle storage themselves. In order to do so they must use this API to initialize locales during app-start up and provide their stored locales. In this case, API should be called before Activity.onCreate() in the activity lifecycle, e.g. in attachBaseContext(). <strong>Note: Developers should gate this to API versions </strong>&lt;<strong>33.</strong><p class="paragraph"><strong>This API should be called after Activity.onCreate() for all other cases.</strong></p></li></ul><p class="paragraph">When the application using this API with API versions &lt;33 updates to a version &gt;= 33, then there can be two scenarios for this transition: </p><ul><li>If the developer has opted-in for autoStorage then the locales will be automatically synced to the framework. Developers must specify android:enabled="false" for the AppLocalesMetadataHolderService as shown in the meta-data entry above.</li><li>If the developer has not opted-in for autoStorage then they will need to handle this transition on their end.</li></ul><p class="paragraph"><strong>Note: This API work with the AppCompatActivity context, not for others context, for Android 12 (API level 32) and earlier. If there is a requirement to get the localized string which respects the per-app locale in non-AppCompatActivity context, please consider using </strong><a href="https://developer.android.com/reference/kotlin/androidx/core/content/ContextCompat.html#getstring"><strong>getString</strong></a><strong> or </strong><a href="https://developer.android.com/reference/kotlin/androidx/core/content/ContextCompat.html#getcontextforlanguage"><strong>getContextForLanguage</strong></a><strong>. </strong></p><h4 class="">Parameters</h4><div class="table"><div class="table-row" data-filterable-current=":appcompat:dokkaHtmlPartial/release" data-filterable-set=":appcompat:dokkaHtmlPartial/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>locales</span></span></u></div></span></div><div><div class="title"><p class="paragraph">a list of locales.</p></div></div></div></div></div></div></div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2025 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

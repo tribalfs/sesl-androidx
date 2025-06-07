@@ -1,0 +1,76 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>getUnusedAppRestrictionsStatus</title>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+<a class="library-name--link" href="../../../index.html">
+                            sesl.androidx
+                    </a>            </div>
+            <div class="library-version">
+            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":core:dokkaHtmlPartial/release">androidJvm</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="member" id="content" pageids="core::androidx.core.content/PackageManagerCompat/getUnusedAppRestrictionsStatus/#android.content.Context/PointingToDeclaration//-27209644">
+  <div class="breadcrumbs"><a href="../../index.html">core</a><span class="delimiter">/</span><a href="../index.html">androidx.core.content</a><span class="delimiter">/</span><a href="index.html">PackageManagerCompat</a><span class="delimiter">/</span><span class="current">getUnusedAppRestrictionsStatus</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>get</span><wbr><span>Unused</span><wbr><span>App</span><wbr><span>Restrictions</span><wbr><span><span>Status</span></span></h1>
+  </div>
+  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-unused-app-restrictions-status.html"><span class="token function">getUnusedAppRestrictionsStatus</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="com.google.common.util.concurrent/ListenableFuture///PointingToDeclaration/">ListenableFuture</span><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/java/lang/Integer.html">Integer</a><span class="token operator">&gt;</span></div><p class="paragraph">Returns the status of Unused App Restrictions for the current application. In other words, whether the features are available and if so, enabled for the application. The returned value is a ListenableFuture with an Integer corresponding to a value in <a href="../-unused-app-restrictions-constants/index.html">UnusedAppRestrictionsConstants</a>. The possible values are as follows: </p><ul><li><a href="../-unused-app-restrictions-constants/-e-r-r-o-r.html">ERROR</a>: an error occurred when fetching the availability and status of Unused App Restrictions. Check the logs for the reason (e.g. if the app's target SDK version &lt;30 or the user is in locked device boot mode).</li><li><a href="../-unused-app-restrictions-constants/-f-e-a-t-u-r-e_-n-o-t_-a-v-a-i-l-a-b-l-e.html">FEATURE_NOT_AVAILABLE</a>: there are no available Unused App Restrictions for this app.</li><li><a href="../-unused-app-restrictions-constants/-d-i-s-a-b-l-e-d.html">DISABLED</a>: any available Unused App Restrictions on the device are disabled for this app.</li><li><a href="../-unused-app-restrictions-constants/-a-p-i_30_-b-a-c-k-p-o-r-t.html">API_30_BACKPORT</a>: Unused App Restrictions introduced by Android API 30, and since made available on earlier (API 23-29) devices are enabled for this app: <a href="https://developer.android.com/training/permissions/requesting#auto-reset-permissions-unused-apps">permission auto-reset</a>.</li><li><a href="../-unused-app-restrictions-constants/-a-p-i_30.html">API_30</a>: Unused App Restrictions introduced by Android API 30 are enabled for this app: <a href="https://developer.android.com/training/permissions/requesting#auto-reset-permissions-unused-apps">permission auto-reset</a>.</li><li><a href="../-unused-app-restrictions-constants/-a-p-i_31.html">API_31</a>: Unused App Restrictions introduced by Android API 31 are enabled for this app: <a href="https://developer.android.com/training/permissions/requesting#auto-reset-permissions-unused-apps">permission auto-reset</a> and <a href="https://developer.android.com/about/versions/12/behavior-changes-12#app-hibernation">app hibernation</a>.</li></ul> Compatibility behavior: <ul><li>SDK 31 and above, if <a href="https://developer.android.com/reference/kotlin/android/content/pm/PackageManager.html#isautorevokewhitelisted">isAutoRevokeWhitelisted</a> is true, this API will return <a href="../-unused-app-restrictions-constants/-d-i-s-a-b-l-e-d.html">DISABLED</a>. Else, it will return <a href="../-unused-app-restrictions-constants/-a-p-i_31.html">API_31</a>.</li><li>SDK 30, if <a href="https://developer.android.com/reference/kotlin/android/content/pm/PackageManager.html#isautorevokewhitelisted">isAutoRevokeWhitelisted</a> is true, this API will return <a href="../-unused-app-restrictions-constants/-d-i-s-a-b-l-e-d.html">DISABLED</a>. Else, it will return <a href="../-unused-app-restrictions-constants/-a-p-i_30.html">API_30</a>.</li><li>SDK 23 through 29, if there exists an app with the Verifier role that can resolve the <code class="lang-kotlin">Intent.ACTION_AUTO_REVOKE_PERMISSIONS</code> action, then this API will return <a href="../-unused-app-restrictions-constants/-a-p-i_30_-b-a-c-k-p-o-r-t.html">API_30_BACKPORT</a> if Unused App Restrictions are enabled and <a href="../-unused-app-restrictions-constants/-d-i-s-a-b-l-e-d.html">DISABLED</a> if disabled. Else, it will return <a href="../-unused-app-restrictions-constants/-f-e-a-t-u-r-e_-n-o-t_-a-v-a-i-l-a-b-l-e.html">FEATURE_NOT_AVAILABLE</a>. </li><li>SDK 22 and below, this method always returns <a href="../-unused-app-restrictions-constants/-f-e-a-t-u-r-e_-n-o-t_-a-v-a-i-l-a-b-l-e.html">FEATURE_NOT_AVAILABLE</a> as runtime permissions did not exist yet. </li></ul></div></div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2025 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

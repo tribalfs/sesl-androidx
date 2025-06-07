@@ -1,0 +1,708 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>FragmentStateAdapter</title>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+<a class="library-name--link" href="../../../index.html">
+                            sesl.androidx
+                    </a>            </div>
+            <div class="library-version">
+            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":viewpager2:dokkaHtmlPartial/release">androidJvm</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="viewpager2::androidx.viewpager2.adapter/FragmentStateAdapter///PointingToDeclaration//-929183265">
+  <div class="breadcrumbs"><a href="../../index.html">viewpager2</a><span class="delimiter">/</span><a href="../index.html">androidx.viewpager2.adapter</a><span class="delimiter">/</span><span class="current">FragmentStateAdapter</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Fragment</span><wbr><span>State</span><wbr><span><span>Adapter</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">class </span><a href="index.html">FragmentStateAdapter</a> : <a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.Adapter.html">RecyclerView.Adapter</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.Adapter.html">VH</a><span class="token operator">&gt; </span>, <a href="../-stateful-adapter/index.html">StatefulAdapter</a></div><p class="paragraph">Similar in behavior to <a href="https://developer.android.com/reference/kotlin/androidx/fragment/app/FragmentStatePagerAdapter.html">FragmentStatePagerAdapter</a></p><p class="paragraph"> Lifecycle within <a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.html">RecyclerView</a>: </p><ul><li><a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.ViewHolder.html">RecyclerView.ViewHolder</a> initially an empty <a href="https://developer.android.com/reference/kotlin/android/widget/FrameLayout.html">FrameLayout</a>, serves as a re-usable container for a <a href="https://developer.android.com/reference/kotlin/androidx/fragment/app/Fragment.html">Fragment</a> in later stages. </li><li>onBindViewHolder we ask for a <a href="https://developer.android.com/reference/kotlin/androidx/fragment/app/Fragment.html">Fragment</a> for the position. If we already have the fragment, or have previously saved its state, we use those. </li><li>onAttachedToWindow we attach the <a href="https://developer.android.com/reference/kotlin/androidx/fragment/app/Fragment.html">Fragment</a> to a container. </li><li><a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.Adapter.html#onviewrecycled">onViewRecycled</a> we remove, save state, destroy the <a href="https://developer.android.com/reference/kotlin/androidx/fragment/app/Fragment.html">Fragment</a>. </li></ul></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="214242057%2FConstructors%2F-929183265" anchor-label="FragmentStateAdapter" id="214242057%2FConstructors%2F-929183265" data-filterable-set=":viewpager2:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":viewpager2:dokkaHtmlPartial/release" data-filterable-set=":viewpager2:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-fragment-state-adapter.html"><span>Fragment</span><wbr><span>State</span><wbr><span><span>Adapter</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="214242057%2FConstructors%2F-929183265"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>fragmentActivity<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/fragment/app/FragmentActivity.html">FragmentActivity</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>fragment<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/fragment/app/Fragment.html">Fragment</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>fragmentManager<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/fragment/app/FragmentManager.html">FragmentManager</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>lifecycle<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/Lifecycle.html">Lifecycle</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="TYPE">
+        <h2 class="">Types</h2>
+        <div class="table"><a data-name="1503497688%2FClasslikes%2F-929183265" anchor-label="ExperimentalFragmentStateAdapterApi" id="1503497688%2FClasslikes%2F-929183265" data-filterable-set=":viewpager2:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager2:dokkaHtmlPartial/release" data-filterable-set=":viewpager2:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-experimental-fragment-state-adapter-api/index.html"><span>Experimental</span><wbr><span>Fragment</span><wbr><span>State</span><wbr><span>Adapter</span><wbr><span><span>Api</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1503497688%2FClasslikes%2F-929183265"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">annotation class </span><a href="-experimental-fragment-state-adapter-api/index.html">ExperimentalFragmentStateAdapterApi</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1752949801%2FClasslikes%2F-929183265" anchor-label="FragmentTransactionCallback" id="1752949801%2FClasslikes%2F-929183265" data-filterable-set=":viewpager2:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager2:dokkaHtmlPartial/release" data-filterable-set=":viewpager2:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-fragment-transaction-callback/index.html"><span>Fragment</span><wbr><span>Transaction</span><wbr><span><span>Callback</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1752949801%2FClasslikes%2F-929183265"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">class </span><a href="-fragment-transaction-callback/index.html">FragmentTransactionCallback</a></div><div class="brief ">Callback interface for listening to fragment lifecycle changes that happen inside the adapter.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="-1986402451%2FFunctions%2F-929183265" anchor-label="bindViewHolder" id="-1986402451%2FFunctions%2F-929183265" data-filterable-set=":viewpager2:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager2:dokkaHtmlPartial/release" data-filterable-set=":viewpager2:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1986402451%2FFunctions%2F-929183265"><span>bind</span><wbr><span>View</span><wbr><span><span>Holder</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1986402451%2FFunctions%2F-929183265"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="index.html#-1986402451%2FFunctions%2F-929183265"><span class="token function">bindViewHolder</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">holder<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.Adapter.html">VH</a><span class="token punctuation">, </span></span><span class="parameter ">position<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-251295261%2FFunctions%2F-929183265" anchor-label="containsItem" id="-251295261%2FFunctions%2F-929183265" data-filterable-set=":viewpager2:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager2:dokkaHtmlPartial/release" data-filterable-set=":viewpager2:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="contains-item.html"><span>contains</span><wbr><span><span>Item</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-251295261%2FFunctions%2F-929183265"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="contains-item.html"><span class="token function">containsItem</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">itemId<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-long/index.html">Long</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Default implementation works for collections that don't add, move, remove items.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-95703730%2FFunctions%2F-929183265" anchor-label="createFragment" id="-95703730%2FFunctions%2F-929183265" data-filterable-set=":viewpager2:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager2:dokkaHtmlPartial/release" data-filterable-set=":viewpager2:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="create-fragment.html"><span>create</span><wbr><span><span>Fragment</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-95703730%2FFunctions%2F-929183265"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="create-fragment.html"><span class="token function">createFragment</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">position<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/fragment/app/Fragment.html">Fragment</a></div><div class="brief ">Provide a new Fragment associated with the specified position.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-105982224%2FFunctions%2F-929183265" anchor-label="createViewHolder" id="-105982224%2FFunctions%2F-929183265" data-filterable-set=":viewpager2:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager2:dokkaHtmlPartial/release" data-filterable-set=":viewpager2:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-105982224%2FFunctions%2F-929183265"><span>create</span><wbr><span>View</span><wbr><span><span>Holder</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-105982224%2FFunctions%2F-929183265"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="index.html#-105982224%2FFunctions%2F-929183265"><span class="token function">createViewHolder</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">parent<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/ViewGroup.html">ViewGroup</a><span class="token punctuation">, </span></span><span class="parameter ">viewType<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.Adapter.html">VH</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-185440174%2FFunctions%2F-929183265" anchor-label="findRelativeAdapterPositionIn" id="-185440174%2FFunctions%2F-929183265" data-filterable-set=":viewpager2:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager2:dokkaHtmlPartial/release" data-filterable-set=":viewpager2:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-185440174%2FFunctions%2F-929183265"><span>find</span><wbr><span>Relative</span><wbr><span>Adapter</span><wbr><span>Position</span><wbr><span><span>In</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-185440174%2FFunctions%2F-929183265"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#-185440174%2FFunctions%2F-929183265"><span class="token function">findRelativeAdapterPositionIn</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">adapter<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.Adapter.html">RecyclerView.Adapter</a><span class="token operator">&lt;</span><span class="token keyword">out </span><a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.ViewHolder.html">RecyclerView.ViewHolder</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">viewHolder<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.ViewHolder.html">RecyclerView.ViewHolder</a><span class="token punctuation">, </span></span><span class="parameter ">localPosition<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-317126893%2FFunctions%2F-929183265" anchor-label="getItemCount" id="-317126893%2FFunctions%2F-929183265" data-filterable-set=":viewpager2:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager2:dokkaHtmlPartial/release" data-filterable-set=":viewpager2:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-317126893%2FFunctions%2F-929183265"><span>get</span><wbr><span>Item</span><wbr><span><span>Count</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-317126893%2FFunctions%2F-929183265"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="index.html#-317126893%2FFunctions%2F-929183265"><span class="token function">getItemCount</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1593686706%2FFunctions%2F-929183265" anchor-label="getItemId" id="-1593686706%2FFunctions%2F-929183265" data-filterable-set=":viewpager2:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager2:dokkaHtmlPartial/release" data-filterable-set=":viewpager2:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-item-id.html"><span>get</span><wbr><span>Item</span><wbr><span><span>Id</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1593686706%2FFunctions%2F-929183265"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-item-id.html"><span class="token function">getItemId</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">position<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-long/index.html">Long</a></div><div class="brief ">Default implementation works for collections that don't add, move, remove items.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-539392806%2FFunctions%2F-929183265" anchor-label="getItemViewType" id="-539392806%2FFunctions%2F-929183265" data-filterable-set=":viewpager2:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager2:dokkaHtmlPartial/release" data-filterable-set=":viewpager2:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-539392806%2FFunctions%2F-929183265"><span>get</span><wbr><span>Item</span><wbr><span>View</span><wbr><span><span>Type</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-539392806%2FFunctions%2F-929183265"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#-539392806%2FFunctions%2F-929183265"><span class="token function">getItemViewType</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">position<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1717359980%2FFunctions%2F-929183265" anchor-label="getStateRestorationPolicy" id="1717359980%2FFunctions%2F-929183265" data-filterable-set=":viewpager2:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager2:dokkaHtmlPartial/release" data-filterable-set=":viewpager2:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#1717359980%2FFunctions%2F-929183265"><span>get</span><wbr><span>State</span><wbr><span>Restoration</span><wbr><span><span>Policy</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1717359980%2FFunctions%2F-929183265"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="index.html#1717359980%2FFunctions%2F-929183265"><span class="token function">getStateRestorationPolicy</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.Adapter.StateRestorationPolicy.html">RecyclerView.Adapter.StateRestorationPolicy</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1092162006%2FFunctions%2F-929183265" anchor-label="hasObservers" id="1092162006%2FFunctions%2F-929183265" data-filterable-set=":viewpager2:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager2:dokkaHtmlPartial/release" data-filterable-set=":viewpager2:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#1092162006%2FFunctions%2F-929183265"><span>has</span><wbr><span><span>Observers</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1092162006%2FFunctions%2F-929183265"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="index.html#1092162006%2FFunctions%2F-929183265"><span class="token function">hasObservers</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="16685238%2FFunctions%2F-929183265" anchor-label="hasStableIds" id="16685238%2FFunctions%2F-929183265" data-filterable-set=":viewpager2:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager2:dokkaHtmlPartial/release" data-filterable-set=":viewpager2:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#16685238%2FFunctions%2F-929183265"><span>has</span><wbr><span>Stable</span><wbr><span><span>Ids</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="16685238%2FFunctions%2F-929183265"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="index.html#16685238%2FFunctions%2F-929183265"><span class="token function">hasStableIds</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1095556076%2FFunctions%2F-929183265" anchor-label="notifyDataSetChanged" id="-1095556076%2FFunctions%2F-929183265" data-filterable-set=":viewpager2:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager2:dokkaHtmlPartial/release" data-filterable-set=":viewpager2:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1095556076%2FFunctions%2F-929183265"><span>notify</span><wbr><span>Data</span><wbr><span>Set</span><wbr><span><span>Changed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1095556076%2FFunctions%2F-929183265"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="index.html#-1095556076%2FFunctions%2F-929183265"><span class="token function">notifyDataSetChanged</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="764461258%2FFunctions%2F-929183265" anchor-label="notifyItemChanged" id="764461258%2FFunctions%2F-929183265" data-filterable-set=":viewpager2:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager2:dokkaHtmlPartial/release" data-filterable-set=":viewpager2:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#764461258%2FFunctions%2F-929183265"><span>notify</span><wbr><span>Item</span><wbr><span><span>Changed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="764461258%2FFunctions%2F-929183265"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="index.html#764461258%2FFunctions%2F-929183265"><span class="token function">notifyItemChanged</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">position<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="231197998%2FFunctions%2F-929183265" anchor-label="notifyItemInserted" id="231197998%2FFunctions%2F-929183265" data-filterable-set=":viewpager2:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager2:dokkaHtmlPartial/release" data-filterable-set=":viewpager2:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#231197998%2FFunctions%2F-929183265"><span>notify</span><wbr><span>Item</span><wbr><span><span>Inserted</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="231197998%2FFunctions%2F-929183265"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="index.html#231197998%2FFunctions%2F-929183265"><span class="token function">notifyItemInserted</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">position<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1555688995%2FFunctions%2F-929183265" anchor-label="notifyItemMoved" id="-1555688995%2FFunctions%2F-929183265" data-filterable-set=":viewpager2:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager2:dokkaHtmlPartial/release" data-filterable-set=":viewpager2:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1555688995%2FFunctions%2F-929183265"><span>notify</span><wbr><span>Item</span><wbr><span><span>Moved</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1555688995%2FFunctions%2F-929183265"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="index.html#-1555688995%2FFunctions%2F-929183265"><span class="token function">notifyItemMoved</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">fromPosition<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">toPosition<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1543094815%2FFunctions%2F-929183265" anchor-label="notifyItemRangeChanged" id="-1543094815%2FFunctions%2F-929183265" data-filterable-set=":viewpager2:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager2:dokkaHtmlPartial/release" data-filterable-set=":viewpager2:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1543094815%2FFunctions%2F-929183265"><span>notify</span><wbr><span>Item</span><wbr><span>Range</span><wbr><span><span>Changed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1543094815%2FFunctions%2F-929183265"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="index.html#-1543094815%2FFunctions%2F-929183265"><span class="token function">notifyItemRangeChanged</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">positionStart<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">itemCount<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1855364961%2FFunctions%2F-929183265" anchor-label="notifyItemRangeInserted" id="-1855364961%2FFunctions%2F-929183265" data-filterable-set=":viewpager2:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager2:dokkaHtmlPartial/release" data-filterable-set=":viewpager2:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1855364961%2FFunctions%2F-929183265"><span>notify</span><wbr><span>Item</span><wbr><span>Range</span><wbr><span><span>Inserted</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1855364961%2FFunctions%2F-929183265"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="index.html#-1855364961%2FFunctions%2F-929183265"><span class="token function">notifyItemRangeInserted</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">positionStart<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">itemCount<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1376959603%2FFunctions%2F-929183265" anchor-label="notifyItemRangeRemoved" id="-1376959603%2FFunctions%2F-929183265" data-filterable-set=":viewpager2:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager2:dokkaHtmlPartial/release" data-filterable-set=":viewpager2:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1376959603%2FFunctions%2F-929183265"><span>notify</span><wbr><span>Item</span><wbr><span>Range</span><wbr><span><span>Removed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1376959603%2FFunctions%2F-929183265"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="index.html#-1376959603%2FFunctions%2F-929183265"><span class="token function">notifyItemRangeRemoved</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">positionStart<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">itemCount<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="617970806%2FFunctions%2F-929183265" anchor-label="notifyItemRemoved" id="617970806%2FFunctions%2F-929183265" data-filterable-set=":viewpager2:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager2:dokkaHtmlPartial/release" data-filterable-set=":viewpager2:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#617970806%2FFunctions%2F-929183265"><span>notify</span><wbr><span>Item</span><wbr><span><span>Removed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="617970806%2FFunctions%2F-929183265"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="index.html#617970806%2FFunctions%2F-929183265"><span class="token function">notifyItemRemoved</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">position<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="820471114%2FFunctions%2F-929183265" anchor-label="onAttachedToRecyclerView" id="820471114%2FFunctions%2F-929183265" data-filterable-set=":viewpager2:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager2:dokkaHtmlPartial/release" data-filterable-set=":viewpager2:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-attached-to-recycler-view.html"><span>on</span><wbr><span>Attached</span><wbr><span>To</span><wbr><span>Recycler</span><wbr><span><span>View</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="820471114%2FFunctions%2F-929183265"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/CallSuper.html"><span class="token annotation builtin">CallSuper</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-attached-to-recycler-view.html"><span class="token function">onAttachedToRecyclerView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>recyclerView<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.html">RecyclerView</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2007586877%2FFunctions%2F-929183265" anchor-label="onBindViewHolder" id="-2007586877%2FFunctions%2F-929183265" data-filterable-set=":viewpager2:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager2:dokkaHtmlPartial/release" data-filterable-set=":viewpager2:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-bind-view-holder.html"><span>on</span><wbr><span>Bind</span><wbr><span>View</span><wbr><span><span>Holder</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2007586877%2FFunctions%2F-929183265"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="on-bind-view-holder.html"><span class="token function">onBindViewHolder</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>holder<span class="token operator">: </span><a href="../-fragment-view-holder/index.html">FragmentViewHolder</a><span class="token punctuation">, </span></span><span class="parameter ">position<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1845505367%2FFunctions%2F-929183265" anchor-label="onCreateViewHolder" id="-1845505367%2FFunctions%2F-929183265" data-filterable-set=":viewpager2:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager2:dokkaHtmlPartial/release" data-filterable-set=":viewpager2:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-create-view-holder.html"><span>on</span><wbr><span>Create</span><wbr><span>View</span><wbr><span><span>Holder</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1845505367%2FFunctions%2F-929183265"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">fun </span><a href="on-create-view-holder.html"><span class="token function">onCreateViewHolder</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>parent<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/ViewGroup.html">ViewGroup</a><span class="token punctuation">, </span></span><span class="parameter ">viewType<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-fragment-view-holder/index.html">FragmentViewHolder</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2036803897%2FFunctions%2F-929183265" anchor-label="onDetachedFromRecyclerView" id="-2036803897%2FFunctions%2F-929183265" data-filterable-set=":viewpager2:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager2:dokkaHtmlPartial/release" data-filterable-set=":viewpager2:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-detached-from-recycler-view.html"><span>on</span><wbr><span>Detached</span><wbr><span>From</span><wbr><span>Recycler</span><wbr><span><span>View</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2036803897%2FFunctions%2F-929183265"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/CallSuper.html"><span class="token annotation builtin">CallSuper</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-detached-from-recycler-view.html"><span class="token function">onDetachedFromRecyclerView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>recyclerView<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.html">RecyclerView</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="491374483%2FFunctions%2F-929183265" anchor-label="onFailedToRecycleView" id="491374483%2FFunctions%2F-929183265" data-filterable-set=":viewpager2:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager2:dokkaHtmlPartial/release" data-filterable-set=":viewpager2:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-failed-to-recycle-view.html"><span>on</span><wbr><span>Failed</span><wbr><span>To</span><wbr><span>Recycle</span><wbr><span><span>View</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="491374483%2FFunctions%2F-929183265"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="on-failed-to-recycle-view.html"><span class="token function">onFailedToRecycleView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>holder<span class="token operator">: </span><a href="../-fragment-view-holder/index.html">FragmentViewHolder</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-494770519%2FFunctions%2F-929183265" anchor-label="onViewAttachedToWindow" id="-494770519%2FFunctions%2F-929183265" data-filterable-set=":viewpager2:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager2:dokkaHtmlPartial/release" data-filterable-set=":viewpager2:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-view-attached-to-window.html"><span>on</span><wbr><span>View</span><wbr><span>Attached</span><wbr><span>To</span><wbr><span><span>Window</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-494770519%2FFunctions%2F-929183265"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="on-view-attached-to-window.html"><span class="token function">onViewAttachedToWindow</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>holder<span class="token operator">: </span><a href="../-fragment-view-holder/index.html">FragmentViewHolder</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-966153001%2FFunctions%2F-929183265" anchor-label="onViewDetachedFromWindow" id="-966153001%2FFunctions%2F-929183265" data-filterable-set=":viewpager2:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager2:dokkaHtmlPartial/release" data-filterable-set=":viewpager2:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-966153001%2FFunctions%2F-929183265"><span>on</span><wbr><span>View</span><wbr><span>Detached</span><wbr><span>From</span><wbr><span><span>Window</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-966153001%2FFunctions%2F-929183265"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#-966153001%2FFunctions%2F-929183265"><span class="token function">onViewDetachedFromWindow</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">holder<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.Adapter.html">VH</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="596428871%2FFunctions%2F-929183265" anchor-label="onViewRecycled" id="596428871%2FFunctions%2F-929183265" data-filterable-set=":viewpager2:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager2:dokkaHtmlPartial/release" data-filterable-set=":viewpager2:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-view-recycled.html"><span>on</span><wbr><span>View</span><wbr><span><span>Recycled</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="596428871%2FFunctions%2F-929183265"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="on-view-recycled.html"><span class="token function">onViewRecycled</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>holder<span class="token operator">: </span><a href="../-fragment-view-holder/index.html">FragmentViewHolder</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-149943229%2FFunctions%2F-929183265" anchor-label="registerAdapterDataObserver" id="-149943229%2FFunctions%2F-929183265" data-filterable-set=":viewpager2:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager2:dokkaHtmlPartial/release" data-filterable-set=":viewpager2:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-149943229%2FFunctions%2F-929183265"><span>register</span><wbr><span>Adapter</span><wbr><span>Data</span><wbr><span><span>Observer</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-149943229%2FFunctions%2F-929183265"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#-149943229%2FFunctions%2F-929183265"><span class="token function">registerAdapterDataObserver</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">observer<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.AdapterDataObserver.html">RecyclerView.AdapterDataObserver</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1606620530%2FFunctions%2F-929183265" anchor-label="registerFragmentTransactionCallback" id="1606620530%2FFunctions%2F-929183265" data-filterable-set=":viewpager2:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager2:dokkaHtmlPartial/release" data-filterable-set=":viewpager2:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="register-fragment-transaction-callback.html"><span>register</span><wbr><span>Fragment</span><wbr><span>Transaction</span><wbr><span><span>Callback</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1606620530%2FFunctions%2F-929183265"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="register-fragment-transaction-callback.html"><span class="token function">registerFragmentTransactionCallback</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>callback<span class="token operator">: </span><a href="-fragment-transaction-callback/index.html">FragmentStateAdapter.FragmentTransactionCallback</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Registers a <a href="-fragment-transaction-callback/index.html">FragmentTransactionCallback</a> to listen to fragment lifecycle changes that happen inside the adapter.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-467738810%2FFunctions%2F-929183265" anchor-label="restoreState" id="-467738810%2FFunctions%2F-929183265" data-filterable-set=":viewpager2:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager2:dokkaHtmlPartial/release" data-filterable-set=":viewpager2:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="restore-state.html"><span>restore</span><wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-467738810%2FFunctions%2F-929183265"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="restore-state.html"><span class="token function">restoreState</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>savedState<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/Parcelable.html">Parcelable</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Restores adapter state</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1189713675%2FFunctions%2F-929183265" anchor-label="saveState" id="-1189713675%2FFunctions%2F-929183265" data-filterable-set=":viewpager2:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager2:dokkaHtmlPartial/release" data-filterable-set=":viewpager2:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="save-state.html"><span>save</span><wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1189713675%2FFunctions%2F-929183265"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">fun </span><a href="save-state.html"><span class="token function">saveState</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/Parcelable.html">Parcelable</a></div><div class="brief ">Saves adapter state</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="542794920%2FFunctions%2F-929183265" anchor-label="seslGetAccessibilityItemCount" id="542794920%2FFunctions%2F-929183265" data-filterable-set=":viewpager2:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager2:dokkaHtmlPartial/release" data-filterable-set=":viewpager2:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#542794920%2FFunctions%2F-929183265"><span>sesl</span><wbr><span>Get</span><wbr><span>Accessibility</span><wbr><span>Item</span><wbr><span><span>Count</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="542794920%2FFunctions%2F-929183265"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#542794920%2FFunctions%2F-929183265"><span class="token function">seslGetAccessibilityItemCount</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1677127335%2FFunctions%2F-929183265" anchor-label="seslGetAccessibilityItemPosition" id="-1677127335%2FFunctions%2F-929183265" data-filterable-set=":viewpager2:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager2:dokkaHtmlPartial/release" data-filterable-set=":viewpager2:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1677127335%2FFunctions%2F-929183265"><span>sesl</span><wbr><span>Get</span><wbr><span>Accessibility</span><wbr><span>Item</span><wbr><span><span>Position</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1677127335%2FFunctions%2F-929183265"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#-1677127335%2FFunctions%2F-929183265"><span class="token function">seslGetAccessibilityItemPosition</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">pos<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1993401617%2FFunctions%2F-929183265" anchor-label="seslUseCustomAccessibilityPosition" id="-1993401617%2FFunctions%2F-929183265" data-filterable-set=":viewpager2:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager2:dokkaHtmlPartial/release" data-filterable-set=":viewpager2:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1993401617%2FFunctions%2F-929183265"><span>sesl</span><wbr><span>Use</span><wbr><span>Custom</span><wbr><span>Accessibility</span><wbr><span><span>Position</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1993401617%2FFunctions%2F-929183265"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#-1993401617%2FFunctions%2F-929183265"><span class="token function">seslUseCustomAccessibilityPosition</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-995787018%2FFunctions%2F-929183265" anchor-label="setHasStableIds" id="-995787018%2FFunctions%2F-929183265" data-filterable-set=":viewpager2:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager2:dokkaHtmlPartial/release" data-filterable-set=":viewpager2:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-has-stable-ids.html"><span>set</span><wbr><span>Has</span><wbr><span>Stable</span><wbr><span><span>Ids</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-995787018%2FFunctions%2F-929183265"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="set-has-stable-ids.html"><span class="token function">setHasStableIds</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">hasStableIds<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1439711293%2FFunctions%2F-929183265" anchor-label="setStateRestorationPolicy" id="1439711293%2FFunctions%2F-929183265" data-filterable-set=":viewpager2:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager2:dokkaHtmlPartial/release" data-filterable-set=":viewpager2:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#1439711293%2FFunctions%2F-929183265"><span>set</span><wbr><span>State</span><wbr><span>Restoration</span><wbr><span><span>Policy</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1439711293%2FFunctions%2F-929183265"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#1439711293%2FFunctions%2F-929183265"><span class="token function">setStateRestorationPolicy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">strategy<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.Adapter.StateRestorationPolicy.html">RecyclerView.Adapter.StateRestorationPolicy</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="607934410%2FFunctions%2F-929183265" anchor-label="unregisterAdapterDataObserver" id="607934410%2FFunctions%2F-929183265" data-filterable-set=":viewpager2:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager2:dokkaHtmlPartial/release" data-filterable-set=":viewpager2:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#607934410%2FFunctions%2F-929183265"><span>unregister</span><wbr><span>Adapter</span><wbr><span>Data</span><wbr><span><span>Observer</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="607934410%2FFunctions%2F-929183265"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#607934410%2FFunctions%2F-929183265"><span class="token function">unregisterAdapterDataObserver</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">observer<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.AdapterDataObserver.html">RecyclerView.AdapterDataObserver</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-610113525%2FFunctions%2F-929183265" anchor-label="unregisterFragmentTransactionCallback" id="-610113525%2FFunctions%2F-929183265" data-filterable-set=":viewpager2:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager2:dokkaHtmlPartial/release" data-filterable-set=":viewpager2:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="unregister-fragment-transaction-callback.html"><span>unregister</span><wbr><span>Fragment</span><wbr><span>Transaction</span><wbr><span><span>Callback</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-610113525%2FFunctions%2F-929183265"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager2:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="unregister-fragment-transaction-callback.html"><span class="token function">unregisterFragmentTransactionCallback</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>callback<span class="token operator">: </span><a href="-fragment-transaction-callback/index.html">FragmentStateAdapter.FragmentTransactionCallback</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Unregisters a <a href="-fragment-transaction-callback/index.html">FragmentTransactionCallback</a>.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2025 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

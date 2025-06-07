@@ -1,0 +1,453 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>AutoScrollHelper</title>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+<a class="library-name--link" href="../../../index.html">
+                            sesl.androidx
+                    </a>            </div>
+            <div class="library-version">
+            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":core:dokkaHtmlPartial/release">androidJvm</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="core::androidx.core.widget/AutoScrollHelper///PointingToDeclaration//-27209644">
+  <div class="breadcrumbs"><a href="../../index.html">core</a><span class="delimiter">/</span><a href="../index.html">androidx.core.widget</a><span class="delimiter">/</span><span class="current">AutoScrollHelper</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Auto</span><wbr><span>Scroll</span><wbr><span><span>Helper</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">class </span><a href="index.html">AutoScrollHelper</a> : <a href="https://developer.android.com/reference/kotlin/android/view/View.OnTouchListener.html">View.OnTouchListener</a></div><p class="paragraph">AutoScrollHelper is a utility class for adding automatic edge-triggered scrolling to Views. </p><p class="paragraph"><strong>Note:</strong> Implementing classes are responsible for overriding the <a href="scroll-target-by.html">scrollTargetBy</a>, <a href="can-target-scroll-horizontally.html">canTargetScrollHorizontally</a>, and <a href="can-target-scroll-vertically.html">canTargetScrollVertically</a> methods. See <a href="../-list-view-auto-scroll-helper/index.html">ListViewAutoScrollHelper</a> for a <a href="https://developer.android.com/reference/kotlin/android/widget/ListView.html">android.widget.ListView</a> -specific implementation. </p><h1 class="">Activation</h1> Automatic scrolling starts when the user touches within an activation area. By default, activation areas are defined as the top, left, right, and bottom 20% of the host view's total area. Touching within the top activation area scrolls up, left scrolls to the left, and so on. <p class="paragraph"> As the user touches closer to the extreme edge of the activation area, scrolling accelerates up to a maximum velocity. When using the default edge type, <a href="-e-d-g-e_-t-y-p-e_-i-n-s-i-d-e_-e-x-t-e-n-d.html">EDGE_TYPE_INSIDE_EXTEND</a>, moving outside of the view bounds will scroll at the maximum velocity. </p><p class="paragraph"> The following activation properties may be configured: </p><ul><li>Delay after entering activation area before auto-scrolling begins, see <a href="set-activation-delay.html">setActivationDelay</a>. Default value is <a href="https://developer.android.com/reference/kotlin/android/view/ViewConfiguration.html#gettaptimeout">getTapTimeout</a> to avoid conflicting with taps. </li><li>Location of activation areas, see <a href="set-edge-type.html">setEdgeType</a>. Default value is <a href="-e-d-g-e_-t-y-p-e_-i-n-s-i-d-e_-e-x-t-e-n-d.html">EDGE_TYPE_INSIDE_EXTEND</a>. </li><li>Size of activation areas relative to view size, see <a href="set-relative-edges.html">setRelativeEdges</a>. Default value is 20% for both vertical and horizontal edges. </li><li>Maximum size used to constrain relative size, see <a href="set-maximum-edges.html">setMaximumEdges</a>. Default value is <a href="-n-o_-m-a-x.html">NO_MAX</a>. </li></ul><h1 class="">Scrolling</h1> When automatic scrolling is active, the helper will repeatedly call <a href="scroll-target-by.html">scrollTargetBy</a> to apply new scrolling offsets. <p class="paragraph"> The following scrolling properties may be configured: </p><ul><li>Acceleration ramp-up duration, see <a href="set-ramp-up-duration.html">setRampUpDuration</a>. Default value is 500 milliseconds. </li><li>Acceleration ramp-down duration, see <a href="set-ramp-down-duration.html">setRampDownDuration</a>. Default value is 500 milliseconds. </li><li>Target velocity relative to view size, see <a href="set-relative-velocity.html">setRelativeVelocity</a>. Default value is 100% per second for both vertical and horizontal. </li><li>Minimum velocity used to constrain relative velocity, see <a href="set-minimum-velocity.html">setMinimumVelocity</a>. When set, scrolling will accelerate to the larger of either this value or the relative target value. Default value is approximately 5 centimeters or 315 dips per second. </li><li>Maximum velocity used to constrain relative velocity, see <a href="set-maximum-velocity.html">setMaximumVelocity</a>. Default value is approximately 25 centimeters or 1575 dips per second. </li></ul><h4 class="">Inheritors</h4><div class="table"><div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../-list-view-auto-scroll-helper/index.html">ListViewAutoScrollHelper</a></div></span></div><div></div></div></div></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="-723506588%2FConstructors%2F-27209644" anchor-label="AutoScrollHelper" id="-723506588%2FConstructors%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-auto-scroll-helper.html"><span>Auto</span><wbr><span>Scroll</span><wbr><span><span>Helper</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-723506588%2FConstructors%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>target<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Creates a new helper for scrolling the specified target view.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="928407994%2FProperties%2F-27209644" anchor-label="EDGE_TYPE_INSIDE" id="928407994%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-e-d-g-e_-t-y-p-e_-i-n-s-i-d-e.html"><span><span>EDGE_TYPE_INSIDE</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="928407994%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-e-d-g-e_-t-y-p-e_-i-n-s-i-d-e.html">EDGE_TYPE_INSIDE</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span></div><div class="brief ">Edge type that specifies an activation area starting at the view bounds and extending inward.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1119915769%2FProperties%2F-27209644" anchor-label="EDGE_TYPE_INSIDE_EXTEND" id="-1119915769%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-e-d-g-e_-t-y-p-e_-i-n-s-i-d-e_-e-x-t-e-n-d.html"><span><span>EDGE_TYPE_INSIDE_EXTEND</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1119915769%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-e-d-g-e_-t-y-p-e_-i-n-s-i-d-e_-e-x-t-e-n-d.html">EDGE_TYPE_INSIDE_EXTEND</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">1</span></div><div class="brief ">Edge type that specifies an activation area starting at the view bounds and extending inward.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1747799425%2FProperties%2F-27209644" anchor-label="EDGE_TYPE_OUTSIDE" id="-1747799425%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-e-d-g-e_-t-y-p-e_-o-u-t-s-i-d-e.html"><span><span>EDGE_TYPE_OUTSIDE</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1747799425%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-e-d-g-e_-t-y-p-e_-o-u-t-s-i-d-e.html">EDGE_TYPE_OUTSIDE</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">2</span></div><div class="brief ">Edge type that specifies an activation area starting at the view bounds and extending outward.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-893750797%2FProperties%2F-27209644" anchor-label="NO_MAX" id="-893750797%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-n-o_-m-a-x.html"><span><span>NO_MAX</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-893750797%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-n-o_-m-a-x.html">NO_MAX</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-float/index.html">Float</a><span class="token operator"> = </span><span class="token constant">3.4028235E38f</span></div><div class="brief ">Constant passed to <a href="set-maximum-edges.html">setMaximumEdges</a>, <a href="set-maximum-velocity.html">setMaximumVelocity</a>, or <a href="set-minimum-velocity.html">setMinimumVelocity</a>.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2100971323%2FProperties%2F-27209644" anchor-label="NO_MIN" id="-2100971323%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-n-o_-m-i-n.html"><span><span>NO_MIN</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2100971323%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-n-o_-m-i-n.html">NO_MIN</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-float/index.html">Float</a><span class="token operator"> = </span><span class="token constant">0.0f</span></div><div class="brief ">Constant passed to <a href="set-maximum-edges.html">setMaximumEdges</a>, or <a href="set-maximum-velocity.html">setMaximumVelocity</a>, or <a href="set-minimum-velocity.html">setMinimumVelocity</a>.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1218552405%2FProperties%2F-27209644" anchor-label="RELATIVE_UNSPECIFIED" id="1218552405%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-r-e-l-a-t-i-v-e_-u-n-s-p-e-c-i-f-i-e-d.html"><span><span>RELATIVE_UNSPECIFIED</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1218552405%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-r-e-l-a-t-i-v-e_-u-n-s-p-e-c-i-f-i-e-d.html">RELATIVE_UNSPECIFIED</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-float/index.html">Float</a><span class="token operator"> = </span><span class="token constant">0.0f</span></div><div class="brief ">Constant passed to <a href="set-relative-edges.html">setRelativeEdges</a> or <a href="set-relative-velocity.html">setRelativeVelocity</a>.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="1430420561%2FFunctions%2F-27209644" anchor-label="canTargetScrollHorizontally" id="1430420561%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="can-target-scroll-horizontally.html"><span>can</span><wbr><span>Target</span><wbr><span>Scroll</span><wbr><span><span>Horizontally</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1430420561%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="can-target-scroll-horizontally.html"><span class="token function">canTargetScrollHorizontally</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">direction<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Override this method to return whether the target view can be scrolled horizontally in a certain direction.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-551127389%2FFunctions%2F-27209644" anchor-label="canTargetScrollVertically" id="-551127389%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="can-target-scroll-vertically.html"><span>can</span><wbr><span>Target</span><wbr><span>Scroll</span><wbr><span><span>Vertically</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-551127389%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="can-target-scroll-vertically.html"><span class="token function">canTargetScrollVertically</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">direction<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Override this method to return whether the target view can be scrolled vertically in a certain direction.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1241405910%2FFunctions%2F-27209644" anchor-label="isEnabled" id="-1241405910%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-enabled.html"><span>is</span><wbr><span><span>Enabled</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1241405910%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-enabled.html"><span class="token function">isEnabled</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1108449773%2FFunctions%2F-27209644" anchor-label="isExclusive" id="1108449773%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-exclusive.html"><span>is</span><wbr><span><span>Exclusive</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1108449773%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-exclusive.html"><span class="token function">isExclusive</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Indicates whether the scroll helper handles touch events exclusively during scrolling.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2139824365%2FFunctions%2F-27209644" anchor-label="onTouch" id="-2139824365%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-touch.html"><span>on</span><wbr><span><span>Touch</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2139824365%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-touch.html"><span class="token function">onTouch</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">v<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token punctuation">, </span></span><span class="parameter ">event<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/MotionEvent.html">MotionEvent</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Handles touch events by activating automatic scrolling, adjusting scroll velocity, or stopping.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1737624099%2FFunctions%2F-27209644" anchor-label="scrollTargetBy" id="1737624099%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="scroll-target-by.html"><span>scroll</span><wbr><span>Target</span><wbr><span><span>By</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1737624099%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="scroll-target-by.html"><span class="token function">scrollTargetBy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">deltaX<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">deltaY<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Override this method to scroll the target view by the specified number of pixels.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="180178469%2FFunctions%2F-27209644" anchor-label="setActivationDelay" id="180178469%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-activation-delay.html"><span>set</span><wbr><span>Activation</span><wbr><span><span>Delay</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="180178469%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-activation-delay.html"><span class="token function">setActivationDelay</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">delayMillis<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">AutoScrollHelper</a></div><div class="brief ">Sets the delay after entering an activation edge before activation of auto-scrolling.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="218448619%2FFunctions%2F-27209644" anchor-label="setEdgeType" id="218448619%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-edge-type.html"><span>set</span><wbr><span>Edge</span><wbr><span><span>Type</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="218448619%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-edge-type.html"><span class="token function">setEdgeType</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">type<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">AutoScrollHelper</a></div><div class="brief ">Sets the activation edge type, one of: <ul><li><a href="-e-d-g-e_-t-y-p-e_-i-n-s-i-d-e.html">EDGE_TYPE_INSIDE</a> for edges that respond to touches inside the bounds of the host view. If touch moves outside the bounds, scrolling will stop. </li><li><a href="-e-d-g-e_-t-y-p-e_-i-n-s-i-d-e_-e-x-t-e-n-d.html">EDGE_TYPE_INSIDE_EXTEND</a> for inside edges that continued to scroll when touch moves outside the bounds of the host view. </li><li><a href="-e-d-g-e_-t-y-p-e_-o-u-t-s-i-d-e.html">EDGE_TYPE_OUTSIDE</a> for edges that only respond to touches that move outside the bounds of the host view. </li></ul></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2032896128%2FFunctions%2F-27209644" anchor-label="setEnabled" id="-2032896128%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-enabled.html"><span>set</span><wbr><span><span>Enabled</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2032896128%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-enabled.html"><span class="token function">setEnabled</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">enabled<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">AutoScrollHelper</a></div><div class="brief ">Sets whether the scroll helper is enabled and should respond to touch events.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-867410339%2FFunctions%2F-27209644" anchor-label="setExclusive" id="-867410339%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-exclusive.html"><span>set</span><wbr><span><span>Exclusive</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-867410339%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-exclusive.html"><span class="token function">setExclusive</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">exclusive<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">AutoScrollHelper</a></div><div class="brief ">Enables or disables exclusive handling of touch events during scrolling.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1114024100%2FFunctions%2F-27209644" anchor-label="setMaximumEdges" id="1114024100%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-maximum-edges.html"><span>set</span><wbr><span>Maximum</span><wbr><span><span>Edges</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1114024100%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-maximum-edges.html"><span class="token function">setMaximumEdges</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">horizontalMax<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-float/index.html">Float</a><span class="token punctuation">, </span></span><span class="parameter ">verticalMax<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">AutoScrollHelper</a></div><div class="brief ">Sets the absolute maximum edge size.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2019244015%2FFunctions%2F-27209644" anchor-label="setMaximumVelocity" id="2019244015%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-maximum-velocity.html"><span>set</span><wbr><span>Maximum</span><wbr><span><span>Velocity</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2019244015%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-maximum-velocity.html"><span class="token function">setMaximumVelocity</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">horizontalMax<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-float/index.html">Float</a><span class="token punctuation">, </span></span><span class="parameter ">verticalMax<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">AutoScrollHelper</a></div><div class="brief ">Sets the absolute maximum scrolling velocity.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="172516573%2FFunctions%2F-27209644" anchor-label="setMinimumVelocity" id="172516573%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-minimum-velocity.html"><span>set</span><wbr><span>Minimum</span><wbr><span><span>Velocity</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="172516573%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-minimum-velocity.html"><span class="token function">setMinimumVelocity</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">horizontalMin<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-float/index.html">Float</a><span class="token punctuation">, </span></span><span class="parameter ">verticalMin<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">AutoScrollHelper</a></div><div class="brief ">Sets the absolute minimum scrolling velocity.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-660496292%2FFunctions%2F-27209644" anchor-label="setRampDownDuration" id="-660496292%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-ramp-down-duration.html"><span>set</span><wbr><span>Ramp</span><wbr><span>Down</span><wbr><span><span>Duration</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-660496292%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-ramp-down-duration.html"><span class="token function">setRampDownDuration</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">durationMillis<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">AutoScrollHelper</a></div><div class="brief ">Sets the amount of time after de-activation of auto-scrolling that is takes to slow to a stop.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-336970283%2FFunctions%2F-27209644" anchor-label="setRampUpDuration" id="-336970283%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-ramp-up-duration.html"><span>set</span><wbr><span>Ramp</span><wbr><span>Up</span><wbr><span><span>Duration</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-336970283%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-ramp-up-duration.html"><span class="token function">setRampUpDuration</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">durationMillis<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">AutoScrollHelper</a></div><div class="brief ">Sets the amount of time after activation of auto-scrolling that is takes to reach target velocity for the current touch position.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1875187132%2FFunctions%2F-27209644" anchor-label="setRelativeEdges" id="1875187132%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-relative-edges.html"><span>set</span><wbr><span>Relative</span><wbr><span><span>Edges</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1875187132%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-relative-edges.html"><span class="token function">setRelativeEdges</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">horizontal<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-float/index.html">Float</a><span class="token punctuation">, </span></span><span class="parameter ">vertical<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">AutoScrollHelper</a></div><div class="brief ">Sets the activation edge size relative to the host view's dimensions.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="399807447%2FFunctions%2F-27209644" anchor-label="setRelativeVelocity" id="399807447%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-relative-velocity.html"><span>set</span><wbr><span>Relative</span><wbr><span><span>Velocity</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="399807447%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-relative-velocity.html"><span class="token function">setRelativeVelocity</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">horizontal<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-float/index.html">Float</a><span class="token punctuation">, </span></span><span class="parameter ">vertical<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">AutoScrollHelper</a></div><div class="brief ">Sets the target scrolling velocity relative to the host view's dimensions.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2025 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

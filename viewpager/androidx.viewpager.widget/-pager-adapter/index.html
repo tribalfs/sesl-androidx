@@ -1,0 +1,363 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>PagerAdapter</title>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+<a class="library-name--link" href="../../../index.html">
+                            sesl.androidx
+                    </a>            </div>
+            <div class="library-version">
+            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":viewpager:dokkaHtmlPartial/release">androidJvm</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="viewpager::androidx.viewpager.widget/PagerAdapter///PointingToDeclaration//1125140263">
+  <div class="breadcrumbs"><a href="../../index.html">viewpager</a><span class="delimiter">/</span><a href="../index.html">androidx.viewpager.widget</a><span class="delimiter">/</span><span class="current">PagerAdapter</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Pager</span><wbr><span><span>Adapter</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">class </span><a href="index.html">PagerAdapter</a></div><p class="paragraph">Base class providing the adapter to populate pages inside of a <a href="../-view-pager/index.html">ViewPager</a>. You will most likely want to use a more specific implementation of this, such as androidx.fragment.app.FragmentPagerAdapter or androidx.fragment.app.FragmentStatePagerAdapter. </p><p class="paragraph">When you implement a PagerAdapter, you must override the following methods at minimum:</p><ul><li><a href="instantiate-item.html">instantiateItem</a></li><li><a href="destroy-item.html">destroyItem</a></li><li><a href="get-count.html">getCount</a></li><li><a href="is-view-from-object.html">isViewFromObject</a></li></ul><p class="paragraph">PagerAdapter is more general than the adapters used for <a href="https://developer.android.com/reference/kotlin/android/widget/AdapterView.html">AdapterViews</a>. Instead of providing a View recycling mechanism directly ViewPager uses callbacks to indicate the steps taken during an update. A PagerAdapter may implement a form of View recycling if desired or use a more sophisticated method of managing page Views such as Fragment transactions where each page is represented by its own Fragment.</p><p class="paragraph">ViewPager associates each page with a key Object instead of working with Views directly. This key is used to track and uniquely identify a given page independent of its position in the adapter. A call to the PagerAdapter method <a href="start-update.html">startUpdate</a> indicates that the contents of the ViewPager are about to change. One or more calls to <a href="instantiate-item.html">instantiateItem</a> and/or <a href="destroy-item.html">destroyItem</a> will follow, and the end of an update will be signaled by a call to <a href="finish-update.html">finishUpdate</a>. By the time <a href="finish-update.html">finishUpdate</a> returns the views associated with the key objects returned by <a href="instantiate-item.html">instantiateItem</a> should be added to the parent ViewGroup passed to these methods and the views associated with the keys passed to <a href="destroy-item.html">destroyItem</a> should be removed. The method <a href="is-view-from-object.html">isViewFromObject</a> identifies whether a page View is associated with a given key object.</p><p class="paragraph">A very simple PagerAdapter may choose to use the page Views themselves as key objects, returning them from <a href="instantiate-item.html">instantiateItem</a> after creation and adding them to the parent ViewGroup. A matching <a href="destroy-item.html">destroyItem</a> implementation would remove the View from the parent ViewGroup and <a href="is-view-from-object.html">isViewFromObject</a> could be implemented as <code class="lang-kotlin">return view == object;</code>.</p><p class="paragraph">PagerAdapter supports data set changes. Data set changes must occur on the main thread and must end with a call to <a href="notify-data-set-changed.html">notifyDataSetChanged</a> similar to AdapterView adapters derived from <a href="https://developer.android.com/reference/kotlin/android/widget/BaseAdapter.html">android.widget.BaseAdapter</a>. A data set change may involve pages being added, removed, or changing position. The ViewPager will keep the current page active provided the adapter implements the method <a href="get-item-position.html">getItemPosition</a>.</p></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="1015392740%2FConstructors%2F1125140263" anchor-label="PagerAdapter" id="1015392740%2FConstructors%2F1125140263" data-filterable-set=":viewpager:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":viewpager:dokkaHtmlPartial/release" data-filterable-set=":viewpager:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-pager-adapter.html"><span>Pager</span><wbr><span><span>Adapter</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1015392740%2FConstructors%2F1125140263"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="-1021049220%2FProperties%2F1125140263" anchor-label="POSITION_NONE" id="-1021049220%2FProperties%2F1125140263" data-filterable-set=":viewpager:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager:dokkaHtmlPartial/release" data-filterable-set=":viewpager:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-p-o-s-i-t-i-o-n_-n-o-n-e.html"><span><span>POSITION_NONE</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1021049220%2FProperties%2F1125140263"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-p-o-s-i-t-i-o-n_-n-o-n-e.html">POSITION_NONE</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">-2</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2142228053%2FProperties%2F1125140263" anchor-label="POSITION_UNCHANGED" id="-2142228053%2FProperties%2F1125140263" data-filterable-set=":viewpager:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager:dokkaHtmlPartial/release" data-filterable-set=":viewpager:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-p-o-s-i-t-i-o-n_-u-n-c-h-a-n-g-e-d.html"><span><span>POSITION_UNCHANGED</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2142228053%2FProperties%2F1125140263"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-p-o-s-i-t-i-o-n_-u-n-c-h-a-n-g-e-d.html">POSITION_UNCHANGED</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">-1</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="-1922199999%2FFunctions%2F1125140263" anchor-label="destroyItem" id="-1922199999%2FFunctions%2F1125140263" data-filterable-set=":viewpager:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager:dokkaHtmlPartial/release" data-filterable-set=":viewpager:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="destroy-item.html"><span>destroy</span><wbr><span><span>Item</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1922199999%2FFunctions%2F1125140263"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="destroy-item.html"><span class="token function"><strike>destroyItem</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>container<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token punctuation">, </span></span><span class="parameter ">position<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>object<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-any/index.html">Any</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="destroy-item.html"><span class="token function">destroyItem</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>container<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/ViewGroup.html">ViewGroup</a><span class="token punctuation">, </span></span><span class="parameter ">position<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>object<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-any/index.html">Any</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Remove a page for the given position.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="250483863%2FFunctions%2F1125140263" anchor-label="finishUpdate" id="250483863%2FFunctions%2F1125140263" data-filterable-set=":viewpager:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager:dokkaHtmlPartial/release" data-filterable-set=":viewpager:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="finish-update.html"><span>finish</span><wbr><span><span>Update</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="250483863%2FFunctions%2F1125140263"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="finish-update.html"><span class="token function"><strike>finishUpdate</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>container<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="finish-update.html"><span class="token function">finishUpdate</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>container<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/ViewGroup.html">ViewGroup</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Called when the a change in the shown pages has been completed.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1959280937%2FFunctions%2F1125140263" anchor-label="getCount" id="-1959280937%2FFunctions%2F1125140263" data-filterable-set=":viewpager:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager:dokkaHtmlPartial/release" data-filterable-set=":viewpager:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-count.html"><span>get</span><wbr><span><span>Count</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1959280937%2FFunctions%2F1125140263"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="get-count.html"><span class="token function">getCount</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Return the number of views available.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-162140283%2FFunctions%2F1125140263" anchor-label="getItemPosition" id="-162140283%2FFunctions%2F1125140263" data-filterable-set=":viewpager:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager:dokkaHtmlPartial/release" data-filterable-set=":viewpager:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-item-position.html"><span>get</span><wbr><span>Item</span><wbr><span><span>Position</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-162140283%2FFunctions%2F1125140263"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-item-position.html"><span class="token function">getItemPosition</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>object<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-any/index.html">Any</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Called when the host view is attempting to determine if an item's position has changed.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1506730038%2FFunctions%2F1125140263" anchor-label="getPageTitle" id="1506730038%2FFunctions%2F1125140263" data-filterable-set=":viewpager:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager:dokkaHtmlPartial/release" data-filterable-set=":viewpager:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-page-title.html"><span>get</span><wbr><span>Page</span><wbr><span><span>Title</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1506730038%2FFunctions%2F1125140263"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-page-title.html"><span class="token function">getPageTitle</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">position<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/CharSequence.html">CharSequence</a></div><div class="brief ">This method may be called by the ViewPager to obtain a title string to describe the specified page.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="102668964%2FFunctions%2F1125140263" anchor-label="getPageWidth" id="102668964%2FFunctions%2F1125140263" data-filterable-set=":viewpager:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager:dokkaHtmlPartial/release" data-filterable-set=":viewpager:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-page-width.html"><span>get</span><wbr><span>Page</span><wbr><span><span>Width</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="102668964%2FFunctions%2F1125140263"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-page-width.html"><span class="token function">getPageWidth</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">position<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-float/index.html">Float</a></div><div class="brief ">Returns the proportional width of a given page as a percentage of the ViewPager's measured width from (0.f-1.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-37688765%2FFunctions%2F1125140263" anchor-label="instantiateItem" id="-37688765%2FFunctions%2F1125140263" data-filterable-set=":viewpager:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager:dokkaHtmlPartial/release" data-filterable-set=":viewpager:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="instantiate-item.html"><span>instantiate</span><wbr><span><span>Item</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-37688765%2FFunctions%2F1125140263"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="instantiate-item.html"><span class="token function"><strike>instantiateItem</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>container<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token punctuation">, </span></span><span class="parameter ">position<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-any/index.html">Any</a></div><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="instantiate-item.html"><span class="token function">instantiateItem</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>container<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/ViewGroup.html">ViewGroup</a><span class="token punctuation">, </span></span><span class="parameter ">position<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-any/index.html">Any</a></div><div class="brief ">Create the page for the given position.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="51998385%2FFunctions%2F1125140263" anchor-label="isViewFromObject" id="51998385%2FFunctions%2F1125140263" data-filterable-set=":viewpager:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager:dokkaHtmlPartial/release" data-filterable-set=":viewpager:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-view-from-object.html"><span>is</span><wbr><span>View</span><wbr><span>From</span><wbr><span><span>Object</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="51998385%2FFunctions%2F1125140263"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="is-view-from-object.html"><span class="token function">isViewFromObject</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>view<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>object<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-any/index.html">Any</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Determines whether a page View is associated with a specific key object as returned by <a href="instantiate-item.html">instantiateItem</a>.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2095483979%2FFunctions%2F1125140263" anchor-label="notifyDataSetChanged" id="2095483979%2FFunctions%2F1125140263" data-filterable-set=":viewpager:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager:dokkaHtmlPartial/release" data-filterable-set=":viewpager:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="notify-data-set-changed.html"><span>notify</span><wbr><span>Data</span><wbr><span>Set</span><wbr><span><span>Changed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2095483979%2FFunctions%2F1125140263"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="notify-data-set-changed.html"><span class="token function">notifyDataSetChanged</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief ">This method should be called by the application if the data backing this adapter has changed and associated views should update.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2138447525%2FFunctions%2F1125140263" anchor-label="registerDataSetObserver" id="2138447525%2FFunctions%2F1125140263" data-filterable-set=":viewpager:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager:dokkaHtmlPartial/release" data-filterable-set=":viewpager:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="register-data-set-observer.html"><span>register</span><wbr><span>Data</span><wbr><span>Set</span><wbr><span><span>Observer</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2138447525%2FFunctions%2F1125140263"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="register-data-set-observer.html"><span class="token function">registerDataSetObserver</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>observer<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/database/DataSetObserver.html">DataSetObserver</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Register an observer to receive callbacks related to the adapter's data changing.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1636948467%2FFunctions%2F1125140263" anchor-label="restoreState" id="1636948467%2FFunctions%2F1125140263" data-filterable-set=":viewpager:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager:dokkaHtmlPartial/release" data-filterable-set=":viewpager:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="restore-state.html"><span>restore</span><wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1636948467%2FFunctions%2F1125140263"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="restore-state.html"><span class="token function">restoreState</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>state<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/Parcelable.html">Parcelable</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>loader<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/ClassLoader.html">ClassLoader</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Restore any instance state associated with this adapter and its pages that was previously saved by <a href="save-state.html">saveState</a>.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1708263222%2FFunctions%2F1125140263" anchor-label="saveState" id="1708263222%2FFunctions%2F1125140263" data-filterable-set=":viewpager:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager:dokkaHtmlPartial/release" data-filterable-set=":viewpager:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="save-state.html"><span>save</span><wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1708263222%2FFunctions%2F1125140263"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="save-state.html"><span class="token function">saveState</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/Parcelable.html">Parcelable</a></div><div class="brief ">Save any instance state associated with this adapter and its pages that should be restored if the current UI state needs to be reconstructed.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="993062613%2FFunctions%2F1125140263" anchor-label="setPrimaryItem" id="993062613%2FFunctions%2F1125140263" data-filterable-set=":viewpager:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager:dokkaHtmlPartial/release" data-filterable-set=":viewpager:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-primary-item.html"><span>set</span><wbr><span>Primary</span><wbr><span><span>Item</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="993062613%2FFunctions%2F1125140263"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-primary-item.html"><span class="token function"><strike>setPrimaryItem</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>container<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token punctuation">, </span></span><span class="parameter ">position<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>object<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-any/index.html">Any</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-primary-item.html"><span class="token function">setPrimaryItem</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>container<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/ViewGroup.html">ViewGroup</a><span class="token punctuation">, </span></span><span class="parameter ">position<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>object<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-any/index.html">Any</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Called to inform the adapter of which item is currently considered to be the "primary", that is the one show to the user as the current page.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="911229159%2FFunctions%2F1125140263" anchor-label="startUpdate" id="911229159%2FFunctions%2F1125140263" data-filterable-set=":viewpager:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager:dokkaHtmlPartial/release" data-filterable-set=":viewpager:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="start-update.html"><span>start</span><wbr><span><span>Update</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="911229159%2FFunctions%2F1125140263"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="start-update.html"><span class="token function"><strike>startUpdate</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>container<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="start-update.html"><span class="token function">startUpdate</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>container<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/ViewGroup.html">ViewGroup</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Called when a change in the shown pages is going to start being made.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="33551358%2FFunctions%2F1125140263" anchor-label="unregisterDataSetObserver" id="33551358%2FFunctions%2F1125140263" data-filterable-set=":viewpager:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":viewpager:dokkaHtmlPartial/release" data-filterable-set=":viewpager:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="unregister-data-set-observer.html"><span>unregister</span><wbr><span>Data</span><wbr><span>Set</span><wbr><span><span>Observer</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="33551358%2FFunctions%2F1125140263"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":viewpager:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="unregister-data-set-observer.html"><span class="token function">unregisterDataSetObserver</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>observer<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/database/DataSetObserver.html">DataSetObserver</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Unregister an observer from callbacks related to the adapter's data changing.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2025 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

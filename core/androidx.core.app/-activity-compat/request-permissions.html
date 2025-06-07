@@ -1,0 +1,76 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>requestPermissions</title>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+<a class="library-name--link" href="../../../index.html">
+                            sesl.androidx
+                    </a>            </div>
+            <div class="library-version">
+            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":core:dokkaHtmlPartial/release">androidJvm</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="member" id="content" pageids="core::androidx.core.app/ActivityCompat/requestPermissions/#android.app.Activity#java.lang.String[]#int/PointingToDeclaration//-27209644">
+  <div class="breadcrumbs"><a href="../../index.html">core</a><span class="delimiter">/</span><a href="../index.html">androidx.core.app</a><span class="delimiter">/</span><a href="index.html">ActivityCompat</a><span class="delimiter">/</span><span class="current">requestPermissions</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>request</span><wbr><span><span>Permissions</span></span></h1>
+  </div>
+  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="request-permissions.html"><span class="token function">requestPermissions</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>activity<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>permissions<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-array/index.html">Array</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/IntRange.html"><span class="token annotation builtin">IntRange</span></a><span class="token punctuation">(</span><span>from<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">0</span></span></span><wbr><span class="token punctuation">)</span>&nbsp;</span>requestCode<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><p class="paragraph">Requests permissions to be granted to this application. These permissions must be requested in your manifest, they should not be granted to your app, and they should have protection level <a href="https://developer.android.com/reference/kotlin/android/content/pm/PermissionInfo.html#protection_dangerous"> dangerous</a>, regardless whether they are declared by the platform or a third-party app. </p><p class="paragraph"> Normal permissions <a href="https://developer.android.com/reference/kotlin/android/content/pm/PermissionInfo.html#protection_normal">PROTECTION_NORMAL</a> are granted at install time if requested in the manifest. Signature permissions <a href="https://developer.android.com/reference/kotlin/android/content/pm/PermissionInfo.html#protection_signature">PROTECTION_SIGNATURE</a> are granted at install time if requested in the manifest and the signature of your app matches the signature of the app declaring the permissions. </p><p class="paragraph"> Call <a href="should-show-request-permission-rationale.html">shouldShowRequestPermissionRationale</a> before calling this API to check if the system recommends to show a rationale dialog before asking for a permission. </p><p class="paragraph"> If your app does not have the requested permissions the user will be presented with UI for accepting them. After the user has accepted or rejected the requested permissions you will receive a callback reporting whether the permissions were granted or not. Your activity has to implement  and the results of permission requests will be delivered to its <a href="-on-request-permissions-result-callback/on-request-permissions-result.html">onRequestPermissionsResult</a> method. </p><p class="paragraph"> Note that requesting a permission does not guarantee it will be granted and your app should be able to run without having this permission. </p><p class="paragraph"> This method may start an activity allowing the user to choose which permissions to grant and which to reject. Hence, you should be prepared that your activity may be paused and resumed. Further, granting some permissions may require a restart of you application. In such a case, the system will recreate the activity stack before delivering the result to your <a href="-on-request-permissions-result-callback/on-request-permissions-result.html">onRequestPermissionsResult</a>. </p><p class="paragraph"> When checking whether you have a permission you should use <a href="../../androidx.core.content/-context-compat/check-self-permission.html">checkSelfPermission</a>. </p><p class="paragraph"> Calling this API for permissions already granted to your app would show UI to the user to decide whether the app can still hold these permissions. This can be useful if the way your app uses the data guarded by the permissions changes significantly. </p><p class="paragraph"> You cannot request a permission if your activity sets <a href="https://developer.android.com/reference/kotlin/android/R.attr.html#nohistory"> noHistory</a> to <code class="lang-kotlin">true</code> in the manifest because in this case the activity would not receive result callbacks including <a href="-on-request-permissions-result-callback/on-request-permissions-result.html">onRequestPermissionsResult</a>. </p><p class="paragraph"> The <a href="https://github.com/googlesamples/android-RuntimePermissions"> RuntimePermissions</a> sample app demonstrates how to use this method to request permissions at run time. </p><p class="paragraph"> If <a href="https://developer.android.com/reference/kotlin/android/Manifest.permission.html#post_notifications">POST_NOTIFICATIONS</a> is requested before the device supports the notification permission, then <a href="https://developer.android.com/reference/kotlin/android/Manifest.permission.html#post_notifications">POST_NOTIFICATIONS</a> will be removed from <a href="-on-request-permissions-result-callback/on-request-permissions-result.html">onRequestPermissionsResult</a>. For devices that don't support <a href="https://developer.android.com/reference/kotlin/android/Manifest.permission.html#post_notifications">POST_NOTIFICATIONS</a>, apps can send users to its notification settings to enable notifications. See android.provider.Settings.ACTION_APP_NOTIFICATION_SETTINGS for more information on launching notification settings. </p><h4 class="">Parameters</h4><div class="table"><div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>activity</span></span></u></div></span></div><div><div class="title"><p class="paragraph">The target activity.</p></div></div></div></div><div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>permissions</span></span></u></div></span></div><div><div class="title"><p class="paragraph">The requested permissions. Must be non-null and not empty.</p></div></div></div></div><div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>request</span><wbr><span><span>Code</span></span></u></div></span></div><div><div class="title"><p class="paragraph">Application specific request code to match with a result reported to <a href="-on-request-permissions-result-callback/on-request-permissions-result.html">onRequestPermissionsResult</a>. Should be &gt;= 0.</p></div></div></div></div></div><h4 class="">See also</h4><div class="table"><div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="-on-request-permissions-result-callback/on-request-permissions-result.html"><span>Activity</span><wbr><span>Compat.</span><wbr><span>On</span><wbr><span>Request</span><wbr><span>Permissions</span><wbr><span>Result</span><wbr><span><span>Callback</span></span></a></div></span></div><div></div></div></div><div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../../androidx.core.content/-context-compat/check-self-permission.html"><span>check</span><wbr><span>Self</span><wbr><span>Permission(android.</span><wbr><span>content.</span><wbr><span><span>Context,</span></span> <span><span>String)</span></span></a></div></span></div><div></div></div></div><div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="should-show-request-permission-rationale.html"><span>should</span><wbr><span>Show</span><wbr><span>Request</span><wbr><span>Permission</span><wbr><span>Rationale(android.</span><wbr><span>app.</span><wbr><span><span>Activity,</span></span> <span><span>String)</span></span></a></div></span></div><div></div></div></div></div></div></div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2025 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

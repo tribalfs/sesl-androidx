@@ -1,0 +1,76 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>setQueryFromAppProcessEnabled</title>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+<a class="library-name--link" href="../../../index.html">
+                            sesl.androidx
+                    </a>            </div>
+            <div class="library-version">
+            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":core:dokkaHtmlPartial/release">androidJvm</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="member" id="content" pageids="core::androidx.core.view.accessibility/AccessibilityNodeInfoCompat/setQueryFromAppProcessEnabled/#android.view.View#boolean/PointingToDeclaration//-27209644">
+  <div class="breadcrumbs"><a href="../../index.html">core</a><span class="delimiter">/</span><a href="../index.html">androidx.core.view.accessibility</a><span class="delimiter">/</span><a href="index.html">AccessibilityNodeInfoCompat</a><span class="delimiter">/</span><span class="current">setQueryFromAppProcessEnabled</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>set</span><wbr><span>Query</span><wbr><span>From</span><wbr><span>App</span><wbr><span>Process</span><wbr><span><span>Enabled</span></span></h1>
+  </div>
+  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-query-from-app-process-enabled.html"><span class="token function">setQueryFromAppProcessEnabled</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>view<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token punctuation">, </span></span><span class="parameter ">enabled<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div><p class="paragraph">Connects this node to the View's root so that operations on this node can query the entire <a href="index.html">AccessibilityNodeInfoCompat</a> tree and perform accessibility actions on nodes. </p><p class="paragraph"> Testing or debugging tools should create this <a href="index.html">AccessibilityNodeInfoCompat</a> node using <a href="../../androidx.core.view/-view-compat/on-initialize-accessibility-node-info.html">onInitializeAccessibilityNodeInfo</a> or <a href="../-accessibility-node-provider-compat/index.html">AccessibilityNodeProviderCompat</a> and call this method, then navigate and interact with the node tree by calling methods on the node. Calling this method more than once on the same node is a no-op. After calling this method, all nodes linked to this node (children, ancestors, etc.) are also queryable. </p><p class="paragraph"> Here "query" refers to the following node operations: </p><ul><li>check properties of this node (example: <a href="is-scrollable.html">isScrollable</a>)</li><li>find and query children (example: <a href="get-child.html">getChild</a>)</li><li>find and query the parent (example: <a href="get-parent.html">getParent</a>)</li><li>find focus (examples: <a href="find-focus.html">findFocus</a>, <a href="focus-search.html">focusSearch</a>)</li><li>find and query other nodes (example: <a href="find-accessibility-node-infos-by-text.html">findAccessibilityNodeInfosByText</a>, <a href="find-accessibility-node-infos-by-view-id.html">findAccessibilityNodeInfosByViewId</a>)</li><li>perform actions (example: <a href="perform-action.html">performAction</a>)</li></ul><p class="paragraph"> This is intended for short-lived inspections from testing or debugging tools in the app process, as operations on this node tree will only succeed as long as the associated view hierarchy remains attached to a window. <a href="index.html">AccessibilityNodeInfoCompat</a> objects can quickly become out of sync with their corresponding <a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a> objects; if you wish to inspect a changed or different view hierarchy then create a new node from any view in that hierarchy and call this method on that new node, instead of disabling &amp;re-enabling the connection on the previous node. </p><p class="paragraph"> Compatibility: </p><ul><li>API &lt;34: No-op</li></ul><h4 class="">Parameters</h4><div class="table"><div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>view</span></span></u></div></span></div><div><div class="title"><p class="paragraph">The view that generated this node, or any view in the same view-root hierarchy.</p></div></div></div></div><div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>enabled</span></span></u></div></span></div><div><div class="title"><p class="paragraph">Whether to enable (true) or disable (false) querying from the app process.</p></div></div></div></div></div><h4 class="">Throws</h4><div class="table"><div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="https://developer.android.com/reference/kotlin/java/lang/IllegalStateException.html"><span>Illegal</span><wbr><span>State</span><wbr><span><span>Exception</span></span></a></div></span></div><div><div class="title"><p class="paragraph">If called from an <a href="https://developer.android.com/reference/kotlin/android/accessibilityservice/AccessibilityService.html">AccessibilityService</a>, or if provided a <a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a> that is not attached to a window.</p></div></div></div></div></div></div></div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2025 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

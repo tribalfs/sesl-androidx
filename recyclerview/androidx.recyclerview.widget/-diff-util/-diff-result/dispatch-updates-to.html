@@ -1,0 +1,80 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>dispatchUpdatesTo</title>
+<link href="../../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<script type="text/javascript" src="../../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../../styles/style.css" rel="Stylesheet">
+<link href="../../../../styles/main.css" rel="Stylesheet">
+<link href="../../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+<a class="library-name--link" href="../../../../index.html">
+                            sesl.androidx
+                    </a>            </div>
+            <div class="library-version">
+            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":recyclerview:dokkaHtmlPartial/release">androidJvm</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="member" id="content" pageids="recyclerview::androidx.recyclerview.widget/DiffUtil.DiffResult/dispatchUpdatesTo/#androidx.recyclerview.widget.RecyclerView.Adapter/PointingToDeclaration//-708606353">
+  <div class="breadcrumbs"><a href="../../../index.html">recyclerview</a><span class="delimiter">/</span><a href="../../index.html">androidx.recyclerview.widget</a><span class="delimiter">/</span><a href="../index.html">DiffUtil</a><span class="delimiter">/</span><a href="index.html">DiffResult</a><span class="delimiter">/</span><span class="current">dispatchUpdatesTo</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>dispatch</span><wbr><span>Updates</span><wbr><span><span>To</span></span></h1>
+  </div>
+  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="dispatch-updates-to.html"><span class="token function">dispatchUpdatesTo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>adapter<span class="token operator">: </span><a href="../../-recycler-view/-adapter/index.html">RecyclerView.Adapter</a></span></span><span class="token punctuation">)</span></div><p class="paragraph">Dispatches the update events to the given adapter. </p><p class="paragraph"> For example, if you have an <a href="../../-recycler-view/-adapter/index.html">Adapter</a> that is backed by a <a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a>, you can swap the list with the new one then call this method to dispatch all updates to the RecyclerView. </p><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">    List oldList = mAdapter.getData();
+    DiffResult result = DiffUtil.calculateDiff(new MyCallback(oldList, newList));
+    mAdapter.setData(newList);
+    result.dispatchUpdatesTo(mAdapter);
+</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph"> Note that the RecyclerView requires you to dispatch adapter updates immediately when you change the data (you cannot defer <code class="lang-kotlin">notify*</code> calls). The usage above adheres to this rule because updates are sent to the adapter right after the backing data is changed, before RecyclerView tries to read it. </p><p class="paragraph"> On the other hand, if you have another <a href="../../-recycler-view/-adapter-data-observer/index.html">AdapterDataObserver</a> that tries to process events synchronously, this may confuse that observer because the list is instantly moved to its final state while the adapter updates are dispatched later on, one by one. If you have such an <a href="../../-recycler-view/-adapter-data-observer/index.html">AdapterDataObserver</a>, you can use <a href="dispatch-updates-to.html">dispatchUpdatesTo</a> to handle each modification manually.</p><h4 class="">Parameters</h4><div class="table"><div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>adapter</span></span></u></div></span></div><div><div class="title"><p class="paragraph">A RecyclerView adapter which was displaying the old list and will start displaying the new list.</p></div></div></div></div></div><h4 class="">See also</h4><div class="table"><div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../../-adapter-list-update-callback/index.html"><span>Adapter</span><wbr><span>List</span><wbr><span>Update</span><wbr><span><span>Callback</span></span></a></div></span></div><div></div></div></div></div><hr><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="dispatch-updates-to.html"><span class="token function">dispatchUpdatesTo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>updateCallback<span class="token operator">: </span><a href="../../-list-update-callback/index.html">ListUpdateCallback</a></span></span><span class="token punctuation">)</span></div><p class="paragraph">Dispatches update operations to the given Callback. </p><p class="paragraph"> These updates are atomic such that the first update call affects every update call that comes after it (the same as RecyclerView).</p><h4 class="">Parameters</h4><div class="table"><div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>update</span><wbr><span><span>Callback</span></span></u></div></span></div><div><div class="title"><p class="paragraph">The callback to receive the update operations.</p></div></div></div></div></div><h4 class="">See also</h4><div class="table"><div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="dispatch-updates-to.html"><span>dispatch</span><wbr><span>Updates</span><wbr><span>To(Recycler</span><wbr><span>View.</span><wbr><span>Adapter)</span></a></div></span></div><div></div></div></div></div></div></div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2025 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

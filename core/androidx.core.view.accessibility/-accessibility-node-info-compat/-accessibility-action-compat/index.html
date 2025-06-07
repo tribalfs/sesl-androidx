@@ -1,0 +1,873 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>AccessibilityActionCompat</title>
+<link href="../../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<script type="text/javascript" src="../../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../../styles/style.css" rel="Stylesheet">
+<link href="../../../../styles/main.css" rel="Stylesheet">
+<link href="../../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+<a class="library-name--link" href="../../../../index.html">
+                            sesl.androidx
+                    </a>            </div>
+            <div class="library-version">
+            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":core:dokkaHtmlPartial/release">androidJvm</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="core::androidx.core.view.accessibility/AccessibilityNodeInfoCompat.AccessibilityActionCompat///PointingToDeclaration//-27209644">
+  <div class="breadcrumbs"><a href="../../../index.html">core</a><span class="delimiter">/</span><a href="../../index.html">androidx.core.view.accessibility</a><span class="delimiter">/</span><a href="../index.html">AccessibilityNodeInfoCompat</a><span class="delimiter">/</span><span class="current">AccessibilityActionCompat</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Accessibility</span><wbr><span>Action</span><wbr><span><span>Compat</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="index.html">AccessibilityActionCompat</a></div><p class="paragraph">A class defining an action that can be performed on an <a href="https://developer.android.com/reference/kotlin/android/view/accessibility/AccessibilityNodeInfo.html">AccessibilityNodeInfo</a>. Each action has a unique id and a label. </p><p class="paragraph"> There are three categories of actions: </p><ul><li>Standard actions - These are actions that are reported and handled by the standard UI widgets in the platform. Each standard action is associated with a resource id, e.g. <a href="https://developer.android.com/reference/kotlin/android/R.id.html#accessibilityactionscrollup">accessibilityActionScrollUp</a>. Note that actions were formerly associated with static constants defined in this class, e.g. <a href="-a-c-t-i-o-n_-f-o-c-u-s.html">ACTION_FOCUS</a>. These actions will have <code class="lang-kotlin">null</code> labels. </li><li>Custom actions action - These are actions that are reported and handled by custom widgets. i.e. ones that are not part of the UI toolkit. For example, an application may define a custom action for clearing the user history. </li><li>Overriden standard actions - These are actions that override standard actions to customize them. For example, an app may add a label to the standard <a href="-a-c-t-i-o-n_-c-l-i-c-k.html">ACTION_CLICK</a> action to indicate to the user that this action clears browsing history. </li></ul><p class="paragraph">Note: Views which support these actions should invoke <a href="../../../androidx.core.view/-view-compat/set-important-for-accessibility.html">setImportantForAccessibility</a> with <a href="../../../androidx.core.view/-view-compat/-i-m-p-o-r-t-a-n-t_-f-o-r_-a-c-c-e-s-s-i-b-i-l-i-t-y_-y-e-s.html">IMPORTANT_FOR_ACCESSIBILITY_YES</a> to ensure an <a href="https://developer.android.com/reference/kotlin/android/accessibilityservice/AccessibilityService.html">android.accessibilityservice.AccessibilityService</a> can discover the set of supported actions. </p></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="-288644448%2FConstructors%2F-27209644" anchor-label="AccessibilityActionCompat" id="-288644448%2FConstructors%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-accessibility-action-compat.html"><span>Accessibility</span><wbr><span>Action</span><wbr><span><span>Compat</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-288644448%2FConstructors%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">actionId<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">label<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/CharSequence.html">CharSequence</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Creates a new instance.</div><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY_GROUP_PREFIX">LIBRARY_GROUP_PREFIX</a></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">actionId<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">label<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/CharSequence.html">CharSequence</a><span class="token punctuation">, </span></span><span class="parameter ">command<span class="token operator">: </span><a href="../../-accessibility-view-command/index.html">AccessibilityViewCommand</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Creates a new instance.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="267546856%2FProperties%2F-27209644" anchor-label="ACTION_ACCESSIBILITY_FOCUS" id="267546856%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-a-c-c-e-s-s-i-b-i-l-i-t-y_-f-o-c-u-s.html"><span><span>ACTION_ACCESSIBILITY_FOCUS</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="267546856%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-a-c-c-e-s-s-i-b-i-l-i-t-y_-f-o-c-u-s.html">ACTION_ACCESSIBILITY_FOCUS</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action that gives accessibility focus to the node.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1826228166%2FProperties%2F-27209644" anchor-label="ACTION_CLEAR_ACCESSIBILITY_FOCUS" id="-1826228166%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-c-l-e-a-r_-a-c-c-e-s-s-i-b-i-l-i-t-y_-f-o-c-u-s.html"><span><span>ACTION_CLEAR_ACCESSIBILITY_FOCUS</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1826228166%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-c-l-e-a-r_-a-c-c-e-s-s-i-b-i-l-i-t-y_-f-o-c-u-s.html">ACTION_CLEAR_ACCESSIBILITY_FOCUS</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action that clears accessibility focus of the node.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="713129481%2FProperties%2F-27209644" anchor-label="ACTION_CLEAR_FOCUS" id="713129481%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-c-l-e-a-r_-f-o-c-u-s.html"><span><span>ACTION_CLEAR_FOCUS</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="713129481%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-c-l-e-a-r_-f-o-c-u-s.html">ACTION_CLEAR_FOCUS</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action that clears input focus of the node.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-859067947%2FProperties%2F-27209644" anchor-label="ACTION_CLEAR_SELECTION" id="-859067947%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-c-l-e-a-r_-s-e-l-e-c-t-i-o-n.html"><span><span>ACTION_CLEAR_SELECTION</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-859067947%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-c-l-e-a-r_-s-e-l-e-c-t-i-o-n.html">ACTION_CLEAR_SELECTION</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action that deselects the node.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-866036601%2FProperties%2F-27209644" anchor-label="ACTION_CLICK" id="-866036601%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-c-l-i-c-k.html"><span><span>ACTION_CLICK</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-866036601%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-c-l-i-c-k.html">ACTION_CLICK</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action that clicks on the node info.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-445112770%2FProperties%2F-27209644" anchor-label="ACTION_COLLAPSE" id="-445112770%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-c-o-l-l-a-p-s-e.html"><span><span>ACTION_COLLAPSE</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-445112770%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-c-o-l-l-a-p-s-e.html">ACTION_COLLAPSE</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action to collapse an expandable node.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2136022839%2FProperties%2F-27209644" anchor-label="ACTION_CONTEXT_CLICK" id="2136022839%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-c-o-n-t-e-x-t_-c-l-i-c-k.html"><span><span>ACTION_CONTEXT_CLICK</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2136022839%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-c-o-n-t-e-x-t_-c-l-i-c-k.html">ACTION_CONTEXT_CLICK</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action that context clicks the node.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1484837494%2FProperties%2F-27209644" anchor-label="ACTION_COPY" id="1484837494%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-c-o-p-y.html"><span><span>ACTION_COPY</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1484837494%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-c-o-p-y.html">ACTION_COPY</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action to copy the current selection to the clipboard.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="652354957%2FProperties%2F-27209644" anchor-label="ACTION_CUT" id="652354957%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-c-u-t.html"><span><span>ACTION_CUT</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="652354957%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-c-u-t.html">ACTION_CUT</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action to cut the current selection and place it to the clipboard.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1960303291%2FProperties%2F-27209644" anchor-label="ACTION_DISMISS" id="-1960303291%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-d-i-s-m-i-s-s.html"><span><span>ACTION_DISMISS</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1960303291%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-d-i-s-m-i-s-s.html">ACTION_DISMISS</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action to dismiss a dismissable node.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-659533014%2FProperties%2F-27209644" anchor-label="ACTION_DRAG_CANCEL" id="-659533014%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-d-r-a-g_-c-a-n-c-e-l.html"><span><span>ACTION_DRAG_CANCEL</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-659533014%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-d-r-a-g_-c-a-n-c-e-l.html">ACTION_DRAG_CANCEL</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action to cancel a drag.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-888157675%2FProperties%2F-27209644" anchor-label="ACTION_DRAG_DROP" id="-888157675%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-d-r-a-g_-d-r-o-p.html"><span><span>ACTION_DRAG_DROP</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-888157675%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-d-r-a-g_-d-r-o-p.html">ACTION_DRAG_DROP</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action to trigger a drop of the content being dragged.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1592074292%2FProperties%2F-27209644" anchor-label="ACTION_DRAG_START" id="1592074292%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-d-r-a-g_-s-t-a-r-t.html"><span><span>ACTION_DRAG_START</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1592074292%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-d-r-a-g_-s-t-a-r-t.html">ACTION_DRAG_START</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action to start a drag.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-475521167%2FProperties%2F-27209644" anchor-label="ACTION_EXPAND" id="-475521167%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-e-x-p-a-n-d.html"><span><span>ACTION_EXPAND</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-475521167%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-e-x-p-a-n-d.html">ACTION_EXPAND</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action to expand an expandable node.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1141989577%2FProperties%2F-27209644" anchor-label="ACTION_FOCUS" id="-1141989577%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-f-o-c-u-s.html"><span><span>ACTION_FOCUS</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1141989577%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-f-o-c-u-s.html">ACTION_FOCUS</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action that gives input focus to the node.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1634141989%2FProperties%2F-27209644" anchor-label="ACTION_HIDE_TOOLTIP" id="1634141989%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-h-i-d-e_-t-o-o-l-t-i-p.html"><span><span>ACTION_HIDE_TOOLTIP</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1634141989%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-h-i-d-e_-t-o-o-l-t-i-p.html">ACTION_HIDE_TOOLTIP</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action to hide a tooltip.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-775207787%2FProperties%2F-27209644" anchor-label="ACTION_IME_ENTER" id="-775207787%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-i-m-e_-e-n-t-e-r.html"><span><span>ACTION_IME_ENTER</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-775207787%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-i-m-e_-e-n-t-e-r.html">ACTION_IME_ENTER</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action to send an ime actionId which is from <a href="https://developer.android.com/reference/kotlin/android/view/inputmethod/EditorInfo.html#actionid">actionId</a>.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="119198598%2FProperties%2F-27209644" anchor-label="ACTION_LONG_CLICK" id="119198598%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-l-o-n-g_-c-l-i-c-k.html"><span><span>ACTION_LONG_CLICK</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="119198598%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-l-o-n-g_-c-l-i-c-k.html">ACTION_LONG_CLICK</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action that long clicks on the node.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1406013167%2FProperties%2F-27209644" anchor-label="ACTION_MOVE_WINDOW" id="-1406013167%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-m-o-v-e_-w-i-n-d-o-w.html"><span><span>ACTION_MOVE_WINDOW</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1406013167%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-m-o-v-e_-w-i-n-d-o-w.html">ACTION_MOVE_WINDOW</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action to move a window to a new location.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-673265875%2FProperties%2F-27209644" anchor-label="ACTION_NEXT_AT_MOVEMENT_GRANULARITY" id="-673265875%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-n-e-x-t_-a-t_-m-o-v-e-m-e-n-t_-g-r-a-n-u-l-a-r-i-t-y.html"><span><span>ACTION_NEXT_AT_MOVEMENT_GRANULARITY</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-673265875%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-n-e-x-t_-a-t_-m-o-v-e-m-e-n-t_-g-r-a-n-u-l-a-r-i-t-y.html">ACTION_NEXT_AT_MOVEMENT_GRANULARITY</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action that requests to go to the next entity in this node's text at a given movement granularity.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="161677403%2FProperties%2F-27209644" anchor-label="ACTION_NEXT_HTML_ELEMENT" id="161677403%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-n-e-x-t_-h-t-m-l_-e-l-e-m-e-n-t.html"><span><span>ACTION_NEXT_HTML_ELEMENT</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="161677403%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-n-e-x-t_-h-t-m-l_-e-l-e-m-e-n-t.html">ACTION_NEXT_HTML_ELEMENT</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action to move to the next HTML element of a given type.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1223440349%2FProperties%2F-27209644" anchor-label="ACTION_PAGE_DOWN" id="1223440349%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-p-a-g-e_-d-o-w-n.html"><span><span>ACTION_PAGE_DOWN</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1223440349%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-p-a-g-e_-d-o-w-n.html">ACTION_PAGE_DOWN</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action to move to the page below.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1744234520%2FProperties%2F-27209644" anchor-label="ACTION_PAGE_LEFT" id="1744234520%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-p-a-g-e_-l-e-f-t.html"><span><span>ACTION_PAGE_LEFT</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1744234520%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-p-a-g-e_-l-e-f-t.html">ACTION_PAGE_LEFT</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action to move to the page left.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1522530561%2FProperties%2F-27209644" anchor-label="ACTION_PAGE_RIGHT" id="-1522530561%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-p-a-g-e_-r-i-g-h-t.html"><span><span>ACTION_PAGE_RIGHT</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1522530561%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-p-a-g-e_-r-i-g-h-t.html">ACTION_PAGE_RIGHT</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action to move to the page right.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="312114308%2FProperties%2F-27209644" anchor-label="ACTION_PAGE_UP" id="312114308%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-p-a-g-e_-u-p.html"><span><span>ACTION_PAGE_UP</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="312114308%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-p-a-g-e_-u-p.html">ACTION_PAGE_UP</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action to move to the page above.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="975941084%2FProperties%2F-27209644" anchor-label="ACTION_PASTE" id="975941084%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-p-a-s-t-e.html"><span><span>ACTION_PASTE</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="975941084%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-p-a-s-t-e.html">ACTION_PASTE</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action to paste the current clipboard content.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="170858824%2FProperties%2F-27209644" anchor-label="ACTION_PRESS_AND_HOLD" id="170858824%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-p-r-e-s-s_-a-n-d_-h-o-l-d.html"><span><span>ACTION_PRESS_AND_HOLD</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="170858824%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-p-r-e-s-s_-a-n-d_-h-o-l-d.html">ACTION_PRESS_AND_HOLD</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action that presses and holds a node.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="995049641%2FProperties%2F-27209644" anchor-label="ACTION_PREVIOUS_AT_MOVEMENT_GRANULARITY" id="995049641%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-p-r-e-v-i-o-u-s_-a-t_-m-o-v-e-m-e-n-t_-g-r-a-n-u-l-a-r-i-t-y.html"><span><span>ACTION_PREVIOUS_AT_MOVEMENT_GRANULARITY</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="995049641%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-p-r-e-v-i-o-u-s_-a-t_-m-o-v-e-m-e-n-t_-g-r-a-n-u-l-a-r-i-t-y.html">ACTION_PREVIOUS_AT_MOVEMENT_GRANULARITY</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action that requests to go to the previous entity in this node's text at a given movement granularity.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1941988257%2FProperties%2F-27209644" anchor-label="ACTION_PREVIOUS_HTML_ELEMENT" id="-1941988257%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-p-r-e-v-i-o-u-s_-h-t-m-l_-e-l-e-m-e-n-t.html"><span><span>ACTION_PREVIOUS_HTML_ELEMENT</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1941988257%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-p-r-e-v-i-o-u-s_-h-t-m-l_-e-l-e-m-e-n-t.html">ACTION_PREVIOUS_HTML_ELEMENT</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action to move to the previous HTML element of a given type.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-893096198%2FProperties%2F-27209644" anchor-label="ACTION_SCROLL_BACKWARD" id="-893096198%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-s-c-r-o-l-l_-b-a-c-k-w-a-r-d.html"><span><span>ACTION_SCROLL_BACKWARD</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-893096198%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-s-c-r-o-l-l_-b-a-c-k-w-a-r-d.html">ACTION_SCROLL_BACKWARD</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action to scroll the node content backward.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="208991003%2FProperties%2F-27209644" anchor-label="ACTION_SCROLL_DOWN" id="208991003%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-s-c-r-o-l-l_-d-o-w-n.html"><span><span>ACTION_SCROLL_DOWN</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="208991003%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-s-c-r-o-l-l_-d-o-w-n.html">ACTION_SCROLL_DOWN</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action to scroll the node content down.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2042834680%2FProperties%2F-27209644" anchor-label="ACTION_SCROLL_FORWARD" id="2042834680%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-s-c-r-o-l-l_-f-o-r-w-a-r-d.html"><span><span>ACTION_SCROLL_FORWARD</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2042834680%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-s-c-r-o-l-l_-f-o-r-w-a-r-d.html">ACTION_SCROLL_FORWARD</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action to scroll the node content forward.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1012694104%2FProperties%2F-27209644" anchor-label="ACTION_SCROLL_IN_DIRECTION" id="1012694104%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-s-c-r-o-l-l_-i-n_-d-i-r-e-c-t-i-o-n.html"><span><span>ACTION_SCROLL_IN_DIRECTION</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1012694104%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-s-c-r-o-l-l_-i-n_-d-i-r-e-c-t-i-o-n.html">ACTION_SCROLL_IN_DIRECTION</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action that brings fully on screen the next node in the specified direction.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="729785174%2FProperties%2F-27209644" anchor-label="ACTION_SCROLL_LEFT" id="729785174%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-s-c-r-o-l-l_-l-e-f-t.html"><span><span>ACTION_SCROLL_LEFT</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="729785174%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-s-c-r-o-l-l_-l-e-f-t.html">ACTION_SCROLL_LEFT</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action to scroll the node content left.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1389278081%2FProperties%2F-27209644" anchor-label="ACTION_SCROLL_RIGHT" id="1389278081%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-s-c-r-o-l-l_-r-i-g-h-t.html"><span><span>ACTION_SCROLL_RIGHT</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1389278081%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-s-c-r-o-l-l_-r-i-g-h-t.html">ACTION_SCROLL_RIGHT</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action to scroll the node content right.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1080702000%2FProperties%2F-27209644" anchor-label="ACTION_SCROLL_TO_POSITION" id="1080702000%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-s-c-r-o-l-l_-t-o_-p-o-s-i-t-i-o-n.html"><span><span>ACTION_SCROLL_TO_POSITION</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1080702000%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-s-c-r-o-l-l_-t-o_-p-o-s-i-t-i-o-n.html">ACTION_SCROLL_TO_POSITION</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action that scrolls the node to make the specified collection position visible on screen.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2097877182%2FProperties%2F-27209644" anchor-label="ACTION_SCROLL_UP" id="-2097877182%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-s-c-r-o-l-l_-u-p.html"><span><span>ACTION_SCROLL_UP</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2097877182%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-s-c-r-o-l-l_-u-p.html">ACTION_SCROLL_UP</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action to scroll the node content up.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1062184113%2FProperties%2F-27209644" anchor-label="ACTION_SELECT" id="-1062184113%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-s-e-l-e-c-t.html"><span><span>ACTION_SELECT</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1062184113%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-s-e-l-e-c-t.html">ACTION_SELECT</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action that selects the node.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1269641215%2FProperties%2F-27209644" anchor-label="ACTION_SET_PROGRESS" id="-1269641215%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-s-e-t_-p-r-o-g-r-e-s-s.html"><span><span>ACTION_SET_PROGRESS</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1269641215%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-s-e-t_-p-r-o-g-r-e-s-s.html">ACTION_SET_PROGRESS</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action that sets progress between <a href="../-range-info-compat/get-min.html">RangeInfo.getMin()</a> and <a href="../-range-info-compat/get-max.html">RangeInfo.getMax()</a>.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1809609696%2FProperties%2F-27209644" anchor-label="ACTION_SET_SELECTION" id="-1809609696%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-s-e-t_-s-e-l-e-c-t-i-o-n.html"><span><span>ACTION_SET_SELECTION</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1809609696%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-s-e-t_-s-e-l-e-c-t-i-o-n.html">ACTION_SET_SELECTION</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action to set the selection.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="392967553%2FProperties%2F-27209644" anchor-label="ACTION_SET_TEXT" id="392967553%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-s-e-t_-t-e-x-t.html"><span><span>ACTION_SET_TEXT</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="392967553%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-s-e-t_-t-e-x-t.html">ACTION_SET_TEXT</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action that sets the text of the node.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2043932161%2FProperties%2F-27209644" anchor-label="ACTION_SHOW_ON_SCREEN" id="2043932161%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-s-h-o-w_-o-n_-s-c-r-e-e-n.html"><span><span>ACTION_SHOW_ON_SCREEN</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2043932161%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-s-h-o-w_-o-n_-s-c-r-e-e-n.html">ACTION_SHOW_ON_SCREEN</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action that requests the node make its bounding rectangle visible on the screen, scrolling if necessary just enough.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-979899888%2FProperties%2F-27209644" anchor-label="ACTION_SHOW_TEXT_SUGGESTIONS" id="-979899888%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-s-h-o-w_-t-e-x-t_-s-u-g-g-e-s-t-i-o-n-s.html"><span><span>ACTION_SHOW_TEXT_SUGGESTIONS</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-979899888%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-s-h-o-w_-t-e-x-t_-s-u-g-g-e-s-t-i-o-n-s.html">ACTION_SHOW_TEXT_SUGGESTIONS</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action to show suggestions for editable text.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2095705290%2FProperties%2F-27209644" anchor-label="ACTION_SHOW_TOOLTIP" id="2095705290%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-c-t-i-o-n_-s-h-o-w_-t-o-o-l-t-i-p.html"><span><span>ACTION_SHOW_TOOLTIP</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2095705290%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-a-c-t-i-o-n_-s-h-o-w_-t-o-o-l-t-i-p.html">ACTION_SHOW_TOOLTIP</a><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div><div class="brief ">Action to show a tooltip.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="-2131303191%2FFunctions%2F-27209644" anchor-label="createReplacementAction" id="-2131303191%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="create-replacement-action.html"><span>create</span><wbr><span>Replacement</span><wbr><span><span>Action</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2131303191%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY_GROUP_PREFIX">LIBRARY_GROUP_PREFIX</a></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="create-replacement-action.html"><span class="token function">createReplacementAction</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">label<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/CharSequence.html">CharSequence</a><span class="token punctuation">, </span></span><span class="parameter ">command<span class="token operator">: </span><a href="../../-accessibility-view-command/index.html">AccessibilityViewCommand</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.AccessibilityActionCompat</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="349113012%2FFunctions%2F-27209644" anchor-label="equals" id="349113012%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="equals.html"><span><span>equals</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="349113012%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="equals.html"><span class="token function">equals</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>obj<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-any/index.html">Any</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1181463523%2FFunctions%2F-27209644" anchor-label="getId" id="1181463523%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-id.html"><span>get</span><wbr><span><span>Id</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1181463523%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-id.html"><span class="token function">getId</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Gets the id for this action.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1726000840%2FFunctions%2F-27209644" anchor-label="getLabel" id="1726000840%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-label.html"><span>get</span><wbr><span><span>Label</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1726000840%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-label.html"><span class="token function">getLabel</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/CharSequence.html">CharSequence</a></div><div class="brief ">Gets the label for this action.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-554718581%2FFunctions%2F-27209644" anchor-label="hashCode" id="-554718581%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="hash-code.html"><span>hash</span><wbr><span><span>Code</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-554718581%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="hash-code.html"><span class="token function">hashCode</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-777670250%2FFunctions%2F-27209644" anchor-label="perform" id="-777670250%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="perform.html"><span><span>perform</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-777670250%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY_GROUP_PREFIX">LIBRARY_GROUP_PREFIX</a></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="perform.html"><span class="token function">perform</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">view<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token punctuation">, </span></span><span class="parameter ">arguments<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Performs the action.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-732884646%2FFunctions%2F-27209644" anchor-label="toString" id="-732884646%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="to-string.html"><span>to</span><wbr><span><span>String</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-732884646%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="to-string.html"><span class="token function">toString</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2025 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

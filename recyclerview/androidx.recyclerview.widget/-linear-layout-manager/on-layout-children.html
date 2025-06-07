@@ -1,0 +1,76 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>onLayoutChildren</title>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+<a class="library-name--link" href="../../../index.html">
+                            sesl.androidx
+                    </a>            </div>
+            <div class="library-version">
+            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":recyclerview:dokkaHtmlPartial/release">androidJvm</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="member" id="content" pageids="recyclerview::androidx.recyclerview.widget/LinearLayoutManager/onLayoutChildren/#androidx.recyclerview.widget.RecyclerView.Recycler#androidx.recyclerview.widget.RecyclerView.State/PointingToDeclaration//-708606353">
+  <div class="breadcrumbs"><a href="../../index.html">recyclerview</a><span class="delimiter">/</span><a href="../index.html">androidx.recyclerview.widget</a><span class="delimiter">/</span><a href="index.html">LinearLayoutManager</a><span class="delimiter">/</span><span class="current">onLayoutChildren</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>on</span><wbr><span>Layout</span><wbr><span><span>Children</span></span></h1>
+  </div>
+  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-layout-children.html"><span class="token function">onLayoutChildren</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">recycler<span class="token operator">: </span><a href="../-recycler-view/-recycler/index.html">RecyclerView.Recycler</a><span class="token punctuation">, </span></span><span class="parameter ">state<span class="token operator">: </span><a href="../-recycler-view/-state/index.html">RecyclerView.State</a></span></span><span class="token punctuation">)</span></div><p class="paragraph">Lay out all relevant child views from the given adapter. The LayoutManager is in charge of the behavior of item animations. By default, RecyclerView has a non-null #getItemAnimator() ItemAnimator, and simple item animations are enabled. This means that add/remove operations on the adapter will result in animations to add new or appearing items, removed or disappearing items, and moved items. If a LayoutManager returns false from #supportsPredictiveItemAnimations(), which is the default, and runs a normal layout operation during #onLayoutChildren(Recycler, State), the RecyclerView will have enough information to run those animations in a simple way. For example, the default ItemAnimator, , will simply fade views in and out, whether they are actually added/removed or whether they are moved on or off the screen due to other add/remove operations. </p><p class="paragraph">A LayoutManager wanting a better item animation experience, where items can be animated onto and off of the screen according to where the items exist when they are not on screen, then the LayoutManager should return true from #supportsPredictiveItemAnimations() and add additional logic to #onLayoutChildren(Recycler, State). Supporting predictive animations means that #onLayoutChildren(Recycler, State) will be called twice; once as a "pre" layout step to determine where items would have been prior to a real layout, and again to do the "real" layout. In the pre-layout phase, items will remember their pre-layout positions to allow them to be laid out appropriately. Also, LayoutParams#isItemRemoved() removed items will be returned from the scrap to help determine correct placement of other items. These removed items should not be added to the child list, but should be used to help calculate correct positioning of other views, including views that were not previously onscreen (referred to as APPEARING views), but whose pre-layout offscreen position can be determined given the extra information about the pre-layout removed views.</p><p class="paragraph">The second layout pass is the real layout in which only non-removed views will be used. The only additional requirement during this pass is, if #supportsPredictiveItemAnimations() returns true, to note which views exist in the child list prior to layout and which are not there after layout (referred to as DISAPPEARING views), and to position/layout those views appropriately, without regard to the actual bounds of the RecyclerView. This allows the animation system to know the location to which to animate these disappearing views.</p><p class="paragraph">The default LayoutManager implementations for RecyclerView handle all of these requirements for animations already. Clients of RecyclerView can either use one of these layout managers directly or look at their implementations of onLayoutChildren() to see how they account for the APPEARING and DISAPPEARING views.</p></div></div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2025 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

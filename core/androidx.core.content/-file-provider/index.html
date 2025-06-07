@@ -1,0 +1,813 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>FileProvider</title>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+<a class="library-name--link" href="../../../index.html">
+                            sesl.androidx
+                    </a>            </div>
+            <div class="library-version">
+            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":core:dokkaHtmlPartial/release">androidJvm</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="core::androidx.core.content/FileProvider///PointingToDeclaration//-27209644">
+  <div class="breadcrumbs"><a href="../../index.html">core</a><span class="delimiter">/</span><a href="../index.html">androidx.core.content</a><span class="delimiter">/</span><span class="current">FileProvider</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>File</span><wbr><span><span>Provider</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="index.html">FileProvider</a> : <a href="https://developer.android.com/reference/kotlin/android/content/ContentProvider.html">ContentProvider</a></div><p class="paragraph">FileProvider is a special subclass of <a href="https://developer.android.com/reference/kotlin/android/content/ContentProvider.html">ContentProvider</a> that facilitates secure sharing of files associated with an app by creating a <code class="lang-kotlin">content://</code><a href="https://developer.android.com/reference/kotlin/android/net/Uri.html">Uri</a> for a file instead of a <code class="lang-kotlin">file:///</code><a href="https://developer.android.com/reference/kotlin/android/net/Uri.html">Uri</a>. </p><p class="paragraph"> A content URI allows you to grant read and write access using temporary access permissions. When you create an <a href="https://developer.android.com/reference/kotlin/android/content/Intent.html">Intent</a> containing a content URI, in order to send the content URI to a client app, you can also call <a href="https://developer.android.com/reference/kotlin/android/content/Intent.html#setflags">Intent.setFlags()</a> to add permissions. These permissions are available to the client app for as long as the stack for a receiving <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a> is active. For an <a href="https://developer.android.com/reference/kotlin/android/content/Intent.html">Intent</a> going to a <a href="https://developer.android.com/reference/kotlin/android/app/Service.html">Service</a>, the permissions are available as long as the <a href="https://developer.android.com/reference/kotlin/android/app/Service.html">Service</a> is running. </p><p class="paragraph"> In comparison, to control access to a <code class="lang-kotlin">file:///</code><a href="https://developer.android.com/reference/kotlin/android/net/Uri.html">Uri</a> you have to modify the file system permissions of the underlying file. The permissions you provide become available to any app, and remain in effect until you change them. This level of access is fundamentally insecure. </p><p class="paragraph"> The increased level of file access security offered by a content URI makes FileProvider a key part of Android's security infrastructure. </p><p class="paragraph"> This overview of FileProvider includes the following topics: </p><ol><li>Defining a FileProvider</li><li>Specifying Available Files</li><li>Generating the Content URI for a File</li><li>Granting Temporary Permissions to a URI</li><li>Serving a Content URI to Another App</li></ol><p class="paragraph"><strong>Defining a FileProvider</strong></p><p class="paragraph"> Extend FileProvider with a default constructor: </p><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">public class MyFileProvider extends FileProvider {
+   public MyFileProvider() {
+       ...
+   }
+}
+</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div> Add a <code class="lang-kotlin"><a href="{@docRoot}guide/topics/manifest/provider-element.html">&lt;provider&gt;</a></code> element to your app manifest. Set the <code class="lang-kotlin">android:name</code> attribute to the FileProvider you created. Set the <code class="lang-kotlin">android:authorities</code> attribute to a URI authority based on a domain you control; for example, if you control the domain <code class="lang-kotlin">mydomain.com</code> you should use the authority <code class="lang-kotlin">com.mydomain.fileprovider</code>. Set the <code class="lang-kotlin">android:exported</code> attribute to <code class="lang-kotlin">false</code>; the FileProvider does not need to be public. Set the <a href="{@docRoot}guide/topics/manifest/provider-element.html#gprmsn">android:grantUriPermissions</a> attribute to <code class="lang-kotlin">true</code>, to allow you to grant temporary access to files. For example: <div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">&lt;manifest&gt;
+   ...
+   &lt;application&gt;
+       ...
+       &lt;provider
+           android:name="com.sample.MyFileProvider"
+           android:authorities="com.mydomain.fileprovider"
+           android:exported="false"
+           android:grantUriPermissions="true"&gt;
+           ...
+       &lt;/provider&gt;
+       ...
+   &lt;/application&gt;
+&lt;/manifest&gt;</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph"> It is possible to use FileProvider directly instead of extending it. However, this is not reliable and will causes crashes on some devices. </p><p class="paragraph"><strong>Specifying Available Files</strong></p><p class="paragraph"> A FileProvider can only generate a content URI for files in directories that you specify beforehand. To specify a directory, specify its storage area and path in XML, using child elements of the <code class="lang-kotlin">&lt;paths&gt;</code> element. For example, the following <code class="lang-kotlin">paths</code> element tells FileProvider that you intend to request content URIs for the <code class="lang-kotlin">images/</code> subdirectory of your private file area. </p><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">&lt;paths xmlns:android="http://schemas.android.com/apk/res/android"&gt;
+   &lt;files-path name="my_images" path="images/"/&gt;
+   ...
+&lt;/paths&gt;
+</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph"> The <code class="lang-kotlin">&lt;paths&gt;</code> element must contain one or more of the following child elements: </p><ul><li><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">&lt;files-path name="<i>name</i>" path="<i>path</i>" /&gt;</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div> Represents files in the <code class="lang-kotlin">files/</code> subdirectory of your app's internal storage area. This subdirectory is the same as the value returned by <a href="https://developer.android.com/reference/kotlin/android/content/Context.html#getfilesdir">Context.getFilesDir()</a>. </li><li><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">&lt;cache-path name="<i>name</i>" path="<i>path</i>" /&gt;</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div> Represents files in the cache subdirectory of your app's internal storage area. The root path of this subdirectory is the same as the value returned by <a href="https://developer.android.com/reference/kotlin/android/content/Context.html#getcachedir">getCacheDir()</a>. </li><li><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">&lt;external-path name="<i>name</i>" path="<i>path</i>" /&gt;</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div> Represents files in the root of the external storage area. The root path of this subdirectory is the same as the value returned by <a href="https://developer.android.com/reference/kotlin/android/os/Environment.html#getexternalstoragedirectory">Environment.getExternalStorageDirectory()</a>. </li><li><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">&lt;external-files-path name="<i>name</i>" path="<i>path</i>"
+/&gt;</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div> Represents files in the root of your app's external storage area. The root path of this subdirectory is the same as the value returned by <a href="https://developer.android.com/reference/kotlin/android/content/Context.html#getexternalfilesdir">Context.getExternalFilesDir(null)</a>. </li><li><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">&lt;external-cache-path name="<i>name</i>" path="<i>path</i>"
+/&gt;</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div> Represents files in the root of your app's external cache area. The root path of this subdirectory is the same as the value returned by <a href="https://developer.android.com/reference/kotlin/android/content/Context.html#getexternalcachedir">Context.getExternalCacheDir()</a>. </li><li><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">&lt;external-media-path name="<i>name</i>" path="<i>path</i>"
+/&gt;</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div> Represents files in the root of your app's external media area. The root path of this subdirectory is the same as the value returned by the first result of <a href="https://developer.android.com/reference/kotlin/android/content/Context.html#getexternalmediadirs">Context.getExternalMediaDirs()</a>. <p class="paragraph">Note: this directory is only available on API 21+ devices.</p></li></ul><p class="paragraph"> These child elements all use the same attributes: </p><ul><li><code class="lang-kotlin">name="<i>name</i>"</code><p class="paragraph"> A URI path segment. To enforce security, this value hides the name of the subdirectory you're sharing. The subdirectory name for this value is contained in the <code class="lang-kotlin">path</code> attribute. </p></li><li><code class="lang-kotlin">path="<i>path</i>"</code><p class="paragraph"> The subdirectory you're sharing. While the <code class="lang-kotlin">name</code> attribute is a URI path segment, the <code class="lang-kotlin">path</code> value is an actual subdirectory name. Notice that the value refers to a <strong>subdirectory</strong>, not an individual file or files. You can't share a single file by its file name, nor can you specify a subset of files using wildcards. </p></li></ul><p class="paragraph"> You must specify a child element of <code class="lang-kotlin">&lt;paths&gt;</code> for each directory that contains files for which you want content URIs. For example, these XML elements specify two directories: </p><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">&lt;paths xmlns:android="http://schemas.android.com/apk/res/android"&gt;
+   &lt;files-path name="my_images" path="images/"/&gt;
+   &lt;files-path name="my_docs" path="docs/"/&gt;
+&lt;/paths&gt;
+</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph"> Put the <code class="lang-kotlin">&lt;paths&gt;</code> element and its children in an XML file in your project. For example, you can add them to a new file called <code class="lang-kotlin">res/xml/file_paths.xml</code>.  To link this file to the FileProvider, pass it to super() in the constructor for the FileProvider you defined above, add a <a href="{@docRoot}guide/topics/manifest/meta-data 
+ -element.html"><meta-data></meta-data></a> element as a child of the <code class="lang-kotlin">&lt;provider&gt;</code> element that defines the FileProvider. Set the <code class="lang-kotlin">&lt;meta-data&gt;</code> element's "android:name" attribute to <code class="lang-kotlin">android.support.FILE_PROVIDER_PATHS</code>. Set the element's "android:resource" attribute to <code class="lang-kotlin">@xml/file_paths</code> (notice that you don't specify the <code class="lang-kotlin">.xml</code> extension). For example: </p><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea"> &lt;provider 
+ android:name="com.sample.MyFileProvider" 
+ android:authorities="com.mydomain.fileprovider" 
+ android:exported="false" 
+ android:grantUriPermissions="true"&gt; 
+ &lt;meta-data 
+ android:name="android.support.FILE_PROVIDER_PATHS" 
+ android:resource="@xml/file_paths" /&gt; 
+ &lt;/provider&gt; 
+ </code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph"><strong>Generating the Content URI for a File</strong></p><p class="paragraph"> To share a file with another app using a content URI, your app has to generate the content URI. To generate the content URI, create a new <a href="https://developer.android.com/reference/kotlin/java/io/File.html">File</a> for the file, then pass the <a href="https://developer.android.com/reference/kotlin/java/io/File.html">File</a> to <a href="get-uri-for-file.html">getUriForFile()</a>. You can send the content URI returned by <a href="get-uri-for-file.html">getUriForFile()</a> to another app in an <a href="https://developer.android.com/reference/kotlin/android/content/Intent.html">Intent</a>. The client app that receives the content URI can open the file and access its contents by calling <a href="https://developer.android.com/reference/kotlin/android/content/ContentResolver.html#openfiledescriptor">ContentResolver.openFileDescriptor</a> to get a <a href="https://developer.android.com/reference/kotlin/android/os/ParcelFileDescriptor.html">ParcelFileDescriptor</a>. </p><p class="paragraph"> For example, suppose your app is offering files to other apps with a FileProvider that has the authority <code class="lang-kotlin">com.mydomain.fileprovider</code>. To get a content URI for the file <code class="lang-kotlin">default_image.jpg</code> in the <code class="lang-kotlin">images/</code> subdirectory of your internal storage add the following code: </p><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea"> File imagePath = new File(Context.getFilesDir(), "my_images"); 
+ File newFile = new File(imagePath, "default_image.jpg"); 
+ Uri contentUri = getUriForFile(getContext(), "com.mydomain.fileprovider", newFile); 
+ </code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div> As a result of the previous snippet, <a href="get-uri-for-file.html">getUriForFile()</a> returns the content URI <code class="lang-kotlin">content://com.mydomain.fileprovider/my_images/default_image.jpg</code>. <p class="paragraph"><strong>Granting Temporary Permissions to a URI</strong></p><p class="paragraph"> To grant an access permission to a content URI returned from <a href="get-uri-for-file.html">getUriForFile()</a>, you can either grant the permission to a specific package or include the permission in an intent, as shown in the following sections. </p>Grant Permission to a Specific Package<p class="paragraph"> Call the method <a href="https://developer.android.com/reference/kotlin/android/content/Context.html#granturipermission">Context.grantUriPermission(package, Uri, mode_flags)</a> for the <code class="lang-kotlin">content://</code><a href="https://developer.android.com/reference/kotlin/android/net/Uri.html">Uri</a>, using the desired mode flags. This grants temporary access permission for the content URI to the specified package, according to the value of the the <code class="lang-kotlin">mode_flags</code> parameter, which you can set to <a href="https://developer.android.com/reference/kotlin/android/content/Intent.html#flag_grant_read_uri_permission">FLAG_GRANT_READ_URI_PERMISSION</a>, <a href="https://developer.android.com/reference/kotlin/android/content/Intent.html#flag_grant_write_uri_permission">FLAG_GRANT_WRITE_URI_PERMISSION</a> or both. The permission remains in effect until you revoke it by calling <a href="https://developer.android.com/reference/kotlin/android/content/Context.html#revokeuripermission">revokeUriPermission()</a> or until the device reboots. </p>Include the Permission in an Intent<p class="paragraph"> To allow the user to choose which app receives the intent, and the permission to access the content, do the following: </p><ol><li> Put the content URI in an <a href="https://developer.android.com/reference/kotlin/android/content/Intent.html">Intent</a> by calling <a href="https://developer.android.com/reference/kotlin/android/content/Intent.html#setdata">setData()</a>. </li><li><p class="paragraph"> Call the method <a href="https://developer.android.com/reference/kotlin/android/content/Intent.html#setflags">Intent.setFlags()</a> with either <a href="https://developer.android.com/reference/kotlin/android/content/Intent.html#flag_grant_read_uri_permission">FLAG_GRANT_READ_URI_PERMISSION</a> or <a href="https://developer.android.com/reference/kotlin/android/content/Intent.html#flag_grant_write_uri_permission">FLAG_GRANT_WRITE_URI_PERMISSION</a> or both. </p><p class="paragraph"> To support devices that run a version between Android 4.1 (API level 16) and Android 5.1 (API level 22) inclusive, create a <a href="https://developer.android.com/reference/kotlin/android/content/ClipData.html">ClipData</a> object from the content URI, and set the access permissions on the <code class="lang-kotlin">ClipData</code> object: </p><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea"> shareContentIntent.setClipData(ClipData.newRawUri("", contentUri)); 
+ shareContentIntent.addFlags( 
+ Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION); 
+ </code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></li><li> Send the <a href="https://developer.android.com/reference/kotlin/android/content/Intent.html">Intent</a> to another app. Most often, you do this by calling <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html#setresult">setResult()</a>. </li></ol><p class="paragraph"> Permissions granted in an <a href="https://developer.android.com/reference/kotlin/android/content/Intent.html">Intent</a> remain in effect while the stack of the receiving <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a> is active. When the stack finishes, the permissions are automatically removed. Permissions granted to one <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a> in a client app are automatically extended to other components of that app. </p><p class="paragraph"><strong>Serving a Content URI to Another App</strong></p><p class="paragraph"> There are a variety of ways to serve the content URI for a file to a client app. One common way is for the client app to start your app by calling <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html#startactivityforresult">startActivityResult()</a>, which sends an <a href="https://developer.android.com/reference/kotlin/android/content/Intent.html">Intent</a> to your app to start an <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a> in your app. In response, your app can immediately return a content URI to the client app or present a user interface that allows the user to pick a file. In the latter case, once the user picks the file your app can return its content URI. In both cases, your app returns the content URI in an <a href="https://developer.android.com/reference/kotlin/android/content/Intent.html">Intent</a> sent via <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html#setresult">setResult()</a>. </p><p class="paragraph"> You can also put the content URI in a <a href="https://developer.android.com/reference/kotlin/android/content/ClipData.html">ClipData</a> object and then add the object to an <a href="https://developer.android.com/reference/kotlin/android/content/Intent.html">Intent</a> you send to a client app. To do this, call <a href="https://developer.android.com/reference/kotlin/android/content/Intent.html#setclipdata">Intent.setClipData()</a>. When you use this approach, you can add multiple <a href="https://developer.android.com/reference/kotlin/android/content/ClipData.html">ClipData</a> objects to the <a href="https://developer.android.com/reference/kotlin/android/content/Intent.html">Intent</a>, each with its own content URI. When you call <a href="https://developer.android.com/reference/kotlin/android/content/Intent.html#setflags">Intent.setFlags()</a> on the <a href="https://developer.android.com/reference/kotlin/android/content/Intent.html">Intent</a> to set temporary access permissions, the same permissions are applied to all of the content URIs. </p><p class="paragraph">Note: The <a href="https://developer.android.com/reference/kotlin/android/content/Intent.html#setclipdata">Intent.setClipData()</a> method is only available in platform version 16 (Android 4.1) and later. If you want to maintain compatibility with previous versions, you should send one content URI at a time in the <a href="https://developer.android.com/reference/kotlin/android/content/Intent.html">Intent</a>. Set the action to <a href="https://developer.android.com/reference/kotlin/android/content/Intent.html#action_send">ACTION_SEND</a> and put the URI in data by calling <a href="https://developer.android.com/reference/kotlin/android/content/Intent.html#setdata">setData()</a>. </p><strong>More Information</strong><p class="paragraph"> To learn more about FileProvider, see the Android training class <a href="{@docRoot}training/secure-file-sharing/index.html">Sharing Files Securely with URIs</a>. </p></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="1744867022%2FConstructors%2F-27209644" anchor-label="FileProvider" id="1744867022%2FConstructors%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-file-provider.html"><span>File</span><wbr><span><span>Provider</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1744867022%2FConstructors%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="-2047422837%2FProperties%2F-27209644" anchor-label="TRIM_MEMORY_BACKGROUND" id="-2047422837%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-2047422837%2FProperties%2F-27209644"><span><span>TRIM_MEMORY_BACKGROUND</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2047422837%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="index.html#-2047422837%2FProperties%2F-27209644">TRIM_MEMORY_BACKGROUND</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">40</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="75653088%2FProperties%2F-27209644" anchor-label="TRIM_MEMORY_COMPLETE" id="75653088%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#75653088%2FProperties%2F-27209644"><span><span>TRIM_MEMORY_COMPLETE</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="75653088%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="index.html#75653088%2FProperties%2F-27209644">TRIM_MEMORY_COMPLETE</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">80</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1609599830%2FProperties%2F-27209644" anchor-label="TRIM_MEMORY_MODERATE" id="1609599830%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#1609599830%2FProperties%2F-27209644"><span><span>TRIM_MEMORY_MODERATE</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1609599830%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="index.html#1609599830%2FProperties%2F-27209644">TRIM_MEMORY_MODERATE</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">60</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="232275354%2FProperties%2F-27209644" anchor-label="TRIM_MEMORY_RUNNING_CRITICAL" id="232275354%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#232275354%2FProperties%2F-27209644"><span><span>TRIM_MEMORY_RUNNING_CRITICAL</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="232275354%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="index.html#232275354%2FProperties%2F-27209644">TRIM_MEMORY_RUNNING_CRITICAL</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">15</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1299133203%2FProperties%2F-27209644" anchor-label="TRIM_MEMORY_RUNNING_LOW" id="-1299133203%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1299133203%2FProperties%2F-27209644"><span><span>TRIM_MEMORY_RUNNING_LOW</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1299133203%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="index.html#-1299133203%2FProperties%2F-27209644">TRIM_MEMORY_RUNNING_LOW</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">10</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1286942538%2FProperties%2F-27209644" anchor-label="TRIM_MEMORY_RUNNING_MODERATE" id="-1286942538%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1286942538%2FProperties%2F-27209644"><span><span>TRIM_MEMORY_RUNNING_MODERATE</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1286942538%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="index.html#-1286942538%2FProperties%2F-27209644">TRIM_MEMORY_RUNNING_MODERATE</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">5</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1314848788%2FProperties%2F-27209644" anchor-label="TRIM_MEMORY_UI_HIDDEN" id="-1314848788%2FProperties%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1314848788%2FProperties%2F-27209644"><span><span>TRIM_MEMORY_UI_HIDDEN</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1314848788%2FProperties%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="index.html#-1314848788%2FProperties%2F-27209644">TRIM_MEMORY_UI_HIDDEN</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">20</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="-1772381747%2FFunctions%2F-27209644" anchor-label="applyBatch" id="-1772381747%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1772381747%2FFunctions%2F-27209644"><span>apply</span><wbr><span><span>Batch</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1772381747%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#-1772381747%2FFunctions%2F-27209644"><span class="token function">applyBatch</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">authority<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">operations<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/ArrayList.html">ArrayList</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/android/content/ContentProviderOperation.html">ContentProviderOperation</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-array/index.html">Array</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/android/content/ContentProviderResult.html">ContentProviderResult</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="634307526%2FFunctions%2F-27209644" anchor-label="attachInfo" id="634307526%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="attach-info.html"><span>attach</span><wbr><span><span>Info</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="634307526%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/CallSuper.html"><span class="token annotation builtin">CallSuper</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="attach-info.html"><span class="token function">attachInfo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>info<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/pm/ProviderInfo.html">ProviderInfo</a></span></span><span class="token punctuation">)</span></div><div class="brief ">After the FileProvider is instantiated, this method is called to provide the system with information about the provider.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-346533624%2FFunctions%2F-27209644" anchor-label="bulkInsert" id="-346533624%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-346533624%2FFunctions%2F-27209644"><span>bulk</span><wbr><span><span>Insert</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-346533624%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#-346533624%2FFunctions%2F-27209644"><span class="token function">bulkInsert</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">uri<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/net/Uri.html">Uri</a><span class="token punctuation">, </span></span><span class="parameter ">values<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-array/index.html">Array</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/android/content/ContentValues.html">ContentValues</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-466817866%2FFunctions%2F-27209644" anchor-label="call" id="-466817866%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-466817866%2FFunctions%2F-27209644"><span><span>call</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-466817866%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#-466817866%2FFunctions%2F-27209644"><span class="token function">call</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">authority<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">method<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">arg<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">extras<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-167066941%2FFunctions%2F-27209644" anchor-label="canonicalize" id="-167066941%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-167066941%2FFunctions%2F-27209644"><span><span>canonicalize</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-167066941%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#-167066941%2FFunctions%2F-27209644"><span class="token function">canonicalize</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">url<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/net/Uri.html">Uri</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/net/Uri.html">Uri</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1399480974%2FFunctions%2F-27209644" anchor-label="clearCallingIdentity" id="1399480974%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#1399480974%2FFunctions%2F-27209644"><span>clear</span><wbr><span>Calling</span><wbr><span><span>Identity</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1399480974%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="index.html#1399480974%2FFunctions%2F-27209644"><span class="token function">clearCallingIdentity</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/ContentProvider.CallingIdentity.html">ContentProvider.CallingIdentity</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="847311764%2FFunctions%2F-27209644" anchor-label="delete" id="847311764%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="delete.html"><span><span>delete</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="847311764%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="delete.html"><span class="token function">delete</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>uri<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/net/Uri.html">Uri</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>selection<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>selectionArgs<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-array/index.html">Array</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Deletes the file associated with the specified content URI, as returned by <a href="get-uri-for-file.html">getUriForFile()</a>.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1171645233%2FFunctions%2F-27209644" anchor-label="dump" id="1171645233%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#1171645233%2FFunctions%2F-27209644"><span><span>dump</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1171645233%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#1171645233%2FFunctions%2F-27209644"><span class="token function">dump</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">fd<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/io/FileDescriptor.html">FileDescriptor</a><span class="token punctuation">, </span></span><span class="parameter ">writer<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/io/PrintWriter.html">PrintWriter</a><span class="token punctuation">, </span></span><span class="parameter ">args<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-array/index.html">Array</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-912193749%2FFunctions%2F-27209644" anchor-label="getCallingAttributionSource" id="-912193749%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-912193749%2FFunctions%2F-27209644"><span>get</span><wbr><span>Calling</span><wbr><span>Attribution</span><wbr><span><span>Source</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-912193749%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="index.html#-912193749%2FFunctions%2F-27209644"><span class="token function">getCallingAttributionSource</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/AttributionSource.html">AttributionSource</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="365049562%2FFunctions%2F-27209644" anchor-label="getCallingAttributionTag" id="365049562%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#365049562%2FFunctions%2F-27209644"><span>get</span><wbr><span>Calling</span><wbr><span>Attribution</span><wbr><span><span>Tag</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="365049562%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="index.html#365049562%2FFunctions%2F-27209644"><span class="token function">getCallingAttributionTag</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-826438689%2FFunctions%2F-27209644" anchor-label="getCallingPackage" id="-826438689%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-826438689%2FFunctions%2F-27209644"><span>get</span><wbr><span>Calling</span><wbr><span><span>Package</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-826438689%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="index.html#-826438689%2FFunctions%2F-27209644"><span class="token function">getCallingPackage</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1771303629%2FFunctions%2F-27209644" anchor-label="getCallingPackageUnchecked" id="1771303629%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#1771303629%2FFunctions%2F-27209644"><span>get</span><wbr><span>Calling</span><wbr><span>Package</span><wbr><span><span>Unchecked</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1771303629%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="index.html#1771303629%2FFunctions%2F-27209644"><span class="token function">getCallingPackageUnchecked</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1176919894%2FFunctions%2F-27209644" anchor-label="getContext" id="-1176919894%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1176919894%2FFunctions%2F-27209644"><span>get</span><wbr><span><span>Context</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1176919894%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="index.html#-1176919894%2FFunctions%2F-27209644"><span class="token function">getContext</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-484361926%2FFunctions%2F-27209644" anchor-label="getPathPermissions" id="-484361926%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-484361926%2FFunctions%2F-27209644"><span>get</span><wbr><span>Path</span><wbr><span><span>Permissions</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-484361926%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="index.html#-484361926%2FFunctions%2F-27209644"><span class="token function">getPathPermissions</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-array/index.html">Array</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/android/content/pm/PathPermission.html">PathPermission</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1549852644%2FFunctions%2F-27209644" anchor-label="getReadPermission" id="-1549852644%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1549852644%2FFunctions%2F-27209644"><span>get</span><wbr><span>Read</span><wbr><span><span>Permission</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1549852644%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="index.html#-1549852644%2FFunctions%2F-27209644"><span class="token function">getReadPermission</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="757543476%2FFunctions%2F-27209644" anchor-label="getStreamTypes" id="757543476%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#757543476%2FFunctions%2F-27209644"><span>get</span><wbr><span>Stream</span><wbr><span><span>Types</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="757543476%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#757543476%2FFunctions%2F-27209644"><span class="token function">getStreamTypes</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">uri<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/net/Uri.html">Uri</a><span class="token punctuation">, </span></span><span class="parameter ">mimeTypeFilter<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-array/index.html">Array</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="125747895%2FFunctions%2F-27209644" anchor-label="getType" id="125747895%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-type.html"><span>get</span><wbr><span><span>Type</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="125747895%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-type.html"><span class="token function">getType</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>uri<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/net/Uri.html">Uri</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a></div><div class="brief ">Returns the MIME type of a content URI returned by <a href="get-uri-for-file.html">getUriForFile()</a>.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1949295320%2FFunctions%2F-27209644" anchor-label="getTypeAnonymous" id="-1949295320%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-type-anonymous.html"><span>get</span><wbr><span>Type</span><wbr><span><span>Anonymous</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1949295320%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-type-anonymous.html"><span class="token function">getTypeAnonymous</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>uri<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/net/Uri.html">Uri</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a></div><div class="brief ">Unrestricted version of getType called, when caller does not have corresponding permissions</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1960442514%2FFunctions%2F-27209644" anchor-label="getUriForFile" id="-1960442514%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-uri-for-file.html"><span>get</span><wbr><span>Uri</span><wbr><span>For</span><wbr><span><span>File</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1960442514%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-uri-for-file.html"><span class="token function">getUriForFile</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>authority<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>file<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/io/File.html">File</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/net/Uri.html">Uri</a></div><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-uri-for-file.html"><span class="token function">getUriForFile</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>authority<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>file<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/io/File.html">File</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>displayName<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/net/Uri.html">Uri</a></div><div class="brief ">Return a content URI for a given <a href="https://developer.android.com/reference/kotlin/java/io/File.html">File</a>.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1196057643%2FFunctions%2F-27209644" anchor-label="getWritePermission" id="1196057643%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#1196057643%2FFunctions%2F-27209644"><span>get</span><wbr><span>Write</span><wbr><span><span>Permission</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1196057643%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="index.html#1196057643%2FFunctions%2F-27209644"><span class="token function">getWritePermission</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="552517984%2FFunctions%2F-27209644" anchor-label="insert" id="552517984%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="insert.html"><span><span>insert</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="552517984%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="insert.html"><span class="token function">insert</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>uri<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/net/Uri.html">Uri</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>values<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/ContentValues.html">ContentValues</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/net/Uri.html">Uri</a></div><div class="brief ">By default, this method throws an <a href="https://developer.android.com/reference/kotlin/java/lang/UnsupportedOperationException.html">UnsupportedOperationException</a>.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-196343868%2FFunctions%2F-27209644" anchor-label="onCallingPackageChanged" id="-196343868%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-196343868%2FFunctions%2F-27209644"><span>on</span><wbr><span>Calling</span><wbr><span>Package</span><wbr><span><span>Changed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-196343868%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#-196343868%2FFunctions%2F-27209644"><span class="token function">onCallingPackageChanged</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="955605224%2FFunctions%2F-27209644" anchor-label="onConfigurationChanged" id="955605224%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#955605224%2FFunctions%2F-27209644"><span>on</span><wbr><span>Configuration</span><wbr><span><span>Changed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="955605224%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#955605224%2FFunctions%2F-27209644"><span class="token function">onConfigurationChanged</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">newConfig<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/res/Configuration.html">Configuration</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1001465472%2FFunctions%2F-27209644" anchor-label="onCreate" id="-1001465472%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-create.html"><span>on</span><wbr><span><span>Create</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1001465472%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-create.html"><span class="token function">onCreate</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">The default FileProvider implementation does not need to be initialized.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="594123425%2FFunctions%2F-27209644" anchor-label="onLowMemory" id="594123425%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#594123425%2FFunctions%2F-27209644"><span>on</span><wbr><span>Low</span><wbr><span><span>Memory</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="594123425%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#594123425%2FFunctions%2F-27209644"><span class="token function">onLowMemory</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-345250926%2FFunctions%2F-27209644" anchor-label="onTrimMemory" id="-345250926%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-345250926%2FFunctions%2F-27209644"><span>on</span><wbr><span>Trim</span><wbr><span><span>Memory</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-345250926%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#-345250926%2FFunctions%2F-27209644"><span class="token function">onTrimMemory</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">level<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1705187831%2FFunctions%2F-27209644" anchor-label="openAssetFile" id="-1705187831%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1705187831%2FFunctions%2F-27209644"><span>open</span><wbr><span>Asset</span><wbr><span><span>File</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1705187831%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#-1705187831%2FFunctions%2F-27209644"><span class="token function">openAssetFile</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">uri<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/net/Uri.html">Uri</a><span class="token punctuation">, </span></span><span class="parameter ">mode<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/res/AssetFileDescriptor.html">AssetFileDescriptor</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="614963241%2FFunctions%2F-27209644" anchor-label="openFile" id="614963241%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="open-file.html"><span>open</span><wbr><span><span>File</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="614963241%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="open-file.html"><span class="token function">openFile</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>uri<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/net/Uri.html">Uri</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>mode<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/ParcelFileDescriptor.html">ParcelFileDescriptor</a></div><div class="brief ">By default, FileProvider automatically returns the <a href="https://developer.android.com/reference/kotlin/android/os/ParcelFileDescriptor.html">ParcelFileDescriptor</a> for a file associated with a <code class="lang-kotlin">content://</code><a href="https://developer.android.com/reference/kotlin/android/net/Uri.html">Uri</a>.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1488965846%2FFunctions%2F-27209644" anchor-label="openPipeHelper" id="1488965846%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#1488965846%2FFunctions%2F-27209644"><span>open</span><wbr><span>Pipe</span><wbr><span><span>Helper</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1488965846%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="index.html#1488965846%2FFunctions%2F-27209644">T</a><span class="token operator">&gt; </span><a href="index.html#1488965846%2FFunctions%2F-27209644"><span class="token function">openPipeHelper</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">uri<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/net/Uri.html">Uri</a><span class="token punctuation">, </span></span><span class="parameter ">mimeType<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">opts<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a><span class="token punctuation">, </span></span><span class="parameter ">args<span class="token operator">: </span><a href="index.html#1488965846%2FFunctions%2F-27209644">T</a><span class="token punctuation">, </span></span><span class="parameter ">func<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/ContentProvider.PipeDataWriter.html">ContentProvider.PipeDataWriter</a><span class="token operator">&lt;</span><a href="index.html#1488965846%2FFunctions%2F-27209644">T</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/ParcelFileDescriptor.html">ParcelFileDescriptor</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1681721439%2FFunctions%2F-27209644" anchor-label="openTypedAssetFile" id="-1681721439%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1681721439%2FFunctions%2F-27209644"><span>open</span><wbr><span>Typed</span><wbr><span>Asset</span><wbr><span><span>File</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1681721439%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#-1681721439%2FFunctions%2F-27209644"><span class="token function">openTypedAssetFile</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">uri<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/net/Uri.html">Uri</a><span class="token punctuation">, </span></span><span class="parameter ">mimeTypeFilter<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">opts<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/res/AssetFileDescriptor.html">AssetFileDescriptor</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="269476115%2FFunctions%2F-27209644" anchor-label="query" id="269476115%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="query.html"><span><span>query</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="269476115%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="query.html"><span class="token function">query</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>uri<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/net/Uri.html">Uri</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>projection<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-array/index.html">Array</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>selection<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>selectionArgs<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-array/index.html">Array</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>sortOrder<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/database/Cursor.html">Cursor</a></div><div class="brief ">Use a content URI returned by <a href="get-uri-for-file.html">getUriForFile()</a> to get information about a file managed by the FileProvider.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1681075059%2FFunctions%2F-27209644" anchor-label="refresh" id="-1681075059%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1681075059%2FFunctions%2F-27209644"><span><span>refresh</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1681075059%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#-1681075059%2FFunctions%2F-27209644"><span class="token function">refresh</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">uri<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/net/Uri.html">Uri</a><span class="token punctuation">, </span></span><span class="parameter ">extras<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a><span class="token punctuation">, </span></span><span class="parameter ">cancellationSignal<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/CancellationSignal.html">CancellationSignal</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1640266823%2FFunctions%2F-27209644" anchor-label="requireContext" id="-1640266823%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1640266823%2FFunctions%2F-27209644"><span>require</span><wbr><span><span>Context</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1640266823%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="index.html#-1640266823%2FFunctions%2F-27209644"><span class="token function">requireContext</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-139189815%2FFunctions%2F-27209644" anchor-label="restoreCallingIdentity" id="-139189815%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-139189815%2FFunctions%2F-27209644"><span>restore</span><wbr><span>Calling</span><wbr><span><span>Identity</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-139189815%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="index.html#-139189815%2FFunctions%2F-27209644"><span class="token function">restoreCallingIdentity</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">identity<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/ContentProvider.CallingIdentity.html">ContentProvider.CallingIdentity</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="643934189%2FFunctions%2F-27209644" anchor-label="shutdown" id="643934189%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#643934189%2FFunctions%2F-27209644"><span><span>shutdown</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="643934189%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#643934189%2FFunctions%2F-27209644"><span class="token function">shutdown</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="893497436%2FFunctions%2F-27209644" anchor-label="uncanonicalize" id="893497436%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#893497436%2FFunctions%2F-27209644"><span><span>uncanonicalize</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="893497436%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#893497436%2FFunctions%2F-27209644"><span class="token function">uncanonicalize</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">url<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/net/Uri.html">Uri</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/net/Uri.html">Uri</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-62640818%2FFunctions%2F-27209644" anchor-label="update" id="-62640818%2FFunctions%2F-27209644" data-filterable-set=":core:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":core:dokkaHtmlPartial/release" data-filterable-set=":core:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="update.html"><span><span>update</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-62640818%2FFunctions%2F-27209644"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="update.html"><span class="token function">update</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>uri<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/net/Uri.html">Uri</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>values<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/ContentValues.html">ContentValues</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>selection<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>selectionArgs<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-array/index.html">Array</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">By default, this method throws an <a href="https://developer.android.com/reference/kotlin/java/lang/UnsupportedOperationException.html">UnsupportedOperationException</a>.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2025 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

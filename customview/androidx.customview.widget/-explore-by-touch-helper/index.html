@@ -1,0 +1,496 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>ExploreByTouchHelper</title>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+<a class="library-name--link" href="../../../index.html">
+                            sesl.androidx
+                    </a>            </div>
+            <div class="library-version">
+            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":customview:dokkaHtmlPartial/release">androidJvm</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="customview::androidx.customview.widget/ExploreByTouchHelper///PointingToDeclaration//1459225277">
+  <div class="breadcrumbs"><a href="../../index.html">customview</a><span class="delimiter">/</span><a href="../index.html">androidx.customview.widget</a><span class="delimiter">/</span><span class="current">ExploreByTouchHelper</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Explore</span><wbr><span>By</span><wbr><span>Touch</span><wbr><span><span>Helper</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">class </span><a href="index.html">ExploreByTouchHelper</a> : <a href="https://developer.android.com/reference/kotlin/androidx/core/view/AccessibilityDelegateCompat.html">AccessibilityDelegateCompat</a></div><p class="paragraph"><strong>-----------SESL variant-----------</strong><strong></strong><strong></strong><strong> ExploreByTouchHelper is a utility class for implementing accessibility support in custom </strong><a href="https://developer.android.com/reference/kotlin/android/view/View.html"><strong>View</strong></a><strong>s that represent a collection of View-like logical items. It extends </strong><a href="https://developer.android.com/reference/kotlin/androidx/core/view/accessibility/AccessibilityNodeProviderCompat.html"><strong>AccessibilityNodeProviderCompat</strong></a><strong> and simplifies many aspects of providing information to accessibility services and managing accessibility focus. </strong></p><p class="paragraph"><strong> Clients should override abstract methods on this class and attach it to the host view using </strong><a href="https://developer.android.com/reference/kotlin/androidx/core/view/ViewCompat.html#setaccessibilitydelegate"><strong>setAccessibilityDelegate</strong></a><strong>. </strong></p><p class="paragraph"><strong> The host view should also override the events in the following code snippet so that the view's logical items are detected properly by the framework: </strong></p><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea"><strong>class MyCustomView extends View {
+    private MyExploreByTouchHelper mExploreByTouchHelper;
+
+    public MyCustomView(Context context, ...) {
+        ...
+        mExploreByTouchHelper = new MyExploreByTouchHelper(this);
+        ViewCompat.setAccessibilityDelegate(this, mExploreByTouchHelper);
+    }
+
+    @Override
+    public boolean dispatchHoverEvent(MotionEvent event) {
+      return mHelper.dispatchHoverEvent(this, event)
+          || super.dispatchHoverEvent(event);
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+      return mHelper.dispatchKeyEvent(event)
+          || super.dispatchKeyEvent(event);
+    }
+
+    @Override
+    public void onFocusChanged(boolean gainFocus, int direction,
+        Rect previouslyFocusedRect) {
+      super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
+      mHelper.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
+    }
+}
+</strong></code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="2112140781%2FConstructors%2F1459225277" anchor-label="ExploreByTouchHelper" id="2112140781%2FConstructors%2F1459225277" data-filterable-set=":customview:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":customview:dokkaHtmlPartial/release" data-filterable-set=":customview:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-explore-by-touch-helper.html"><span>Explore</span><wbr><span>By</span><wbr><span>Touch</span><wbr><span><span>Helper</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2112140781%2FConstructors%2F1459225277"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>host<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Constructs a new helper that can expose a virtual view hierarchy for the specified host view.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="1181037823%2FProperties%2F1459225277" anchor-label="HOST_ID" id="1181037823%2FProperties%2F1459225277" data-filterable-set=":customview:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":customview:dokkaHtmlPartial/release" data-filterable-set=":customview:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-h-o-s-t_-i-d.html"><span><span>HOST_ID</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1181037823%2FProperties%2F1459225277"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-h-o-s-t_-i-d.html">HOST_ID</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">-1</span></div><div class="brief ">Virtual node identifier value for the host view's node.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2046779386%2FProperties%2F1459225277" anchor-label="INVALID_ID" id="-2046779386%2FProperties%2F1459225277" data-filterable-set=":customview:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":customview:dokkaHtmlPartial/release" data-filterable-set=":customview:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-i-n-v-a-l-i-d_-i-d.html"><span><span>INVALID_ID</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2046779386%2FProperties%2F1459225277"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-i-n-v-a-l-i-d_-i-d.html">INVALID_ID</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">-2147483648</span></div><div class="brief ">Virtual node identifier value for invalid nodes.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="-537705355%2FFunctions%2F1459225277" anchor-label="clearKeyboardFocusForVirtualView" id="-537705355%2FFunctions%2F1459225277" data-filterable-set=":customview:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":customview:dokkaHtmlPartial/release" data-filterable-set=":customview:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="clear-keyboard-focus-for-virtual-view.html"><span>clear</span><wbr><span>Keyboard</span><wbr><span>Focus</span><wbr><span>For</span><wbr><span>Virtual</span><wbr><span><span>View</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-537705355%2FFunctions%2F1459225277"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="clear-keyboard-focus-for-virtual-view.html"><span class="token function">clearKeyboardFocusForVirtualView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">virtualViewId<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Attempts to clear keyboard focus from a virtual view.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1944560087%2FFunctions%2F1459225277" anchor-label="dispatchHoverEvent" id="1944560087%2FFunctions%2F1459225277" data-filterable-set=":customview:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":customview:dokkaHtmlPartial/release" data-filterable-set=":customview:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="dispatch-hover-event.html"><span>dispatch</span><wbr><span>Hover</span><wbr><span><span>Event</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1944560087%2FFunctions%2F1459225277"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="dispatch-hover-event.html"><span class="token function">dispatchHoverEvent</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>event<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/view/MotionEvent.html">MotionEvent</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Delegates hover events from the host view.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1417417001%2FFunctions%2F1459225277" anchor-label="dispatchKeyEvent" id="1417417001%2FFunctions%2F1459225277" data-filterable-set=":customview:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":customview:dokkaHtmlPartial/release" data-filterable-set=":customview:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="dispatch-key-event.html"><span>dispatch</span><wbr><span>Key</span><wbr><span><span>Event</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1417417001%2FFunctions%2F1459225277"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="dispatch-key-event.html"><span class="token function">dispatchKeyEvent</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>event<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/view/KeyEvent.html">KeyEvent</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Delegates key events from the host view.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="480288973%2FFunctions%2F1459225277" anchor-label="dispatchPopulateAccessibilityEvent" id="480288973%2FFunctions%2F1459225277" data-filterable-set=":customview:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":customview:dokkaHtmlPartial/release" data-filterable-set=":customview:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#480288973%2FFunctions%2F1459225277"><span>dispatch</span><wbr><span>Populate</span><wbr><span>Accessibility</span><wbr><span><span>Event</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="480288973%2FFunctions%2F1459225277"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#480288973%2FFunctions%2F1459225277"><span class="token function">dispatchPopulateAccessibilityEvent</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">host<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token punctuation">, </span></span><span class="parameter ">event<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/accessibility/AccessibilityEvent.html">AccessibilityEvent</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1612562589%2FFunctions%2F1459225277" anchor-label="getAccessibilityFocusedVirtualViewId" id="1612562589%2FFunctions%2F1459225277" data-filterable-set=":customview:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":customview:dokkaHtmlPartial/release" data-filterable-set=":customview:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-accessibility-focused-virtual-view-id.html"><span>get</span><wbr><span>Accessibility</span><wbr><span>Focused</span><wbr><span>Virtual</span><wbr><span>View</span><wbr><span><span>Id</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1612562589%2FFunctions%2F1459225277"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="get-accessibility-focused-virtual-view-id.html"><span class="token function">getAccessibilityFocusedVirtualViewId</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-168006539%2FFunctions%2F1459225277" anchor-label="getAccessibilityNodeProvider" id="-168006539%2FFunctions%2F1459225277" data-filterable-set=":customview:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":customview:dokkaHtmlPartial/release" data-filterable-set=":customview:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-accessibility-node-provider.html"><span>get</span><wbr><span>Accessibility</span><wbr><span>Node</span><wbr><span><span>Provider</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-168006539%2FFunctions%2F1459225277"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-accessibility-node-provider.html"><span class="token function">getAccessibilityNodeProvider</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">host<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/core/view/accessibility/AccessibilityNodeProviderCompat.html">AccessibilityNodeProviderCompat</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1781866850%2FFunctions%2F1459225277" anchor-label="getFocusedVirtualView" id="1781866850%2FFunctions%2F1459225277" data-filterable-set=":customview:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":customview:dokkaHtmlPartial/release" data-filterable-set=":customview:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-focused-virtual-view.html"><span>get</span><wbr><span>Focused</span><wbr><span>Virtual</span><wbr><span><span>View</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1781866850%2FFunctions%2F1459225277"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-focused-virtual-view.html"><span class="token function"><strike>getFocusedVirtualView</strike></span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Returns the virtual view ID for the currently accessibility focused item.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1892431008%2FFunctions%2F1459225277" anchor-label="getKeyboardFocusedVirtualViewId" id="1892431008%2FFunctions%2F1459225277" data-filterable-set=":customview:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":customview:dokkaHtmlPartial/release" data-filterable-set=":customview:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-keyboard-focused-virtual-view-id.html"><span>get</span><wbr><span>Keyboard</span><wbr><span>Focused</span><wbr><span>Virtual</span><wbr><span>View</span><wbr><span><span>Id</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1892431008%2FFunctions%2F1459225277"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="get-keyboard-focused-virtual-view-id.html"><span class="token function">getKeyboardFocusedVirtualViewId</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1759978740%2FFunctions%2F1459225277" anchor-label="invalidateRoot" id="-1759978740%2FFunctions%2F1459225277" data-filterable-set=":customview:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":customview:dokkaHtmlPartial/release" data-filterable-set=":customview:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="invalidate-root.html"><span>invalidate</span><wbr><span><span>Root</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1759978740%2FFunctions%2F1459225277"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="invalidate-root.html"><span class="token function">invalidateRoot</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief ">Notifies the accessibility framework that the properties of the parent view have changed.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2080044696%2FFunctions%2F1459225277" anchor-label="invalidateVirtualView" id="2080044696%2FFunctions%2F1459225277" data-filterable-set=":customview:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":customview:dokkaHtmlPartial/release" data-filterable-set=":customview:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="invalidate-virtual-view.html"><span>invalidate</span><wbr><span>Virtual</span><wbr><span><span>View</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2080044696%2FFunctions%2F1459225277"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="invalidate-virtual-view.html"><span class="token function">invalidateVirtualView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">virtualViewId<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="invalidate-virtual-view.html"><span class="token function">invalidateVirtualView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">virtualViewId<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">changeTypes<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Notifies the accessibility framework that the properties of a particular item have changed.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1605272635%2FFunctions%2F1459225277" anchor-label="onFocusChanged" id="1605272635%2FFunctions%2F1459225277" data-filterable-set=":customview:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":customview:dokkaHtmlPartial/release" data-filterable-set=":customview:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-focus-changed.html"><span>on</span><wbr><span>Focus</span><wbr><span><span>Changed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1605272635%2FFunctions%2F1459225277"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="on-focus-changed.html"><span class="token function">onFocusChanged</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">gainFocus<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter ">direction<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span>previouslyFocusedRect<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/graphics/Rect.html">Rect</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Delegates focus changes from the host view.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1663870702%2FFunctions%2F1459225277" anchor-label="onInitializeAccessibilityEvent" id="-1663870702%2FFunctions%2F1459225277" data-filterable-set=":customview:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":customview:dokkaHtmlPartial/release" data-filterable-set=":customview:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-initialize-accessibility-event.html"><span>on</span><wbr><span>Initialize</span><wbr><span>Accessibility</span><wbr><span><span>Event</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1663870702%2FFunctions%2F1459225277"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-initialize-accessibility-event.html"><span class="token function">onInitializeAccessibilityEvent</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">host<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token punctuation">, </span></span><span class="parameter ">event<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/accessibility/AccessibilityEvent.html">AccessibilityEvent</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="704822285%2FFunctions%2F1459225277" anchor-label="onInitializeAccessibilityNodeInfo" id="704822285%2FFunctions%2F1459225277" data-filterable-set=":customview:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":customview:dokkaHtmlPartial/release" data-filterable-set=":customview:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-initialize-accessibility-node-info.html"><span>on</span><wbr><span>Initialize</span><wbr><span>Accessibility</span><wbr><span>Node</span><wbr><span><span>Info</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="704822285%2FFunctions%2F1459225277"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-initialize-accessibility-node-info.html"><span class="token function">onInitializeAccessibilityNodeInfo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">host<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token punctuation">, </span></span><span class="parameter ">info<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/core/view/accessibility/AccessibilityNodeInfoCompat.html">AccessibilityNodeInfoCompat</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1694201230%2FFunctions%2F1459225277" anchor-label="onPopulateAccessibilityEvent" id="-1694201230%2FFunctions%2F1459225277" data-filterable-set=":customview:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":customview:dokkaHtmlPartial/release" data-filterable-set=":customview:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1694201230%2FFunctions%2F1459225277"><span>on</span><wbr><span>Populate</span><wbr><span>Accessibility</span><wbr><span><span>Event</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1694201230%2FFunctions%2F1459225277"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#-1694201230%2FFunctions%2F1459225277"><span class="token function">onPopulateAccessibilityEvent</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">host<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token punctuation">, </span></span><span class="parameter ">event<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/accessibility/AccessibilityEvent.html">AccessibilityEvent</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1725718788%2FFunctions%2F1459225277" anchor-label="onRequestSendAccessibilityEvent" id="1725718788%2FFunctions%2F1459225277" data-filterable-set=":customview:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":customview:dokkaHtmlPartial/release" data-filterable-set=":customview:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#1725718788%2FFunctions%2F1459225277"><span>on</span><wbr><span>Request</span><wbr><span>Send</span><wbr><span>Accessibility</span><wbr><span><span>Event</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1725718788%2FFunctions%2F1459225277"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#1725718788%2FFunctions%2F1459225277"><span class="token function">onRequestSendAccessibilityEvent</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">host<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/ViewGroup.html">ViewGroup</a><span class="token punctuation">, </span></span><span class="parameter ">child<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token punctuation">, </span></span><span class="parameter ">event<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/accessibility/AccessibilityEvent.html">AccessibilityEvent</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="931767773%2FFunctions%2F1459225277" anchor-label="performAccessibilityAction" id="931767773%2FFunctions%2F1459225277" data-filterable-set=":customview:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":customview:dokkaHtmlPartial/release" data-filterable-set=":customview:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#931767773%2FFunctions%2F1459225277"><span>perform</span><wbr><span>Accessibility</span><wbr><span><span>Action</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="931767773%2FFunctions%2F1459225277"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#931767773%2FFunctions%2F1459225277"><span class="token function">performAccessibilityAction</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">host<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token punctuation">, </span></span><span class="parameter ">action<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">args<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-696012557%2FFunctions%2F1459225277" anchor-label="requestKeyboardFocusForVirtualView" id="-696012557%2FFunctions%2F1459225277" data-filterable-set=":customview:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":customview:dokkaHtmlPartial/release" data-filterable-set=":customview:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="request-keyboard-focus-for-virtual-view.html"><span>request</span><wbr><span>Keyboard</span><wbr><span>Focus</span><wbr><span>For</span><wbr><span>Virtual</span><wbr><span><span>View</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-696012557%2FFunctions%2F1459225277"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="request-keyboard-focus-for-virtual-view.html"><span class="token function">requestKeyboardFocusForVirtualView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">virtualViewId<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Attempts to give keyboard focus to a virtual view.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1207549656%2FFunctions%2F1459225277" anchor-label="sendAccessibilityEvent" id="1207549656%2FFunctions%2F1459225277" data-filterable-set=":customview:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":customview:dokkaHtmlPartial/release" data-filterable-set=":customview:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#1207549656%2FFunctions%2F1459225277"><span>send</span><wbr><span>Accessibility</span><wbr><span><span>Event</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1207549656%2FFunctions%2F1459225277"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#1207549656%2FFunctions%2F1459225277"><span class="token function">sendAccessibilityEvent</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">host<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token punctuation">, </span></span><span class="parameter ">eventType<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2006218115%2FFunctions%2F1459225277" anchor-label="sendAccessibilityEventUnchecked" id="2006218115%2FFunctions%2F1459225277" data-filterable-set=":customview:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":customview:dokkaHtmlPartial/release" data-filterable-set=":customview:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#2006218115%2FFunctions%2F1459225277"><span>send</span><wbr><span>Accessibility</span><wbr><span>Event</span><wbr><span><span>Unchecked</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2006218115%2FFunctions%2F1459225277"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#2006218115%2FFunctions%2F1459225277"><span class="token function">sendAccessibilityEventUnchecked</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">host<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token punctuation">, </span></span><span class="parameter ">event<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/accessibility/AccessibilityEvent.html">AccessibilityEvent</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1865611025%2FFunctions%2F1459225277" anchor-label="sendEventForVirtualView" id="-1865611025%2FFunctions%2F1459225277" data-filterable-set=":customview:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":customview:dokkaHtmlPartial/release" data-filterable-set=":customview:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="send-event-for-virtual-view.html"><span>send</span><wbr><span>Event</span><wbr><span>For</span><wbr><span>Virtual</span><wbr><span><span>View</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1865611025%2FFunctions%2F1459225277"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="send-event-for-virtual-view.html"><span class="token function">sendEventForVirtualView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">virtualViewId<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">eventType<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Populates an event of the specified type with information about an item and attempts to send it up through the view hierarchy.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1321304087%2FFunctions%2F1459225277" anchor-label="seslNotifyPerformAction" id="-1321304087%2FFunctions%2F1459225277" data-filterable-set=":customview:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":customview:dokkaHtmlPartial/release" data-filterable-set=":customview:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1321304087%2FFunctions%2F1459225277"><span>sesl</span><wbr><span>Notify</span><wbr><span>Perform</span><wbr><span><span>Action</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1321304087%2FFunctions%2F1459225277"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#-1321304087%2FFunctions%2F1459225277"><span class="token function">seslNotifyPerformAction</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">virtualViewId<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">action<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">arguments<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="825884309%2FFunctions%2F1459225277" anchor-label="setBoundsInScreenFromBoundsInParent" id="825884309%2FFunctions%2F1459225277" data-filterable-set=":customview:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":customview:dokkaHtmlPartial/release" data-filterable-set=":customview:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-bounds-in-screen-from-bounds-in-parent.html"><span>set</span><wbr><span>Bounds</span><wbr><span>In</span><wbr><span>Screen</span><wbr><span>From</span><wbr><span>Bounds</span><wbr><span>In</span><wbr><span><span>Parent</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="825884309%2FFunctions%2F1459225277"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="set-bounds-in-screen-from-bounds-in-parent.html"><span class="token function">setBoundsInScreenFromBoundsInParent</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>node<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/androidx/core/view/accessibility/AccessibilityNodeInfoCompat.html">AccessibilityNodeInfoCompat</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>boundsInParent<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/graphics/Rect.html">Rect</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Calculates and assigns screen-relative bounds based on bounds in parent.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2025 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
