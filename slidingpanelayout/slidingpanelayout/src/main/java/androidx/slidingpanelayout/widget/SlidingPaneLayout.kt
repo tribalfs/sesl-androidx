@@ -98,7 +98,7 @@ private const val ACCESSIBILITY_CLASS_NAME =
 
 private val edgeSizeUsingSystemGestureInsets = Build.VERSION.SDK_INT >= 29
 
-private fun getChildHeightMeasureSpec(
+internal fun getChildHeightMeasureSpec(
     child: View,
     skippedFirstPass: Boolean,
     spec: Int,
@@ -113,14 +113,14 @@ private fun getChildHeightMeasureSpec(
     }
 }
 
-private inline val SlidingPaneLayout.LayoutParams.canInfluenceParentSize: Boolean
+internal inline val SlidingPaneLayout.LayoutParams.canInfluenceParentSize: Boolean
     get() = (width != MATCH_PARENT && width != 0) ||
         (height != MATCH_PARENT && height != 0)
 
-private inline val SlidingPaneLayout.LayoutParams.weightOnlyWidth: Boolean
+internal inline val SlidingPaneLayout.LayoutParams.weightOnlyWidth: Boolean
     get() = width == 0 && weight > 0
 
-private inline val SlidingPaneLayout.LayoutParams.canExpandWidth: Boolean
+internal inline val SlidingPaneLayout.LayoutParams.canExpandWidth: Boolean
     get() = width == MATCH_PARENT || weight > 0
 
 /**
@@ -209,15 +209,14 @@ private fun layoutParamsError(childView: View, layoutParams: LayoutParams?): Not
     error("SlidingPaneLayout child $childView had unexpected LayoutParams $layoutParams")
 }
 
-private inline val View.spLayoutParams: SlidingPaneLayout.LayoutParams
+internal inline val View.spLayoutParams: SlidingPaneLayout.LayoutParams
     get() = when (val layoutParams = layoutParams) {
         is SlidingPaneLayout.LayoutParams -> layoutParams
         else -> layoutParamsError(this, layoutParams)
     }
 
 /**
- * **----------------------------SESL variant--------------------------**
- *
+ * #### SESL variant.
  * SlidingPaneLayout provides a horizontal, multi-pane layout for use at the top level
  * of a UI. A left (or start) pane is treated as a content list or browser, subordinate to a
  * primary detail view for displaying content.
@@ -264,54 +263,56 @@ open class SlidingPaneLayout @JvmOverloads constructor(
 ) : ViewGroup(context, attrs, defStyle), Openable {
 
     //Sesl
-    private var mOverhangSize: Int  = 0
-    private var mResizeOff: Boolean = false
-    private var mDrawRoundedCorner: Boolean = true
+    private var overhangSize: Int  = 0
+    private var resizeOff: Boolean = false
+    private var drawRoundedCorner: Boolean = true
     @ColorInt
-    private var mRoundedColor: Int = -1
-    private var mSlidingPaneRoundedCorner: SlidingPaneRoundedCorner? = null
-    private var mSlidingPaneDragArea = 0
-    private var mPendingAction = -1
-    private var mDoubleCheckState = -1
-    private var mPrevOrientation = 0
-    private var mSetResizeChild = false
-    private var mResizeChild: View? = null
-    private var mResizeChildList: ArrayList<View>? = null
-    private var mDrawerPanel: View? = null
-    private var mSetCustomPendingAction = false
+    private var roundedColor: Int = -1
+    private var slidingPaneRoundedCorner: SlidingPaneRoundedCorner? = null
+    private var slidingPaneDragArea = 0
+    private var pendingAction = -1
+    private var doubleCheckState = -1
+    private var prevOrientation = 0
+    private var setResizeChild = false
+    private var resizeChild: View? = null
+    private var resizeChildList: ArrayList<View>? = null
+    private var drawerPanel: View? = null
+    private var setCustomPendingAction = false
     /**
-     * Pre-layout start of slideable view
+     * The start margin of the slideable view, in pixels,
+     * before any layout calculations or animations have been applied.
      */
-    private var mStartMargin = 0
+    private var startMargin = 0
     /**
-     * Post-layout start of slideable view
+     * The horizontal position of the slideable view when it is first laid out.
+     * This value is used to calculate the amount the view has been slid.
      */
-    private var mStartSlideX = 0
+    private var startSlideX = 0
 
     /**
      * Flag that drawer pane is pending close
      */
-    private var mIsNeedClose = false
+    private var isNeedClose = false
     /**
      * Flag that drawer pane is pending open
      */
-    private var mIsNeedOpen = false
-    private val mSlidingState: SeslSlidingState?
-    private var mFixedPaneStartX = 0
-    private var mPrevWindowVisibility = 0
+    private var isNeedOpen = false
+    private val slidingState: SeslSlidingState?
+    private var fixedPaneStartX = 0
+    private var prevWindowVisibility = 0
     private var velocityTracker: VelocityTracker? = null
-    private var mLastValidVelocity = 0
-    private var mDrawerMarginBottom = 0
-    private var mDrawerMarginTop = 0
-    private var mIsSinglePanel = false
-    private var mPrefContentWidth: TypedValue? = null
-    private var mPrefDrawerWidth: TypedValue? = null
-    @Px private var mUserPreferredDrawerSize: Int = -1
-    @Px private var mUserPreferredContentSize: Int = -1
-    private var mPrevMotionX = 0f
-    private var mSmoothWidth = 0
+    private var lastValidVelocity = 0
+    private var drawerMarginBottom = 0
+    private var drawerMarginTop = 0
+    private var isSinglePanel = false
+    private var prefContentWidth: TypedValue? = null
+    private var prefDrawerWidth: TypedValue? = null
+    @Px private var userPreferredDrawerSize: Int = -1
+    @Px private var userPreferredContentSize: Int = -1
+    private var prevMotionX = 0f
+    private var smoothWidth = 0
     private var isAnimating = false
-    private var mStartOffset = 0f
+    private var startOffset = 0f
     private var hasPrefContentWidth = false//custom
     //sesl
 
@@ -485,7 +486,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
             return gestureInsets
         }
 
-    private val isLayoutRtl: Boolean
+    internal val isLayoutRtl: Boolean
         get() = layoutDirection == LAYOUT_DIRECTION_RTL
 
     private val windowInfoTracker = WindowInfoTracker.getOrCreate(context)
@@ -712,48 +713,48 @@ open class SlidingPaneLayout @JvmOverloads constructor(
             val bgColorRes = if (SeslMisc.isLightTheme(context)) {
                 R.color.sesl_sliding_pane_background_light } else R.color.sesl_sliding_pane_background_dark
             val defaultRoundCornerColor = ResourcesCompat.getColor(resources, bgColorRes, null)
-            mDrawRoundedCorner = getBoolean(R.styleable.SlidingPaneLayout_seslDrawRoundedCorner, true)
-            mRoundedColor = getColor(R.styleable.SlidingPaneLayout_seslDrawRoundedCornerColor, defaultRoundCornerColor)
-            mIsSinglePanel = getBoolean(R.styleable.SlidingPaneLayout_seslIsSinglePanel, false)
-            mResizeOff = getBoolean(R.styleable.SlidingPaneLayout_seslResizeOff, false)
-            mDrawerMarginTop = getDimensionPixelSize(R.styleable.SlidingPaneLayout_seslDrawerMarginTop, 0)
-            mDrawerMarginBottom = getDimensionPixelSize(R.styleable.SlidingPaneLayout_seslDrawerMarginBottom, 0)
+            drawRoundedCorner = getBoolean(R.styleable.SlidingPaneLayout_seslDrawRoundedCorner, true)
+            roundedColor = getColor(R.styleable.SlidingPaneLayout_seslDrawRoundedCornerColor, defaultRoundCornerColor)
+            isSinglePanel = getBoolean(R.styleable.SlidingPaneLayout_seslIsSinglePanel, false)
+            resizeOff = getBoolean(R.styleable.SlidingPaneLayout_seslResizeOff, false)
+            drawerMarginTop = getDimensionPixelSize(R.styleable.SlidingPaneLayout_seslDrawerMarginTop, 0)
+            drawerMarginBottom = getDimensionPixelSize(R.styleable.SlidingPaneLayout_seslDrawerMarginBottom, 0)
 
             val prefDrawerWidthSize = R.styleable.SlidingPaneLayout_seslPrefDrawerWidthSize
             if (hasValue(prefDrawerWidthSize)) {
                 val drawerWidthVal = TypedValue()
                 getValue(prefDrawerWidthSize, drawerWidthVal)
-                mPrefDrawerWidth = drawerWidthVal
+                prefDrawerWidth = drawerWidthVal
             }
 
             val prefContentWidthSize = R.styleable.SlidingPaneLayout_seslPrefContentWidthSize
             if (hasValue(prefContentWidthSize)) {
                 val contentWidthVal = TypedValue()
                 getValue(prefContentWidthSize, contentWidthVal)
-                mPrefContentWidth = contentWidthVal
+                prefContentWidth = contentWidthVal
                 hasPrefContentWidth = true
             }
             //sesl
         }
 
         //Sesl
-        if (mDrawRoundedCorner) {
-            mSlidingPaneRoundedCorner = SlidingPaneRoundedCorner(context).apply {
+        if (drawRoundedCorner) {
+            slidingPaneRoundedCorner = SlidingPaneRoundedCorner(context).apply {
                 roundedCorners = MODE_START
-                setMarginTop(mDrawerMarginTop)
-                setMarginBottom(mDrawerMarginBottom)
+                setMarginTop(drawerMarginTop)
+                setMarginBottom(drawerMarginBottom)
             }
         }
 
         val defaultOpen = resources.getBoolean(R.bool.sesl_sliding_layout_default_open)
-        mSlidingPaneDragArea = resources.getDimensionPixelSize(R.dimen.sesl_sliding_pane_contents_drag_width_default)
-        mPendingAction = if (defaultOpen) PENDING_ACTION_EXPANDED else PENDING_ACTION_COLLAPSED
-        mPrevOrientation = resources.configuration.orientation
-        mSlidingState = SeslSlidingState()
+        slidingPaneDragArea = resources.getDimensionPixelSize(R.dimen.sesl_sliding_pane_contents_drag_width_default)
+        pendingAction = if (defaultOpen) PENDING_ACTION_EXPANDED else PENDING_ACTION_COLLAPSED
+        prevOrientation = resources.configuration.orientation
+        slidingState = SeslSlidingState()
         //sesl
     }
 
-    private fun computeDividerTargetRect(outRect: Rect, dividerPositionX: Int): Rect {
+    internal fun computeDividerTargetRect(outRect: Rect, dividerPositionX: Int): Rect {
         val divider = userResizingDividerDrawable
         if (divider == null) {
             outRect.setEmpty()
@@ -834,7 +835,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
         overlappingPaneHandler.dispatchOnPanelSlide(panel, currentSlideOffset)
     }
 
-    private fun updateObscuredViewsVisibility(panel: View?) {
+    internal fun updateObscuredViewsVisibility(panel: View?) {
         val isLayoutRtl = isLayoutRtl
         val startBound = if (isLayoutRtl) width - paddingRight else paddingLeft
         val endBound = if (isLayoutRtl) paddingLeft else width - paddingRight
@@ -876,7 +877,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
         }
     }
 
-    private fun setAllChildrenVisible() {
+    internal fun setAllChildrenVisible() {
         forEach { child ->
             if (child.visibility == INVISIBLE) {
                 child.visibility = VISIBLE
@@ -928,7 +929,6 @@ open class SlidingPaneLayout @JvmOverloads constructor(
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun drawableHotspotChanged(x: Float, y: Float) {
         super.drawableHotspotChanged(x, y)
 
@@ -972,15 +972,15 @@ open class SlidingPaneLayout @JvmOverloads constructor(
     override fun onWindowVisibilityChanged(visibility: Int) {
         super.onWindowVisibilityChanged(visibility)
         //Sesl
-        if (visibility == VISIBLE && mPrevWindowVisibility != VISIBLE) {
-            mPendingAction = if (isOpen) {
+        if (visibility == VISIBLE && prevWindowVisibility != VISIBLE) {
+            pendingAction = if (isOpen) {
                 PENDING_ACTION_EXPANDED
             } else {
                 PENDING_ACTION_COLLAPSED
             }
         }
-        if (mPrevWindowVisibility != visibility) {
-            mPrevWindowVisibility = visibility
+        if (prevWindowVisibility != visibility) {
+            prevWindowVisibility = visibility
         }
         //sesl
         val toJoin = whileAttachedToVisibleWindowJob?.apply { cancel() }
@@ -1012,7 +1012,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
         super.onDetachedFromWindow()
     }
 
-    private fun getMinimumChildWidth(child: View): Int {
+    internal fun getMinimumChildWidth(child: View): Int {
         return if (child is TouchBlocker) {
             child.getChildAt(0).minimumWidth
         } else child.minimumWidth
@@ -1085,7 +1085,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
                             if (widthMode == MeasureSpec.UNSPECIFIED) widthMode else MeasureSpec.AT_MOST
                         )
                     } else {
-                        MeasureSpec.makeMeasureSpec(getFixedPaneWidth(widthSize- mOverhangSize), MeasureSpec.EXACTLY)
+                        MeasureSpec.makeMeasureSpec(getFixedPaneWidth(widthSize- overhangSize), MeasureSpec.EXACTLY)
                     }
                 }
                 MATCH_PARENT -> MeasureSpec.makeMeasureSpec(
@@ -1098,7 +1098,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
             val childHeightSpec = getChildMeasureSpec(
                 heightMeasureSpec,
                 paddingTop + paddingBottom + lp.topMargin + lp.bottomMargin +
-                    if (!lp.slideable) mDrawerMarginTop + mDrawerMarginBottom else 0/* sesl*/,
+                    if (!lp.slideable) drawerMarginTop + drawerMarginBottom else 0/* sesl*/,
                 lp.height
             )
             if (allowOverlappingPanes || lp.canInfluenceParentSize ||
@@ -1127,7 +1127,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
                     slideableView = child
                 }
             }else{
-                mDrawerPanel = child//sesl
+                drawerPanel = child//sesl
             }
         }
 
@@ -1149,7 +1149,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
                     // Child view consumes available space if the combined width cannot fit into
                     // the layout available width.
                     canSlide -> {//sesl
-                        if (child == mDrawerPanel) {
+                        if (child == drawerPanel) {
                             if (lp.width < 0 && (firstPassMeasuredWidth /*sesl*/ > widthSize || lp.weight > 0)) {
                                 // Drawer panel in a sliding configuration should
                                 // be clamped to the widthSize.
@@ -1307,7 +1307,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
         var xStart = paddingStart
         var nextXStart = xStart
         if (awaitingFirstLayout) {
-            currentSlideOffset = if (isSlideable && (preservedOpenState || /*sesl*/mPendingAction == PENDING_ACTION_EXPANDED)) 1f else 0f//inverted in sesl
+            currentSlideOffset = if (isSlideable && (preservedOpenState || /*sesl*/pendingAction == PENDING_ACTION_EXPANDED)) 1f else 0f//inverted in sesl
         }
         for (i in 0 until childCount) {
             val child = getChildAt(i)
@@ -1319,14 +1319,14 @@ open class SlidingPaneLayout @JvmOverloads constructor(
             var offset = 0
             if (lp.slideable) {
                 val margin = lp.leftMargin + lp.rightMargin
-                val range = nextXStart.coerceAtMost(width - mOverhangSize - paddingEnd) - xStart - margin
+                val range = nextXStart.coerceAtMost(width - overhangSize - paddingEnd) - xStart - margin
                 slideRange = range
                 val lpMargin = if (isLayoutRtl) lp.rightMargin else lp.leftMargin
                 lp.dimWhenOffset = xStart + lpMargin + range + childWidth / 2 > width - paddingEnd
                 val pos = (range * currentSlideOffset).toInt()
                 xStart += pos + lpMargin
                 currentSlideOffset = pos.toFloat() / slideRange
-                mStartMargin = lpMargin//sesl
+                startMargin = lpMargin//sesl
             } else if (isSlideable && parallaxDistance != 0) {
                 offset = ((1 - currentSlideOffset) * parallaxDistance).toInt()
                 xStart = nextXStart
@@ -1342,7 +1342,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
                 childLeft = xStart - offset
                 childRight = childLeft + childWidth
             }
-            val childTop = paddingTop + if (child == mDrawerPanel) mDrawerMarginTop else 0//sesl
+            val childTop = paddingTop + if (child == drawerPanel) drawerMarginTop else 0//sesl
             val childBottom = childTop + child.measuredHeight
             child.layout(childLeft, childTop, childRight, childBottom)
 
@@ -1359,10 +1359,10 @@ open class SlidingPaneLayout @JvmOverloads constructor(
             //sesl
             if (i > 0) {
                 if (lp.slideable) {
-                    mStartSlideX = if (isLayoutRtl) lp.rightMargin else lp.leftMargin
+                    startSlideX = if (isLayoutRtl) lp.rightMargin else lp.leftMargin
                 }
             } else {
-                mFixedPaneStartX = if (isLayoutRtl) lp.rightMargin else lp.leftMargin
+                fixedPaneStartX = if (isLayoutRtl) lp.rightMargin else lp.leftMargin
             }
         }
         if (isUserResizable) {
@@ -1383,36 +1383,36 @@ open class SlidingPaneLayout @JvmOverloads constructor(
         awaitingFirstLayout = false
 
         //Sesl
-        when (mPendingAction) {
+        when (pendingAction) {
             PENDING_ACTION_EXPANDED -> {//1
-                    if (!mResizeOff) resizeSlideableView(1.0f)
                 if (isLocked) {
+                    if (!resizeOff) resizeSlideableView(1.0f)
                     preservedOpenState = true
                 }else {
                     openPane(0, false)
                 }
-                mPendingAction = PENDING_ACTION_NONE
+                pendingAction = PENDING_ACTION_NONE
             }
             PENDING_ACTION_COLLAPSED -> {//2
-                    if (!mResizeOff) resizeSlideableView(0.0f)
                 if (isLocked) {
+                    if (!resizeOff) resizeSlideableView(0.0f)
                     preservedOpenState = false
                 }else{
                     closePane(0, false)
                 }
-                mPendingAction = PENDING_ACTION_NONE
+                pendingAction = PENDING_ACTION_NONE
             }
             PENDING_ACTION_EXPANDED_LOCK -> {//257
                 lockMode = LOCK_MODE_UNLOCKED
                 openPane(0, false)
-                mPendingAction = PENDING_ACTION_NONE
                 lockMode = LOCK_MODE_LOCKED_OPEN
+                pendingAction = PENDING_ACTION_NONE
             }
             PENDING_ACTION_COLLAPSED_LOCK -> {//258
                 lockMode = LOCK_MODE_UNLOCKED
                 closePane(0, false)
-                mPendingAction = PENDING_ACTION_NONE
                 lockMode = LOCK_MODE_LOCKED_CLOSED
+                pendingAction = PENDING_ACTION_NONE
             }
         }
         updateDispatchSlidingState()
@@ -1456,7 +1456,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
         return selectActiveTouchHandler()?.onTouchEvent(ev) ?: false
     }
 
-    private fun closePane(initialVelocity: Int, /*sesl*/animate: Boolean): Boolean {
+    internal fun closePane(initialVelocity: Int, /*sesl*/animate: Boolean): Boolean {
         if (!isSlideable) {
             preservedOpenState = false
         }
@@ -1464,15 +1464,15 @@ open class SlidingPaneLayout @JvmOverloads constructor(
         if (isAnimating) return true
         if (slideableView == null || isLocked) return false
         if (!animate) {
-            val newLeft =  if (isLayoutRtl) slideRange else mStartMargin
+            val newLeft =  if (isLayoutRtl) slideRange else startMargin
             onPanelDragged(newLeft)
-            if (mResizeOff) {
+            if (resizeOff) {
                 if (isLayoutRtl) {
-                    slideableView!!.right = windowWidth - mStartMargin
-                    slideableView!!.left = slideableView!!.right - windowWidth + mStartMargin
+                    slideableView!!.right = windowWidth - startMargin
+                    slideableView!!.left = slideableView!!.right - windowWidth + startMargin
                 } else {
                     slideableView!!.left = newLeft
-                    slideableView!!.right = newLeft + windowWidth - mStartMargin
+                    slideableView!!.right = newLeft + windowWidth - startMargin
                 }
             } else {
                 resizeSlideableView(0.0f)
@@ -1497,16 +1497,16 @@ open class SlidingPaneLayout @JvmOverloads constructor(
         if (isAnimating) return true
         if (slideableView == null || isLocked) return false
         if (!animate) {
-            val newLeft = if (isLayoutRtl) mFixedPaneStartX - slideRange else mStartSlideX + slideRange
+            val newLeft = if (isLayoutRtl) fixedPaneStartX - slideRange else startSlideX + slideRange
             onPanelDragged(newLeft)
-            if (mResizeOff) {
+            if (resizeOff) {
                 val windowWidth = windowWidth
                 if (isLayoutRtl) {
-                    slideableView!!.right = windowWidth - mStartMargin - slideRange
-                    slideableView!!.left = slideableView!!.right - (windowWidth - mStartMargin)
+                    slideableView!!.right = windowWidth - startMargin - slideRange
+                    slideableView!!.left = slideableView!!.right - (windowWidth - startMargin)
                 } else {
                     slideableView!!.left = newLeft
-                    slideableView!!.right = newLeft + windowWidth - mStartMargin
+                    slideableView!!.right = newLeft + windowWidth - startMargin
                 }
             } else {
                 resizeSlideableView(1.0f)
@@ -1534,7 +1534,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
      * has already completed this will animate.
      */
     override fun open() {
-        mLastValidVelocity = 0//sesl
+        lastValidVelocity = 0//sesl
         openPane()
     }
 
@@ -1545,8 +1545,8 @@ open class SlidingPaneLayout @JvmOverloads constructor(
      * @return true if the pane was slideable and is now open/in the process of opening
      */
     open fun openPane(): Boolean {
-        mIsNeedOpen = true//sesl
-        mIsNeedClose = false//sesl
+        isNeedOpen = true//sesl
+        isNeedClose = false//sesl
         return openPane(0, true xor /*sesl*/shouldSkipScroll())
     }
 
@@ -1572,7 +1572,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
      * has already completed this will animate.
      */
     override fun close() {
-        mLastValidVelocity = 0//sesl
+        lastValidVelocity = 0//sesl
         closePane()
     }
 
@@ -1583,8 +1583,8 @@ open class SlidingPaneLayout @JvmOverloads constructor(
      * @return true if the pane was slideable and is now closed/in the process of closing
      */
     open fun closePane(): Boolean {
-        mIsNeedOpen = false//sesl
-        mIsNeedClose = true//sesl
+        isNeedOpen = false//sesl
+        isNeedClose = true//sesl
         return closePane(0, true xor /*sesl*/shouldSkipScroll())
     }
 
@@ -1599,7 +1599,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
             // Custom added to fix bug of returning false when calling this method
             // while first layout is ongoing as `currentSlideOffset` value is
             // still not correctly set in onLayout.
-            return !isSlideable || preservedOpenState || mPendingAction == PENDING_ACTION_EXPANDED
+            return !isSlideable || preservedOpenState || pendingAction == PENDING_ACTION_EXPANDED
         }
         return !isSlideable || currentSlideOffset == 1f//inverted in sesl
     }
@@ -1619,20 +1619,20 @@ open class SlidingPaneLayout @JvmOverloads constructor(
         val lpMargin = if (isLayoutRtl) lp.rightMargin else lp.leftMargin
         val startBound = paddingStart + lpMargin
         //Sesl
-        if (isLayoutRtl && mResizeOff) {
+        if (isLayoutRtl && resizeOff) {
             childWidth = width - startBound
-        } else if (mIsNeedClose) {
-            childWidth = max(width - slideRange - startBound, mSmoothWidth)
-        } else if (mIsNeedOpen) {
-            if (mSmoothWidth == 0) {
-                mSmoothWidth = width - startBound
+        } else if (isNeedClose) {
+            childWidth = max(width - slideRange - startBound, smoothWidth)
+        } else if (isNeedOpen) {
+            if (smoothWidth == 0) {
+                smoothWidth = width - startBound
             }
-            childWidth = min(width - startBound, mSmoothWidth)
+            childWidth = min(width - startBound, smoothWidth)
         }
         val newStart = if (isLayoutRtl) (width - newLeft) - childWidth else newLeft
         currentSlideOffset = ((newStart - startBound).toFloat() / slideRange).coerceIn(0f, 1f)
         if (velocityTracker != null && velocityTracker!!.xVelocity != 0.0f) {
-            mLastValidVelocity = velocityTracker!!.xVelocity.toInt()
+            lastValidVelocity = velocityTracker!!.xVelocity.toInt()
         }
         updateDispatchSlidingState()
         //sesl
@@ -1640,7 +1640,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
             parallaxOtherViews(currentSlideOffset)
         }
         dispatchOnPanelSlide(slideableView)
-        if (!mResizeOff) resizeSlideableView(currentSlideOffset)//sesl
+        if (!resizeOff) resizeSlideableView(currentSlideOffset)//sesl
     }
 
     override fun drawChild(
@@ -1803,9 +1803,9 @@ open class SlidingPaneLayout @JvmOverloads constructor(
     //sesl
     override fun dispatchDraw(canvas: Canvas) {
         super.dispatchDraw(canvas)
-        if (mDrawRoundedCorner && slideableView != null) {
-            mSlidingPaneRoundedCorner!!.setRoundedCornerColor(mRoundedColor)
-            mSlidingPaneRoundedCorner!!.drawRoundedCorner(slideableView!!, canvas)
+        if (drawRoundedCorner && slideableView != null) {
+            slidingPaneRoundedCorner!!.setRoundedCornerColor(roundedColor)
+            slidingPaneRoundedCorner!!.drawRoundedCorner(slideableView!!, canvas)
         }
     }
 
@@ -1889,7 +1889,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
         return checkV && v.canScrollHorizontally(if (isLayoutRtl) dx else -dx)
     }
 
-    private fun isDimmed(child: View?): Boolean {
+    internal fun isDimmed(child: View?): Boolean {
         if (child == null) {
             return false
         }
@@ -2119,7 +2119,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
             event: AccessibilityEvent
         ): Boolean {
             //Sesl
-            if (currentSlideOffset != 0.0f || mStartMargin >= mSlidingPaneDragArea) {
+            if (currentSlideOffset != 0.0f || startMargin >= slidingPaneDragArea) {
                 child.setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_YES)
             } else if (filterDrawerChild(child)) {
                 child.setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS)
@@ -2132,9 +2132,9 @@ open class SlidingPaneLayout @JvmOverloads constructor(
 
         //sesl
         private fun filterDrawerChild(view: View): Boolean {
-            if (view == mDrawerPanel) return true
+            if (view == drawerPanel) return true
 
-            (mDrawerPanel as? ViewGroup)?.let {
+            (drawerPanel as? ViewGroup)?.let {
                 val childCount = it.childCount
                 for (i in 0 until childCount) {
                     if (view == it.getChildAt(i)) {
@@ -2257,11 +2257,11 @@ open class SlidingPaneLayout @JvmOverloads constructor(
             this
         ).apply {
             minVelocity = MIN_FLING_VELOCITY * context.resources.displayMetrics.density
-            seslSetUpdateOffsetLR(mResizeOff)//sesl
+            seslSetUpdateOffsetLR(resizeOff)//sesl
         }
 
         fun seslSetUpdateOffsetLR(){//sesl
-            dragHelper.seslSetUpdateOffsetLR(mResizeOff)
+            dragHelper.seslSetUpdateOffsetLR(resizeOff)
         }
 
         val isIdle: Boolean
@@ -2321,7 +2321,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
         }
 
         fun dispatchOnPanelOpened(panel: View?) {
-            mStartOffset = currentSlideOffset
+            startOffset = currentSlideOffset
             if (panel != null) {
                 for (listener in panelSlideListeners) {
                     listener.onPanelOpened(panel)
@@ -2331,7 +2331,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
         }
 
         fun dispatchOnPanelClosed(panel: View?) {
-            mStartOffset = currentSlideOffset
+            startOffset = currentSlideOffset
             if (panel != null) {
                 for (listener in panelSlideListeners) {
                     listener.onPanelClosed(panel)
@@ -2373,15 +2373,15 @@ open class SlidingPaneLayout @JvmOverloads constructor(
             dy: Int
         ) {
             //Sesl
-            if (mStartOffset == 0.0f &&
-                mLastValidVelocity > 0 &&
+            if (startOffset == 0.0f &&
+                lastValidVelocity > 0 &&
                 currentSlideOffset > 0.2f &&
                 dx < 0
             ) {
                 return
             }
-            if (mStartOffset == 1.0f &&
-                mLastValidVelocity < 0 &&
+            if (startOffset == 1.0f &&
+                lastValidVelocity < 0 &&
                 currentSlideOffset < 0.8f &&
                 dx > 0
             ) {
@@ -2481,7 +2481,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
                         dragHelper.isViewUnder(secondChild, ev.x.toInt(), ev.y.toInt())
                 }
             }
-            if (!isSlideable || isUnableToDrag && action != MotionEvent.ACTION_DOWN || mIsLock/*sesl*/) {
+            if (!isSlideable || isUnableToDrag && action != MotionEvent.ACTION_DOWN) {
                 dragHelper.cancel()
                 return super@SlidingPaneLayout.onInterceptTouchEvent(ev)
             }
@@ -2499,22 +2499,22 @@ open class SlidingPaneLayout @JvmOverloads constructor(
                     initialMotionX = x
                     initialMotionY = y
                     //Sesl
-                    mStartOffset = currentSlideOffset
-                    mIsNeedOpen = false
-                    mIsNeedClose = false
-                    mSmoothWidth = 0
-                    mPrevMotionX = x
+                    startOffset = currentSlideOffset
+                    isNeedOpen = false
+                    isNeedClose = false
+                    smoothWidth = 0
+                    prevMotionX = x
                     val isLayoutRtl = isLayoutRtl
                     val slideViewStart = if (isLayoutRtl) slideableView!!.right else slideableView!!.left
                     // Check if the initial touch is in drawer pane drag area
                     // to be further checked in ACTION_MOVE if going to intercept (i.e. > touchSlop).
                     // Otherwise if sliding pane is touched, disable drag.
                     if (isLayoutRtl) {
-                        if (x < slideViewStart - mSlidingPaneDragArea || mIsLock) {
+                        if (x < slideViewStart - slidingPaneDragArea || isLocked) {
                             dragHelper.cancel()
                             isUnableToDrag = true
                         }
-                    } else if (x > slideViewStart + mSlidingPaneDragArea || mIsLock) {
+                    } else if (x > slideViewStart + slidingPaneDragArea || isLocked) {
                         dragHelper.cancel()
                         isUnableToDrag = true
                     }
@@ -2530,24 +2530,17 @@ open class SlidingPaneLayout @JvmOverloads constructor(
                 //Sesl
                 MotionEvent.ACTION_MOVE -> {
                     val x = ev.x
-                    //val y = ev.y
                     val adx = abs(x - initialMotionX)
-                    //val ady = abs(y - initialMotionY)
                     val slop = dragHelper.touchSlop
-                    //if (adx > slop && ady > adx) {
-                    //    dragHelper.cancel()
-                    //    isUnableToDrag = true
-                    //    return false
-                    //}
-                    val idx = (x - mPrevMotionX).toInt()
-                    if (mPrevMotionX != x) mPrevMotionX = x
+                    val idx = (x - prevMotionX).toInt()
+                    if (prevMotionX != x) prevMotionX = x
                     if (!isUnableToDrag && adx > slop) {
                         //If drawer pane is touched, process initial movement
                         //before intercepting for processing further movements in onTouchEvent
                         val newLeft = if (!isLayoutRtl) {
-                            (slideableView!!.left + idx).coerceAtLeast(mStartMargin)
+                            (slideableView!!.left + idx).coerceAtLeast(startMargin)
                         } else {
-                            (slideableView!!.right - windowWidth) + mStartMargin
+                            (slideableView!!.right - windowWidth) + startMargin
                         }
                         onPanelDragged(newLeft)
                         return true
@@ -2555,7 +2548,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
                 }
                 //sesl
             }
-            if (abs(mStartOffset - currentSlideOffset) < SESL_EXTRA_AREA_SENSITIVITY) return false //sesl
+            if (abs(startOffset - currentSlideOffset) < SESL_EXTRA_AREA_SENSITIVITY) return false //sesl
             val interceptForDrag = dragHelper.shouldInterceptTouchEvent(ev)
             return interceptForDrag || interceptTap
         }
@@ -2574,11 +2567,11 @@ open class SlidingPaneLayout @JvmOverloads constructor(
                     initialMotionX = x
                     initialMotionY = y
                     //Sesl
-                    mStartOffset = currentSlideOffset
-                    mIsNeedOpen = false
-                    mIsNeedClose = false
-                    mPrevMotionX = x
-                    mSmoothWidth = 0
+                    startOffset = currentSlideOffset
+                    isNeedOpen = false
+                    isNeedClose = false
+                    prevMotionX = x
+                    smoothWidth = 0
                     //sesl
                 }
 
@@ -2602,28 +2595,28 @@ open class SlidingPaneLayout @JvmOverloads constructor(
                 MotionEvent.ACTION_MOVE ->{//sesl
                     val x = ev.x
                     val adx = abs(x - initialMotionX)
-                    val idx = x - mPrevMotionX
-                    if (mPrevMotionX != x) mPrevMotionX = x
+                    val idx = x - prevMotionX
+                    if (prevMotionX != x) prevMotionX = x
                     if (!isUnableToDrag && adx > dragHelper.touchSlop) {
                         // Further process intercepted touch/motion of drawer pane
-                        val scale = (mStartMargin + slideRange).toFloat()/ if (slideRange == 0) 1f else slideRange.toFloat()
+                        val scale = (startMargin + slideRange).toFloat()/ if (slideRange == 0) 1f else slideRange.toFloat()
                         velocityTracker!!.computeCurrentVelocity(1000, 2f)
                         val newLeft =
                             if (isLayoutRtl) {
                                 val newRight = (slideableView!!.right + idx.toInt())
-                                    .coerceIn(width - mStartMargin - slideRange, width - mStartMargin)
+                                    .coerceIn(width - startMargin - slideRange, width - startMargin)
 
-                                (newRight - windowWidth + mStartMargin)
+                                (newRight - windowWidth + startMargin)
                                     .also { newLeft ->
                                         slideableView!!.left = newLeft
                                         slideableView!!.right = newRight
                                     }
                             } else {
                                 (slideableView!!.left + idx * if (scale != 0f) scale else 1f).toInt()
-                                    .coerceIn(mStartMargin, mStartMargin + slideRange)
+                                    .coerceIn(startMargin, startMargin + slideRange)
                                     .also {newLeft ->
                                         slideableView!!.left = newLeft
-                                        slideableView!!.right = newLeft + windowWidth - mStartMargin
+                                        slideableView!!.right = newLeft + windowWidth - startMargin
                                     }
                             }
                         onPanelDragged(newLeft)
@@ -2975,43 +2968,43 @@ open class SlidingPaneLayout @JvmOverloads constructor(
             action != PENDING_ACTION_EXPANDED &&
             action != PENDING_ACTION_EXPANDED_LOCK &&
             action != PENDING_ACTION_COLLAPSED_LOCK) {
-            mSetCustomPendingAction = false
+            setCustomPendingAction = false
             Log.e(
                 TAG,
                 "pendingAction value is wrong ==> Your pending action value is [$action] / Now set pendingAction value as default"
             )
             return
         }
-        mSetCustomPendingAction = true
-        mPendingAction = action
+        setCustomPendingAction = true
+        pendingAction = action
     }
 
 
     override fun onConfigurationChanged(configuration: Configuration) {
         super.onConfigurationChanged(configuration)
-        if (!hasPrefContentWidth) mPrefContentWidth = null//to update value
-        if (!mSetCustomPendingAction) {
+        if (!hasPrefContentWidth) prefContentWidth = null//to update value
+        if (!setCustomPendingAction) {
             val rotatedToPortrait = configuration.orientation == ORIENTATION_PORTRAIT
-                && mPrevOrientation == ORIENTATION_LANDSCAPE
-            mPendingAction = if (!isOpen || rotatedToPortrait) {
+                && prevOrientation == ORIENTATION_LANDSCAPE
+            pendingAction = if (!isOpen || rotatedToPortrait) {
                 PENDING_ACTION_COLLAPSED //2
             } else {
                 PENDING_ACTION_EXPANDED //1
             }
         }
-            mPendingAction = if (isOpen) {
         if (isLocked) {
+            pendingAction = if (isOpen) {
                 PENDING_ACTION_EXPANDED
             } else {
                 PENDING_ACTION_COLLAPSED
             }
         }
-        mPrevOrientation = configuration.orientation
+        prevOrientation = configuration.orientation
         seslSetDrawerPaneWidth()
     }
 
     private fun seslSetDrawerPaneWidth() {
-        if (mDrawerPanel == null) {
+        if (drawerPanel == null) {
             Log.e(TAG, "mDrawerPanel is null")
             return
         }
@@ -3021,9 +3014,9 @@ open class SlidingPaneLayout @JvmOverloads constructor(
             TypedValue.TYPE_DIMENSION -> typedValue.getDimension(resources.displayMetrics).toInt()
             else -> MATCH_PARENT
         }
-        val layoutParams = mDrawerPanel!!.layoutParams
+        val layoutParams = drawerPanel!!.layoutParams
         layoutParams.width = drawerWidth
-        mDrawerPanel!!.layoutParams = layoutParams
+        drawerPanel!!.layoutParams = layoutParams
     }
 
     class SeslSlidingState() {
@@ -3041,30 +3034,30 @@ open class SlidingPaneLayout @JvmOverloads constructor(
      * of internally called [ViewDragHelper.smoothSlideViewTo])
      */
     private fun doubleCheckSettledState(){
-        if (mDoubleCheckState != -1) {
-            if (mDoubleCheckState == 1) {
+        if (doubleCheckState != -1) {
+            if (doubleCheckState == 1) {
                 openPane(0, true)
-            } else if (mDoubleCheckState == 0) {
+            } else if (doubleCheckState == 0) {
                 closePane(0, true)
             }
-            mDoubleCheckState = -1
+            doubleCheckState = -1
         }
     }
 
     private fun updateDispatchSlidingState() {
-        if (mSlidingState != null && slideableView != null) {
+        if (slidingState != null && slideableView != null) {
             if (currentSlideOffset == 0.0f) {
-                if (mSlidingState.state != SESL_STATE_CLOSE) {
-                    mSlidingState.onStateChanged(SESL_STATE_CLOSE)
+                if (slidingState.state != SESL_STATE_CLOSE) {
+                    slidingState.onStateChanged(SESL_STATE_CLOSE)
                     overlappingPaneHandler.dispatchOnPanelClosed(slideableView)
                 }
             } else if (currentSlideOffset == 1.0f) {
-                if (mSlidingState.state != SESL_STATE_OPEN) {
-                    mSlidingState.onStateChanged(SESL_STATE_OPEN)
+                if (slidingState.state != SESL_STATE_OPEN) {
+                    slidingState.onStateChanged(SESL_STATE_OPEN)
                     overlappingPaneHandler.dispatchOnPanelOpened(slideableView)
                 }
-            } else if (mSlidingState.state != SESL_STATE_IDLE) {
-                mSlidingState.onStateChanged(SESL_STATE_IDLE)
+            } else if (slidingState.state != SESL_STATE_IDLE) {
+                slidingState.onStateChanged(SESL_STATE_IDLE)
             }
         }
     }
@@ -3091,38 +3084,38 @@ open class SlidingPaneLayout @JvmOverloads constructor(
                 val childLP = child.layoutParams ?: continue
                 val childPadding = child.paddingStart + child.paddingEnd
                 val shrinkage = (slideRange * offset).toInt()
-                var remainingWidth = (maxWidth - mStartSlideX) - svPadding - childPadding - shrinkage
+                var remainingWidth = (maxWidth - startSlideX) - svPadding - childPadding - shrinkage
                 val preferredWidthClamped =
-                    (if (mUserPreferredContentSize != -1) {
-                        mUserPreferredContentSize
+                    (if (userPreferredContentSize != -1) {
+                        userPreferredContentSize
                     } else {
-                        if (mPrefContentWidth == null) {
-                            mPrefContentWidth = TypedValue().also {
+                        if (prefContentWidth == null) {
+                            prefContentWidth = TypedValue().also {
                                 resources.getValue(R.dimen.sesl_sliding_pane_contents_width, it, true)
                             }
                         }
-                        when (mPrefContentWidth!!.type) {
-                            TypedValue.TYPE_FLOAT -> maxWidth * mPrefContentWidth!!.float
-                            TypedValue.TYPE_DIMENSION -> mPrefContentWidth!!.getDimension(resources.displayMetrics)
+                        when (prefContentWidth!!.type) {
+                            TypedValue.TYPE_FLOAT -> maxWidth * prefContentWidth!!.float
+                            TypedValue.TYPE_DIMENSION -> prefContentWidth!!.getDimension(resources.displayMetrics)
                             else -> remainingWidth
                         }.toInt()
                     }).coerceAtMost(remainingWidth)
 
-                if (mSetResizeChild) {
-                    val resizeChildList = mResizeChildList
+                if (setResizeChild) {
+                    val resizeChildList = resizeChildList
                     if (resizeChildList != null) {
                         for (resizeChild in resizeChildList) {
                             setWidth(resizeChild, preferredWidthClamped)
                         }
                     }
-                }else if (mIsSinglePanel && !isToolbar(child)) {
+                }else if (isSinglePanel && !isToolbar(child)) {
                     if (child is CoordinatorLayout) {
                         findResizeChild(child)
                     } else {
                         remainingWidth =  preferredWidthClamped
                     }
                 }
-                if (mResizeChild != null) setWidth(mResizeChild!!, preferredWidthClamped)
+                if (resizeChild != null) setWidth(resizeChild!!, preferredWidthClamped)
 
                 childLP.width = remainingWidth
                 child.requestLayout()
@@ -3148,20 +3141,20 @@ open class SlidingPaneLayout @JvmOverloads constructor(
                 val child = sv.getChildAt(i)
                 val childLP = child.layoutParams ?: continue
                 val childPadding = child.paddingStart + child.paddingEnd
-                val remainingWidth = (availableWidth - mStartSlideX) - svPadding - childPadding
-                if (mSetResizeChild) {
-                    val resizeChildList = mResizeChildList
+                val remainingWidth = (availableWidth - startSlideX) - svPadding - childPadding
+                if (setResizeChild) {
+                    val resizeChildList = resizeChildList
                     if (resizeChildList != null) {
                         for (resizeChild in resizeChildList) {
                             setWidth(resizeChild, remainingWidth)
                         }
                     }
-                }else if (mIsSinglePanel && !isToolbar(child)) {
+                }else if (isSinglePanel && !isToolbar(child)) {
                     if (child is CoordinatorLayout) {
                         findResizeChild(child)
                     }
                 }
-                if (mResizeChild != null) setWidth(mResizeChild!!, remainingWidth)
+                if (resizeChild != null) setWidth(resizeChild!!, remainingWidth)
                 childLP.width = remainingWidth
                 child.requestLayout()
             }
@@ -3169,33 +3162,29 @@ open class SlidingPaneLayout @JvmOverloads constructor(
     }
 
     private fun isToolbar(view: View): Boolean {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            view is Toolbar || view is SPLToolbarContainer
-        } else {
-            view is SPLToolbarContainer
-        }
+        return view is Toolbar || view is SPLToolbarContainer
     }
 
     private fun findResizeChild(view: View) {
-        if (!mSetResizeChild && view is ViewGroup) {
+        if (!setResizeChild && view is ViewGroup) {
             if (view.childCount >= 2) {
-                mResizeChild = view.getChildAt(1)
+                resizeChild = view.getChildAt(1)
             }
         }
     }
 
     private fun getFixedPaneWidth(fixedPanelWidthLimit: Int): Int{
         val prefDrawerWidthSize: Int =
-            (if (mUserPreferredDrawerSize != -1) {
-                mUserPreferredDrawerSize
+            (if (userPreferredDrawerSize != -1) {
+                userPreferredDrawerSize
             } else {
-                if (mPrefDrawerWidth == null) {
-                    mPrefDrawerWidth = TypedValue()
-                    resources.getValue(R.dimen.sesl_sliding_pane_drawer_width, mPrefDrawerWidth, true)
+                if (prefDrawerWidth == null) {
+                    prefDrawerWidth = TypedValue()
+                    resources.getValue(R.dimen.sesl_sliding_pane_drawer_width, prefDrawerWidth, true)
                 }
-                when (mPrefDrawerWidth!!.type) {
-                    TypedValue.TYPE_FLOAT -> (windowWidth * mPrefDrawerWidth!!.float).toInt()
-                    TypedValue.TYPE_DIMENSION -> mPrefDrawerWidth!!.getDimension(resources.displayMetrics).toInt()
+                when (prefDrawerWidth!!.type) {
+                    TypedValue.TYPE_FLOAT -> (windowWidth * prefDrawerWidth!!.float).toInt()
+                    TypedValue.TYPE_DIMENSION -> prefDrawerWidth!!.getDimension(resources.displayMetrics).toInt()
                     else -> fixedPanelWidthLimit
                 }
             }).coerceAtMost(fixedPanelWidthLimit)
@@ -3206,15 +3195,15 @@ open class SlidingPaneLayout @JvmOverloads constructor(
     internal val windowWidth: Int get() = resources.displayMetrics.widthPixels
 
     internal fun settleSlidingPane(): Boolean {
-        mSmoothWidth = slideableView!!.width
-        mDoubleCheckState = -1
+        smoothWidth = slideableView!!.width
+        doubleCheckState = -1
         if (isAnimating) return false
         if (currentSlideOffset != 0.0f && currentSlideOffset != 1.0f) {
             if (currentSlideOffset >= 0.5f) {
-                mDoubleCheckState = 1
+                doubleCheckState = 1
                 seslOpenPane(true)
             } else {
-                mDoubleCheckState = 0
+                doubleCheckState = 0
                 seslClosePane(true)
             }
             return true
@@ -3229,9 +3218,9 @@ open class SlidingPaneLayout @JvmOverloads constructor(
      * @see seslClosePane
      */
     fun seslOpenPane(animate: Boolean) {
-        mLastValidVelocity = 0
-        mIsNeedOpen = true
-        mIsNeedClose = false
+        lastValidVelocity = 0
+        isNeedOpen = true
+        isNeedClose = false
         openPane(0, animate)
     }
 
@@ -3242,15 +3231,17 @@ open class SlidingPaneLayout @JvmOverloads constructor(
      * @see seslOpenPane
      */
     fun seslClosePane(animate: Boolean) {
-        mLastValidVelocity = 0
-        mIsNeedOpen = false
-        mIsNeedClose = true
+        lastValidVelocity = 0
+        isNeedOpen = false
+        isNeedClose = true
         closePane(0, animate)
     }
 
-    fun seslGetLock(): Boolean {
-        return mIsLock
-    }
+    //Custom
+    internal val isLocked: Boolean get() =
+        lockMode == LOCK_MODE_LOCKED
+            || (lockMode == LOCK_MODE_LOCKED_OPEN && isOpen)
+            || (lockMode == LOCK_MODE_LOCKED_CLOSED && !isOpen)
 
     /**
      * Checks if the user can swipe the drawer pane.
@@ -3280,7 +3271,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
      */
     @Px
     fun seslGetPreferredDrawerPixelSize(): Int {
-        return mUserPreferredDrawerSize
+        return userPreferredDrawerSize
     }
 
     /**
@@ -3288,7 +3279,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
      * @see seslGetPreferredContentPixelSize
      */
     fun seslRequestPreferredDrawerPixelSize(@Px drawerPixelSize: Int) {
-        mUserPreferredDrawerSize = drawerPixelSize
+        userPreferredDrawerSize = drawerPixelSize
         seslSetDrawerPaneWidth()
         resizeSlideableView(currentSlideOffset)
     }
@@ -3299,7 +3290,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
      */
     @Px
     fun seslGetPreferredContentPixelSize(): Int {
-        return mUserPreferredContentSize
+        return userPreferredContentSize
     }
 
     /**
@@ -3307,7 +3298,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
      * @param size Set to a positive value to enable and -1 to disable
      */
     fun seslRequestPreferredContentPixelSize(@Px size: Int) {
-        mUserPreferredContentSize = size
+        userPreferredContentSize = size
         resizeSlideableView(currentSlideOffset)
     }
 
@@ -3321,7 +3312,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
      * @see seslSetResizeChild
      */
     fun seslGetResizeOff(): Boolean {
-        return mResizeOff
+        return resizeOff
     }
 
     /**
@@ -3334,7 +3325,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
      * @see seslGetResizeOff
      */
     fun seslSetResizeOff(turnOffResize: Boolean) {
-        mResizeOff = turnOffResize
+        resizeOff = turnOffResize
         overlappingPaneHandler.seslSetUpdateOffsetLR()
         if (awaitingFirstLayout) return
         if (turnOffResize) {
@@ -3351,25 +3342,25 @@ open class SlidingPaneLayout @JvmOverloads constructor(
      * @see [seslGetResizeOff]
      */
     fun seslSetResizeChild(vararg view: View?) {
-        if (mResizeOff){
+        if (resizeOff){
             Log.w(TAG, "Details panel view resizing is currently turned off. seslSetResizeOff(false) should be called.")
         }
         val notNullViews = view.filterNotNull()
         when{
             notNullViews.size == 1 -> {
-                mSetResizeChild = true
-                mResizeChild = view[0]
-                mResizeChildList = null
+                setResizeChild = true
+                resizeChild = view[0]
+                resizeChildList = null
             }
             notNullViews.size > 1 -> {
-                mSetResizeChild = true
-                mResizeChild = null
-                mResizeChildList = ArrayList(notNullViews)
+                setResizeChild = true
+                resizeChild = null
+                resizeChildList = ArrayList(notNullViews)
             }
             else -> {
-                mSetResizeChild = false
-                mResizeChildList = null
-                mResizeChild = null
+                setResizeChild = false
+                resizeChildList = null
+                resizeChild = null
             }
         }
     }
@@ -3382,7 +3373,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
      * @see seslSetRoundedCornerOff
      */
     fun seslSetRoundedCornerColor(@ColorInt color: Int) {
-        mRoundedColor = color
+        roundedColor = color
     }
 
     /**
@@ -3393,8 +3384,8 @@ open class SlidingPaneLayout @JvmOverloads constructor(
      * @see seslSetRoundedCornerColor
      */
     fun seslSetRoundedCornerOff(){
-        mDrawRoundedCorner = false
-        mSlidingPaneRoundedCorner = null
+        drawRoundedCorner = false
+        slidingPaneRoundedCorner = null
     }
 
     /**
@@ -3407,15 +3398,15 @@ open class SlidingPaneLayout @JvmOverloads constructor(
      * @see seslSetRoundedCornerColor
      */
     fun seslSetRoundedCornerOn(@Px radius: Int? = null) {
-        if (mDrawRoundedCorner && radius == null) return
-        mDrawRoundedCorner = true
-        if (mSlidingPaneRoundedCorner == null) {
-            mSlidingPaneRoundedCorner = SlidingPaneRoundedCorner(context).apply {
-                setMarginTop(mDrawerMarginTop)
-                setMarginBottom(mDrawerMarginBottom)
+        if (drawRoundedCorner && radius == null) return
+        drawRoundedCorner = true
+        if (slidingPaneRoundedCorner == null) {
+            slidingPaneRoundedCorner = SlidingPaneRoundedCorner(context).apply {
+                setMarginTop(drawerMarginTop)
+                setMarginBottom(drawerMarginBottom)
             }
         }
-        radius?.let { mSlidingPaneRoundedCorner!!.roundedCornerRadius = radius }
+        radius?.let { slidingPaneRoundedCorner!!.roundedCornerRadius = radius }
     }
 
     /**
@@ -3426,21 +3417,34 @@ open class SlidingPaneLayout @JvmOverloads constructor(
      * @see seslSetRoundedCornerColor
      */
     fun seslGetRoundedCornerOn(): Boolean{
-        return mDrawRoundedCorner
+        return drawRoundedCorner
     }
 
+    /**
+     * Sets whether the layout should operate in single panel mode.
+     *
+     * When set to `true`, the layout will display only the primary pane, hiding the secondary pane.
+     * This is typically used for narrow screens or when you want to force a single-pane experience.
+     *
+     * @param isSinglePanel `true` to enable single panel mode, `false` for normal (multi-panel) behavior.
+     */
     fun setSinglePanel(isSinglePanel: Boolean) {
-        mIsSinglePanel = isSinglePanel
+        this@SlidingPaneLayout.isSinglePanel = isSinglePanel
     }
 
+    /**
+     * Retrieves the current status of the single panel.
+     *
+     * @return `true` if it is a single panel, `false` otherwise.
+     */
     fun getSinglePanelStatus(): Boolean {
-        return mIsSinglePanel
+        return isSinglePanel
     }
 
 
     /**
-     * Currently, SESL6 version still applies [mOverhangSize] with hard-coded value
-     * in setting the width of the fixed/drawer panel. However, [mOverhangSize] is already
+     * Currently, SESL6 version still applies [overhangSize] with hard-coded value
+     * in setting the width of the fixed/drawer panel. However, [overhangSize] is already
      * deprecated and removed in the latest version of jetpack [SlidingPaneLayout] version.
      * This method is intended to workaround this.
      *
@@ -3448,30 +3452,50 @@ open class SlidingPaneLayout @JvmOverloads constructor(
      */
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP_PREFIX)
     fun setOverhangSize(@Dimension size: Int) {
-        mOverhangSize = (size * context.resources.displayMetrics.density + 0.5f).toInt()
+        overhangSize = (size * context.resources.displayMetrics.density + 0.5f).toInt()
     }
 
+    /**
+     * Sets the top margin of the drawer.
+     *
+     * @param margin The top margin in pixels.
+     */
     fun seslSetDrawerMarginTop(margin: Int){
-        if (mDrawerMarginTop == margin) return
-        mDrawerMarginTop = margin
-        mSlidingPaneRoundedCorner?.apply {
+        if (drawerMarginTop == margin) return
+        drawerMarginTop = margin
+        slidingPaneRoundedCorner?.apply {
             setMarginTop(margin)
             requestLayout()
         }
     }
 
+    /**
+     * Sets the bottom margin for the drawer pane.
+     *
+     * @param margin The new bottom margin value in pixels.
+     */
     fun seslSetDrawerMarginBottom(margin: Int){
-        if (mDrawerMarginBottom == margin) return
-        mDrawerMarginBottom = margin
-        mSlidingPaneRoundedCorner?.apply {
+        if (drawerMarginBottom == margin) return
+        drawerMarginBottom = margin
+        slidingPaneRoundedCorner?.apply {
             setMarginBottom(margin)
             requestLayout()
         }
     }
 
-    fun seslGetSlidingPaneDragArea(): Int = mSlidingPaneDragArea
+    /**
+     * This value represents the area where a user can drag the sliding pane.
+     *
+     * @return The sliding pane drag area.
+     */
+    fun seslGetSlidingPaneDragArea(): Int = slidingPaneDragArea
 
-    fun seslGetSlidingState(): SeslSlidingState? = mSlidingState
+    /**
+     * Retrieves the current sliding state.
+     *
+     * @return The current [SeslSlidingState], or null if no sliding state is set.
+     */
+    fun seslGetSlidingState(): SeslSlidingState? = slidingState
 
     //sesl
 }
