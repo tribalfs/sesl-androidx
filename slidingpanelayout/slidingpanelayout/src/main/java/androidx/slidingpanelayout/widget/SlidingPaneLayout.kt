@@ -287,10 +287,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
      * Post-layout start of slideable view
      */
     private var mStartSlideX = 0
-    /**
-     * Flag use to prevent user interaction
-     */
-    private var mIsLock = false
+
     /**
      * Flag that drawer pane is pending close
      */
@@ -1388,8 +1385,8 @@ open class SlidingPaneLayout @JvmOverloads constructor(
         //Sesl
         when (mPendingAction) {
             PENDING_ACTION_EXPANDED -> {//1
-                if (mIsLock) {
                     if (!mResizeOff) resizeSlideableView(1.0f)
+                if (isLocked) {
                     preservedOpenState = true
                 }else {
                     openPane(0, false)
@@ -1397,8 +1394,8 @@ open class SlidingPaneLayout @JvmOverloads constructor(
                 mPendingAction = PENDING_ACTION_NONE
             }
             PENDING_ACTION_COLLAPSED -> {//2
-                if (mIsLock) {
                     if (!mResizeOff) resizeSlideableView(0.0f)
+                if (isLocked) {
                     preservedOpenState = false
                 }else{
                     closePane(0, false)
@@ -1406,16 +1403,16 @@ open class SlidingPaneLayout @JvmOverloads constructor(
                 mPendingAction = PENDING_ACTION_NONE
             }
             PENDING_ACTION_EXPANDED_LOCK -> {//257
-                mIsLock = false
+                lockMode = LOCK_MODE_UNLOCKED
                 openPane(0, false)
-                mIsLock = true
                 mPendingAction = PENDING_ACTION_NONE
+                lockMode = LOCK_MODE_LOCKED_OPEN
             }
             PENDING_ACTION_COLLAPSED_LOCK -> {//258
-                mIsLock = false
+                lockMode = LOCK_MODE_UNLOCKED
                 closePane(0, false)
-                mIsLock = true
                 mPendingAction = PENDING_ACTION_NONE
+                lockMode = LOCK_MODE_LOCKED_CLOSED
             }
         }
         updateDispatchSlidingState()
@@ -1465,7 +1462,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
         }
         //sesl
         if (isAnimating) return true
-        if (slideableView == null || mIsLock) return false
+        if (slideableView == null || isLocked) return false
         if (!animate) {
             val newLeft =  if (isLayoutRtl) slideRange else mStartMargin
             onPanelDragged(newLeft)
@@ -1498,7 +1495,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
         }
         //Sesl
         if (isAnimating) return true
-        if (slideableView == null || mIsLock) return false
+        if (slideableView == null || isLocked) return false
         if (!animate) {
             val newLeft = if (isLayoutRtl) mFixedPaneStartX - slideRange else mStartSlideX + slideRange
             onPanelDragged(newLeft)
@@ -1608,7 +1605,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
     }
 
     internal fun onPanelDragged(newLeft: Int) {
-        if (mIsLock) return//sesl
+        if (isLocked) return//sesl
         val slideableView = slideableView
         if (slideableView == null) {
             // This can happen if we're aborting motion during layout because everything now fits.
@@ -3002,8 +2999,8 @@ open class SlidingPaneLayout @JvmOverloads constructor(
                 PENDING_ACTION_EXPANDED //1
             }
         }
-        if (mIsLock) {
             mPendingAction = if (isOpen) {
+        if (isLocked) {
                 PENDING_ACTION_EXPANDED
             } else {
                 PENDING_ACTION_COLLAPSED
@@ -3255,8 +3252,26 @@ open class SlidingPaneLayout @JvmOverloads constructor(
         return mIsLock
     }
 
+    /**
+     * Checks if the user can swipe the drawer pane.
+     *
+     * @return True if the user can't swipe between the drawer pane.
+     */
+    fun seslGetLock(): Boolean = isLocked
+
+    /**
+     * Sets the lock state of the drawer pane.
+     *
+     * @param isLock `true` to lock the drawer pane, `false` to unlock it.
+     */
     fun seslSetLock(isLock: Boolean) {
-        mIsLock = isLock
+        //Custom
+        lockMode = if (isLock) {
+            if (isOpen) LOCK_MODE_LOCKED_OPEN else LOCK_MODE_LOCKED_CLOSED
+        } else {
+            LOCK_MODE_UNLOCKED
+        }
+        //custom
     }
 
     /**
