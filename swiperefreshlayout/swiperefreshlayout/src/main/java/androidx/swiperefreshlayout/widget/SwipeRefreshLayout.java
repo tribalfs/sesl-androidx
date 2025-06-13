@@ -57,9 +57,7 @@ import androidx.core.widget.ListViewCompat;
 import androidx.reflect.view.SeslHapticFeedbackConstantsReflector;
 
 /**
- * <b>SESL variant</b><br><br>
- *
- * The SwipeRefreshLayout should be used whenever the user can refresh the
+ * (SESL variant) The SwipeRefreshLayout should be used whenever the user can refresh the
  * contents of a view via a vertical swipe gesture. The activity that
  * instantiates this view should add an OnRefreshListener to be notified
  * whenever the swipe to refresh gesture is completed. The SwipeRefreshLayout

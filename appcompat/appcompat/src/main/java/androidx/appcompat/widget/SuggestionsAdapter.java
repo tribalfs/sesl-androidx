@@ -57,9 +57,7 @@ import java.util.List;
 import java.util.WeakHashMap;
 
 /**
- * <p><b>SESL variant.</b></p><br>
- *
- * Provides the contents for the suggestion drop-down list.in {@link SearchView}.
+ * (SESL variant) Provides the contents for the suggestion drop-down list.in {@link SearchView}.
  */
 class SuggestionsAdapter extends ResourceCursorAdapter implements OnClickListener {
     //Sesl

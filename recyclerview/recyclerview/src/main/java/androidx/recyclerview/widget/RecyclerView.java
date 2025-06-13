@@ -162,9 +162,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * <p><b>SESL variant.</b></p><br>
- *
- * A flexible view for providing a limited window into a large data set.
+ * (SESL variant) A flexible view for providing a limited window into a large data set.
  *
  * <h3>Glossary of terms:</h3>
  *
@@ -15721,28 +15719,75 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         }
     }
 
-    //Sesl
+    /**
+     * Interface to receive notifications of the fast scroller events.
+     * Use {@link #seslSetFastScrollerEventListener(SeslFastScrollerEventListener)} to set the listener.
+     */ //Sesl
     public interface SeslFastScrollerEventListener {
         void onPressed(float scrollY);
 
         void onReleased(float scrollY);
     }
 
+    /**
+     * Interface definition for a callback to be invoked when a long-press multi selection events.
+     * @see #seslSetLongPressMultiSelectionListener(SeslLongPressMultiSelectionListener)
+     */
     public interface SeslLongPressMultiSelectionListener {
+        /**
+         * Callback method to be invoked when an item in this view has been
+         * selected.
+         *
+         * @param view The view where the selection happened
+         * @param child The view within the RecyclerView that was clicked
+         * @param position The position of the view in the adapter
+         * @param id The stable id of the item that was clicked or {@link #NO_ID} if not using stable ids.
+         */
         void onItemSelected(@NonNull RecyclerView view, @NonNull View child, int position, long id);
 
+        /**
+         * Called when a long-press multi-selection gesture has ended.
+         *
+         * @param endX The x-coordinate where the gesture ended.
+         * @param endY The y-coordinate where the gesture ended.
+         */
         void onLongPressMultiSelectionEnded(int endX, int endY);
 
+        /**
+         * Called when the long-press multi selection has been started by a long press.
+         *
+         * @param startX the x coordinate where the selection has been started.
+         * @param startY the y coordinate where the selection has been started.
+         */
         void onLongPressMultiSelectionStarted(int startX, int startY);
     }
 
+    /**
+     * Interface definition for a callback to be invoked when the "Go to top" button is clicked.
+     */
     public interface SeslOnGoToTopClickListener {
         boolean onGoToTopClick(@NonNull RecyclerView view);
     }
 
+    /**
+     * Interface definition for a callback to be invoked when a multi-selection event occurs
+     * using either a stylus or mouse input.
+     */
     public interface SeslOnMultiSelectedListener {
+        /**
+         * Called when the selection has been started using a stylus or mouse input.
+         *
+         * @param startX the x coordinate where the selection has been started.
+         * @param startY the y coordinate where the selection has been started.
+         */
         void onMultiSelectStart(int startX, int startY);
 
+        /**
+         * Called when the selection by stylus or mouse input has ended.
+         *
+         * @param endX The x-coordinate where the gesture ended.
+         * @param endY The y-coordinate where the gesture ended.
+         */
         void onMultiSelectStop(int endX, int endY);
 
         void onMultiSelected(@NonNull RecyclerView view, @NonNull View child, int position,
@@ -15753,6 +15798,24 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         return isGoToTopAvailableEnvironment() && mEnableGoToTop;
     }
 
+    /**
+     * Checks if the "Go to Top" feature is available in the current environment.
+     *
+     * <p>The feature is considered unavailable if:
+     * <ul>
+     *   <li>Accessibility services are disabled.</li>
+     *   <li>Any of the following accessibility services are enabled:
+     *     <ul>
+     *       <li>Samsung TalkBack (old and new package names)</li>
+     *       <li>Google TalkBack</li>
+     *       <li>Samsung Universal Switch</li>
+     *     </ul>
+     *   </li>
+     * </ul>
+     * Additionally, the view's height must be greater than {@link #mSeslOverlayFeatureHeight}.
+     *
+     * @return {@code true} if "Go to Top" is available, {@code false} otherwise.
+     */
     private boolean isGoToTopAvailableEnvironment() {
         String string;
         AccessibilityManager accessibilityManager = (AccessibilityManager) getContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
@@ -17255,10 +17318,20 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         return super.onKeyUp(keyCode, event);
     }
 
+    /**
+     * Sets whether pen selection is enabled. True by default.
+     *
+     * @param enabled {@code true} to enable pen selection, {@code false} otherwise.
+     */
     public void seslSetPenSelectionEnabled(boolean enabled) {
         mIsPenSelectionEnabled = enabled;
     }
 
+    /**
+     * Sets the rotation of the pointer icon.
+     *
+     * @param rotation The rotation of the pointer icon in degrees.
+     */
     public void seslSetPointerIconRotation(float rotation) {
         mPointerIconRotation = rotation;
     }

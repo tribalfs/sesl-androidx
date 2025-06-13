@@ -47,7 +47,7 @@ import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 /**
- * <p><b>SESL variant.</b></p><br>
+ * (SESL variant)
  */
 @RestrictTo(LIBRARY_GROUP_PREFIX)
 public final class MenuItemImpl implements SupportMenuItem, SeslMenuItem {

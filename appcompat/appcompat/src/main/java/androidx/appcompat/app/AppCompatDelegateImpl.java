@@ -132,7 +132,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * <p><b>SESL variant</b></p>
+ * (SESL variant)
  */
 @RestrictTo(LIBRARY)
 class AppCompatDelegateImpl extends AppCompatDelegate

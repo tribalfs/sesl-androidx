@@ -78,9 +78,7 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * <p><b>SESL variant.</b></p><br>
- *
- * Layout manager that allows the user to flip left and right
+ * (SESL variant) Layout manager that allows the user to flip left and right
  * through pages of data.  You supply an implementation of a
  * {@link PagerAdapter} to generate the pages that the view shows.
  *

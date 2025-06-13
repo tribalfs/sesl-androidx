@@ -31,9 +31,7 @@ import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 /**
- * <p><b>SESL variant.</b></p><br>
- *
- * Helper class used to emulate the behavior of {@link View#setTooltipText(CharSequence)} prior
+ * (SESL variant) Helper class used to emulate the behavior of {@link View#setTooltipText(CharSequence)} prior
  * to API level 26.
  *
  */

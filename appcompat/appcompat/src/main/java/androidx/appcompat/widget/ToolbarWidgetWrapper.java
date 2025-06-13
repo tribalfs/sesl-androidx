@@ -48,9 +48,7 @@ import androidx.core.view.ViewPropertyAnimatorCompat;
 import androidx.core.view.ViewPropertyAnimatorListenerAdapter;
 
 /**
- * <p><b>SESL variant.</b></p><br>
- *
- * Internal class used to interact with the Toolbar widget without
+ * (SESL variant) Internal class used to interact with the Toolbar widget without
  * exposing interface methods to the public API.
  *
  * <p>ToolbarWidgetWrapper manages the differences between Toolbar and ActionBarView

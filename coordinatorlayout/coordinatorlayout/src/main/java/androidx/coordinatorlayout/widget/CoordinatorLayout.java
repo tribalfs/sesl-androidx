@@ -83,9 +83,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * <p><b>SESL variant.</b></p><br>
- *
- * CoordinatorLayout is a super-powered {@link android.widget.FrameLayout FrameLayout}.
+ * (SESL variant) CoordinatorLayout is a super-powered {@link android.widget.FrameLayout FrameLayout}.
  *
  * <p>CoordinatorLayout is intended for two primary use cases:</p>
  * <ol>

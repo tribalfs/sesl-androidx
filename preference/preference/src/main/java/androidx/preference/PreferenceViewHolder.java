@@ -32,9 +32,7 @@ import androidx.annotation.VisibleForTesting;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
- * <p><b>SESL variant.</b></p><br>
- *
- * A {@link RecyclerView.ViewHolder} class which caches views associated with the default
+ * (SESL variant) A {@link RecyclerView.ViewHolder} class which caches views associated with the default
  * {@link Preference} layouts. Cached views can be retrieved by calling {@link #findViewById(int)}.
  */
 public class PreferenceViewHolder extends RecyclerView.ViewHolder {

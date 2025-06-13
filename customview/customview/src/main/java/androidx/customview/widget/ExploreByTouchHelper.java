@@ -44,9 +44,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * <b>-----------SESL variant-----------<b/><br><br>
- *
- * ExploreByTouchHelper is a utility class for implementing accessibility
+ * (SESL variant) ExploreByTouchHelper is a utility class for implementing accessibility
  * support in custom {@link View}s that represent a collection of View-like
  * logical items. It extends {@link AccessibilityNodeProviderCompat} and
  * simplifies many aspects of providing information to accessibility services

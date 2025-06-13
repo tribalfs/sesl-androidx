@@ -46,7 +46,7 @@ import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 /**
- * <p><b>SESL variant</b></p>
+ * (SESL variant)
  */
 class AppCompatPopupWindow extends PopupWindow {
 

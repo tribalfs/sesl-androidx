@@ -49,9 +49,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
- * <p><b>SESL variant.</b></p><br>
- *
- * <p>Wrapper class for a ListView. This wrapper can hijack the focus to
+ * (SESL variant) Wrapper class for a ListView. This wrapper can hijack the focus to
  * make sure the list uses the appropriate drawables and states when
  * displayed on screen within a drop down. The focus is never actually
  * passed to the drop down in this mode; the list only looks focused.</p>

@@ -37,9 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * <p><b>SESL variant.</b></p><br>
- *
- * An adapter that connects a {@link RecyclerView} to the {@link Preference}s contained in
+ * (SESL variant) An adapter that connects a {@link RecyclerView} to the {@link Preference}s contained in
  * an associated {@link PreferenceGroup}.
  *
  * Used by Settings.

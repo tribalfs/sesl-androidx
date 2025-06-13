@@ -32,8 +32,7 @@ import androidx.annotation.RestrictTo;
 import androidx.core.content.res.TypedArrayUtils;
 
 /**
- * <p><b>SESL variant.</b></p><br>
- * A {@link Preference} that provides checkbox widget functionality.
+ * (SESL variant) A {@link Preference} that provides checkbox widget functionality.
  *
  * <p>This preference saves a boolean value.
  *

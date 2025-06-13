@@ -30,9 +30,7 @@ import androidx.annotation.RestrictTo;
 import androidx.appcompat.R;
 
 /**
- * <p><b></b>SESL variant</b></p><br>
- *
- * Allows components to query for various configuration policy decisions about how the action bar
+ * (SESL variant) Allows components to query for various configuration policy decisions about how the action bar
  * should lay out and behave on the current device.
  *
  */

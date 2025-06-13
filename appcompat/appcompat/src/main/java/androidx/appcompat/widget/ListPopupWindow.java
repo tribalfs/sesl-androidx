@@ -81,9 +81,7 @@ import java.lang.reflect.Method;
 
 
 /**
- * <p><b>SESL variant.</b></p><br>
- *
- * Static library support version of the framework's {@link android.widget.ListPopupWindow}.
+ * (SESL variant) Static library support version of the framework's {@link android.widget.ListPopupWindow}.
  * Used to write apps that run on platforms prior to Android L. When running
  * on Android L or above, this implementation is still used; it does not try
  * to switch to the framework's implementation. See the framework SDK

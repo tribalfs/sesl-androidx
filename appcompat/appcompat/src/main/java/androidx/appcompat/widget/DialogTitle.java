@@ -31,9 +31,7 @@ import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 /**
- * <p><b>SESL variant.</b></p><br>
- *
- * Used by dialogs to change the font size and number of lines to try to fit
+ * (SESL variant) Used by dialogs to change the font size and number of lines to try to fit
  * the text to the available space.
  *
  */

@@ -43,7 +43,7 @@ import androidx.core.view.ViewCompat;
 
 //Added in sesl7
 /**
- * SESL variant of {@link LinearLayoutCompat} that adds support for rounded corners and
+ * (SESL variant) of {@link LinearLayoutCompat} that adds support for rounded corners and
  * recoil animation. The rounded corners can be configured using the {@code seslLayoutRoundedCorner} attribute.
  * The recoil animation effect that provides visual feedback during user interactions such as touch events or key presses.
  *

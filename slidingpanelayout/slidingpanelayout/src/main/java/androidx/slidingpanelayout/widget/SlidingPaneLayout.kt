@@ -216,8 +216,7 @@ internal inline val View.spLayoutParams: SlidingPaneLayout.LayoutParams
     }
 
 /**
- * #### SESL variant.
- * SlidingPaneLayout provides a horizontal, multi-pane layout for use at the top level
+ * (SESL variant) SlidingPaneLayout provides a horizontal, multi-pane layout for use at the top level
  * of a UI. A left (or start) pane is treated as a content list or browser, subordinate to a
  * primary detail view for displaying content.
  *

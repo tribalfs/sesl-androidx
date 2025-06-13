@@ -41,9 +41,7 @@ import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 /**
- * <p><b>SESL variant.</b></p><br>
- *
- * A {@link ImageButton} which supports compatible features on older versions of the platform,
+ * (SESL variant) A {@link ImageButton} which supports compatible features on older versions of the platform,
  * including:
  * <ul>
  *     <li>Allows dynamic tint of its background via the background tint methods in

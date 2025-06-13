@@ -42,9 +42,7 @@ import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 /**
- * <p><b>SESL variant.</b></p><br>
- *
- * Static library support version of the framework's {@link android.widget.PopupMenu}.
+ * (SESL variant) Static library support version of the framework's {@link android.widget.PopupMenu}.
  * Used to write apps that run on platforms prior to Android 3.0.  When running
  * on Android 3.0 or above, this implementation is still used; it does not try
  * to switch to the framework's implementation. See the framework SDK

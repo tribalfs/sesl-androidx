@@ -93,48 +93,80 @@ import java.util.Locale;
  */
 
 /**
- * Samsung ProgressBar class.
+ * SeslProgressBar is a base widget for visualizing and controlling progress, supporting both determinate and indeterminate modes.
  *
- * <p>This class provides a visual indicator of progress in some operation.
- * It provides no user interaction. This can also be made indeterminate.
- * In indeterminate mode, the progress bar shows a cyclic animation without an
- * indication of progress. This mode is used by applications when the length of the
- * task is unknown. The indeterminate progress bar can be either a spinning wheel
- * or a horizontal bar.
+ * <p>
+ * <b>Configurable functionalities (via XML attributes and/or public methods):</b>
+ * <ul>
+ *   <li><b>Progress Range:</b>
+ *     <ul>
+ *       <li>Set minimum and maximum values using {@link #setMin(int)}, {@link #setMax(int)}, or the <code>android:min</code> and <code>android:max</code> XML attributes.</li>
+ *     </ul>
+ *   </li>
+ *   <li><b>Progress Values:</b>
+ *     <ul>
+ *       <li>Set or get the current progress with {@link #setProgress(int)}, {@link #getProgress()}, or <code>android:progress</code>.</li>
+ *       <li>Set or get secondary progress with {@link #setSecondaryProgress(int)}, {@link #getSecondaryProgress()}, or <code>android:secondaryProgress</code>.</li>
+ *     </ul>
+ *   </li>
+ *   <li><b>Indeterminate Mode:</b>
+ *     <ul>
+ *       <li>Enable indeterminate mode with {@link #setIndeterminate(boolean)} or <code>android:indeterminate</code>.</li>
+ *       <li>Customize the indeterminate drawable using {@link #setIndeterminateDrawable(android.graphics.drawable.Drawable)} or <code>android:indeterminateDrawable</code>.</li>
+ *     </ul>
+ *   </li>
+ *   <li><b>Progress Drawable:</b>
+ *     <ul>
+ *       <li>Set the progress drawable with {@link #setProgressDrawable(android.graphics.drawable.Drawable)} or <code>android:progressDrawable</code>.</li>
+ *     </ul>
+ *   </li>
+ *   <li><b>Tinting:</b>
+ *     <ul>
+ *       <li>Apply tint to progress and indeterminate drawables using {@link #setProgressTintList(android.content.res.ColorStateList)}, {@link #setIndeterminateTintList(android.content.res.ColorStateList)}, or <code>android:progressTint</code> and <code>android:indeterminateTint</code> attributes.</li>
+ *     </ul>
+ *   </li>
+ *   <li><b>Dimensions & Style:</b>
+ *     <ul>
+ *       <li>Control size and appearance using <code>android:minWidth</code>, <code>android:maxWidth</code>, <code>android:minHeight</code>, <code>android:maxHeight</code>, and <code>android:style</code> attributes.</li>
+ *     </ul>
+ *   </li>
+ *   <li><b>Accessibility:</b>
+ *     <ul>
+ *       <li>Supports accessibility events and node info customization for assistive technologies.</li>
+ *     </ul>
+ *   </li>
+ *   <li><b>Listener Support:</b>
+ *     <ul>
+ *       <li>Subclasses can register/unregister progress change listeners (e.g., via {@link SeslSeekBar.OnSeekBarChangeListener}).</li>
+ *     </ul>
+ *   </li>
+ * </ul>
  *
- * <p>The following code example shows how to add a progress bar to a layout:
+ * <p>
+ * <b>Common XML attributes:</b>
+ * <ul>
+ *   <li><code>android:min</code>, <code>android:max</code>, <code>android:progress</code>, <code>android:secondaryProgress</code></li>
+ *   <li><code>android:indeterminate</code>, <code>android:indeterminateDrawable</code>, <code>android:progressDrawable</code></li>
+ *   <li><code>android:progressTint</code>, <code>android:indeterminateTint</code></li>
+ *   <li><code>android:minWidth</code>, <code>android:maxWidth</code>, <code>android:minHeight</code>, <code>android:maxHeight</code></li>
+ * </ul>
  *
- * <pre>
- * &lt;ProgressBar
- *     android:id="@+id/progressBar"
- *     style="?android:attr/progressBarStyleHorizontal"
- *     android:layout_width="match_parent"
- *     android:layout_height="wrap_content"
- *     android:max="100"
- *     android:progress="50" /&gt;
- * </pre>
+ * @see SeslSeekBar
+ * @see SeslAbsSeekBar
  *
- * <p>To control the current progress value, use {@link #setProgress(int)}.
- * To control the range of values, use {@link #setMin(int)} and {@link #setMax(int)}.
- * By default, the progress bar is full when progress reaches 100.
- *
- * <p>To show an indeterminate progress animation, use
- * {@link #setIndeterminate(boolean) setIndeterminate(true)}.
- *
- * <p>The progress bar also supports a secondary progress value, which is
- * useful for displaying intermediate progress, such as the buffer level
- * during a streaming media playback. To control the secondary progress
- * value, use {@link #setSecondaryProgress(int)}.
- *
- * <p>For more information, see the
- * <a href="{@docRoot}guide/topics/ui/controls/progress.html">Progress Bar</a>
- * guide.
- *
- * @attr ref android.R.styleable#ProgressBar_animationResolution
- * @attr ref android.R.styleable#ProgressBar_background
- * @attr ref android.R.styleable#ProgressBar_indeterminate
- * @attr ref android.R.styleable#ProgressBar_indeterminateBehavior
- * @attr ref android.R.styleable#ProgressBar_indeterminateDrawable
+ * @attr ref android.R.styleable#ProgressBar_android_min
+ * @attr ref android.R.styleable#ProgressBar_android_max
+ * @attr ref android.R.styleable#ProgressBar_android_progress
+ * @attr ref android.R.styleable#ProgressBar_android_secondaryProgress
+ * @attr ref android.R.styleable#ProgressBar_android_indeterminate
+ * @attr ref android.R.styleable#ProgressBar_android_indeterminateDrawable
+ * @attr ref android.R.styleable#ProgressBar_android_progressDrawable
+ * @attr ref android.R.styleable#ProgressBar_android_progressTint
+ * @attr ref android.R.styleable#ProgressBar_android_indeterminateTint
+ * @attr ref android.R.styleable#ProgressBar_android_minWidth
+ * @attr ref android.R.styleable#ProgressBar_android_maxWidth
+ * @attr ref android.R.styleable#ProgressBar_android_minHeight
+ * @attr ref android.R.styleable#ProgressBar_android_maxHeight
  */
 @RemoteView
 @SuppressLint("RestrictedApi")

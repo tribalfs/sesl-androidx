@@ -48,9 +48,7 @@ import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.NonNull;
 
 /**
- * <p><b>SESL variant.</b></p><br>
- *
- * A popup window displaying a text message aligned to a specified view.
+ * (SESL variant) A popup window displaying a text message aligned to a specified view.
  *
  */
 @RestrictTo(LIBRARY_GROUP_PREFIX)

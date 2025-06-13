@@ -93,9 +93,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * <p><b>SESL variant.</b></p><br>
- *
- * A standard toolbar for use within application content.
+ * (SESL variant) A standard toolbar for use within application content.
  *
  * <p>A Toolbar is a generalization of {@link ActionBar action bars} for use
  * within application layouts. While an action bar is traditionally part of an

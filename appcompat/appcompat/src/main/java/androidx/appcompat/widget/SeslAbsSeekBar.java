@@ -64,22 +64,61 @@ import java.util.List;
  */
 
 /**
- * An abstract class extending {@link SeslProgressBar} that can be used to set a value within a certain range.
- * It provides the basic functionality for a {@link SeekBar}, such as setting the minimum
- * and maximum values, the current progress, and the thumb drawable. This can be customized with
- * different modes, such as standard, warning, vertical, split, expand, expand vertical, and level bar.
- * Each mode provides a different visual appearance and behavior for the SeekBar.
+ * An abstract class extending {@link SeslProgressBar} that provides the foundation for
+ * {@link SeslSeekBar}, allowing users to set and customize a value within a specified range.
  *
- * <p>SeslAbsSeekBar also supports dual color mode, which allows the track to have
- * different colors before and after a certain overlap point. The overlap point
- * can be set using the {@link #setOverlapPointForDualColor(int)} method.
+ * <p>Main functionalities include:</p>
+ * <ul>
+ *   <li><b>Range Control:</b> Set minimum and maximum values using
+ *     {@link #setMin(int)}, {@link #setMax(int)}, or via the
+ *     <code>android:min</code> and <code>android:max</code> attributes.</li>
+ *   <li><b>Progress Control:</b> Set or get the current progress using
+ *     {@link #setProgress(int)}, {@link #getProgress()}, or via the
+ *     <code>android:progress</code> attribute.</li>
+ *   <li><b>Thumb Drawable:</b> Customize the thumb using
+ *     <code>android:thumb</code>, <code>android:thumbOffset</code>,
+ *     <code>android:thumbTint</code>, and <code>android:thumbTintMode</code> attributes,
+ *     or programmatically via {@link #setThumb(Drawable)} and related methods.</li>
+ *   <li><b>Track Appearance:</b> Control track width and mode using
+ *     <code>seslTrackMinWidth</code>, <code>seslTrackMaxWidth</code>,
+ *     <code>seslSeekBarMode</code> attributes, and programmatically via
+ *     {@link #setMode(int)}.</li>
+ *   <li><b>Tick Marks:</b> Customize tick marks using
+ *     <code>android:tickMark</code>, <code>android:tickMarkTint</code>,
+ *     and <code>android:tickMarkTintMode</code> attributes.</li>
+ *   <li><b>Split Track:</b> Enable or disable split track mode using
+ *     <code>android:splitTrack</code> attribute or {@link #setSplitTrack(boolean)}.
+ *     When this is enabled, it separates the active range of track from the inactive range.</li>
+ *   <li><b>Dual Color Mode:</b> Enable dual color track and set the overlap point using
+ *     {@link #setOverlapPointForDualColor(int)}.</li>
+ *   <li><b>Seamless Dragging:</b> Enable seamless thumb movement (higher scale) using
+ *     {@link #setSeamless(boolean)}.</li>
+ *   <li><b>Disabled Alpha:</b> Control disabled alpha using
+ *     <code>useDisabledAlpha</code> and <code>android:disabledAlpha</code> attributes.</li>
+ *   <li><b>Thumb Radius:</b> Set thumb radius using <code>seslThumbRadius</code> attribute.</li>
+ * </ul>
  *
- * <p>SeslAbsSeekBar also supports seamless dragging, which allows the thumb to
- * slide at a higher scale distance when the {@link #setSeamless(boolean)} method
- * is set to true.
+ * <p>Each mode (standard, warning, vertical, split, expand, expand vertical, level bar) provides
+ * a different visual appearance and behavior for the SeekBar, configurable via
+ * <code>seslSeekBarMode</code> attribute (don't use seekBarMode) or {@link #setMode(int)}.</p>
  *
  * @see SeslProgressBar
  * @see SeslSeekBar
+ *
+ * @attr ref androidx.appcompat.R.styleable#AppCompatSeekBar_android_thumb
+ * @attr ref androidx.appcompat.R.styleable#AppCompatSeekBar_android_thumbOffset
+ * @attr ref androidx.appcompat.R.styleable#AppCompatSeekBar_android_thumbTintMode
+ * @attr ref androidx.appcompat.R.styleable#AppCompatSeekBar_android_thumbTint
+ * @attr ref androidx.appcompat.R.styleable#AppCompatSeekBar_tickMark
+ * @attr ref androidx.appcompat.R.styleable#AppCompatSeekBar_tickMarkTintMode
+ * @attr ref androidx.appcompat.R.styleable#AppCompatSeekBar_tickMarkTint
+ * @attr ref androidx.appcompat.R.styleable#AppCompatSeekBar_android_splitTrack
+ * @attr ref androidx.appcompat.R.styleable#AppCompatSeekBar_seslTrackMinWidth
+ * @attr ref androidx.appcompat.R.styleable#AppCompatSeekBar_seslTrackMaxWidth
+ * @attr ref androidx.appcompat.R.styleable#AppCompatSeekBar_seslThumbRadius
+ * @attr ref androidx.appcompat.R.styleable#AppCompatSeekBar_seslSeekBarMode
+ * @attr ref androidx.appcompat.R.styleable#AppCompatSeekBar_useDisabledAlpha
+ * @attr ref androidx.appcompat.R.styleable#AppCompatTheme_android_disabledAlpha
  */
 public abstract class SeslAbsSeekBar extends SeslProgressBar {
     private static final String TAG = "SeslAbsSeekBar";
@@ -489,6 +528,7 @@ public abstract class SeslAbsSeekBar extends SeslProgressBar {
      * the track.
      *
      * @param thumbOffset The offset amount in pixels.
+     * @attr ref androidx.appcompat.R.styleable#AppCompatSeekBar_android_thumbOffset
      */
     public void setThumbOffset(int thumbOffset) {
         mThumbOffset = thumbOffset;
@@ -501,6 +541,7 @@ public abstract class SeslAbsSeekBar extends SeslProgressBar {
      * then the thumb will be drawn into the resulting gap.
      *
      * @param splitTrack Whether the track should be split by the thumb
+     * @attr ref androidx.appcompat.R.styleable#AppCompatSeekBar_android_splitTrack
      */
     public void setSplitTrack(boolean splitTrack) {
         mSplitTrack = splitTrack;
@@ -509,6 +550,7 @@ public abstract class SeslAbsSeekBar extends SeslProgressBar {
 
     /**
      * Returns whether the track should be split by the thumb.
+     * @attr ref androidx.appcompat.R.styleable#AppCompatSeekBar_android_splitTrack
      */
     public boolean getSplitTrack() {
         return mSplitTrack;
@@ -519,6 +561,7 @@ public abstract class SeslAbsSeekBar extends SeslProgressBar {
      * possible thumb position.
      *
      * @param tickMark the drawable to display at each progress position
+     * @attr ref androidx.appcompat.R.styleable#AppCompatSeekBar_tickMark
      */
     public void setTickMark(Drawable tickMark) {
         if (mTickMark != null) {
@@ -541,6 +584,7 @@ public abstract class SeslAbsSeekBar extends SeslProgressBar {
 
     /**
      * @return the drawable displayed at each progress position
+     * @attr ref androidx.appcompat.R.styleable#AppCompatSeekBar_tickMark
      */
     public Drawable getTickMark() {
         return mTickMark;

@@ -69,9 +69,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 /**
- * <p><b>SESL variant.</b></p><br>
- *
- * MenuPresenter for building action menus as seen in the action bar and action modes.
+ * (SESL variant) MenuPresenter for building action menus as seen in the action bar and action modes.
  */
 class ActionMenuPresenter extends BaseMenuPresenter
         implements ActionProvider.SubUiVisibilityListener {

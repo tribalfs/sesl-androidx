@@ -52,9 +52,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * <b>SESL variant</b><br><br>
- *
- * Drawable that renders the animated indeterminate progress indicator in the Material design style
+ * (SESL variant) Drawable that renders the animated indeterminate progress indicator in the Material design style
  * without depending on API level 11.
  *
  * <p>To use one of the pre-defined sizes instead of using your own, {@link #setStyle(int)} should
