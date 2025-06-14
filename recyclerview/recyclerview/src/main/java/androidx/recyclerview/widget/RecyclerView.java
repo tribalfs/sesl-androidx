@@ -302,7 +302,6 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
     private static final int MOTION_EVENT_ACTION_PEN_MOVE = 213;
     private static final int MOTION_EVENT_ACTION_PEN_UP = 212;
     private static final int MSG_HOVERSCROLL_MOVE = 0;
-    private static final int STATISTICS_MAX_COUNT = 5;
     Rect mChildBound = new Rect();
     final View mCloseChildByTop = null;
     final View mCloseChildByBottom = null;
@@ -328,7 +327,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
     protected View mPenTrackedChild = null;
     private final Paint mRectPaint = new Paint();
     private final SeslSubheaderRoundedCorner mRoundedCorner;
-    float mApproxLatency = 0f;
+    float mFrameLatency = 0f;
     int mAnimatedBlackTop = -1;
     int mBlackTop = -1;
     private int mGoToTopBottomPadding;
@@ -362,12 +361,10 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
     private final int[] mRecyclerViewOffsets = new int[2];
     int mRemainNestedScrollRange = 0;
     int mShowFadeOutGTP = 0;
-    private int mStatisticalCount = 0;
     private int mTouchSlop2 = 0;
     private final int[] mWindowOffsets = new int[2];
     long mHoverRecognitionStartTime = 0;
     long mHoverScrollStartTime = 0;
-    private long mPrevLatencyTime;
     private boolean mDrawLastRoundedCorner = true;
     private boolean mDrawRect = false;
     private boolean mDrawReverse = false;
@@ -2043,11 +2040,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
 
     @Override
     protected Parcelable onSaveInstanceState() {
-        //Sesl
-        mApproxLatency = 0;
-        mStatisticalCount = 0;
-        mIsNeedCheckLatency = false;
-        //sesl
+        mIsNeedCheckLatency = true;//sesl
         SavedState state = new SavedState(super.onSaveInstanceState());
         if (mPendingSavedState != null) {
             state.copyFrom(mPendingSavedState);
@@ -4149,13 +4142,19 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
 
                 // break 60 fps assumption if data from display appears valid
                 // NOTE: we only do this query once, statically, because it's very expensive (> 1ms)
-                Display display = ViewCompat.getDisplay(this);
+                Display display = getDisplay();
                 float refreshRate = 60.0f;
                 if (!isInEditMode() && display != null) {
                     float displayRefreshRate = display.getRefreshRate();
                     if (displayRefreshRate >= 30.0f) {
                         refreshRate = displayRefreshRate;
                     }
+                    //Sesl
+                    if (mIsNeedCheckLatency) {
+                        mFrameLatency = 1000.0f / refreshRate;
+                        mIsNeedCheckLatency = false;
+                    }
+                    //sesl
                 }
                 mGapWorker.mFrameIntervalNs = (long) (1000000000 / refreshRate);
                 GapWorker.sGapWorker.set(mGapWorker);
@@ -4769,6 +4768,9 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
                 if (!((xvel != 0 || yvel != 0) && fling((int) xvel, (int) yvel))) {
                     setScrollState(SCROLL_STATE_IDLE);
                 }
+                Log.i("SeslRecyclerView", "onTouchUp() velocity : " + yvel + ","
+                        + " last move skip : " + mIsSkipMoveEvent + "(" + mFrameLatency + "),"
+                        + " use scroller : " + mViewFlinger.mOverScroller.getClass().getName());
                 resetScroll();
             }
             break;
@@ -6021,21 +6023,14 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         }
 
         //Sesl
-        if (mStatisticalCount <= STATISTICS_MAX_COUNT && mIsNeedCheckLatency) {
-            if (mStatisticalCount != 0) {
-                float currentTimeMillis = (float) (System.currentTimeMillis()
-                        - mPrevLatencyTime);
-                final float prevLatency = mApproxLatency;
-                if (currentTimeMillis > FRAME_LATENCY_LIMIT) {
-                    currentTimeMillis = FRAME_LATENCY_LIMIT;
-                }
-                mApproxLatency = prevLatency + currentTimeMillis;
+        if (mIsNeedCheckLatency) {
+            Display display = getDisplay();
+            if (display != null) {
+                mFrameLatency = 1000.0f / display.getRefreshRate();
+            } else {
+                mFrameLatency = FRAME_LATENCY_LIMIT;
             }
-            mPrevLatencyTime = System.currentTimeMillis();
-            if (mStatisticalCount == STATISTICS_MAX_COUNT) {
-                mApproxLatency /= 5.0f;
-            }
-            mStatisticalCount += 1;
+            mIsNeedCheckLatency = false;
         }
         //sesl
     }
@@ -7023,7 +7018,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
             }
             SeslOverScrollerReflector.fling(mOverScroller, 0, 0, velocityX, velocityY,
                     Integer.MIN_VALUE, Integer.MAX_VALUE, Integer.MIN_VALUE, Integer.MAX_VALUE,
-                    mIsSkipMoveEvent, mApproxLatency);//sesl
+                    mIsSkipMoveEvent, mFrameLatency);//sesl
             postOnAnimation();
         }
 
