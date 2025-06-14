@@ -6033,6 +6033,12 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
             mIsNeedCheckLatency = false;
         }
         //sesl
+
+        //Sesl7
+        if (mFastScroller != null) {
+            mFastScroller.updateLayout();
+        }
+        //sesl7
     }
 
     @Override
