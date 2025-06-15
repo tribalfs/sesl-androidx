@@ -2087,7 +2087,8 @@ class SeslRecyclerViewFastScroller {
 
     //Custom
     private void enableDummyBackCallback(boolean enable){
-        if (Build.VERSION.SDK_INT >= 33) {
+        //Workaround not anymore needed in Android 15,
+        if (Build.VERSION.SDK_INT >= 33 && Build.VERSION.SDK_INT < 35) {
             if (mOnBackInvokedDispatcher == null) {
                 mOnBackInvokedDispatcher = mRecyclerView.findOnBackInvokedDispatcher();
             }
