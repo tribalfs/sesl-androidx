@@ -66,6 +66,48 @@ import java.text.DateFormatSymbols;
 import java.util.Locale;
 
 
+/**
+ * A custom view that allows users to select a bedtime and wakeup time using a circular seek bar.
+ * It displays the selected times and the calculated sleep duration.
+ *
+ * <p>The picker provides visual feedback and animations as the user interacts with the seek bar.
+ * It also supports different time formats (12-hour or 24-hour) based on the device's settings.
+ *
+ * <p>Key features:
+ * <ul>
+ *     <li>Circular seek bar for intuitive time selection.</li>
+ *     <li>Display of bedtime, wakeup time, and sleep duration.</li>
+ *     <li>Animations for selecting and unselecting time icons.</li>
+ *     <li>Support for 12-hour and 24-hour time formats.</li>
+ *     <li>Haptic feedback during time adjustments.</li>
+ *     <li>Customizable sleep duration formatting.</li>
+ *     <li>Ability to set and display a sleep goal.</li>
+ *     <li>Handles configuration changes and instance state saving/restoring.</li>
+ * </ul>
+ *
+ * <p>To use this picker, add it to your layout XML and interact with it programmatically.
+ * You can set initial bed and wakeup times, listen for time changes, and customize its appearance.
+ *
+ * <p>Example usage in XML:
+ * <pre>{@code
+ * <com.samsung.android.widget.SeslSleepTimePicker
+ *     android:id="@+id/sleep_time_picker"
+ *     android:layout_width="match_parent"
+ *     android:layout_height="wrap_content" />
+ * }</pre>
+ *
+ * <p>Example usage in Java:
+ * <pre>{@code
+ * SeslSleepTimePicker sleepTimePicker = findViewById(R.id.sleep_time_picker);
+ * sleepTimePicker.setBedTimeInMinute(1320); // 10:00 PM
+ * sleepTimePicker.setWakeUpTimeInMinute(420); // 7:00 AM
+ * sleepTimePicker.setOnSleepTimeChangeListener(new SeslSleepTimePicker.OnSleepTimeChangedListener() {
+ *     @Override
+ *     public void onSleepTimeChanged(float bedTimeInMinutes, float wakeupTimeInMinutes) {
+ *         // Handle time changes
+ *     }
+ *
+ */
 public class SeslSleepTimePicker extends LinearLayout {
 
     private static final String TAG = "SleepTimePicker";
@@ -158,6 +200,12 @@ public class SeslSleepTimePicker extends LinearLayout {
         int format(float bedTime, float wakeupTime);
     }
 
+    /**
+     * Constructs a new SeslSleepTimePicker instance.
+     *
+     * @param context The context for the picker.
+     * @param attributeSet The attribute set for the picker, or null if not specified.
+     */
     public SeslSleepTimePicker(@NonNull Context context, @Nullable AttributeSet attributeSet) {
         super(context, attributeSet);
 
@@ -903,6 +951,12 @@ public class SeslSleepTimePicker extends LinearLayout {
         this.mOnSleepTimeChangedListener = onSleepTimeChangedListener;
     }
 
+    /**
+     * Sets the {@link SleepDurationFormatter} to be used for formatting the sleep duration string.
+     * The default formatter displays the duration in hours and minutes.
+     *
+     * @param sleepDurationFormatter The {@link SleepDurationFormatter} to use. Must not be null.
+     */
     public void setSleepDurationFormatter(@NonNull SleepDurationFormatter sleepDurationFormatter) {
         durationFormatter = sleepDurationFormatter;
     }
@@ -911,6 +965,14 @@ public class SeslSleepTimePicker extends LinearLayout {
         TextViewCompat.setTextAppearance(mSleepDuration, style);
     }
 
+    /**
+     * Sets the sleep goal display on the picker.
+     * This will show a visual representation of the sleep goal on the circular seek bar
+     * and display the duration of the sleep goal.
+     *
+     * @param sleepTimeMinutes The start time of the sleep goal in minutes from midnight (0-1439).
+     * @param wakeupTimeMinutes The end time of the sleep goal in minutes from midnight (0-1439).
+     */
     public void setSleepGoal(float sleepTimeMinutes, float wakeupTimeMinutes) {
         TextView textView = findViewById(R.id.sleep_goal_text_id);
         textView.setVisibility(View.VISIBLE);

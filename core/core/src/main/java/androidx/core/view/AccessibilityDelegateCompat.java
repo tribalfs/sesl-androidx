@@ -48,7 +48,7 @@ import java.util.List;
  */
 
 /**
- * Helper for accessing {@link AccessibilityDelegate}.
+ * (SESL Variant) Helper for accessing {@link AccessibilityDelegate}.
  * <p>
  * <strong>Note:</strong> On platform versions prior to
  * {@link Build.VERSION_CODES#M API 23}, delegate methods on

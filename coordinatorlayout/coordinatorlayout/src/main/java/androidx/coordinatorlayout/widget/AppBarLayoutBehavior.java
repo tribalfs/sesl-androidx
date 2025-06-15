@@ -21,9 +21,23 @@ package androidx.coordinatorlayout.widget;
  */
 
 public interface AppBarLayoutBehavior {
+    /**
+     * Returns whether the {@link com.google.android.material.appbar.AppBarLayout} is collapsed.
+     */
     boolean seslIsCollapsed();
 
+    /**
+     * Sets whether the AppBarLayout is expanded or not.
+     *
+     * @param expanded True if the AppBarLayout should be expanded, false otherwise.
+     */
     void seslSetExpanded(boolean expanded);
 
+    /**
+     * Sets whether the current interaction is from a mouse.
+     * This affects how the AppBarLayout behaves, especially in terms of drag sensitivity.
+     *
+     * @param isMouse {@code true} if the interaction is from a mouse, {@code false} otherwise.
+     */
     void seslSetIsMouse(boolean isMouse);
 }

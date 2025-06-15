@@ -47,7 +47,8 @@ import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 /**
- * (SESL variant)
+ *(SESL variant) Represents a single item in a menu. This class is the implementation of the {@link SupportMenuItem } and {@link SeslMenuItem }
+ * interfaces.
  */
 @RestrictTo(LIBRARY_GROUP_PREFIX)
 public final class MenuItemImpl implements SupportMenuItem, SeslMenuItem {
@@ -899,13 +900,29 @@ public final class MenuItemImpl implements SupportMenuItem, SeslMenuItem {
         return mTooltipText;
     }
 
-    //Sesl
+    /**
+     * Retrieves the badge text for this menu item.
+     * <p>A badge is a small descriptor over the icon of the menu item.
+     *
+     * @return The badge text. Null if no badge is set.
+     * @see #setBadgeText(String)
+     */ //Sesl
     @Nullable
     @Override
     public String getBadgeText() {
         return mBadgeText;
     }
 
+    /**
+     * Sets the badge text for this menu item.
+     * <p>Badges will appear as a small circle, or a rounded rectangle for
+     * text, next to the menu item. The appearance may differ depending
+     * on its presenter's implementation.
+     *
+     * @param badgeText The text to show in the badge, or {@code null} to remove it.
+     * @see #getBadgeText()
+     * @see MenuBuilder#setShortcutsVisible(boolean)
+     */
     @Override
     public void setBadgeText(@Nullable String badgeText) {
         if (mBadgeText == null || !mBadgeText.equals(badgeText)) {

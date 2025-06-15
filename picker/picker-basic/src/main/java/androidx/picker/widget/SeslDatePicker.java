@@ -97,7 +97,46 @@ import java.util.Locale;
  * Original code by Samsung, all rights reserved to the original author.
  */
 
-/** @noinspection unused*/
+/**
+ * A custom date picker widget for selecting dates, supporting both standard and lunar calendars.
+ * <p>
+ * The {@code SeslDatePicker} provides a user interface for date selection, allowing users to pick
+ * a year, month, and day. It supports various configurations, including minimum and maximum date
+ * constraints, and can be customized for different locales and calendar systems.
+ * </p>
+ * <p>
+ * This widget is designed to be used within Android applications that require date input from users.
+ * It integrates with accessibility services and provides support for custom fonts, animations, and
+ * Samsung-specific features such as lunar calendar conversion.
+ * </p>
+ *
+ * <h3>Features:</h3>
+ * <ul>
+ *   <li>Standard and lunar calendar support</li>
+ *   <li>Customizable appearance and font</li>
+ *   <li>Minimum and maximum date constraints</li>
+ *   <li>Accessibility support</li>
+ *   <li>Locale-aware formatting</li>
+ *   <li>Samsung-specific enhancements</li>
+ * </ul>
+ *
+ * <h3>Usage Example:</h3>
+ * <pre>
+ * {@code
+ * SeslDatePicker datePicker = new SeslDatePicker(context);
+ * datePicker.setMinDate(minDateInMillis);
+ * datePicker.setMaxDate(maxDateInMillis);
+ * datePicker.init(year, month, day, new SeslDatePicker.OnDateChangedListener() {
+ *     public void onDateChanged(SeslDatePicker view, int year, int monthOfYear, int dayOfMonth) {
+ *         // Handle date change
+ *     }
+ * });
+ * }
+ * </pre>
+ *
+ * @see android.widget.DatePicker
+ * @see SeslDatePicker.OnDateChangedListener
+ */
 public class SeslDatePicker extends LinearLayout
         implements SeslSimpleMonthView.OnDayClickListener,
         View.OnClickListener,

@@ -32,6 +32,15 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.lang.reflect.Method;
 
+/**
+ * A specialized {@link GradientDrawable} that enables smooth corners by default.
+ *
+ * <p>This class extends {@link GradientDrawable} and, during inflation, attempts to invoke
+ * a hidden API ({@code setSmoothCorner(true)}) to enable smooth corner rendering.
+ * If the API is not available on the current platform, a warning is logged.
+ *
+ * <p>This class is intended for use on API level 23 and above.
+ */
 @RequiresApi(api = 23)
 public class SeslShapeDrawable extends GradientDrawable {
     static final String TAG = "SeslShapeDrawable";

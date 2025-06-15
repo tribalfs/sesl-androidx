@@ -29,9 +29,8 @@ import androidx.core.content.res.use
 import androidx.slidingpanelayout.R
 
 /**
- * **---------------------SESL-----------------------**
- *
- * A container layout that sets on top of the view tree z order
+ * (SESL) A container layout that sits on top of the view tree z-order.
+ * It is used to host an action mode toolbar.
  */
 class SPLToolbarContainer @JvmOverloads constructor(
     context: Context,

@@ -24,6 +24,27 @@ import android.view.animation.PathInterpolator;
 
 import androidx.annotation.NonNull;
 
+/**
+ * Provides reveal animation for the {@link SeslCircularSeekBarView}.
+ *
+ * <p>This class manages the animation that reveals the circular seek bar,
+ * typically when it first becomes visible or when its content changes significantly.
+ * It uses a {@link ValueAnimator} to smoothly transition the reveal effect.
+ *
+ * <p>The animation progresses from 0.0f to 1.0f, where these values represent
+ * the completion state of the reveal. The associated {@link SeslCircularSeekBarView}
+ * is updated at each animation step to redraw itself based on the current reveal value.
+ *
+ * <p>Key properties of the animation include:
+ * <ul>
+ *     <li>Duration: {@link #REVEAL_ANIMATION_DURATION} (800 milliseconds)
+ *     <li>Interpolator: A {@link PathInterpolator} with control points (0.22f, 0.25f, 0.0f, 1.0f)
+ *         for a custom easing effect.
+ * </ul>
+ *
+ * <p>The class also tracks the state of the animation (whether it's currently running)
+ * via the {@code mIsRevealAnimation} flag.
+ */
 public  final class SeslCircularSeekBarRevealAnimation {
 
     private static final long REVEAL_ANIMATION_DURATION = 800;
@@ -34,7 +55,7 @@ public  final class SeslCircularSeekBarRevealAnimation {
 
     final PathInterpolator mAniInterpolator = new PathInterpolator(0.22f, 0.25f, 0.0f, 1.0f);
 
-    public SeslCircularSeekBarRevealAnimation(@NonNull View view) {
+        public SeslCircularSeekBarRevealAnimation(@NonNull View view) {
         if (view instanceof SeslCircularSeekBarView) {
             mView = (SeslCircularSeekBarView) view;
         }

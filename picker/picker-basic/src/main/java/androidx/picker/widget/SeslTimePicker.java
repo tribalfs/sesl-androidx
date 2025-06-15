@@ -40,7 +40,43 @@ import androidx.picker.util.SeslAnimationListener;
 
 import java.util.Locale;
 
-/*
+/**
+ * A widget for selecting a time of day, in either 24-hour or AM/PM mode.
+ *
+ * <p>For a dialog using SeslTimePicker, see {@link android.app.TimePickerDialog}.
+ *
+ * <p>The view is a {@link FrameLayout} that contains a {@link SeslTimePickerSpinnerDelegate}.
+ * The delegate is responsible for rendering and handling the user interaction with the
+ * time picker.
+ *
+ * <p>The time picker supports two modes: spinner and clock. The spinner mode allows the user
+ * to select the time by scrolling through the hour and minute pickers. The clock mode allows
+ * the user to select the time by tapping on the clock face.
+ *
+ * <p>The time picker also supports 24-hour and 12-hour (AM/PM) formats. The format can be
+ * set using the {@link #setIs24HourView(Boolean)} method.
+ *
+ * <p>The time picker can be configured to display the time in 5-minute intervals using the
+ * {@link #set5MinuteInterval(boolean)} method.
+ *
+ * <p>The time picker can be enabled or disabled using the {@link #setEnabled(boolean)} method.
+ *
+ * <p>The time picker provides two listeners for handling time changes:
+ * {@link OnTimeChangedListener} and {@link OnEditTextModeChangedListener}.
+ * The {@link OnTimeChangedListener} is called when the user changes the time.
+ * The {@link OnEditTextModeChangedListener} is called when the user switches between
+ * spinner and edit text mode.
+ *
+ * <p>The time picker can be customized by setting the text size and typeface of the number
+ * pickers using the {@link #setNumberPickerTextSize(int, float)} and
+ * {@link #setNumberPickerTextTypeface(int, Typeface)} methods.
+ *
+ * <p>The time picker supports saving and restoring its state using the
+ * {@link #onSaveInstanceState()} and {@link #onRestoreInstanceState(Parcelable)} methods.
+ *
+ * <p>The time picker supports accessibility by providing a delegate for handling
+ * accessibility events.
+ */ /*
  * Original code by Samsung, all rights reserved to the original author.
  */
 public class SeslTimePicker extends FrameLayout {

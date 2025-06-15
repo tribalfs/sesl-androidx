@@ -3527,10 +3527,21 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         return e.getToolType(0) == MotionEvent.TOOL_TYPE_MOUSE;
     }
 
+    /**
+     * Sets the last nested scrolling child view.
+     *
+     * @param view The child view that initiated the nested scroll.
+     */
     public void seslSetNestedScrollingChild(View view) {
         mLastNestedScrollingChild = view;
     }
 
+    /**
+     * Enables or disables whether certain key events will trigger automatic collapsing of the AppBarLayout.
+     * These keys include tab, up, down, left, and right arrow keys. This is set to true by default.
+     *
+     * @param enable {@code true} to enable auto-collapsing key event handling, {@code false} to disable.
+     */
     public void seslEnableAutoCollapsingKeyEvent(boolean enable) {
         mEnableAutoCollapsingKeyEvent = enable;
     }

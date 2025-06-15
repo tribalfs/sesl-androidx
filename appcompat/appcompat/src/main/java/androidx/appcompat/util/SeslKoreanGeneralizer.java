@@ -25,7 +25,50 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 
-/*
+/**
+ * Utility class for naturalizing Korean text by selecting the correct Josa (postpositional particles)
+ * based on the preceding character.
+ *
+ * <p>Korean Josa are grammatical particles that follow nouns or pronouns and indicate their
+ * grammatical function. The form of a Josa often changes depending on whether the preceding
+ * character ends with a consonant (Jongseong) or a vowel.
+ *
+ * <p>This class provides a method {@link #naturalizeText(String)} that takes a Korean string
+ * containing Josa placeholders (e.g., "사과(이)가 맛있다" - "apple(이가) is delicious") and
+ * replaces them with the grammatically correct Josa.
+ *
+ * <p>The class handles various Josa pairs like:
+ * <ul>
+ *   <li>은(는) / (은)는
+ *   <li>이(가) / (이)가
+ *   <li>을(를) / (을)를
+ *   <li>와(과) / (와)과
+ *   <li>아(야) / (아)야
+ *   <li>(이)여
+ *   <li>(으)로
+ *   <li>(이)라
+ *   <li>(이에)예 / 이에(예)
+ *   <li>(이었)였 / 이었(였)
+ *   <li>(이)네
+ * </ul>
+ *
+ * <p>It also considers special pronunciation rules for certain symbols and numbers when
+ * determining the appropriate Josa.
+ *
+ * <p><b>Example Usage:</b>
+ * <pre>{@code
+ * SeslKoreanGeneralizer generalizer = new SeslKoreanGeneralizer();
+ * String inputText = "삼성(와)과 애플(이)가 경쟁한다.";
+ * String naturalizedText = generalizer.naturalizeText(inputText);
+ * // naturalizedText will be "삼성과 애플이 경쟁한다."
+ *
+ * String inputText2 = "레벨(으)로";
+ * String naturalizedText2 = generalizer.naturalizeText(inputText2);
+ * // naturalizedText2 will be "레벨로"
+ *
+ * String inputText3 = "1(은)는 홀수이다.";
+ * String naturalizedText3 = generalizer.naturalizeText(inputText3);
+ */ /*
  * Original code by Samsung, all rights reserved to the original author.
  */
 public class SeslKoreanGeneralizer {

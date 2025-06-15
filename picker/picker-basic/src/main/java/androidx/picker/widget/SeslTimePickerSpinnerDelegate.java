@@ -68,6 +68,9 @@ import java.util.Locale;
 /*
  * Original code by Samsung, all rights reserved to the original author.
  */
+/**
+ * A delegate for a {@link SeslTimePicker} that shows spinners for hour, minute, and AM/PM.
+ */
 class SeslTimePickerSpinnerDelegate extends SeslTimePicker.AbsTimePickerDelegate {
     private static final String TAG = "SeslTimePickerSpinner";
     private static final boolean DEBUG = false;

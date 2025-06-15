@@ -55,6 +55,35 @@ import androidx.picker.R;
 import androidx.picker.util.SeslSleepTimePickerUtil;
 
 
+/**
+ * A custom view that displays a circular seek bar with two pointers and a progress arc.
+ * Users can interact with the pointers to set a range, and the progress arc visually represents
+ * this range. It also supports a "sleep goal wheel" feature, which is an additional arc
+ * indicating a target range.
+ *
+ * <p>This view allows customization of various visual aspects such as colors, stroke widths,
+ * and pointer styles. It provides callbacks for tracking progress changes and touch events.
+ *
+ * <p>Key features:
+ * <ul>
+ *   <li>Two draggable pointers (bedtime and wakeup time).
+ *   <li>A progress arc connecting the two pointers.
+ *   <li>Customizable colors for pointers, progress, and background circle.
+ *   <li>Optional "sleep goal wheel" to display a target range.
+ *   <li>Haptic feedback for certain interactions.
+ *   <li>Callbacks for progress changes and touch events via {@link OnCircularSeekBarChangeListener}.
+ *   <li>Reveal animation for the progress arc.
+ * </ul>
+ *
+ * <p>Usage typically involves:
+ * <ol>
+ *   <li>Adding {@code SeslCircularSeekBarView} to your layout XML.
+ *   <li>Setting attributes in XML or programmatically to customize its appearance.
+ *   <li>Implementing {@link OnCircularSeekBarChangeListener} to respond to user interactions.
+ *   <li>Optionally, using methods like {@link #setSleepGoalWheel(float, float)} to enable and
+ *       configure the sleep goal wheel.
+ * </ol>
+ */
 public class SeslCircularSeekBarView extends View {
 
     public interface OnCircularSeekBarChangeListener {

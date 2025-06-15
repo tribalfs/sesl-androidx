@@ -52,9 +52,29 @@ import java.util.Locale;
  */
 
 /**
- * Samsung Rounded Corners class.
+ * Utility class for managing and drawing rounded corners.
+ * This class provides methods to set which corners should be rounded,
+ * the color of the rounded corners, and to draw these corners on a Canvas.
+ *
+ * <p>It defines constants for specifying different combinations of rounded corners:
+ * <ul>
+ *   <li>{@link #ROUNDED_CORNER_NONE}: No corners are rounded.
+ *   <li>{@link #ROUNDED_CORNER_TOP_LEFT}: Only the top-left corner is rounded.
+ *   <li>{@link #ROUNDED_CORNER_TOP_RIGHT}: Only the top-right corner is rounded.
+ *   <li>{@link #ROUNDED_CORNER_BOTTOM_LEFT}: Only the bottom-left corner is rounded.
+ *   <li>{@link #ROUNDED_CORNER_BOTTOM_RIGHT}: Only the bottom-right corner is rounded.
+ *   <li>{@link #ROUNDED_CORNER_ALL}: All four corners are rounded.
+ * </ul>
+ * </p>
+ *
+ * <p>The class also includes a nested {@link SeslRoundedChunkingDrawable} class,
+ * which is a {@link Drawable} responsible for rendering a single rounded corner.
+ * </p>
+ *
+ * <p><b>Note:</b> The implementation details of how the rounded corners are drawn,
+ * including the use of Bezier curves and scaling factors, are handled internally.
+ * </p>
  */
-//@RequiresApi(api = 23)
 public class SeslRoundedCorner {
     public static final int ROUNDED_CORNER_ALL = 15;
     public static final int ROUNDED_CORNER_BOTTOM_LEFT = 4;
@@ -150,6 +170,19 @@ public class SeslRoundedCorner {
         mBottomRightRound = new SeslRoundedChunkingDrawable(mRoundRadius, paint, 180f);
     }
 
+    /**
+     * Sets the rounded corners to be drawn.
+     *
+     * @param corners A bitmask of the corners to be rounded.
+     *                Use {@link #ROUNDED_CORNER_NONE} for no rounded corners,
+     *                {@link #ROUNDED_CORNER_TOP_LEFT} for the top-left corner,
+     *                {@link #ROUNDED_CORNER_TOP_RIGHT} for the top-right corner,
+     *                {@link #ROUNDED_CORNER_BOTTOM_LEFT} for the bottom-left corner,
+     *                {@link #ROUNDED_CORNER_BOTTOM_RIGHT} for the bottom-right corner,
+     *                or {@link #ROUNDED_CORNER_ALL} for all corners.
+     *                You can also combine these flags using the bitwise OR operator.
+     * @throws IllegalArgumentException if an invalid corner value is provided.
+     */
     public void setRoundedCorners(int corners) {
         if ((corners & (-16 )) == 0) {
             mRoundedCornerMode = corners;
@@ -159,10 +192,29 @@ public class SeslRoundedCorner {
         }
     }
 
+    /**
+     * Returns the current rounded corner mode.
+     *
+     * @return The current rounded corner mode, which can be one of
+     *         {@link #ROUNDED_CORNER_NONE}, {@link #ROUNDED_CORNER_TOP_LEFT},
+     *         {@link #ROUNDED_CORNER_TOP_RIGHT}, {@link #ROUNDED_CORNER_BOTTOM_LEFT},
+     *         {@link #ROUNDED_CORNER_BOTTOM_RIGHT}, or {@link #ROUNDED_CORNER_ALL}.
+     */
     public int getRoundedCorners() {
         return mRoundedCornerMode;
     }
 
+    /**
+     * Sets the color for the specified rounded corners.
+     *
+     * @param corners A bitmask of the corners to set the color for.
+     *                Use constants like {@link #ROUNDED_CORNER_TOP_LEFT},
+     *                {@link #ROUNDED_CORNER_TOP_RIGHT}, etc., or {@link #ROUNDED_CORNER_ALL}
+     *                to set all corners.
+     * @param color   The color to set for the specified corners.
+     * @throws IllegalArgumentException if {@code corners} is {@link #ROUNDED_CORNER_NONE}
+     *                                  or if an invalid corner value is provided.
+     */
     public void setRoundedCornerColor(int corners, @ColorInt int color) {
         if (corners == ROUNDED_CORNER_NONE) {
             throw new IllegalArgumentException("There is no rounded corner on = " + this);
@@ -190,6 +242,16 @@ public class SeslRoundedCorner {
         }
     }
 
+    /**
+     * Retrieves the color of a specific rounded corner.
+     *
+     * @param corner The corner to get the color from. Must be one of
+     *               {@link #ROUNDED_CORNER_TOP_LEFT}, {@link #ROUNDED_CORNER_TOP_RIGHT},
+     *               {@link #ROUNDED_CORNER_BOTTOM_LEFT}, or {@link #ROUNDED_CORNER_BOTTOM_RIGHT}.
+     * @return The color of the specified rounded corner.
+     * @throws IllegalArgumentException if the corner is {@link #ROUNDED_CORNER_NONE} or an
+     *                                  invalid corner value.
+     */
     @ColorInt
     public int getRoundedCornerColor(int corner) {
         if (corner == ROUNDED_CORNER_NONE) {
@@ -213,11 +275,23 @@ public class SeslRoundedCorner {
         return mBottomRightRoundColor;
     }
 
+    /**
+     * Retrieves the radius of the rounded corners.
+     *
+     * @return The radius of the rounded corners in pixels.
+     * @hide
+     */
     @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP_PREFIX})
     public int getRoundedCornerRadius() {
         return mRoundRadius;
     }
 
+    /**
+     * Draws the rounded corners on the given canvas.
+     * The bounds for drawing are obtained from the canvas's clip bounds.
+     *
+     * @param canvas The canvas to draw on. Must not be null.
+     */
     public void drawRoundedCorner(@NonNull Canvas canvas) {
         canvas.getClipBounds(mRoundedCornerBounds);
         drawRoundedCornerInternal(canvas);
@@ -406,6 +480,12 @@ public class SeslRoundedCorner {
         return i >= TYPE_FIRST_COLOR_INT && i <= TYPE_LAST_COLOR_INT;
     }
 
+    /**
+     * Draws the rounded corners for the given view.
+     *
+     * @param view The view to draw the rounded corners for.
+     * @param canvas The canvas to draw on.
+     */
     public void drawRoundedCorner(@NonNull View view, @NonNull Canvas canvas) {
         int left;
         int top;
@@ -421,6 +501,28 @@ public class SeslRoundedCorner {
         drawRoundedCornerInternal(canvas);
     }
 
+    /**
+     * Represents a drawable for rendering a rounded corner "chunk" or segment.
+     * This class is responsible for drawing a single rounded corner with a specified radius,
+     * paint, and rotation angle. It utilizes path manipulation to create smooth corner
+     * effects.
+     *
+     * <p>The drawable can be configured with a specific corner radius, a {@link Paint} object
+     * to define its appearance (color, style, etc.), and an angle to rotate the corner.
+     * This allows for drawing individual rounded corners at different orientations, which can
+     * then be combined to form more complex rounded shapes.
+     *
+     * <p>Key functionalities include:
+     * <ul>
+     *     <li>Generating a {@link Path} for a smooth rounded rectangle corner.
+     *     <li>Drawing the rounded corner onto a {@link Canvas}.
+     *     <li>Handling opacity, alpha, and color filter changes.
+     *     <li>Calculating and applying appropriate scaling and transformations to the corner path.
+     * </ul>
+     *
+     * <p>This class is typically used internally by {@link SeslRoundedCorner} to manage
+     * and draw the individual corners of a rounded rectangle.
+     */
     public static class SeslRoundedChunkingDrawable extends Drawable {
         private final float mAngle;
         private final Paint mPaint;
@@ -565,11 +667,24 @@ public class SeslRoundedCorner {
         }
     }
 
+    /**
+     * Draws the rounded corners on the given canvas with the specified insets.
+     *
+     * @param canvas The canvas to draw on.
+     * @param insets The insets to apply to the rounded corners. If null, no insets are applied.
+     */
     public void drawRoundedCorner(@NonNull Canvas canvas, @Nullable Insets insets) {
         mInsets = insets;
         drawRoundedCorner(canvas);
     }
 
+    /**
+     * Draws the rounded corners onto the provided canvas.
+     * The corners are drawn within the bounds specified by the rect parameter.
+     *
+     * @param rect The rectangular bounds within which the rounded corners will be drawn.
+     * @param canvas The canvas on which to draw the rounded corners.
+     */
     public void drawRoundedCorner(@NonNull Rect rect, @NonNull Canvas canvas) {
         mRoundedCornerBounds.set(rect);
         drawRoundedCornerInternal(canvas);

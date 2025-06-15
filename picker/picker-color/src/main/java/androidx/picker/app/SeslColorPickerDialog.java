@@ -33,6 +33,15 @@ import androidx.picker.widget.SeslColorPicker;
 /*
  * Original code by Samsung, all rights reserved to the original author.
  */
+/**
+ * A dialog that shows a {@link SeslColorPicker}.
+ *
+ * It has a title, positive and negative buttons and all the dialog themes are supported.
+ *
+ * Use {@link SeslColorPickerDialog#SeslColorPickerDialog(Context, OnColorSetListener, int, int[])}
+ * to create an instance with the initial color.
+ * The {@link OnColorSetListener} is called only when the positive button is clicked.
+ */
 public class SeslColorPickerDialog extends AlertDialog
         implements DialogInterface.OnClickListener {
     private static final String TAG = "SeslColorPickerDialog";
@@ -108,15 +117,31 @@ public class SeslColorPickerDialog extends AlertDialog
         }
     }
 
+    /**
+     * Returns the {@link SeslColorPicker} instance used by this dialog.
+     */
     public SeslColorPicker getColorPicker() {
         return mColorPicker;
     }
 
+    /**
+     * Sets the new color.
+     *
+     * <p>This sets the new color in the ColorPicker and updates the
+     * ColorPicker layout.
+     *
+     * @param newColor The new color.
+     */
     public void setNewColor(Integer newColor) {
         mColorPicker.getRecentColorInfo().setNewColor(newColor);
         mColorPicker.updateRecentColorLayout();
     }
 
+    /**
+     * Sets whether the transparency control (opacity bar) is enabled or not.
+     *
+     * @param enabled {@code true} to enable the transparency control, {@code false} to disable it.
+     */
     public void setTransparencyControlEnabled(boolean enabled) {
         mColorPicker.setOpacityBarEnabled(enabled);
     }

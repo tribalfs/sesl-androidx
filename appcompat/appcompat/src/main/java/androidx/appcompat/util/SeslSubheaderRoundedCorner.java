@@ -30,7 +30,13 @@ import androidx.annotation.RestrictTo;
  */
 
 /**
- * Samsung Subheader Rounded Corners class.
+ * Provides rounded corners for subheaders.
+ *
+ * This class extends {@link SeslRoundedCorner} to implement rounded corners specifically
+ * for subheader elements. It handles the drawing of rounded corners based on the view's position and dimensions.
+ *
+ * The rounded corners can be applied to any combination of the four corners (top-left,
+ * top-right, bottom-left, bottom-right) as specified by the `mRoundedCornerMode` flag.
  */
 public class SeslSubheaderRoundedCorner extends SeslRoundedCorner {
     private static final String TAG = "SeslSubheaderRoundedCorner";

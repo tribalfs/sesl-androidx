@@ -153,8 +153,13 @@ public class ViewDragHelper {
 
     private @NonNull Interpolator mInterpolator;
 
-    //sesl
-    private boolean mIsUpdateOffsetLR = true;
+    /**
+     * Whether to update the left/right offset of the captured view during dragging and settling.
+     * When false, only the top/bottom offset will be updated. This is useful for views
+     * that handle horizontal scrolling independently.
+     * Default is true.
+     */
+    private boolean mIsUpdateOffsetLR = true;//sesl
 
     /**
      * A Callback is used as a communication channel with the ViewDragHelper back to the
@@ -388,6 +393,16 @@ public class ViewDragHelper {
     }
 
     //Sesl
+    /**
+     * Factory method to create a new ViewDragHelper.
+     * This method also disables {@link #mIsUpdateOffsetLR}
+     *
+     * @param forParent Parent view to monitor
+     * @param sensitivity Multiplier for how sensitive the helper should be about detecting
+     *                    the start of a drag. Larger values are more sensitive. 1.0f is normal.
+     * @param cb Callback to provide information and receive events
+     * @return a new ViewDragHelper instance
+     */
     @NonNull
     public static ViewDragHelper seslCreate(@NonNull ViewGroup forParent, float sensitivity,
             @NonNull Callback cb) {
@@ -397,6 +412,16 @@ public class ViewDragHelper {
         return helper;
     }
 
+    /**
+     * Sets whether to update the left and right offsets of the captured view during dragging and settling.
+     * <p>By default, this is true. Set to false if you want to prevent the view from moving
+     * horizontally while dragging or settling (e.g., if you are handling horizontal movement separately).
+     *
+     * @param update {@code true} to update left/right offsets during dragging and settling.
+     *               {@code false} to prevent horizontal movement.
+     * @see #continueSettling(boolean)
+     * @see #dragTo(int, int, int, int)
+     */
     public void seslSetUpdateOffsetLR(boolean update) {
         mIsUpdateOffsetLR = update;
     }

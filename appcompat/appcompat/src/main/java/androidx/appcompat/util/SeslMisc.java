@@ -36,6 +36,13 @@ import androidx.appcompat.R;
  */
 @RestrictTo(LIBRARY_GROUP_PREFIX)
 public class SeslMisc {
+    /**
+     * Returns whether the current theme is the default theme.
+     *
+     * @param context The Context to use.
+     * @return True if the current theme is the default theme, false if a custom theme is applied.
+     * Always returns true on non-oneui device.
+     */
     public static boolean isDefaultTheme(@NonNull Context context) {
         return TextUtils.isEmpty(Settings.System.getString(context.getContentResolver(), "current_sec_active_themepackage"));
     }

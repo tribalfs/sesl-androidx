@@ -18,12 +18,37 @@ package androidx.appcompat.util.theme.resource
 import android.content.Context
 import androidx.appcompat.util.SeslMisc
 
+/**
+ * Abstract class representing a theme-dependent color resource.
+ *
+ * This class provides a framework for defining colors that adapt to the current theme (light/dark)
+ * and potentially to whether a default or custom theme (on a One UI device) is active.
+ *
+ * It contains the following nested classes to handle specific color resource scenarios:
+ * - [ResourceColor]
+ * - [OpenThemeResourceColor]
+ * - [ThemeResourceColor]
+ */
 abstract class SeslThemeResourceColor private constructor() {
 
+    /** The base class for all theme-dependent color resources. */
     abstract class ResourceColor {
         abstract fun getColor(context: Context): Int
     }
 
+    /**
+     * Represents a color that has different definitions for default and custom themes
+     * (on a One UI device).
+     *
+     * This class allows specifying different color resources for the default theme and
+     * for any other "open" (custom) theme. The appropriate color will be chosen at runtime
+     * based on the currently active theme.
+     *
+     * @property defaultThemeResource The [ThemeResourceColor] to be used when the default
+     *  theme is active.
+     * @property openThemeResource The [ThemeResourceColor] to be used when a custom
+     *  theme is active. This applies to One UI devices only.
+     */
     data class OpenThemeResourceColor(
         val defaultThemeResource: ThemeResourceColor,
         val openThemeResource: ThemeResourceColor
@@ -58,6 +83,17 @@ abstract class SeslThemeResourceColor private constructor() {
         }
     }
 
+    /**
+     * Data class encapsulating alternative color resources for light and dark themes.
+     *
+     * This class holds resource IDs for colors to be used in light and dark themes.
+     * It extends [ResourceColor] and provides a concrete implementation for retrieving
+     * the appropriate color resource ID based on the current theme (light or dark).
+     *
+     * @property lightThemeResId The resource ID of the color to be used in a light theme.
+     * @property darkThemeResId The resource ID of the color to be used in a dark theme.
+     *                          Defaults to [lightThemeResId] if not specified.
+     */
     data class ThemeResourceColor @JvmOverloads constructor(
         val lightThemeResId: Int,
         val darkThemeResId: Int = lightThemeResId

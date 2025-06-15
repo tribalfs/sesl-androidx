@@ -32,24 +32,61 @@ import androidx.annotation.RestrictTo;
  * Samsung Animation class with predefined interpolators.
  */
 public class SeslAnimationUtils {
-    @SuppressLint("NewApi")
-    public static final Interpolator SINE_IN_OUT_70 =
+    /**
+     * An interpolator that uses a sine curve for an ease-in-out effect with a 70% in/out ratio.
+     *
+     * <p>The control points for this interpolator are (0.33, 0.0) and (0.3, 1.0).</p>
+     */
+     public static final Interpolator SINE_IN_OUT_70 =
             new PathInterpolator(0.33f, 0.0f, 0.3f, 1.0f);
-    @SuppressLint("NewApi")
+
+    /**
+     * An interpolator that uses a sine curve for an ease-in-out effect with a 80% in/out ratio.
+     * This creates an animation with higher acceleration towards the middle and higher deceleration towards the end
+     * when compared to SINE_IN_OUT_70.
+     *
+     * <p>The control points for this interpolator are (0.33, 0.0) and (0.2, 1.0).</p>
+     */
     public static final Interpolator SINE_IN_OUT_80 =
             new PathInterpolator(0.33f, 0.0f, 0.2f, 1.0f);
-    @SuppressLint("NewApi")
+
+    /**
+     * An interpolator that uses a sine curve for an ease-in-out effect with a 90% in/out ratio.
+     * This creates an animation with higher acceleration towards the middle and higher deceleration towards the end
+     * when compared to SINE_IN_OUT_80.
+     *
+     * <p>The control points are (0.33, 0.0) and (0.1, 1.0).
+     */
     public static final Interpolator SINE_IN_OUT_90 =
             new PathInterpolator(0.33f, 0.0f, 0.1f, 1.0f);
-    @SuppressLint("NewApi")
+
+    /**
+     * An interpolator that uses a sine curve for an ease-out effect with a 90% out ratio.
+     * This creates an animation that accelerates rapidly at the beginning and decelerates as it approaches the end.
+     *
+     * <p>The control points are (0.17, 17.0) and (0.2, 1.0).
+     */
     public static final Interpolator SINE_OUT_80 =
             new PathInterpolator(0.17f, 0.17f, 0.2f, 1.0f);
-    @SuppressLint("NewApi")
+
+    /**
+     * An interpolator that uses a sine curve for an ease-out effect with a 70% out ratio.
+     * This makes animation with less rapid acceleration and deceleration when compared to SINE_OUT_80.
+     *
+     * <p>The control points are (0.17, 17.0) and (0.3, 1.0).
+     */
     public static final Interpolator SINE_OUT_70 =
             new PathInterpolator(0.17f, 0.17f, 0.3f, 1.0f);
+
+    /**
+     * Interpolator for elastic animation with 40% tension.
+     */
     @RestrictTo(LIBRARY_GROUP_PREFIX)
     public static final Interpolator ELASTIC_40 =
             new SeslElasticInterpolator(1.0f, 0.8f);
+    /**
+     * Interpolator for elastic animation with 50% tension.
+     */
     @RestrictTo(LIBRARY_GROUP_PREFIX)
     public static final Interpolator ELASTIC_50 =
             new SeslElasticInterpolator(1.0f, 0.7f);

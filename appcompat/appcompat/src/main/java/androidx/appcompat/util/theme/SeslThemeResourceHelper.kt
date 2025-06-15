@@ -21,6 +21,14 @@ import androidx.appcompat.util.theme.resource.SeslThemeResourceColor
 import androidx.appcompat.util.theme.resource.SeslThemeResourceDrawable
 import androidx.core.content.ContextCompat
 
+/**
+ * Helper class for retrieving theme resources.
+ *
+ * This object provides utility methods to get color integers and drawables based on the current
+ * theme context and predefined theme resource identifiers. It simplifies the process of accessing
+ * theme-dependent resources, ensuring that the correct resources are loaded according to the
+ * active theme.
+ */
 object SeslThemeResourceHelper {
         fun getColorInt(
             context: Context,

@@ -34,7 +34,37 @@ import androidx.core.view.ViewCompat;
  */
 
 /**
- * Samsung Button shapes helper class.
+ * Helper class for implementing the Samsung "Show button shapes" feature.
+ *
+ * <p>This class assists in dynamically changing the background of a View based on the
+ * "show_button_background" system setting. It allows specifying different drawables
+ * for when the setting is enabled or disabled.</p>
+ *
+ * <p>Usage:
+ * <pre>
+ * {@code
+ * SeslShowButtonShapesHelper helper = new SeslShowButtonShapesHelper(
+ *     myButton,
+ *     ContextCompat.getDrawable(getContext(), R.drawable.button_background_on),
+ *     ContextCompat.getDrawable(getContext(), R.drawable.button_background_off)
+ * );
+ * helper.updateButtonBackground(); // Initial update
+ *
+ * // To listen for changes in the setting (optional, but recommended for dynamic updates):
+ * ContentObserver observer = new ContentObserver(new Handler()) {
+ *     @Override
+ *     public void onChange(boolean selfChange) {
+ *         helper.updateButtonBackground();
+ *     }
+ * };
+ * getContentResolver().registerContentObserver(
+ *     Settings.Global.getUriFor("show_button_background"),
+ *     false,
+ *     observer
+ * );
+ * }
+ * </pre>
+ * </p>
  */
 @RestrictTo(LIBRARY_GROUP_PREFIX)
 public class SeslShowButtonShapesHelper {
