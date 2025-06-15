@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  Copyright 2025 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+    <declare-styleable name="SeslAppPickerView">
+        <attr name="appPickerContextClass" format="string" />
+        <attr name="pickerApp_subHeaderType">
+            <enum name="solid" value="0" />
+            <enum name="transparent" value="1" />
+        </attr>
+        <attr name="seslRoundedCorner">
+            <flag name="none" value="0x0" />
+            <flag name="top_left" value="0x1" />
+            <flag name="top_right" value="0x2" />
+            <flag name="bottom_left" value="0x4" />
+            <flag name="bottom_right" value="0x8" />
+            <flag name="all" value="0xf" />
+        </attr>
+        <!--
+          Fully qualified path of the concrete `Strategy` class
+          for the creation and management of different UI View.
+
+          Predefined implementation options:
+            - @string/app_item_strategy_class
+              (see androidx.picker.controller.strategy.AppItemStrategy)
+            - @string/all_select_strategy_class
+              (see androidx.picker.controller.strategy.AllSelectStrategy)
+            - @string/limited_select_strategy_class
+              (see androidx.picker.controller.strategy.LimitedSelectStrategy)
+            - @string/single_select_strategy_class
+              (see androidx.picker.controller.strategy.SingleSelectStrategy)
+        -->
+        <attr name="strategy" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="SeslAppPickerListView">
+        <!-- Custom implementation of ComposableStrategy -->
+        <attr name="customStrategyClass" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="SeslAppPickerSelectLayout">
+        <!--Defines the layout orientation behavior of the selected app list.-->
+        <attr name="layoutType">
+            <!--The selected app list location is resolved  based on
+            the device's current orientation to either port or land.-->
+            <enum name="auto" value="0" />
+            <!--Shows the selected app list on the top of the primary app list. -->
+            <enum name="port" value="1" />
+            <!--Shows the selected app list on the left of the primary app list.-->
+            <enum name="land" value="2" />
+        </attr>
+
+    </declare-styleable>
+</resources>

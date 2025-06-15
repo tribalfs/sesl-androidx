@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:background="?android:listChoiceBackgroundIndicator"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="?android:listPreferredItemHeight"
+    android:paddingStart="@dimen/picker_app_list_padding_start"
+    android:paddingEnd="@dimen/picker_app_list_padding_end"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:gravity="start|center"
+        android:orientation="horizontal"
+        android:id="@id/left_frame"
+        android:visibility="gone"
+        android:layout_width="@dimen/picker_app_list_left_frame_width"
+        android:layout_height="fill_parent" />
+
+    <LinearLayout
+        android:gravity="start|center"
+        android:id="@id/icon_frame"
+        android:layout_width="@dimen/picker_app_list_icon_frame_width"
+        android:layout_height="fill_parent">
+
+        <ImageView
+            android:id="@id/icon"
+            android:layout_width="@dimen/picker_app_list_icon_frame_icon_size"
+            android:layout_height="@dimen/picker_app_list_icon_frame_icon_size"
+            android:scaleType="fitXY"
+            android:contentDescription="@null" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0.0dip"
+        android:layout_height="fill_parent"
+        android:layout_weight="1.0">
+
+        <LinearLayout
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical"
+            android:id="@id/title_frame"
+            android:paddingTop="@dimen/picker_app_list_padding_top"
+            android:paddingBottom="@dimen/picker_app_list_padding_bottom"
+            android:layout_width="0.0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0">
+
+            <TextView
+                android:textAppearance="?android:textAppearanceListItem"
+                android:ellipsize="end"
+                android:id="@id/title"
+                android:fadingEdge="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true" />
+
+            <TextView
+                android:textAppearance="?android:textAppearanceListItemSecondary"
+                android:textColor="?android:textColorSecondary"
+                android:id="@id/summary"
+                android:visibility="gone"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="viewStart" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:id="@id/widget_frame"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent" />
+    </LinearLayout>
+</LinearLayout>

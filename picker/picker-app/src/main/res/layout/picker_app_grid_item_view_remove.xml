@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:gravity="center_horizontal"
+    android:id="@+id/item"
+    android:background="@drawable/picker_app_grid_background"
+    android:layout_width="@dimen/picker_app_grid_item_view_title_width"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@id/icon"
+        android:focusable="false"
+        android:clickable="false"
+        android:layout_width="@dimen/picker_app_grid_icon_size"
+        android:layout_height="@dimen/picker_app_grid_icon_size"
+        android:layout_marginTop="@dimen/picker_app_grid_item_view_icon_layout_margin_top"
+        android:layout_marginBottom="@dimen/picker_app_grid_item_view_icon_layout_margin_bottom"
+        android:scaleType="centerCrop"
+        android:importantForAccessibility="no"
+        app:layout_constraintBottom_toTopOf="@id/title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <include
+        android:layout_width="0.0dip"
+        android:layout_height="0.0dip"
+        app:layout_constraintBottom_toBottomOf="@id/icon"
+        app:layout_constraintEnd_toEndOf="@id/icon"
+        app:layout_constraintStart_toStartOf="@id/icon"
+        app:layout_constraintTop_toTopOf="@id/icon"
+        layout="@layout/picker_app_item_skeleton_app_icon" />
+
+    <ImageView
+        android:id="@id/sub_icon"
+        android:focusable="false"
+        android:clickable="false"
+        android:layout_width="@dimen/picker_app_grid_sub_icon_size"
+        android:layout_height="@dimen/picker_app_grid_sub_icon_size"
+        app:layout_constraintBottom_toBottomOf="@id/icon"
+        app:layout_constraintEnd_toEndOf="@id/icon" />
+
+    <ImageView
+        android:id="@+id/remove_icon"
+        android:background="@drawable/picker_app_ic_app_list_remove_mtrl"
+        android:focusable="false"
+        android:visibility="gone"
+        android:clickable="false"
+        android:layout_width="@dimen/picker_app_check_width"
+        android:layout_height="@dimen/picker_app_check_width"
+        android:layout_marginLeft="@dimen/picker_app_grid_item_view_remove_icon_layout_margin"
+        android:layout_marginTop="@dimen/picker_app_grid_item_view_remove_icon_layout_margin"
+        app:layout_constraintStart_toStartOf="@id/icon"
+        app:layout_constraintTop_toTopOf="@id/icon" />
+
+    <TextView
+        android:textSize="@dimen/picker_app_grid_icon_title_size"
+        android:textColor="@color/picker_app_grid_item_view_remove_text_color"
+        android:ellipsize="end"
+        android:gravity="center_horizontal"
+        android:id="@id/title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="2"
+        android:lines="2"
+        android:layout_below="@id/icon_layout"
+        android:importantForAccessibility="no"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/icon" />
+</androidx.constraintlayout.widget.ConstraintLayout>

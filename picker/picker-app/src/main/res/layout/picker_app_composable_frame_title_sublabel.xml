@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="@dimen/picker_app_list_sub_label_height"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:textAppearance="?android:textAppearanceListItem"
+        android:ellipsize="end"
+        android:id="@id/title"
+        android:fadingEdge="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        app:layout_constraintBottom_toTopOf="@id/summary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:textAppearance="?android:textAppearanceListItemSecondary"
+        android:textColor="?android:textColorSecondary"
+        android:ellipsize="end"
+        android:id="@id/summary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:textAlignment="viewStart"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/extra_label"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title" />
+
+    <TextView
+        android:ellipsize="end"
+        android:layout_gravity="center_vertical"
+        android:id="@id/extra_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxWidth="74.0dip"
+        android:singleLine="true"
+        android:paddingStart="12.0dip"
+        app:layout_constraintBottom_toBottomOf="@id/summary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/summary" />
+</androidx.constraintlayout.widget.ConstraintLayout>
