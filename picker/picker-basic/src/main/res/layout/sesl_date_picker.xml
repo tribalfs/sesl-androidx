@@ -16,6 +16,7 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/sesl_date_picker_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -25,7 +26,7 @@
     <RelativeLayout
         android:id="@+id/sesl_date_picker_calendar_header_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/sesl_date_picker_calendar_header_height"
+        android:layout_height="wrap_content"
         android:layout_gravity="center">
 
         <RelativeLayout
@@ -42,38 +43,52 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/sesl_date_picker_calendar_view_margin"
-                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:background="?android:selectableItemBackgroundBorderless"
                 android:contentDescription="@string/sesl_date_picker_decrement_month"
                 android:src="@drawable/sesl_date_picker_prev"
                 android:tint="@color/sesl_date_picker_button_tint_color_light" />
 
             <LinearLayout
-                android:id="@+id/sesl_date_picker_calendar_header_text_spinner_layout"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_centerVertical="true"
-                android:background="@drawable/sesl_date_picker_header_background"
+                android:layout_toEndOf="@+id/sesl_date_picker_calendar_header_prev_button"
+                android:layout_toStartOf="@+id/sesl_date_picker_calendar_header_next_button"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:paddingLeft="@dimen/sesl_date_picker_calendar_header_layout_padding_left"
-                android:paddingRight="@dimen/sesl_date_picker_calendar_header_layout_padding_right">
+                app:seslLayoutRoundedCorner="corner_none">
 
-                <TextView
-                    android:id="@+id/sesl_date_picker_calendar_header_text"
-                    style="@style/CalendarHeaderText"
+                <LinearLayout
+                    android:id="@+id/sesl_date_picker_calendar_header_text_spinner_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
+                    android:background="@drawable/sesl_date_picker_header_background"
                     android:gravity="center"
-                    android:textSize="@dimen/sesl_date_picker_calendar_header_month_text_size" />
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/sesl_date_picker_calendar_header_layout_padding_left"
+                    android:paddingRight="@dimen/sesl_date_picker_calendar_header_layout_padding_right">
 
-                <View
-                    android:id="@+id/sesl_date_picker_calendar_header_spinner"
-                    android:layout_width="@dimen/sesl_date_picker_calendar_header_spinner_width"
-                    android:layout_height="@dimen/sesl_date_picker_calendar_header_spinner_height"
-                    android:layout_gravity="center"
-                    android:background="@drawable/sesl_date_picker_header_spinner" />
+                    <TextView
+                        android:id="@+id/sesl_date_picker_calendar_header_text"
+                        style="@style/CalendarHeaderText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:maxLines="2"
+                        android:minHeight="@dimen/sesl_date_picker_calendar_header_height"
+                        android:textSize="@dimen/sesl_date_picker_calendar_header_month_text_size" />
+
+                    <View
+                        android:id="@+id/sesl_date_picker_calendar_header_spinner"
+                        android:layout_width="@dimen/sesl_date_picker_calendar_header_spinner_width"
+                        android:layout_height="@dimen/sesl_date_picker_calendar_header_spinner_height"
+                        android:layout_gravity="center"
+                        android:background="@drawable/sesl_date_picker_header_spinner" />
+                </LinearLayout>
             </LinearLayout>
 
             <ImageButton
