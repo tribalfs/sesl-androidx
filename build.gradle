@@ -17,10 +17,10 @@ import org.jetbrains.dokka.gradle.DokkaTask
  */
 
 plugins {
-    id("com.android.application") version '8.7.1' apply false
-    id("com.android.library") version '8.7.1' apply true
-    id("org.jetbrains.kotlin.android") version "2.0.21" apply true
-    id("org.jetbrains.dokka") version "1.9.20" apply true
+    id("com.android.application") version '8.7.3' apply false
+    id("com.android.library") version '8.7.3' apply true
+    id("org.jetbrains.kotlin.android") version "2.1.21" apply true
+    id("org.jetbrains.dokka") version "2.0.0" apply true
 }
 
 apply from: new File("manifest.gradle")
@@ -105,8 +105,9 @@ subprojects {
                         remoteLineSuffix.set("#L")
                     }
                 }
-                suppressInheritedMembers.set(true)
             }
+            suppressInheritedMembers.set(true)
+            suppressObviousFunctions.set(true)
         }
     }
 }
