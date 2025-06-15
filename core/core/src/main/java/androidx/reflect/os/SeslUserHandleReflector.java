@@ -21,7 +21,9 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP_PREFIX;
 import android.os.Build;
 import android.os.UserHandle;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
+import androidx.reflect.DeviceInfo;
 import androidx.reflect.SeslBaseReflector;
 
 import java.lang.reflect.Method;
@@ -54,4 +56,19 @@ public class SeslUserHandleReflector {
 
         return 0;
     }
+
+    @Nullable
+    public static UserHandle of(int i) {
+        if (DeviceInfo.isOneUI()) {
+            Method method = SeslBaseReflector.getMethod(mClass, "semOf", Integer.TYPE);
+            if (method != null) {
+                Object invoke = SeslBaseReflector.invoke(null, method, i);
+                if (invoke instanceof UserHandle) {
+                    return (UserHandle) invoke;
+                }
+            }
+        }
+        return null;
+    }
+
 }
