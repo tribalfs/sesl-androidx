@@ -16060,10 +16060,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         mScrollbarTopPadding = dimensionPixelOffset;
         mScrollbarBottomPadding = dimensionPixelOffset;
         updateScrollbarVerticalPadding();
-        SeslRecyclerViewFastScroller seslRecyclerViewFastScroller = this.mFastScroller;
-        if (seslRecyclerViewFastScroller != null) {
-            seslRecyclerViewFastScroller.setScrollBarStyle(getScrollBarStyle());
-        }
+        updateFastScrollerStyle(getScrollBarStyle());
         requestLayout();
     }
 
@@ -18426,5 +18423,17 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         return clickableView;
     }
 
+    @Override
+    public void setScrollBarStyle(int style) {
+        super.setScrollBarStyle(style);
+        updateFastScrollerStyle(style); //sesl7
+    }
+
+    private void updateFastScrollerStyle(int style){
+        SeslRecyclerViewFastScroller fastScroller = mFastScroller;
+        if (fastScroller != null) {
+            fastScroller.setScrollBarStyle(style);
+        }
+    }
     //sesl
 }
