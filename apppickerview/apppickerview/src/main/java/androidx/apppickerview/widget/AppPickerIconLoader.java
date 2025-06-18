@@ -31,7 +31,7 @@ import androidx.reflect.app.SeslApplicationPackageManagerReflector;
 /*
  * Original code by Samsung, all rights reserved to the original author.
  */
-
+@Deprecated
 public class AppPickerIconLoader {
     private static final String THREAD_NAME = "AppPickerIconLoader";
     private PackageManager mPackageManager;

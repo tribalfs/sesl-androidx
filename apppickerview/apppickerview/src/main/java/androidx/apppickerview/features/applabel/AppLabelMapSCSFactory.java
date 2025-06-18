@@ -26,7 +26,7 @@ import androidx.apppickerview.features.applabel.AbstractAppLabelMapFactory;
 /*
  * Original code by Samsung, all rights reserved to the original author.
  */
-
+@Deprecated
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class AppLabelMapSCSFactory extends AppLabelMapBixbyFactory {
     public final String TAG;

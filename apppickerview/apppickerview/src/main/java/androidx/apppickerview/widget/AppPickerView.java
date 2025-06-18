@@ -62,6 +62,7 @@ import java.util.List;
  * Original code by Samsung, all rights reserved to the original author.
  */
 
+@Deprecated
 public class AppPickerView extends RecyclerView
         implements RecyclerView.RecyclerListener {
     private static final String TAG = "AppPickerView";

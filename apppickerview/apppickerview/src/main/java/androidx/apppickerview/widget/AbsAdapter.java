@@ -53,7 +53,7 @@ import java.util.StringTokenizer;
 /*
  * Original code by Samsung, all rights reserved to the original author.
  */
-
+@Deprecated
 @RestrictTo(LIBRARY_GROUP_PREFIX)
 public abstract class AbsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         implements Filterable, SectionIndexer {

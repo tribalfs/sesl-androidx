@@ -40,7 +40,7 @@ import java.util.List;
 /*
  * Original code by Samsung, all rights reserved to the original author.
  */
-
+@Deprecated
 @RestrictTo(LIBRARY_GROUP_PREFIX)
 class DataManager {
     private static final String TAG = "DataManager";

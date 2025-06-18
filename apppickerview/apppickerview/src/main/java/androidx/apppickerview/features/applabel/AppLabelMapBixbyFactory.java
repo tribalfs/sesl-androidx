@@ -31,7 +31,7 @@ import java.util.Map;
 /*
  * Original code by Samsung, all rights reserved to the original author.
  */
-
+@Deprecated
 @RequiresApi(api = Build.VERSION_CODES.O)
 public abstract class AppLabelMapBixbyFactory extends AbstractAppLabelMapFactory {
     public final String TAG = "AppLabelMapBixbyFactory";
