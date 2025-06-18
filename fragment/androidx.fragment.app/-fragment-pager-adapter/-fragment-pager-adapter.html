@@ -25,37 +25,69 @@
 <link href="../../../styles/prism.css" rel="Stylesheet">
 <link href="../../../styles/logo-styles.css" rel="Stylesheet">
 <link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
 <script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
 <script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
 <script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
 <script type="text/javascript" src="../../../scripts/main.js" defer></script>
 <script type="text/javascript" src="../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script>
 <script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
 <body>
     <div class="root">
-<nav class="navigation" id="navigation-wrapper">
-    <div class="navigation--inner">
-        <div class="navigation-title">
-            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
-            <div class="library-name">
+    <nav class="navigation theme-dark" id="navigation-wrapper">
 <a class="library-name--link" href="../../../index.html">
-                            sesl.androidx
-                    </a>            </div>
-            <div class="library-version">
+                    sesl.androidx
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+        </div>
+        <div class="navigation-controls">
+        <div class="filter-section filter-section_loading" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":fragment:dokkaHtmlPartial/release">androidJvm</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
+                    <div class="dropdown--header"><span>Platform filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":fragment:dokkaHtmlPartial/release" data-filter=":fragment:dokkaHtmlPartial/release">
+                                <span class="checkbox--icon"></span>
+                                androidJvm
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
             </div>
         </div>
-        <div class="filter-section" id="filter-section">
-                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":fragment:dokkaHtmlPartial/release">androidJvm</button>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
         </div>
-    </div>
-    <div class="navigation-controls">
-        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
-        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
-    </div>
-</nav>
+    </nav>
         <div id="container">
             <div class="sidebar" id="leftColumn">
-                <div class="sidebar--inner" id="sideMenu"></div>
+                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox">
+                        <div class="dropdown--header">
+                            <span>
+                                    sesl.androidx
+                            </span>
+                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                            </button>
+                        </div>
+                        <div class="sidebar--inner" id="sideMenu"></div>
+                    </ul>
+                    <div class="dropdown--overlay"></div>
+                </div>
             </div>
             <div id="main">
 <div class="main-content" data-page-type="member" id="content" pageids="fragment::androidx.fragment.app/FragmentPagerAdapter/FragmentPagerAdapter/#androidx.fragment.app.FragmentManager#int/PointingToDeclaration//-1409073277">
@@ -63,14 +95,20 @@
   <div class="cover ">
     <h1 class="cover"><span>Fragment</span><wbr><span>Pager</span><wbr><span><span>Adapter</span></span></h1>
   </div>
-  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fragment:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>fm<span class="token operator">: </span><a href="../-fragment-manager/index.html">FragmentManager</a><span class="token punctuation">, </span></span><span class="parameter ">behavior<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><p class="paragraph">Constructor for <a href="index.html">FragmentPagerAdapter</a>. If <a href="-b-e-h-a-v-i-o-r_-r-e-s-u-m-e_-o-n-l-y_-c-u-r-r-e-n-t_-f-r-a-g-m-e-n-t.html">BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT</a> is passed in, then only the current Fragment is in the <a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/Lifecycle.State.html#RESUMED">RESUMED</a> state. All other fragments are capped at <a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/Lifecycle.State.html#STARTED">STARTED</a>. If <a href="-b-e-h-a-v-i-o-r_-s-e-t_-u-s-e-r_-v-i-s-i-b-l-e_-h-i-n-t.html">BEHAVIOR_SET_USER_VISIBLE_HINT</a> is passed, all fragments are in the <a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/Lifecycle.State.html#RESUMED">RESUMED</a> state and there will be callbacks to <a href="../-fragment/set-user-visible-hint.html">setUserVisibleHint</a>.</p><h4 class="">Parameters</h4><div class="table"><div class="table-row" data-filterable-current=":fragment:dokkaHtmlPartial/release" data-filterable-set=":fragment:dokkaHtmlPartial/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>fm</span></span></u></div></span></div><div><div class="title"><p class="paragraph">fragment manager that will interact with this adapter</p></div></div></div></div><div class="table-row" data-filterable-current=":fragment:dokkaHtmlPartial/release" data-filterable-set=":fragment:dokkaHtmlPartial/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>behavior</span></span></u></div></span></div><div><div class="title"><p class="paragraph">determines if only current fragments are in a resumed state</p></div></div></div></div></div><hr><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>fm<span class="token operator">: </span><a href="../-fragment-manager/index.html">FragmentManager</a></span></span><span class="token punctuation">)</span></div><div class="deprecation-content"><h3 class="">Deprecated</h3></div><p class="paragraph">Constructor for <a href="index.html">FragmentPagerAdapter</a> that sets the fragment manager for the adapter. This is the equivalent of calling <a href="-fragment-pager-adapter.html">FragmentPagerAdapter</a> and passing in <a href="-b-e-h-a-v-i-o-r_-s-e-t_-u-s-e-r_-v-i-s-i-b-l-e_-h-i-n-t.html">BEHAVIOR_SET_USER_VISIBLE_HINT</a>. </p><p class="paragraph">Fragments will have <a href="../-fragment/set-user-visible-hint.html">setUserVisibleHint</a> called whenever the current Fragment changes.</p><span class="kdoc-tag"><h4 class="">Deprecated</h4><p class="paragraph">use <a href="-fragment-pager-adapter.html">FragmentPagerAdapter</a> with <a href="-b-e-h-a-v-i-o-r_-r-e-s-u-m-e_-o-n-l-y_-c-u-r-r-e-n-t_-f-r-a-g-m-e-n-t.html">BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT</a></p></span><h4 class="">Parameters</h4><div class="table"><div class="table-row" data-filterable-current=":fragment:dokkaHtmlPartial/release" data-filterable-set=":fragment:dokkaHtmlPartial/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>fm</span></span></u></div></span></div><div><div class="title"><p class="paragraph">fragment manager that will interact with this adapter</p></div></div></div></div></div></div></div>
+  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fragment:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>fm<span class="token operator">: </span><a href="../-fragment-manager/index.html">FragmentManager</a><span class="token punctuation">, </span></span><span class="parameter ">behavior<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><p class="paragraph">Constructor for <a href="index.html">FragmentPagerAdapter</a>. If <a href="-b-e-h-a-v-i-o-r_-r-e-s-u-m-e_-o-n-l-y_-c-u-r-r-e-n-t_-f-r-a-g-m-e-n-t.html">BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT</a> is passed in, then only the current Fragment is in the <a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/Lifecycle.State.html#RESUMED">RESUMED</a> state. All other fragments are capped at <a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/Lifecycle.State.html#STARTED">STARTED</a>. If <a href="-b-e-h-a-v-i-o-r_-s-e-t_-u-s-e-r_-v-i-s-i-b-l-e_-h-i-n-t.html">BEHAVIOR_SET_USER_VISIBLE_HINT</a> is passed, all fragments are in the <a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/Lifecycle.State.html#RESUMED">RESUMED</a> state and there will be callbacks to <a href="../-fragment/set-user-visible-hint.html">setUserVisibleHint</a>.</p><h4 class="">Parameters</h4><div class="table"><div class="table-row" data-filterable-current=":fragment:dokkaHtmlPartial/release" data-filterable-set=":fragment:dokkaHtmlPartial/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>fm</span></span></u></div></span></div><div><div class="title"><p class="paragraph">fragment manager that will interact with this adapter</p></div></div></div></div><div class="table-row" data-filterable-current=":fragment:dokkaHtmlPartial/release" data-filterable-set=":fragment:dokkaHtmlPartial/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>behavior</span></span></u></div></span></div><div><div class="title"><p class="paragraph">determines if only current fragments are in a resumed state</p></div></div></div></div></div><hr><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>fm<span class="token operator">: </span><a href="../-fragment-manager/index.html">FragmentManager</a></span></span><span class="token punctuation">)</span></div><div class="deprecation-content"><h3 class="">Deprecated</h3><p class="paragraph"></p><p class="paragraph"></p><p class="paragraph">use <a href="-fragment-pager-adapter.html">FragmentPagerAdapter</a> with <a href="-b-e-h-a-v-i-o-r_-r-e-s-u-m-e_-o-n-l-y_-c-u-r-r-e-n-t_-f-r-a-g-m-e-n-t.html">BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT</a></p><p></p><p></p></div><p class="paragraph">Constructor for <a href="index.html">FragmentPagerAdapter</a> that sets the fragment manager for the adapter. This is the equivalent of calling <a href="-fragment-pager-adapter.html">FragmentPagerAdapter</a> and passing in <a href="-b-e-h-a-v-i-o-r_-s-e-t_-u-s-e-r_-v-i-s-i-b-l-e_-h-i-n-t.html">BEHAVIOR_SET_USER_VISIBLE_HINT</a>. </p><p class="paragraph">Fragments will have <a href="../-fragment/set-user-visible-hint.html">setUserVisibleHint</a> called whenever the current Fragment changes.</p><h4 class="">Parameters</h4><div class="table"><div class="table-row" data-filterable-current=":fragment:dokkaHtmlPartial/release" data-filterable-set=":fragment:dokkaHtmlPartial/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>fm</span></span></u></div></span></div><div><div class="title"><p class="paragraph">fragment manager that will interact with this adapter</p></div></div></div></div></div></div></div>
 </div>
-      <div class="footer">
-        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2025 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
-      </div>
+    <div class="footer">
+        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+        <span>© 2025 Copyright</span>
+        <span class="pull-right">
+            <span>Generated by </span>
+            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                <span>dokka</span>
+            </a>
+        </span>
+    </div>
             </div>
         </div>
     </div>
 </body>
 </html>
-

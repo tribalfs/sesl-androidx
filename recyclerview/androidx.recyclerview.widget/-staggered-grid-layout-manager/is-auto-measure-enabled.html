@@ -25,37 +25,69 @@
 <link href="../../../styles/prism.css" rel="Stylesheet">
 <link href="../../../styles/logo-styles.css" rel="Stylesheet">
 <link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
 <script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
 <script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
 <script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
 <script type="text/javascript" src="../../../scripts/main.js" defer></script>
 <script type="text/javascript" src="../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script>
 <script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
 <body>
     <div class="root">
-<nav class="navigation" id="navigation-wrapper">
-    <div class="navigation--inner">
-        <div class="navigation-title">
-            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
-            <div class="library-name">
+    <nav class="navigation theme-dark" id="navigation-wrapper">
 <a class="library-name--link" href="../../../index.html">
-                            sesl.androidx
-                    </a>            </div>
-            <div class="library-version">
+                    sesl.androidx
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+        </div>
+        <div class="navigation-controls">
+        <div class="filter-section filter-section_loading" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":recyclerview:dokkaHtmlPartial/release">androidJvm</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
+                    <div class="dropdown--header"><span>Platform filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":recyclerview:dokkaHtmlPartial/release" data-filter=":recyclerview:dokkaHtmlPartial/release">
+                                <span class="checkbox--icon"></span>
+                                androidJvm
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
             </div>
         </div>
-        <div class="filter-section" id="filter-section">
-                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":recyclerview:dokkaHtmlPartial/release">androidJvm</button>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
         </div>
-    </div>
-    <div class="navigation-controls">
-        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
-        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
-    </div>
-</nav>
+    </nav>
         <div id="container">
             <div class="sidebar" id="leftColumn">
-                <div class="sidebar--inner" id="sideMenu"></div>
+                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox">
+                        <div class="dropdown--header">
+                            <span>
+                                    sesl.androidx
+                            </span>
+                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                            </button>
+                        </div>
+                        <div class="sidebar--inner" id="sideMenu"></div>
+                    </ul>
+                    <div class="dropdown--overlay"></div>
+                </div>
             </div>
             <div id="main">
 <div class="main-content" data-page-type="member" id="content" pageids="recyclerview::androidx.recyclerview.widget/StaggeredGridLayoutManager/isAutoMeasureEnabled/#/PointingToDeclaration//-708606353">
@@ -63,14 +95,20 @@
   <div class="cover ">
     <h1 class="cover"><span>is</span><wbr><span>Auto</span><wbr><span>Measure</span><wbr><span><span>Enabled</span></span></h1>
   </div>
-  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-auto-measure-enabled.html"><span class="token function">isAutoMeasureEnabled</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><p class="paragraph">Returns whether the measuring pass of layout should use the AutoMeasure mechanism of <a href="../-recycler-view/index.html">RecyclerView</a> or if it should be done by the LayoutManager's implementation of <a href="../-recycler-view/-layout-manager/on-measure.html">onMeasure</a>. </p><p class="paragraph"> This method returns false by default (it actually returns the value passed to the deprecated <a href="../-recycler-view/-layout-manager/set-auto-measure-enabled.html">setAutoMeasureEnabled</a>) and should be overridden to return true if a LayoutManager wants to be auto measured by the RecyclerView. </p><p class="paragraph"> If this method is overridden to return true, <a href="../-recycler-view/-layout-manager/on-measure.html">onMeasure</a> should not be overridden. </p><p class="paragraph"> AutoMeasure is a RecyclerView mechanism that handles the measuring pass of layout in a simple and contract satisfying way, including the wrapping of children laid out by LayoutManager. Simply put, it handles wrapping children by calling <a href="../-recycler-view/-layout-manager/on-layout-children.html">onLayoutChildren</a> during a call to <a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.html#onMeasure-int-int-">onMeasure</a>, and then calculating desired dimensions based on children's dimensions and positions. It does this while supporting all existing animation capabilities of the RecyclerView. </p><p class="paragraph"> More specifically: </p><ol><li>When <a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.html#onMeasure-int-int-">onMeasure</a> is called, if the provided measure specs both have a mode of <a href="https://developer.android.com/reference/kotlin/android/view/View.MeasureSpec.html#EXACTLY--">EXACTLY</a>, RecyclerView will set its measured dimensions accordingly and return, allowing layout to continue as normal (Actually, RecyclerView will call <a href="../-recycler-view/-layout-manager/on-measure.html">onMeasure</a> for backwards compatibility reasons but it should not be overridden if AutoMeasure is being used).</li><li>If one of the layout specs is not <code class="lang-kotlin">EXACT</code>, the RecyclerView will start the layout process. It will first process all pending Adapter updates and then decide whether to run a predictive layout. If it decides to do so, it will first call <a href="../-recycler-view/-layout-manager/on-layout-children.html">onLayoutChildren</a> with <a href="../-recycler-view/-state/is-pre-layout.html">isPreLayout</a> set to <code class="lang-kotlin">true</code>. At this stage, <a href="../-recycler-view/-layout-manager/get-width.html">getWidth</a> and <a href="../-recycler-view/-layout-manager/get-height.html">getHeight</a> will still return the width and height of the RecyclerView as of the last layout calculation. <p class="paragraph"> After handling the predictive case, RecyclerView will call <a href="../-recycler-view/-layout-manager/on-layout-children.html">onLayoutChildren</a> with <a href="../-recycler-view/-state/is-measuring.html">isMeasuring</a> set to <code class="lang-kotlin">true</code> and <a href="../-recycler-view/-state/is-pre-layout.html">isPreLayout</a> set to <code class="lang-kotlin">false</code>. The LayoutManager can access the measurement specs via <a href="../-recycler-view/-layout-manager/get-height.html">getHeight</a>, <a href="../-recycler-view/-layout-manager/get-height-mode.html">getHeightMode</a>, <a href="../-recycler-view/-layout-manager/get-width.html">getWidth</a> and <a href="../-recycler-view/-layout-manager/get-width-mode.html">getWidthMode</a>.</p></li><li>After the layout calculation, RecyclerView sets the measured width &amp;height by calculating the bounding box for the children (+ RecyclerView's padding). The LayoutManagers can override <a href="../-recycler-view/-layout-manager/set-measured-dimension.html">setMeasuredDimension</a> to choose different values. For instance, GridLayoutManager overrides this value to handle the case where if it is vertical and has 3 columns but only 2 items, it should still measure its width to fit 3 items, not 2.</li><li>Any following calls to <a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.html#onMeasure-int-int-">onMeasure</a> will run <a href="../-recycler-view/-layout-manager/on-layout-children.html">onLayoutChildren</a> with <a href="../-recycler-view/-state/is-measuring.html">isMeasuring</a> set to <code class="lang-kotlin">true</code> and <a href="../-recycler-view/-state/is-pre-layout.html">isPreLayout</a> set to <code class="lang-kotlin">false</code>. RecyclerView will take care of which views are actually added / removed / moved / changed for animations so that the LayoutManager should not worry about them and handle each <a href="../-recycler-view/-layout-manager/on-layout-children.html">onLayoutChildren</a> call as if it is the last one.</li><li>When measure is complete and RecyclerView's onLayout method is called, RecyclerView checks whether it already did layout calculations during the measure pass and if so, it re-uses that information. It may still decide to call <a href="../-recycler-view/-layout-manager/on-layout-children.html">onLayoutChildren</a> if the last measure spec was different from the final dimensions or adapter contents have changed between the measure call and the layout call.</li><li>Finally, animations are calculated and run as usual.</li></ol><span class="kdoc-tag"><h4 class="">Return</h4><p class="paragraph"><code class="lang-kotlin">True</code> if the measuring pass of layout should use the AutoMeasure mechanism of <a href="../-recycler-view/index.html">RecyclerView</a> or <code class="lang-kotlin">False</code> if it should be done by the LayoutManager's implementation of <a href="../-recycler-view/-layout-manager/on-measure.html">onMeasure</a>.</p></span><h4 class="">See also</h4><div class="table"><div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../-recycler-view/-layout-manager/set-measured-dimension.html"><span>set</span><wbr><span>Measured</span><wbr><span><span>Dimension(Rect,</span></span> <span><span>int,</span></span> <span><span>int)</span></span></a></div></span></div><div></div></div></div><div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../-recycler-view/-layout-manager/on-measure.html"><span>on</span><wbr><span><span>Measure(Recycler,</span></span> <span><span>State,</span></span> <span><span>int,</span></span> <span><span>int)</span></span></a></div></span></div><div></div></div></div></div></div></div>
+  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-auto-measure-enabled.html"><span class="token function">isAutoMeasureEnabled</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><p class="paragraph">Returns whether the measuring pass of layout should use the AutoMeasure mechanism of <a href="../-recycler-view/index.html">RecyclerView</a> or if it should be done by the LayoutManager's implementation of <a href="../-recycler-view/-layout-manager/on-measure.html">onMeasure</a>. </p><p class="paragraph"> This method returns false by default (it actually returns the value passed to the deprecated <a href="../-recycler-view/-layout-manager/set-auto-measure-enabled.html">setAutoMeasureEnabled</a>) and should be overridden to return true if a LayoutManager wants to be auto measured by the RecyclerView. </p><p class="paragraph"> If this method is overridden to return true, <a href="../-recycler-view/-layout-manager/on-measure.html">onMeasure</a> should not be overridden. </p><p class="paragraph"> AutoMeasure is a RecyclerView mechanism that handles the measuring pass of layout in a simple and contract satisfying way, including the wrapping of children laid out by LayoutManager. Simply put, it handles wrapping children by calling <a href="../-recycler-view/-layout-manager/on-layout-children.html">onLayoutChildren</a> during a call to <a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.html#onMeasure-int-int-">onMeasure</a>, and then calculating desired dimensions based on children's dimensions and positions. It does this while supporting all existing animation capabilities of the RecyclerView. </p><p class="paragraph"> More specifically: </p><ol><li>When <a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.html#onMeasure-int-int-">onMeasure</a> is called, if the provided measure specs both have a mode of <a href="https://developer.android.com/reference/kotlin/android/view/View.MeasureSpec.html#EXACTLY--">EXACTLY</a>, RecyclerView will set its measured dimensions accordingly and return, allowing layout to continue as normal (Actually, RecyclerView will call <a href="../-recycler-view/-layout-manager/on-measure.html">onMeasure</a> for backwards compatibility reasons but it should not be overridden if AutoMeasure is being used).</li><li>If one of the layout specs is not <code class="lang-kotlin">EXACT</code>, the RecyclerView will start the layout process. It will first process all pending Adapter updates and then decide whether to run a predictive layout. If it decides to do so, it will first call <a href="../-recycler-view/-layout-manager/on-layout-children.html">onLayoutChildren</a> with <a href="../-recycler-view/-state/is-pre-layout.html">isPreLayout</a> set to <code class="lang-kotlin">true</code>. At this stage, <a href="../-recycler-view/-layout-manager/get-width.html">getWidth</a> and <a href="../-recycler-view/-layout-manager/get-height.html">getHeight</a> will still return the width and height of the RecyclerView as of the last layout calculation. <p class="paragraph"> After handling the predictive case, RecyclerView will call <a href="../-recycler-view/-layout-manager/on-layout-children.html">onLayoutChildren</a> with <a href="../-recycler-view/-state/is-measuring.html">isMeasuring</a> set to <code class="lang-kotlin">true</code> and <a href="../-recycler-view/-state/is-pre-layout.html">isPreLayout</a> set to <code class="lang-kotlin">false</code>. The LayoutManager can access the measurement specs via <a href="../-recycler-view/-layout-manager/get-height.html">getHeight</a>, <a href="../-recycler-view/-layout-manager/get-height-mode.html">getHeightMode</a>, <a href="../-recycler-view/-layout-manager/get-width.html">getWidth</a> and <a href="../-recycler-view/-layout-manager/get-width-mode.html">getWidthMode</a>.</p></li><li>After the layout calculation, RecyclerView sets the measured width &amp;height by calculating the bounding box for the children (+ RecyclerView's padding). The LayoutManagers can override <a href="../-recycler-view/-layout-manager/set-measured-dimension.html">setMeasuredDimension</a> to choose different values. For instance, GridLayoutManager overrides this value to handle the case where if it is vertical and has 3 columns but only 2 items, it should still measure its width to fit 3 items, not 2.</li><li>Any following calls to <a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.html#onMeasure-int-int-">onMeasure</a> will run <a href="../-recycler-view/-layout-manager/on-layout-children.html">onLayoutChildren</a> with <a href="../-recycler-view/-state/is-measuring.html">isMeasuring</a> set to <code class="lang-kotlin">true</code> and <a href="../-recycler-view/-state/is-pre-layout.html">isPreLayout</a> set to <code class="lang-kotlin">false</code>. RecyclerView will take care of which views are actually added / removed / moved / changed for animations so that the LayoutManager should not worry about them and handle each <a href="../-recycler-view/-layout-manager/on-layout-children.html">onLayoutChildren</a> call as if it is the last one.</li><li>When measure is complete and RecyclerView's onLayout method is called, RecyclerView checks whether it already did layout calculations during the measure pass and if so, it re-uses that information. It may still decide to call <a href="../-recycler-view/-layout-manager/on-layout-children.html">onLayoutChildren</a> if the last measure spec was different from the final dimensions or adapter contents have changed between the measure call and the layout call.</li><li>Finally, animations are calculated and run as usual.</li></ol><span class="kdoc-tag"><h4 class="">Return</h4><p class="paragraph"><code class="lang-kotlin">True</code> if the measuring pass of layout should use the AutoMeasure mechanism of <a href="../-recycler-view/index.html">RecyclerView</a> or <code class="lang-kotlin">False</code> if it should be done by the LayoutManager's implementation of <a href="../-recycler-view/-layout-manager/on-measure.html">onMeasure</a>.</p></span><h4 class="">See also</h4><div class="table"><div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../-recycler-view/-layout-manager/set-measured-dimension.html"><span>set</span><wbr><span>Measured</span><wbr><span><span>Dimension(Rect,</span></span> <span><span>int,</span></span> <span><span>int)</span></span></a></div></span></div><div></div></div></div><div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../-recycler-view/-layout-manager/on-measure.html"><span>on</span><wbr><span><span>Measure(Recycler,</span></span> <span><span>State,</span></span> <span><span>int,</span></span> <span><span>int)</span></span></a></div></span></div><div></div></div></div></div></div></div>
 </div>
-      <div class="footer">
-        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2025 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
-      </div>
+    <div class="footer">
+        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+        <span>© 2025 Copyright</span>
+        <span class="pull-right">
+            <span>Generated by </span>
+            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                <span>dokka</span>
+            </a>
+        </span>
+    </div>
             </div>
         </div>
     </div>
 </body>
 </html>
-
