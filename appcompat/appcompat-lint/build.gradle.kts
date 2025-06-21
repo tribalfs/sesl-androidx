@@ -15,30 +15,11 @@
  */
 
 plugins {
-//    id("AndroidXPlugin")
     id("kotlin")
 }
 
-//sourceSets {
-//    test.resources.srcDirs(
-//        project(":appcompat:appcompat-lint:integration-tests").projectDir.toString() + "/src/main",
-//        project(":appcompat:appcompat-lint:integration-tests").projectDir.toString() + "/src/res"
-//    )
-//}
 
 dependencies {
     compileOnly(libs.androidLintApi)
     compileOnly(libs.kotlinStdlib)
-
-//    testImplementation(libs.kotlinStdlib)
-//    testImplementation(libs.androidLint)
-//    testImplementation(libs.androidLintTests)
-//    testImplementation(libs.junit)
 }
-
-//androidx {
-//    name = "AppCompat Lint Checks"
-//    type = LibraryType.LINT
-//    inceptionYear = "2019"
-//    description = "AppCompat Lint Checks"
-//}

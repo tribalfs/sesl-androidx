@@ -5,7 +5,7 @@ on:
     branches:
       - sesl-androidx-main
     paths:
-      - 'manifest.gradle'
+      - 'manifest.gradle.kts'
   workflow_dispatch:
 jobs:
   check-and-publish:
@@ -28,28 +28,32 @@ jobs:
         run: |
           PREV_COMMIT=$(git rev-parse HEAD^)
 
-          # Extract module name and all three version fields from both versions
-          OLD=$(git show "$PREV_COMMIT:manifest.gradle" | grep '^[[:space:]]*"[^"]*"[[:space:]]*:' | \
-            sed 's/^[[:space:]]*"\([^"]*\)".*"\([^"]*\)",[[:space:]]*"\([^"]*\)",[[:space:]]*"\([^"]*\)",[[:space:]]*\([0-9]*\),[[:space:]]*\([0-9]*\)],*$/\1|\2|\3|\4|/')
+          extract_versions() {
+            # $1 = file content
+            echo "$1" | grep '^[[:space:]]*"androidx\.' | \
+              sed -E 's/^[[:space:]]*"([^"]+)"[[:space:]]+to[[:space:]]+listOf\("([^"]+)",[[:space:]]*"([^"]+)",[[:space:]]*"([^"]+)",.*/\1|\2|\3|\4/'
+          }
 
-          NEW=$(grep '^[[:space:]]*"[^"]*"[[:space:]]*:' manifest.gradle | \
-            sed 's/^[[:space:]]*"\([^"]*\)".*"\([^"]*\)",[[:space:]]*"\([^"]*\)",[[:space:]]*"\([^"]*\)",[[:space:]]*\([0-9]*\),[[:space:]]*\([0-9]*\)],*$/\1|\2|\3|\4|/')
+          OLD_CONTENT=$(git show "$PREV_COMMIT:manifest.gradle.kts" 2>/dev/null || echo "")
+          NEW_CONTENT=$(cat manifest.gradle.kts)
+
+          OLD_VERSIONS=$(extract_versions "$OLD_CONTENT")
+          NEW_VERSIONS=$(extract_versions "$NEW_CONTENT")
 
           CHANGED_MODULES=""
 
-          while IFS='|' read -r MODULE OLD_VER1 OLD_VER2 OLD_VER3 _; do
-            NEW_LINE=$(echo "$NEW" | grep "^$MODULE|")
+          while IFS='|' read -r MODULE OLD_VER1 OLD_VER2 OLD_VER3; do
+            NEW_LINE=$(echo "$NEW_VERSIONS" | grep "^$MODULE|")
             NEW_VER1=$(echo "$NEW_LINE" | cut -d'|' -f2)
             NEW_VER2=$(echo "$NEW_LINE" | cut -d'|' -f3)
             NEW_VER3=$(echo "$NEW_LINE" | cut -d'|' -f4)
             if { [ "$OLD_VER1" != "$NEW_VER1" ] || [ "$OLD_VER2" != "$NEW_VER2" ] || [ "$OLD_VER3" != "$NEW_VER3" ]; } && [ -n "$NEW_LINE" ]; then
               CHANGED_MODULES="$CHANGED_MODULES $MODULE"
-              echo "::notice::Detected change in $MODULE: old=[$OLD_VER1,$OLD_VER2,$OLD_VER3], new=[$NEW_VER1,$NEW_VER2,$NEW_VER3]"
+              echo "::notice::Detected version change in $MODULE: old=[$OLD_VER1,$OLD_VER2,$OLD_VER3], new=[$NEW_VER1,$NEW_VER2,$NEW_VER3]"
             fi
-          done <<< "$OLD"
+          done <<< "$OLD_VERSIONS"
 
           CHANGED_MODULES=$(echo $CHANGED_MODULES | xargs) # trim
-          echo "Changed modules: $CHANGED_MODULES"
           echo "changed_modules=$CHANGED_MODULES" >> $GITHUB_OUTPUT
           if [ -n "$CHANGED_MODULES" ]; then
             echo "any_changed=true" >> $GITHUB_OUTPUT

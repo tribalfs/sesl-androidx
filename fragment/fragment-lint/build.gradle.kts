@@ -22,19 +22,5 @@ dependencies {
     compileOnly(libs.androidLintMinApi)
     compileOnly(libs.kotlinStdlib)
     compileOnly(libs.androidLintChecksMin)
-
-//    testImplementation(libs.kotlinStdlib)
-//    testImplementation(libs.kotlinReflect)
-//    testImplementation(libs.kotlinStdlibJdk8)
-//    testImplementation(libs.androidLint)
-//    testImplementation(libs.androidLintTests)
-//    testImplementation(libs.junit)
-//    testImplementation(libs.truth)
 }
 
-//androidx {
-//    name = "Fragment Lint Checks"
-//    type = LibraryType.LINT
-//    inceptionYear = "2019"
-//    description = "Android Fragment Lint Checks"
-//}
