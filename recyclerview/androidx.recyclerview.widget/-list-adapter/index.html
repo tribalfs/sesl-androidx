@@ -45,7 +45,7 @@
         </div>
         <div class="navigation-controls">
         <div class="filter-section filter-section_loading" id="filter-section">
-                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":recyclerview:dokkaHtmlPartial/release">androidJvm</button>
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":recyclerview/main">main</button>
             <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
                 <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
                 <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
@@ -56,9 +56,9 @@
                     </div>
                         <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
                             <label class="checkbox">
-                                <input type="checkbox" class="checkbox--input" id=":recyclerview:dokkaHtmlPartial/release" data-filter=":recyclerview:dokkaHtmlPartial/release">
+                                <input type="checkbox" class="checkbox--input" id=":recyclerview/main" data-filter=":recyclerview/main">
                                 <span class="checkbox--icon"></span>
-                                androidJvm
+                                main
                             </label>
                         </li>
                 </ul>
@@ -90,11 +90,11 @@
                 </div>
             </div>
             <div id="main">
-<div class="main-content" data-page-type="classlike" id="content" pageids="recyclerview::androidx.recyclerview.widget/ListAdapter///PointingToDeclaration//-708606353">
+<div class="main-content" data-page-type="classlike" id="content" pageids="recyclerview::androidx.recyclerview.widget/ListAdapter///PointingToDeclaration//755181214">
   <div class="breadcrumbs"><a href="../../index.html">recyclerview</a><span class="delimiter">/</span><a href="../index.html">androidx.recyclerview.widget</a><span class="delimiter">/</span><span class="current">ListAdapter</span></div>
   <div class="cover ">
     <h1 class="cover"><span>List</span><wbr><span><span>Adapter</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">class </span><a href="index.html">ListAdapter</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token punctuation">, </span><a href="index.html">VH</a><span class="token operator"> : </span><a href="../-recycler-view/-view-holder/index.html">RecyclerView.ViewHolder</a><span class="token operator">?</span><span class="token operator">&gt;</span> : <a href="../-recycler-view/-adapter/index.html">RecyclerView.Adapter</a><span class="token operator">&lt;</span><a href="../-recycler-view/-adapter/index.html">VH</a><span class="token operator">&gt; </span></div><p class="paragraph"><a href="../-recycler-view/-adapter/index.html">RecyclerView.Adapter</a> base class for presenting List data in a <a href="../-recycler-view/index.html">RecyclerView</a>, including computing diffs between Lists on a background thread. </p><p class="paragraph"> This class is a convenience wrapper around <a href="../-async-list-differ/index.html">AsyncListDiffer</a> that implements Adapter common default behavior for item access and counting. </p><p class="paragraph"> While using a LiveData<list> is an easy way to provide data to the adapter, it isn't required - you can use <a href="submit-list.html">submitList</a> when new lists are available. </list></p><p class="paragraph"> A complete usage pattern with Room would look like this: </p><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">@Dao
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">class </span><a href="index.html">ListAdapter</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token punctuation">, </span><a href="index.html">VH</a><span class="token operator"> : </span><a href="../-recycler-view/-view-holder/index.html">RecyclerView.ViewHolder</a><span class="token operator">?</span><span class="token operator">&gt;</span> : <a href="../-recycler-view/-adapter/index.html">RecyclerView.Adapter</a><span class="token operator">&lt;</span><a href="../-recycler-view/-adapter/index.html">VH</a><span class="token operator">&gt; </span><span class="clearfix"><span class="floating-right">(<a href="https://github.com/tribalfs/sesl-androidx/blob/sesl-androidx-main/recyclerview/recyclerview/src/main/java/androidx/recyclerview/widget/ListAdapter.java#L94">source</a>)</span></span></div><p class="paragraph"><a href="../-recycler-view/-adapter/index.html">RecyclerView.Adapter</a> base class for presenting List data in a <a href="../-recycler-view/index.html">RecyclerView</a>, including computing diffs between Lists on a background thread. </p><p class="paragraph"> This class is a convenience wrapper around <a href="../-async-list-differ/index.html">AsyncListDiffer</a> that implements Adapter common default behavior for item access and counting. </p><p class="paragraph"> While using a LiveData<list> is an easy way to provide data to the adapter, it isn't required - you can use <a href="submit-list.html">submitList</a> when new lists are available. </list></p><p class="paragraph"> A complete usage pattern with Room would look like this: </p><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">@Dao
 interface UserDao {
     @Query("SELECT * FROM user ORDER BY lastName ASC")
     public abstract LiveData&lt;List&lt;User&gt;&gt; usersByLastName();
@@ -143,534 +143,69 @@ class UserAdapter extends ListAdapter&lt;User, UserViewHolder&gt; {
             return oldUser.equals(newUser);
         }
     }
-}</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div> Advanced users that wish for more control over adapter behavior, or to provide a specific base class should refer to <a href="../-async-list-differ/index.html">AsyncListDiffer</a>, which provides custom mapping from diff events to adapter positions.<h4 class="">Parameters</h4><div class="table"><div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>&lt;T&gt;</span></span></u></div></span></div><div><div class="title"><p class="paragraph">Type of the Lists this Adapter will receive.</p></div></div></div></div><div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>&lt;VH&gt;</span></span></u></div></span></div><div><div class="title"><p class="paragraph">A class that extends ViewHolder that will be used by the adapter.</p></div></div></div></div></div></div></div>
+}</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div> Advanced users that wish for more control over adapter behavior, or to provide a specific base class should refer to <a href="../-async-list-differ/index.html">AsyncListDiffer</a>, which provides custom mapping from diff events to adapter positions.<h4 class="">Parameters</h4><div class="table"><div class="table-row" data-filterable-current=":recyclerview/main" data-filterable-set=":recyclerview/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>&lt;T&gt;</span></span></u></div></span></div><div><div class="title"><p class="paragraph">Type of the Lists this Adapter will receive.</p></div></div></div></div><div class="table-row" data-filterable-current=":recyclerview/main" data-filterable-set=":recyclerview/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>&lt;VH&gt;</span></span></u></div></span></div><div><div class="title"><p class="paragraph">A class that extends ViewHolder that will be used by the adapter.</p></div></div></div></div></div></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
     <div class="tabs-section-body">
       <div data-togglable="FUNCTION">
         <h2 class="">Functions</h2>
-        <div class="table"><a data-name="-1986402451%2FFunctions%2F-708606353" anchor-label="bindViewHolder" id="-1986402451%2FFunctions%2F-708606353" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="../-recycler-view/-adapter/bind-view-holder.html"><span>bind</span><wbr><span>View</span><wbr><span><span>Holder</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1986402451%2FFunctions%2F-708606353"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../-recycler-view/-adapter/bind-view-holder.html"><span class="token function">bindViewHolder</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>holder<span class="token operator">: </span><a href="../-recycler-view/-adapter/index.html">VH</a><span class="token punctuation">, </span></span><span class="parameter ">position<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">This method internally calls <a href="../-recycler-view/-adapter/on-bind-view-holder.html">onBindViewHolder</a> to update the <a href="../-recycler-view/-view-holder/index.html">ViewHolder</a> contents with the item at the given position and also sets up some private fields to be used by RecyclerView.</div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="-105982224%2FFunctions%2F-708606353" anchor-label="createViewHolder" id="-105982224%2FFunctions%2F-708606353" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="../-recycler-view/-adapter/create-view-holder.html"><span>create</span><wbr><span>View</span><wbr><span><span>Holder</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-105982224%2FFunctions%2F-708606353"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">fun </span><a href="../-recycler-view/-adapter/create-view-holder.html"><span class="token function">createViewHolder</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>parent<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/ViewGroup.html">ViewGroup</a><span class="token punctuation">, </span></span><span class="parameter ">viewType<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-recycler-view/-adapter/index.html">VH</a></div><div class="brief ">This method calls <a href="../-recycler-view/-adapter/on-create-view-holder.html">onCreateViewHolder</a> to create a new <a href="../-recycler-view/-view-holder/index.html">ViewHolder</a> and initializes some private fields to be used by RecyclerView.</div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="-185440174%2FFunctions%2F-708606353" anchor-label="findRelativeAdapterPositionIn" id="-185440174%2FFunctions%2F-708606353" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="../-recycler-view/-adapter/find-relative-adapter-position-in.html"><span>find</span><wbr><span>Relative</span><wbr><span>Adapter</span><wbr><span>Position</span><wbr><span><span>In</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-185440174%2FFunctions%2F-708606353"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../-recycler-view/-adapter/find-relative-adapter-position-in.html"><span class="token function">findRelativeAdapterPositionIn</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>adapter<span class="token operator">: </span><a href="../-recycler-view/-adapter/index.html">RecyclerView.Adapter</a><span class="token operator">&lt;</span><span class="token keyword">out </span><a href="../-recycler-view/-view-holder/index.html">RecyclerView.ViewHolder</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>viewHolder<span class="token operator">: </span><a href="../-recycler-view/-view-holder/index.html">RecyclerView.ViewHolder</a><span class="token punctuation">, </span></span><span class="parameter ">localPosition<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Returns the position of the given <a href="../-recycler-view/-view-holder/index.html">ViewHolder</a> in the given <a href="../-recycler-view/-adapter/index.html">Adapter</a>.</div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="-1892367752%2FFunctions%2F-708606353" anchor-label="getCurrentList" id="-1892367752%2FFunctions%2F-708606353" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release">
+        <div class="table"><a data-name="-1892367752%2FFunctions%2F755181214" anchor-label="getCurrentList" id="-1892367752%2FFunctions%2F755181214" data-filterable-set=":recyclerview/main"></a>
+          <div class="table-row" data-filterable-current=":recyclerview/main" data-filterable-set=":recyclerview/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-current-list.html"><span>get</span><wbr><span>Current</span><wbr><span><span>List</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1892367752%2FFunctions%2F-708606353"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1892367752%2FFunctions%2F755181214"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-current-list.html"><span class="token function">getCurrentList</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div><div class="brief ">Get the current List - any diffing to present this list has already been computed and dispatched via the ListUpdateCallback.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-current-list.html"><span class="token function">getCurrentList</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div><div class="brief ">Get the current List - any diffing to present this list has already been computed and dispatched via the ListUpdateCallback.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-543128941%2FFunctions%2F-708606353" anchor-label="getItemCount" id="-543128941%2FFunctions%2F-708606353" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release">
+<a data-name="-543128941%2FFunctions%2F755181214" anchor-label="getItemCount" id="-543128941%2FFunctions%2F755181214" data-filterable-set=":recyclerview/main"></a>
+          <div class="table-row" data-filterable-current=":recyclerview/main" data-filterable-set=":recyclerview/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-item-count.html"><span>get</span><wbr><span>Item</span><wbr><span><span>Count</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-543128941%2FFunctions%2F-708606353"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-543128941%2FFunctions%2F755181214"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-item-count.html"><span class="token function">getItemCount</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Returns the total number of items in the data set held by the adapter.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-item-count.html"><span class="token function">getItemCount</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Returns the total number of items in the data set held by the adapter.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1227299786%2FFunctions%2F-708606353" anchor-label="getItemId" id="-1227299786%2FFunctions%2F-708606353" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="../-recycler-view/-adapter/get-item-id.html"><span>get</span><wbr><span>Item</span><wbr><span><span>Id</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1227299786%2FFunctions%2F-708606353"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../-recycler-view/-adapter/get-item-id.html"><span class="token function">getItemId</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">position<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></div><div class="brief ">Return the stable ID for the item at <code class="lang-kotlin">position</code>.</div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="-539392806%2FFunctions%2F-708606353" anchor-label="getItemViewType" id="-539392806%2FFunctions%2F-708606353" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="../-recycler-view/-adapter/get-item-view-type.html"><span>get</span><wbr><span>Item</span><wbr><span>View</span><wbr><span><span>Type</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-539392806%2FFunctions%2F-708606353"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../-recycler-view/-adapter/get-item-view-type.html"><span class="token function">getItemViewType</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">position<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Return the view type of the item at <code class="lang-kotlin">position</code> for the purposes of view recycling.</div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="1717359980%2FFunctions%2F-708606353" anchor-label="getStateRestorationPolicy" id="1717359980%2FFunctions%2F-708606353" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="../-recycler-view/-adapter/get-state-restoration-policy.html"><span>get</span><wbr><span>State</span><wbr><span>Restoration</span><wbr><span><span>Policy</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1717359980%2FFunctions%2F-708606353"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">fun </span><a href="../-recycler-view/-adapter/get-state-restoration-policy.html"><span class="token function">getStateRestorationPolicy</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-recycler-view/-adapter/-state-restoration-policy/index.html">RecyclerView.Adapter.StateRestorationPolicy</a></div><div class="brief ">Returns when this Adapter wants to restore the state.</div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="1092162006%2FFunctions%2F-708606353" anchor-label="hasObservers" id="1092162006%2FFunctions%2F-708606353" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="../-recycler-view/-adapter/has-observers.html"><span>has</span><wbr><span><span>Observers</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1092162006%2FFunctions%2F-708606353"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../-recycler-view/-adapter/has-observers.html"><span class="token function">hasObservers</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Returns true if one or more observers are attached to this adapter.</div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="16685238%2FFunctions%2F-708606353" anchor-label="hasStableIds" id="16685238%2FFunctions%2F-708606353" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="../-recycler-view/-adapter/has-stable-ids.html"><span>has</span><wbr><span>Stable</span><wbr><span><span>Ids</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="16685238%2FFunctions%2F-708606353"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../-recycler-view/-adapter/has-stable-ids.html"><span class="token function">hasStableIds</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Returns true if this adapter publishes a unique <code class="lang-kotlin">long</code> value that can act as a key for the item at a given position in the data set.</div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="-1095556076%2FFunctions%2F-708606353" anchor-label="notifyDataSetChanged" id="-1095556076%2FFunctions%2F-708606353" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="../-recycler-view/-adapter/notify-data-set-changed.html"><span>notify</span><wbr><span>Data</span><wbr><span>Set</span><wbr><span><span>Changed</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1095556076%2FFunctions%2F-708606353"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../-recycler-view/-adapter/notify-data-set-changed.html"><span class="token function">notifyDataSetChanged</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief ">Notify any registered observers that the data set has changed.</div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="-1889645292%2FFunctions%2F-708606353" anchor-label="notifyItemChanged" id="-1889645292%2FFunctions%2F-708606353" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="../-recycler-view/-adapter/notify-item-changed.html"><span>notify</span><wbr><span>Item</span><wbr><span><span>Changed</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1889645292%2FFunctions%2F-708606353"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../-recycler-view/-adapter/notify-item-changed.html"><span class="token function">notifyItemChanged</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">position<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Notify any registered observers that the item at <code class="lang-kotlin">position</code> has changed.</div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../-recycler-view/-adapter/notify-item-changed.html"><span class="token function">notifyItemChanged</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">position<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>payload<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Notify any registered observers that the item at <code class="lang-kotlin">position</code> has changed with an optional payload object.</div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="231197998%2FFunctions%2F-708606353" anchor-label="notifyItemInserted" id="231197998%2FFunctions%2F-708606353" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="../-recycler-view/-adapter/notify-item-inserted.html"><span>notify</span><wbr><span>Item</span><wbr><span><span>Inserted</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="231197998%2FFunctions%2F-708606353"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../-recycler-view/-adapter/notify-item-inserted.html"><span class="token function">notifyItemInserted</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">position<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Notify any registered observers that the item reflected at <code class="lang-kotlin">position</code> has been newly inserted.</div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="-1555688995%2FFunctions%2F-708606353" anchor-label="notifyItemMoved" id="-1555688995%2FFunctions%2F-708606353" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="../-recycler-view/-adapter/notify-item-moved.html"><span>notify</span><wbr><span>Item</span><wbr><span><span>Moved</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1555688995%2FFunctions%2F-708606353"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../-recycler-view/-adapter/notify-item-moved.html"><span class="token function">notifyItemMoved</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">fromPosition<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">toPosition<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Notify any registered observers that the item reflected at <code class="lang-kotlin">fromPosition</code> has been moved to <code class="lang-kotlin">toPosition</code>.</div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="725075296%2FFunctions%2F-708606353" anchor-label="notifyItemRangeChanged" id="725075296%2FFunctions%2F-708606353" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="../-recycler-view/-adapter/notify-item-range-changed.html"><span>notify</span><wbr><span>Item</span><wbr><span>Range</span><wbr><span><span>Changed</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="725075296%2FFunctions%2F-708606353"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../-recycler-view/-adapter/notify-item-range-changed.html"><span class="token function">notifyItemRangeChanged</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">positionStart<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">itemCount<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../-recycler-view/-adapter/notify-item-range-changed.html"><span class="token function">notifyItemRangeChanged</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">positionStart<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">itemCount<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>payload<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Notify any registered observers that the <code class="lang-kotlin">itemCount</code> items starting at position <code class="lang-kotlin">positionStart</code> have changed.</div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="-1855364961%2FFunctions%2F-708606353" anchor-label="notifyItemRangeInserted" id="-1855364961%2FFunctions%2F-708606353" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="../-recycler-view/-adapter/notify-item-range-inserted.html"><span>notify</span><wbr><span>Item</span><wbr><span>Range</span><wbr><span><span>Inserted</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1855364961%2FFunctions%2F-708606353"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../-recycler-view/-adapter/notify-item-range-inserted.html"><span class="token function">notifyItemRangeInserted</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">positionStart<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">itemCount<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Notify any registered observers that the currently reflected <code class="lang-kotlin">itemCount</code> items starting at <code class="lang-kotlin">positionStart</code> have been newly inserted.</div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="-1376959603%2FFunctions%2F-708606353" anchor-label="notifyItemRangeRemoved" id="-1376959603%2FFunctions%2F-708606353" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="../-recycler-view/-adapter/notify-item-range-removed.html"><span>notify</span><wbr><span>Item</span><wbr><span>Range</span><wbr><span><span>Removed</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1376959603%2FFunctions%2F-708606353"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../-recycler-view/-adapter/notify-item-range-removed.html"><span class="token function">notifyItemRangeRemoved</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">positionStart<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">itemCount<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Notify any registered observers that the <code class="lang-kotlin">itemCount</code> items previously located at <code class="lang-kotlin">positionStart</code> have been removed from the data set.</div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="617970806%2FFunctions%2F-708606353" anchor-label="notifyItemRemoved" id="617970806%2FFunctions%2F-708606353" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="../-recycler-view/-adapter/notify-item-removed.html"><span>notify</span><wbr><span>Item</span><wbr><span><span>Removed</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="617970806%2FFunctions%2F-708606353"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../-recycler-view/-adapter/notify-item-removed.html"><span class="token function">notifyItemRemoved</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">position<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Notify any registered observers that the item previously located at <code class="lang-kotlin">position</code> has been removed from the data set.</div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="-1243461790%2FFunctions%2F-708606353" anchor-label="onAttachedToRecyclerView" id="-1243461790%2FFunctions%2F-708606353" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="../-recycler-view/-adapter/on-attached-to-recycler-view.html"><span>on</span><wbr><span>Attached</span><wbr><span>To</span><wbr><span>Recycler</span><wbr><span><span>View</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1243461790%2FFunctions%2F-708606353"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../-recycler-view/-adapter/on-attached-to-recycler-view.html"><span class="token function">onAttachedToRecyclerView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>recyclerView<span class="token operator">: </span><a href="../-recycler-view/index.html">RecyclerView</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Called by RecyclerView when it starts observing this Adapter.</div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="-1147043402%2FFunctions%2F-708606353" anchor-label="onBindViewHolder" id="-1147043402%2FFunctions%2F-708606353" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="../-recycler-view/-adapter/on-bind-view-holder.html"><span>on</span><wbr><span>Bind</span><wbr><span>View</span><wbr><span><span>Holder</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1147043402%2FFunctions%2F-708606353"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="../-recycler-view/-adapter/on-bind-view-holder.html"><span class="token function">onBindViewHolder</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>holder<span class="token operator">: </span><a href="../-recycler-view/-adapter/index.html">VH</a><span class="token punctuation">, </span></span><span class="parameter ">position<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../-recycler-view/-adapter/on-bind-view-holder.html"><span class="token function">onBindViewHolder</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>holder<span class="token operator">: </span><a href="../-recycler-view/-adapter/index.html">VH</a><span class="token punctuation">, </span></span><span class="parameter ">position<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>payloads<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div><div class="brief ">Called by RecyclerView to display the data at the specified position.</div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="23122321%2FFunctions%2F-708606353" anchor-label="onCreateViewHolder" id="23122321%2FFunctions%2F-708606353" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="../-recycler-view/-adapter/on-create-view-holder.html"><span>on</span><wbr><span>Create</span><wbr><span>View</span><wbr><span><span>Holder</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="23122321%2FFunctions%2F-708606353"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="../-recycler-view/-adapter/on-create-view-holder.html"><span class="token function">onCreateViewHolder</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>parent<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/ViewGroup.html">ViewGroup</a><span class="token punctuation">, </span></span><span class="parameter ">viewType<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-recycler-view/-adapter/index.html">VH</a></div><div class="brief ">Called when RecyclerView needs a new <a href="../-recycler-view/-view-holder/index.html">ViewHolder</a> of the given type to represent an item.</div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="-748076136%2FFunctions%2F-708606353" anchor-label="onCurrentListChanged" id="-748076136%2FFunctions%2F-708606353" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release">
+<a data-name="-748076136%2FFunctions%2F755181214" anchor-label="onCurrentListChanged" id="-748076136%2FFunctions%2F755181214" data-filterable-set=":recyclerview/main"></a>
+          <div class="table-row" data-filterable-current=":recyclerview/main" data-filterable-set=":recyclerview/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-current-list-changed.html"><span>on</span><wbr><span>Current</span><wbr><span>List</span><wbr><span><span>Changed</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-748076136%2FFunctions%2F-708606353"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-748076136%2FFunctions%2F755181214"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-current-list-changed.html"><span class="token function">onCurrentListChanged</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>previousList<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>currentList<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div><div class="brief ">Called when the current List is updated.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-current-list-changed.html"><span class="token function">onCurrentListChanged</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>previousList<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>currentList<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div><div class="brief ">Called when the current List is updated.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1201433889%2FFunctions%2F-708606353" anchor-label="onDetachedFromRecyclerView" id="-1201433889%2FFunctions%2F-708606353" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="../-recycler-view/-adapter/on-detached-from-recycler-view.html"><span>on</span><wbr><span>Detached</span><wbr><span>From</span><wbr><span>Recycler</span><wbr><span><span>View</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1201433889%2FFunctions%2F-708606353"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../-recycler-view/-adapter/on-detached-from-recycler-view.html"><span class="token function">onDetachedFromRecyclerView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>recyclerView<span class="token operator">: </span><a href="../-recycler-view/index.html">RecyclerView</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Called by RecyclerView when it stops observing this Adapter.</div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="1459462990%2FFunctions%2F-708606353" anchor-label="onFailedToRecycleView" id="1459462990%2FFunctions%2F-708606353" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="../-recycler-view/-adapter/on-failed-to-recycle-view.html"><span>on</span><wbr><span>Failed</span><wbr><span>To</span><wbr><span>Recycle</span><wbr><span><span>View</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1459462990%2FFunctions%2F-708606353"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../-recycler-view/-adapter/on-failed-to-recycle-view.html"><span class="token function">onFailedToRecycleView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>holder<span class="token operator">: </span><a href="../-recycler-view/-adapter/index.html">VH</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Called by the RecyclerView if a ViewHolder created by this Adapter cannot be recycled due to its transient state.</div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="784371252%2FFunctions%2F-708606353" anchor-label="onViewAttachedToWindow" id="784371252%2FFunctions%2F-708606353" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="../-recycler-view/-adapter/on-view-attached-to-window.html"><span>on</span><wbr><span>View</span><wbr><span>Attached</span><wbr><span>To</span><wbr><span><span>Window</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="784371252%2FFunctions%2F-708606353"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../-recycler-view/-adapter/on-view-attached-to-window.html"><span class="token function">onViewAttachedToWindow</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>holder<span class="token operator">: </span><a href="../-recycler-view/-adapter/index.html">VH</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Called when a view created by this adapter has been attached to a window.</div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="-966153001%2FFunctions%2F-708606353" anchor-label="onViewDetachedFromWindow" id="-966153001%2FFunctions%2F-708606353" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="../-recycler-view/-adapter/on-view-detached-from-window.html"><span>on</span><wbr><span>View</span><wbr><span>Detached</span><wbr><span>From</span><wbr><span><span>Window</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-966153001%2FFunctions%2F-708606353"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../-recycler-view/-adapter/on-view-detached-from-window.html"><span class="token function">onViewDetachedFromWindow</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>holder<span class="token operator">: </span><a href="../-recycler-view/-adapter/index.html">VH</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Called when a view created by this adapter has been detached from its window.</div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="1010912466%2FFunctions%2F-708606353" anchor-label="onViewRecycled" id="1010912466%2FFunctions%2F-708606353" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="../-recycler-view/-adapter/on-view-recycled.html"><span>on</span><wbr><span>View</span><wbr><span><span>Recycled</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1010912466%2FFunctions%2F-708606353"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../-recycler-view/-adapter/on-view-recycled.html"><span class="token function">onViewRecycled</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>holder<span class="token operator">: </span><a href="../-recycler-view/-adapter/index.html">VH</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Called when a view created by this adapter has been recycled.</div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="-149943229%2FFunctions%2F-708606353" anchor-label="registerAdapterDataObserver" id="-149943229%2FFunctions%2F-708606353" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="../-recycler-view/-adapter/register-adapter-data-observer.html"><span>register</span><wbr><span>Adapter</span><wbr><span>Data</span><wbr><span><span>Observer</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-149943229%2FFunctions%2F-708606353"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../-recycler-view/-adapter/register-adapter-data-observer.html"><span class="token function">registerAdapterDataObserver</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>observer<span class="token operator">: </span><a href="../-recycler-view/-adapter-data-observer/index.html">RecyclerView.AdapterDataObserver</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Register a new observer to listen for data changes.</div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="542794920%2FFunctions%2F-708606353" anchor-label="seslGetAccessibilityItemCount" id="542794920%2FFunctions%2F-708606353" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="../-recycler-view/-adapter/sesl-get-accessibility-item-count.html"><span>sesl</span><wbr><span>Get</span><wbr><span>Accessibility</span><wbr><span>Item</span><wbr><span><span>Count</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="542794920%2FFunctions%2F-708606353"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../-recycler-view/-adapter/sesl-get-accessibility-item-count.html"><span class="token function">seslGetAccessibilityItemCount</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="-1677127335%2FFunctions%2F-708606353" anchor-label="seslGetAccessibilityItemPosition" id="-1677127335%2FFunctions%2F-708606353" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="../-recycler-view/-adapter/sesl-get-accessibility-item-position.html"><span>sesl</span><wbr><span>Get</span><wbr><span>Accessibility</span><wbr><span>Item</span><wbr><span><span>Position</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1677127335%2FFunctions%2F-708606353"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../-recycler-view/-adapter/sesl-get-accessibility-item-position.html"><span class="token function">seslGetAccessibilityItemPosition</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">pos<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="-1993401617%2FFunctions%2F-708606353" anchor-label="seslUseCustomAccessibilityPosition" id="-1993401617%2FFunctions%2F-708606353" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="../-recycler-view/-adapter/sesl-use-custom-accessibility-position.html"><span>sesl</span><wbr><span>Use</span><wbr><span>Custom</span><wbr><span>Accessibility</span><wbr><span><span>Position</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1993401617%2FFunctions%2F-708606353"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../-recycler-view/-adapter/sesl-use-custom-accessibility-position.html"><span class="token function">seslUseCustomAccessibilityPosition</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="479239134%2FFunctions%2F-708606353" anchor-label="setHasStableIds" id="479239134%2FFunctions%2F-708606353" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="../-recycler-view/-adapter/set-has-stable-ids.html"><span>set</span><wbr><span>Has</span><wbr><span>Stable</span><wbr><span><span>Ids</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="479239134%2FFunctions%2F-708606353"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../-recycler-view/-adapter/set-has-stable-ids.html"><span class="token function">setHasStableIds</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">hasStableIds<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Indicates whether each item in the data set can be represented with a unique identifier of type <a href="https://developer.android.com/reference/kotlin/java/lang/Long.html">java.lang.Long</a>.</div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="1439711293%2FFunctions%2F-708606353" anchor-label="setStateRestorationPolicy" id="1439711293%2FFunctions%2F-708606353" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="../-recycler-view/-adapter/set-state-restoration-policy.html"><span>set</span><wbr><span>State</span><wbr><span>Restoration</span><wbr><span><span>Policy</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1439711293%2FFunctions%2F-708606353"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../-recycler-view/-adapter/set-state-restoration-policy.html"><span class="token function">setStateRestorationPolicy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>strategy<span class="token operator">: </span><a href="../-recycler-view/-adapter/-state-restoration-policy/index.html">RecyclerView.Adapter.StateRestorationPolicy</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Sets the state restoration strategy for the Adapter.</div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="-1927745460%2FFunctions%2F-708606353" anchor-label="submitList" id="-1927745460%2FFunctions%2F-708606353" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release">
+<a data-name="-1927745460%2FFunctions%2F755181214" anchor-label="submitList" id="-1927745460%2FFunctions%2F755181214" data-filterable-set=":recyclerview/main"></a>
+          <div class="table-row" data-filterable-current=":recyclerview/main" data-filterable-set=":recyclerview/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="submit-list.html"><span>submit</span><wbr><span><span>List</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1927745460%2FFunctions%2F-708606353"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1927745460%2FFunctions%2F755181214"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="submit-list.html"><span class="token function">submitList</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>list<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div><div class="brief ">Submits a new list to be diffed, and displayed.</div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="submit-list.html"><span class="token function">submitList</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>list<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>commitCallback<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/Runnable.html">Runnable</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Set the new list to be displayed.</div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="607934410%2FFunctions%2F-708606353" anchor-label="unregisterAdapterDataObserver" id="607934410%2FFunctions%2F-708606353" data-filterable-set=":recyclerview:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":recyclerview:dokkaHtmlPartial/release" data-filterable-set=":recyclerview:dokkaHtmlPartial/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="../-recycler-view/-adapter/unregister-adapter-data-observer.html"><span>unregister</span><wbr><span>Adapter</span><wbr><span>Data</span><wbr><span><span>Observer</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="607934410%2FFunctions%2F-708606353"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../-recycler-view/-adapter/unregister-adapter-data-observer.html"><span class="token function">unregisterAdapterDataObserver</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>observer<span class="token operator">: </span><a href="../-recycler-view/-adapter-data-observer/index.html">RecyclerView.AdapterDataObserver</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Unregister an observer currently listening for data changes.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="submit-list.html"><span class="token function">submitList</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>list<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div><div class="brief ">Submits a new list to be diffed, and displayed.</div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="submit-list.html"><span class="token function">submitList</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>list<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>commitCallback<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/Runnable.html">Runnable</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Set the new list to be displayed.</div></div></div>
                 </div>
               </div>
             </div>
