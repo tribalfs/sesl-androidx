@@ -1,7 +1,6 @@
 import com.android.build.gradle.LibraryExtension
 import java.util.Properties
 import java.util.regex.Pattern
-import org.jetbrains.dokka.gradle.DokkaTaskPartial
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.plugin.KotlinBasePluginWrapper
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
@@ -97,21 +96,37 @@ subprojects {
         if (requiresDocs) {
             plugins.apply("kotlin-android")
             plugins.apply("org.jetbrains.dokka")
+        }
+    }
+}
 
-            tasks.named("dokkaHtmlPartial", DokkaTaskPartial::class) {
+subprojects {
+    plugins.withId("org.jetbrains.dokka") {
+        dokka {
+            dokkaPublications.html {
                 suppressObviousFunctions.set(true)
                 failOnWarning.set(false)
                 suppressInheritedMembers.set(true)
+                modulePath.set(project.name)
+            }
 
-                dokkaSourceSets.named("main") {
+            dokkaSourceSets.configureEach {
+                if (name == "main") {
                     sourceRoots.from(file("src"))
-                    displayName.set(project.name)
+                    displayName.set(name)
 
                     sourceLink {
                         localDirectory.set(projectDir.resolve("src"))
                         val moduleDir = "${projectDir.parentFile.name}/${project.name}"
-                        remoteUrl.set(uri("https://github.com/tribalfs/sesl-androidx/blob/sesl-androidx-main/${moduleDir}/src").toURL())
+                        remoteUrl("https://github.com/tribalfs/sesl-androidx/blob/sesl-androidx-main/${moduleDir}/src")
                         remoteLineSuffix.set("#L")
+                    }
+
+                    externalDocumentationLinks {
+                        register("sesl.material") {
+                            url("https://tribalfs.github.io/sesl-material-components-android/")
+                            packageListUrl("https://tribalfs.github.io/sesl-material-components-android/sesl.com.google.android.material/package-list")
+                        }
                     }
                 }
             }
@@ -259,4 +274,25 @@ subprojects {
             }
         }
     }
+}
+
+dependencies {
+    dokka(project(":core:"))
+    dokka(project(":core-ktx:"))
+    dokka(project(":appcompat:"))
+    dokka(project(":customview:"))
+    dokka(project(":coordinatorlayout:"))
+    dokka(project(":drawerlayout:"))
+    dokka(project(":appcompat:"))
+    dokka(project(":recyclerview:"))
+    dokka(project(":preference:"))
+    dokka(project(":fragment:"))
+    dokka(project(":viewpager2:"))
+    dokka(project(":swiperefreshlayout:"))
+    dokka(project(":viewpager:"))
+    dokka(project(":slidingpanelayout:"))
+    dokka(project(":indexscroll:"))
+    dokka(project(":picker-basic:"))
+    dokka(project(":picker-color:"))
+    dokka(project(":apppickerview:"))
 }

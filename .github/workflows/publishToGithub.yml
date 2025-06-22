@@ -73,11 +73,11 @@ jobs:
       - name: Generate and publish Dokka docs
         if: steps.detect_changed_modules.outputs.any_changed == 'true'
         run: |
-          ./gradlew dokkaHtmlMultiModule
+          ./gradlew dokkaGenerate
 
       - name: Publish to GitHub Pages
         if: steps.detect_changed_modules.outputs.any_changed == 'true'
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           BRANCH: gh-pages
-          FOLDER: build/dokka/htmlMultiModule
+          FOLDER: build/dokka/html
