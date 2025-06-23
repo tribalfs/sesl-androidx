@@ -22,7 +22,7 @@ extra.apply {
             "androidx.indexscroll" to listOf("1.0.6", "1.0.6-sesl7", "rev3", 21, 35),
             "androidx.picker-basic" to listOf("1.0.16", "1.0.16-sesl7", "rev0", 21, 35),
             "androidx.picker-color" to listOf("1.0.6", "1.0.6-sesl7", "rev0", 21, 35),
-            "androidx.picker-app" to listOf("0.0.0", "0.0.0", "rev0", 21, 35),
+            "androidx.picker-app" to listOf("1.0.21", "1.0.21-sesl7", "rev0", 21, 35),
             "androidx.apppickerview" to listOf("1.0.1", "1.0.1-sesl7", "rev1", 21, 35),
         )
     )

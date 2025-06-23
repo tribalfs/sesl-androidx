@@ -294,5 +294,6 @@ dependencies {
     dokka(project(":indexscroll:"))
     dokka(project(":picker-basic:"))
     dokka(project(":picker-color:"))
+    dokka(project(":picker-app:"))
     dokka(project(":apppickerview:"))
 }
