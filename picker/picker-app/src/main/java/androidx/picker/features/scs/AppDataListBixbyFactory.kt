@@ -90,10 +90,11 @@ open class AppDataListBixbyFactory(
 
     private fun getDataListFromPackageManager(@ItemType itemType: Int): List<AppInfoData> {
         info("getDataListFromPackageManager")
-        val appInfoDataList = ArrayList<AppInfoData>()
+
         val intent = Intent(Intent.ACTION_MAIN, null).apply { addCategory(Intent.CATEGORY_LAUNCHER) }
         if (DeviceInfo.isOneUI()) {
             try {
+                val appInfoDataList = ArrayList<AppInfoData>()
                 val userManager = context.getSystemService(SERVICE_USER) as UserManager
                 val userProfiles = userManager.userProfiles as List<UserHandle>
                 val packageManager = context.packageManager
@@ -112,12 +113,13 @@ open class AppDataListBixbyFactory(
                     }
                 }
                 return appInfoDataList
-            } catch (e: NoSuchMethodError) {
+            } catch (_: Throwable) {
                 warn("Failed to call semGetIdentifier and semQueryIntentActivitiesAsUser, " +
                     "fallback to PackageManager.queryIntentActivities AOSP api.")
             }
         }
 
+        val appInfoDataList = ArrayList<AppInfoData>()
         val myUserId = SeslUserHandleReflector.myUserId()
         @SuppressLint("QueryPermissionsNeeded")
         val queryIntentActivities = context.packageManager.queryIntentActivities(intent, 0)

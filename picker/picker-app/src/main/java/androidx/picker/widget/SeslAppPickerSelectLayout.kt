@@ -306,7 +306,7 @@ open class SeslAppPickerSelectLayout @JvmOverloads constructor(
         shouldCheckHeaderVisibility = shouldCheckHeaderVisibility()
         updateLayout()
 
-        appPickerStateContainerView.addView(SeslAppPickerListView(context, attrs).also {
+        appPickerStateContainerView.addView(SeslAppPickerListView(context).also {
             _appPickerStateView = it
         })
         initializeAppPickerStateView()

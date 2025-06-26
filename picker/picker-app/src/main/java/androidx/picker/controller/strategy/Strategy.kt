@@ -11,8 +11,6 @@ import androidx.picker.model.appdata.GroupAppData
 import androidx.picker.model.viewdata.AppInfoViewData
 import androidx.picker.model.viewdata.ViewData
 
-typealias AppDataParser = (List<AppInfoData>) -> List<AppInfoViewData>
-
 /**
  * The strategy for the creation and management of different UI [ViewData] objects
  * for [AbsAdapter][androidx.picker.adapter.AbsAdapter].
