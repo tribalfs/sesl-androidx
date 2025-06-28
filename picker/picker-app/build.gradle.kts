@@ -20,9 +20,7 @@ dependencies {
     implementation(libs.shimmer)
 
     api(libs.sesl.androidx.appcompat)
-    api(libs.sesl.androidx.core){
-        version { require("1.16.0+1.0.16-sesl7+rev0") }
-    }
+    api(libs.sesl.androidx.core)
     api(libs.sesl.androidx.recyclerview)
 }
 
