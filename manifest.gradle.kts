@@ -8,7 +8,7 @@ extra.apply {
             // [<base androidx version or sesl if purely sesl>, <sesl version>, <internal version>, <minsdk>, <targetSdk>]
             "androidx.core" to listOf("1.16.0", "1.0.7-sesl8", "rev0", 21, 35),
             "androidx.core-ktx" to listOf("1.16.0", "1.0.0-sesl8", "rev0", 21, 35),
-            "androidx.customview" to listOf("1.2.0-rc01", "1.0.0-sesl7", "rev0", 21, 35),
+            "androidx.customview" to listOf("1.2.0-rc01", "1.0.0-sesl8", "rev0", 21, 35),
             "androidx.drawerlayout" to listOf("1.2.0", "1.0.0-sesl7", "rev0", 21, 35),
             "androidx.viewpager" to listOf("1.1.0-beta01", "1.0.1-sesl7", "rev0", 21, 35),
             "androidx.coordinatorlayout" to listOf("1.3.0", "1.0.0-sesl7", "rev0", 21, 35),
