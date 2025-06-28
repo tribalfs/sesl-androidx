@@ -11,7 +11,7 @@ extra.apply {
             "androidx.customview" to listOf("1.2.0-rc01", "1.0.0-sesl8", "rev0", 21, 35),
             "androidx.drawerlayout" to listOf("1.2.0", "1.0.0-sesl8", "rev0", 21, 35),
             "androidx.viewpager" to listOf("1.1.0-beta01", "1.0.0-sesl8", "rev0", 21, 35),
-            "androidx.coordinatorlayout" to listOf("1.3.0", "1.0.0-sesl7", "rev0", 21, 35),
+            "androidx.coordinatorlayout" to listOf("1.3.0", "1.0.0-sesl8", "rev0", 21, 35),
             "androidx.appcompat" to listOf("1.7.1", "1.0.47000-sesl7", "rev0", 21, 35),
             "androidx.fragment" to listOf("1.8.8", "1.0.9-sesl7", "rev0", 21, 35),
             "androidx.recyclerview" to listOf("1.4.0", "1.0.33-sesl7", "rev3", 21, 35),
