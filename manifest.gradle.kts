@@ -19,7 +19,7 @@ extra.apply {
             "androidx.slidingpanelayout" to listOf("1.2.0", "1.0.2-sesl8", "rev0", 21, 35),
             "androidx.viewpager2" to listOf("1.1.0", "1.0.4-sesl7", "rev0", 21, 35),
             "androidx.swiperefreshlayout" to listOf("1.2.0-alpha01", "1.0.0-sesl8", "rev0", 21, 35),
-            "androidx.indexscroll" to listOf("1.0.6", "1.0.6-sesl7", "rev3", 21, 35),
+            "androidx.indexscroll" to listOf("1.0.0", "1.0.0-sesl8", "rev0", 21, 35),
             "androidx.picker-basic" to listOf("1.0.7", "1.0.7-sesl8", "rev0", 21, 35),
             "androidx.picker-color" to listOf("1.0.19", "1.0.19-sesl7", "rev0", 21, 35),
             "androidx.picker-app" to listOf("1.0.5", "1.0.5-sesl8", "rev0", 21, 35),
