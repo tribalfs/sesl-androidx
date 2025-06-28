@@ -18,6 +18,7 @@ See also: [OneUI Design Library (Unofficial)](https://github.com/tribalfs/oneui-
 - [![latest version](https://img.shields.io/badge/sesl.androidx.coordinatorlayout:coordinatorlayout-1.3.0%2B1.0.0--sesl8%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110023)
 - [![latest version](https://img.shields.io/badge/sesl.androidx.swiperefreshlayout:swiperefreshlayout-1.2.0--alpha01%2B1.0.0--sesl8%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110035)
 - [![latest version](https://img.shields.io/badge/sesl.androidx.fragment:fragment-1.8.8%2B1.0.5--sesl8%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110028)
+- [![latest version](https://img.shields.io/badge/sesl.androidx.appcompat:appcompat-1.7.1%2B1.0.18--sesl8%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110021)
 
 #### SESL7(OneUI 7) Android Jetpack
 - [![latest version](https://img.shields.io/badge/sesl.androidx.core:core-1.16.0%2B1.0.16--sesl7%2Brev1-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110024)
