@@ -16,10 +16,6 @@ dependencies {
     api(libs.sesl.androidx.core)
     api(libs.sesl.androidx.customview)
     implementation(libs.sesl.androidx.appcompat)
-
-    constraints {
-        implementation(libs.sesl.androidx.viewpager2)
-    }
 }
 
 android {
