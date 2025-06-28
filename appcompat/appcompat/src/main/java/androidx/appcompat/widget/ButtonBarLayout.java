@@ -37,7 +37,7 @@ import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 /**
- * (SESL variant) An extension of LinearLayout that automatically switches to vertical
+ * (SESL modified) An extension of LinearLayout that automatically switches to vertical
  * orientation when it can't fit its child views horizontally.
  *
  */

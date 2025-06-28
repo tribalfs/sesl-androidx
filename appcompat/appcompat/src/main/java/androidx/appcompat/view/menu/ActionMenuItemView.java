@@ -46,7 +46,7 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 
 /**
- * (SESL variant)
+ * (SESL modified)
  */
 @RestrictTo(LIBRARY_GROUP_PREFIX)
 public class ActionMenuItemView extends AppCompatTextView

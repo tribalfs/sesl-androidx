@@ -32,7 +32,7 @@ import androidx.annotation.RequiresApi;
 import androidx.core.internal.view.SupportMenuItem;
 
 /**
- * (SESL variant) Helper for accessing features in {@link MenuItem}.
+ * (SESL modified) Helper for accessing features in {@link MenuItem}.
  * <p class="note"><strong>Note:</strong> You cannot get an instance of this class. Instead,
  * it provides <em>static</em> methods that correspond to the methods in {@link
  * MenuItem}, but take a {@link MenuItem} object as an additional

@@ -40,7 +40,7 @@ import org.jspecify.annotations.Nullable;
 
 /**
  *
- *  (SESL variant) A {@link ImageView} which supports compatible features on older versions of the platform,
+ *  (SESL modified) A {@link ImageView} which supports compatible features on older versions of the platform,
  * including:
  * <ul>
  *     <li>Allows dynamic tint of its background via the background tint methods in

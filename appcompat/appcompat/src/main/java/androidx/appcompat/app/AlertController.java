@@ -68,6 +68,9 @@ import org.jspecify.annotations.Nullable;
 
 import java.lang.ref.WeakReference;
 
+/**
+ * (SESL Modified)
+ */
 class AlertController {
     private final Context mContext;
     final AppCompatDialog mDialog;

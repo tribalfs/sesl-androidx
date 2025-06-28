@@ -97,7 +97,7 @@ import java.util.Locale;
 import java.util.WeakHashMap;
 
 /**
- * (SESL variant) A widget that provides a user interface for the user to enter a search query and submit a request
+ * (SESL modified) A widget that provides a user interface for the user to enter a search query and submit a request
  * to a search provider. Shows a list of query suggestions or results, if available, and allows the
  * user to pick a suggestion or result to launch into.
  *

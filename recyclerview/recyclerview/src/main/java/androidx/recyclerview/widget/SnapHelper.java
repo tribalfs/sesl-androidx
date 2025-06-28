@@ -27,7 +27,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 /**
- * (SESL variant) Class intended to support snapping for a {@link RecyclerView}.
+ * (SESL modified) Class intended to support snapping for a {@link RecyclerView}.
  * <p>
  * SnapHelper tries to handle fling as well but for this to work properly, the
  * {@link RecyclerView.LayoutManager} must implement the {@link RecyclerView.SmoothScroller.ScrollVectorProvider} interface or

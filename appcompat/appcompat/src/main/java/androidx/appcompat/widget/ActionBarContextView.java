@@ -42,7 +42,7 @@ import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 /**
- * (SESL variant)
+ * (SESL modified)
  */
 @RestrictTo(LIBRARY_GROUP_PREFIX)
 public class ActionBarContextView extends AbsActionBarView {

@@ -63,7 +63,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * (SESL variant) The basic building block that represents an individual setting displayed to a user in the
+ * (SESL modified) The basic building block that represents an individual setting displayed to a user in the
  * preference hierarchy. This class provides the data that will be displayed to the user and has
  * a reference to the {@link SharedPreferences} or {@link PreferenceDataStore} instance that
  * persists the preference's values.

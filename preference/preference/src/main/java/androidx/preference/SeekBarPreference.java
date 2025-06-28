@@ -15,7 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 /**
- * (SESL variant) Preference based on android.preference.SeekBarPreference but uses support preference as a base
+ * (SESL modified) Preference based on android.preference.SeekBarPreference but uses support preference as a base
  * . It contains a title and a {@link SeslSeekBar}
  * The actual preference layout is customizable by setting {@code android:layout} on the
  * preference widget layout or {@code seekBarPreferenceStyle} attribute.

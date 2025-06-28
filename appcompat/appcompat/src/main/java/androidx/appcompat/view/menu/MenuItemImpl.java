@@ -47,7 +47,7 @@ import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 /**
- *(SESL variant) Represents a single item in a menu. This class is the implementation of the {@link SupportMenuItem } and {@link SeslMenuItem }
+ *(SESL modified) Represents a single item in a menu. This class is the implementation of the {@link SupportMenuItem } and {@link SeslMenuItem }
  * interfaces.
  */
 @RestrictTo(LIBRARY_GROUP_PREFIX)

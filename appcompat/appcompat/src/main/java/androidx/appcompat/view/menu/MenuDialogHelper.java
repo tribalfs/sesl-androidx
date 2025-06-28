@@ -30,7 +30,7 @@ import androidx.appcompat.app.AlertDialog;
 import org.jspecify.annotations.NonNull;
 
 /**
- * (SESL variant) Helper for menus that appear as Dialogs (context and submenus).
+ * (SESL modified) Helper for menus that appear as Dialogs (context and submenus).
  */
 class MenuDialogHelper implements DialogInterface.OnKeyListener,
         DialogInterface.OnClickListener,

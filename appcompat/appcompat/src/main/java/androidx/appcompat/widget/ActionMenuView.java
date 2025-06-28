@@ -51,7 +51,7 @@ import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 /**
- * (SESL variant) ActionMenuView is a presentation of a series of menu options as a View. It provides
+ * (SESL modified) ActionMenuView is a presentation of a series of menu options as a View. It provides
  * several top level options as action buttons while spilling remaining options over as
  * items in an overflow menu. This allows applications to present packs of actions inline with
  * specific or repeating content.

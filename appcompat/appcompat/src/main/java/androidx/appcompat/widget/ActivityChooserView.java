@@ -55,7 +55,7 @@ import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 /**
- * (SESL variant) This class is a view for choosing an activity for handling a given {@link Intent}.
+ * (SESL modified) This class is a view for choosing an activity for handling a given {@link Intent}.
  * <p>
  * The view is composed of two adjacent buttons:
  * <ul>

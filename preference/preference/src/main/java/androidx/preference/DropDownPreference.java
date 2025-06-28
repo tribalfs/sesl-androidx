@@ -31,7 +31,7 @@ import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.appcompat.widget.SeslArrayAdapter;
 
 /**
- * (SESL variant) A {@link ListPreference} that presents the options in a drop down menu rather than a dialog.
+ * (SESL modified) A {@link ListPreference} that presents the options in a drop down menu rather than a dialog.
  */
 //@RequiresApi(23)
 public class DropDownPreference extends ListPreference {

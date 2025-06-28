@@ -39,7 +39,7 @@ import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.MenuPopupWindow;
 
 /**
- * (SESL variant)
+ * (SESL modified)
  *
  * A standard menu popup in which when a submenu is opened, it replaces its parent menu in the
  * viewport.

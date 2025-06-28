@@ -56,7 +56,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
- * (SESL variant) A PreferenceFragmentCompat is the entry point to using the Preference library. This
+ * (SESL modified) A PreferenceFragmentCompat is the entry point to using the Preference library. This
  * {@link Fragment} displays a hierarchy of {@link Preference} objects to the user. It also
  * handles persisting values to the device. To retrieve an instance of
  * {@link android.content.SharedPreferences} that the preference hierarchy in this fragment will

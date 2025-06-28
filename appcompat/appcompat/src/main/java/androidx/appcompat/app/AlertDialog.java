@@ -46,7 +46,7 @@ import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 /**
- * A subclass of Dialog that can display one, two or three buttons. If you only want to
+ * (SESL Modified) A subclass of Dialog that can display one, two or three buttons. If you only want to
  * display a String in this dialog box, use the setMessage() method.  If you
  * want to display a more complex view, look up the FrameLayout called "custom"
  * and add your view to it:

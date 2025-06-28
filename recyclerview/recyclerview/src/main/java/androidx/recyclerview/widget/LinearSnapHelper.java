@@ -25,7 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 /**
- * (SESL variant) Implementation of the {@link SnapHelper} supporting snapping in either vertical or horizontal
+ * (SESL modified) Implementation of the {@link SnapHelper} supporting snapping in either vertical or horizontal
  * orientation.
  * <p>
  * The implementation will snap the center of the target child view to the center of

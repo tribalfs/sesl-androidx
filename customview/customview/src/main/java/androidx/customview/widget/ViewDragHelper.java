@@ -39,7 +39,7 @@ import org.jspecify.annotations.Nullable;
 import java.util.Arrays;
 
 /**
- *  (SESL variant) ViewDragHelper is a utility class for writing custom ViewGroups. It offers a number
+ *  (SESL modified) ViewDragHelper is a utility class for writing custom ViewGroups. It offers a number
  * of useful operations and state tracking for allowing a user to drag and reposition
  * views within their parent ViewGroup.
  */

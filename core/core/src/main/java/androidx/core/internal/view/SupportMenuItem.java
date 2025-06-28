@@ -32,7 +32,7 @@ import androidx.annotation.RestrictTo;
 import androidx.core.view.ActionProvider;
 
 /**
- *  (SESL variant) Interface for direct access to a previously created menu item.
+ *  (SESL modified) Interface for direct access to a previously created menu item.
  *
  * This version extends the one available in the framework to ensures that any necessary
  * elements added in later versions of the framework, are available for all platforms.

@@ -41,7 +41,7 @@ import androidx.reflect.view.SeslHapticFeedbackConstantsReflector;
 import androidx.reflect.view.SeslViewReflector;
 
 /**
- * (SESL variant) A {@link Preference} that provides a two-state toggleable option.
+ * (SESL modified) A {@link Preference} that provides a two-state toggleable option.
  *
  * <p>This preference will save a boolean value to {@link android.content.SharedPreferences}.
  *

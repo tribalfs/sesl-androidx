@@ -75,7 +75,7 @@ import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 
 /**
- * (SESL variant) SwitchCompat is a complete backport of the core {@link Switch} widget that
+ * (SESL modified) SwitchCompat is a complete backport of the core {@link Switch} widget that
  * brings the visuals and functionality of the toggle widget to older versions
  * of the Android platform. Unlike other widgets in this package, SwitchCompat
  * is not automatically used in layouts that include the

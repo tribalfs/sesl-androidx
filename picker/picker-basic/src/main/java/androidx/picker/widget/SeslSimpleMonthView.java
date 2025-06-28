@@ -203,9 +203,9 @@ public class SeslSimpleMonthView extends View {
         setImportantForAccessibility(ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
         mLockAccessibilityDelegate = true;
 
-        final String packageName = Settings.System.getString(mContext.getContentResolver(),
-                "current_sec_active_themepackage");
-        if (packageName != null) {
+        final boolean isThemeApplied = Settings.System.getString(mContext.getContentResolver(),
+                "current_sec_active_themepackage") != null;
+        if (isThemeApplied) {
             mDayNumberDisabledAlpha = res.getInteger(R.integer.sesl_day_number_theme_disabled_alpha);
         }
         mPrevNextMonthDayNumberAlpha = res.getInteger(R.integer.sesl_day_number_theme_disabled_alpha);

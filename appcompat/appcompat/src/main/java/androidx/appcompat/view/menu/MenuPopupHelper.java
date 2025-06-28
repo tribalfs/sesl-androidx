@@ -45,7 +45,7 @@ import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 /**
- * (SESL variant) Presents a menu as a small, simple popup anchored to another view.
+ * (SESL modified) Presents a menu as a small, simple popup anchored to another view.
  *
  */
 @RestrictTo(LIBRARY_GROUP_PREFIX)

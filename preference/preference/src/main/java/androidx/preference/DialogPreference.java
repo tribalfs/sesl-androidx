@@ -33,7 +33,7 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.res.TypedArrayUtils;
 
 /**
- * (SESL variant) A base class for {@link Preference}s that are dialog-based. When clicked, these
+ * (SESL modified) A base class for {@link Preference}s that are dialog-based. When clicked, these
  * preferences will open a dialog showing the actual preference controls.
  *
  * @attr name android:dialogTitle

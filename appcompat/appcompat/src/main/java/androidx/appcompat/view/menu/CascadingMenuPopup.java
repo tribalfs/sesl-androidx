@@ -60,7 +60,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * (SESL variant)
+ * (SESL modified)
  * A popup for a menu which will allow multiple submenus to appear in a cascading fashion, side by
  * side.
  */

@@ -162,7 +162,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * (SESL variant) A flexible view for providing a limited window into a large data set.
+ * (SESL modified) A flexible view for providing a limited window into a large data set.
  *
  * <h3>Glossary of terms:</h3>
  *

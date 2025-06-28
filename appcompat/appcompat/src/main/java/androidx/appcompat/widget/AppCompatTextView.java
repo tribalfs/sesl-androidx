@@ -62,7 +62,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 /**
- * (SESL variant) A {@link TextView} which supports compatible features on older versions of the platform,
+ * (SESL modified) A {@link TextView} which supports compatible features on older versions of the platform,
  * including:
  * <ul>
  * <li>Allows dynamic tint of its background via the background tint methods in

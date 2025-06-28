@@ -43,7 +43,7 @@ import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import java.util.List;
 
 /**
- * (SESL variant) A {@link RecyclerView.LayoutManager} implementation which provides
+ * (SESL modified) A {@link RecyclerView.LayoutManager} implementation which provides
  * similar functionality to {@link android.widget.ListView}.
  */
 public class LinearLayoutManager extends RecyclerView.LayoutManager implements
