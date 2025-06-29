@@ -18,6 +18,10 @@ package androidx.appcompat.app;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
+import static androidx.core.view.SemBlurCompat.BLUR_MODE_WINDOW;
+import static androidx.core.view.SemBlurCompat.BLUR_UI_HIGH_ULTRA_THICK_D;
+import static androidx.core.view.SemBlurCompat.BLUR_UI_HIGH_ULTRA_THICK_LIGHT;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
@@ -58,9 +62,12 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 import androidx.appcompat.R;
+import androidx.appcompat.util.SeslMisc;
 import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.core.view.SemBlurCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.NestedScrollView;
+import androidx.reflect.feature.SeslFloatingFeatureReflector;
 import androidx.reflect.widget.SeslAdapterViewReflector;
 import androidx.reflect.widget.SeslTextViewReflector;
 
@@ -132,6 +139,11 @@ class AlertController {
     private int mButtonPanelLayoutHint = AlertDialog.LAYOUT_HINT_NONE;
 
     Handler mHandler;
+
+    //Sesl8
+    private boolean mIsBlurEnabled = false;
+    private boolean mIsDefaultBlurEnabled = true;
+    //sesl8
 
     private final View.OnClickListener mButtonHandler = new View.OnClickListener() {
         @Override
@@ -479,6 +491,7 @@ class AlertController {
 
     private void setupView() {
         final View parentPanel = mWindow.findViewById(R.id.parentPanel);
+        final View middlePanel = mWindow.findViewById(R.id.middlePanel);//sesl8
         final View defaultTopPanel = parentPanel.findViewById(R.id.topPanel);
         final View defaultContentPanel = parentPanel.findViewById(R.id.contentPanel);
         final View defaultButtonPanel = parentPanel.findViewById(R.id.buttonPanel);
@@ -527,7 +540,7 @@ class AlertController {
                 && mCustomTitleView.getVisibility() != View.GONE;
 
         if ((hasCustomPanel && !hasDefaultTopPanel && !hasDefaultContentPanel) || hasCustomTitleView) {
-            adjustParentPanelPadding(parentPanel);
+            adjustParentPanelPadding(middlePanel);//sesl8
         }
 
         if (hasCustomPanel && hasDefaultTopPanel && !hasDefaultContentPanel) {
@@ -576,6 +589,32 @@ class AlertController {
                         mContext.getResources().getDimensionPixelSize(R.dimen.sesl_select_dialog_padding_top));
             }
         }
+        //Sesl8
+        if (Build.VERSION.SDK_INT >= 36) {
+            boolean isDefaultBackground = true;
+
+            String SUPPORT_3D_SURFACE_TRANSITION_FLAG = SeslFloatingFeatureReflector.getString("SEC_FLOATING_FEATURE_GRAPHICS_SUPPORT_3D_SURFACE_TRANSITION_FLAG", "FALSE");
+            boolean isLightTheme = SeslMisc.isLightTheme(mContext);
+            boolean isCustomTheme = Settings.System.getString(mContext.getContentResolver(), "current_sec_active_themepackage") != null;
+            boolean isBlurEnabledForCurrentPanel = hasCustomPanel ? mIsBlurEnabled : mIsDefaultBlurEnabled;
+            Drawable insetBackground = mContext.getResources().getDrawable(androidx.appcompat.R.drawable.sesl_dialog_inset_background, this.mContext.getTheme());
+            View decorView = mWindow.getDecorView();
+            if (decorView.getBackground() != null && insetBackground.getConstantState() != null
+                    && !insetBackground.getConstantState().equals(decorView.getBackground().getConstantState())) {
+                isDefaultBackground = false;
+            }
+            if ("FALSE".equalsIgnoreCase(SUPPORT_3D_SURFACE_TRANSITION_FLAG) || !isBlurEnabledForCurrentPanel || isCustomTheme || !isDefaultBackground) {
+                return;
+            }
+            if (middlePanel != null && middlePanel.getBackground() == null && !isLightTheme) {
+                middlePanel.setBackground(mContext.getDrawable(R.drawable.sesl_dialog_middle_panel_background));
+            }
+            int colorCurve =  isLightTheme ? BLUR_UI_HIGH_ULTRA_THICK_LIGHT : BLUR_UI_HIGH_ULTRA_THICK_D;
+            int blurColor = mContext.getColor(R.color.sesl_dialog_blur_background_color);
+            float blurRadius = (float) mContext.getResources().getDimensionPixelSize(R.dimen.sesl_dialog_background_corner_radius);
+            SemBlurCompat.setBlurEffectPreset(parentPanel, BLUR_MODE_WINDOW, colorCurve, blurColor, blurRadius);
+        }
+        //sesl8
     }
 
     private void setScrollIndicators(ViewGroup contentPanel, View content,
@@ -1272,6 +1311,7 @@ class AlertController {
 
     private void setupPaddings() {
         final View mParentPanel = mWindow.findViewById(R.id.parentPanel);
+        final View mMiddlePanel = mWindow.findViewById(R.id.middlePanel);
         final View mTitleTemplate = mParentPanel.findViewById(R.id.title_template);
         final View mScrollview = mParentPanel.findViewById(R.id.scrollView);
         final View mTopPanel = mParentPanel.findViewById(R.id.topPanel);
@@ -1286,23 +1326,21 @@ class AlertController {
 
         Resources resources = mContext.getResources();
 
-        if ((!hasCustomPanel || hasTopPanel || hasDefaultContentPanel) && !hasCustomTitleView) {
-            mParentPanel.setPadding(0, resources.getDimensionPixelSize(R.dimen.sesl_dialog_title_padding_top), 0, 0);
-        } else {
-            mParentPanel.setPadding(0, 0, 0, 0);
+        if (mMiddlePanel != null) {
+            if ((!hasCustomPanel || hasTopPanel || hasDefaultContentPanel) && !hasCustomTitleView) {
+                mMiddlePanel.setPadding(0, resources.getDimensionPixelSize(R.dimen.sesl_dialog_title_padding_top), 0, 0);
+            } else {
+                mMiddlePanel.setPadding(0, 0, 0, 0);
+            }
         }
 
         if (mTitleTemplate != null) {
+            int paddingHorizontal = resources.getDimensionPixelSize(R.dimen.sesl_dialog_padding_horizontal);
             if (!hasCustomPanel || !hasTopPanel || hasDefaultContentPanel) {
-                mTitleTemplate.setPadding(resources.getDimensionPixelSize(R.dimen.sesl_dialog_padding_horizontal),
-                        0,
-                        resources.getDimensionPixelSize(R.dimen.sesl_dialog_padding_horizontal),
+                mTitleTemplate.setPadding(paddingHorizontal, 0, paddingHorizontal,
                         resources.getDimensionPixelSize(R.dimen.sesl_dialog_title_padding_bottom));
             } else {
-                mTitleTemplate.setPadding(resources.getDimensionPixelSize(R.dimen.sesl_dialog_padding_horizontal),
-                        0,
-                        resources.getDimensionPixelSize(R.dimen.sesl_dialog_padding_horizontal),
-                        0);
+                mTitleTemplate.setPadding(paddingHorizontal, 0, paddingHorizontal, 0);
             }
         }
         if (mScrollview != null) {
@@ -1312,12 +1350,17 @@ class AlertController {
                     resources.getDimensionPixelSize(R.dimen.sesl_dialog_body_text_padding_bottom));
         }
         if (mButtonPanel != null) {
-            mButtonPanel.setPadding(resources.getDimensionPixelSize(R.dimen.sesl_dialog_button_bar_padding_horizontal),
-                    0,
-                    resources.getDimensionPixelSize(R.dimen.sesl_dialog_button_bar_padding_horizontal),
+            int buttonBarPaddingHorizontal = resources.getDimensionPixelSize(R.dimen.sesl_dialog_button_bar_padding_horizontal);
+            mButtonPanel.setPadding(buttonBarPaddingHorizontal, 0, buttonBarPaddingHorizontal,
                     resources.getDimensionPixelSize(R.dimen.sesl_dialog_button_bar_padding_bottom));
         }
     }
     //sesl
+
+    //sesl8
+    public void seslSetBackgroundBlurEnabled(boolean enabled) {
+        mIsBlurEnabled = enabled;
+        mIsDefaultBlurEnabled = enabled;
+    }
 
 }
