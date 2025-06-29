@@ -47,6 +47,16 @@ import java.util.List;
 /*
  * Original code by Samsung, all rights reserved to the original author.
  */
+/**
+ * SeslColorSpectrumView shows a color spectrum and a cursor to select a color.
+ *
+ * This view is used in the {@link SeslColorPicker} widget.
+ * It allows the user to select a color by tapping or dragging on the spectrum.
+ * The selected color is then reported to a listener.
+ *
+ * The view also supports accessibility features, allowing users to navigate and select colors
+ * using touch exploration.
+ */
 class SeslColorSpectrumView extends View {
     private static final String TAG = "SeslColorSpectrumView";
 

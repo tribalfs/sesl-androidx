@@ -27,6 +27,8 @@ import android.graphics.drawable.GradientDrawable;
 import android.util.AttributeSet;
 import android.widget.SeekBar;
 
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.ColorUtils;
 import androidx.picker.R;
 
@@ -34,20 +36,27 @@ import androidx.picker.R;
  * Original code by Samsung, all rights reserved to the original author.
  */
 
+/**
+ * A SeekBar that displays a gradient of colors.
+ * It is used to select a color by dragging the thumb along the gradient.
+ *
+ * The gradient is created from two colors: black and a color specified by the user.
+ * The user can also change the base color of the gradient.
+ *
+ * This class is used internally by the color picker.
+ */
 class SeslGradientColorSeekBar extends SeekBar {
     private static final String TAG = "SeslGradientColorSeekBar";
     private static final int SEEKBAR_MAX_VALUE = 100;
     private final Context mContext;
-    private final Resources mResources;
     private int[] mColors = {Color.BLACK, Color.WHITE};
     private GradientDrawable mProgressDrawable;
 
     public SeslGradientColorSeekBar(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = getContext();
-        mResources = mContext.getResources();
         mProgressDrawable
-                = (GradientDrawable) mResources.getDrawable(R.drawable.sesl_color_picker_gradient_seekbar_drawable);
+                = (GradientDrawable) ContextCompat.getDrawable(mContext, R.drawable.sesl_color_picker_gradient_seekbar_drawable);
     }
 
     void init(Integer color) {
@@ -104,7 +113,7 @@ class SeslGradientColorSeekBar extends SeekBar {
     }
 
     private void initThumb() {
-        setThumb(mResources.getDrawable(R.drawable.sesl_color_picker_seekbar_cursor));
+        setThumb(ContextCompat.getDrawable(mContext, R.drawable.sesl_color_picker_seekbar_cursor));
         setThumbOffset(0);
         setSplitTrack(false);
     }

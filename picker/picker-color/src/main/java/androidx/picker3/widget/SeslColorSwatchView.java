@@ -47,6 +47,20 @@ import java.util.List;
 /*
  * Original code by Samsung, all rights reserved to the original author.
  */
+/**
+ * SeslColorSwatchView is a view that displays a grid of color swatches.
+ * Users can select a color from the swatch by tapping on it.
+ *
+ * It provides:
+ * <ul>
+ *   <li>A grid of predefined colors.</li>
+ *   <li>A cursor to indicate the selected color.</li>
+ *   <li>Accessibility support through {@link ExploreByTouchHelper}.</li>
+ *   <li>A listener to notify when the selected color changes.</li>
+ * </ul>
+ *
+ * This view is used in the {@link SeslColorPicker} widget.
+ */
 class SeslColorSwatchView extends View {
     private static String TAG = "SeslColorSwatchView";
 

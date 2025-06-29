@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  Copyright 2024 The Android Open Source Project
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright 2024 The Android Open Source Project
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -12,98 +10,97 @@
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
-  limitations under the License.
-  -->
-
+  limitations under the License. -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content">
 
     <HorizontalScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:id="@+id/horizontal_scroll_view"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content">
 
         <LinearLayout
-            android:layout_width="@dimen/sesl_color_picker_oneui_3_main_content_width"
-            android:layout_height="wrap_content"
             android:clipToPadding="false"
+            android:layout_height="wrap_content"
+            android:layout_width="@dimen/sesl_color_picker_oneui_3_main_content_width"
             android:orientation="vertical"
             android:paddingLeft="@dimen/sesl_color_picker_oneui_3_dialog_padding_left"
-            android:paddingTop="@dimen/sesl_color_picker_oneui_3_dialog_padding_top"
-            android:paddingRight="@dimen/sesl_color_picker_oneui_3_dialog_padding_right">
+            android:paddingRight="@dimen/sesl_color_picker_oneui_3_dialog_padding_right"
+            android:paddingTop="@dimen/sesl_color_picker_oneui_3_dialog_padding_top">
 
             <include layout="@layout/sesl_color_picker_oneui_3_tab_layout" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
                 android:layout_height="@dimen/sesl_color_picker_oneui_3_main_content_height"
                 android:layout_marginStart="@dimen/sesl_color_picker_negative_margin_start"
+                android:layout_width="wrap_content"
                 android:orientation="horizontal">
 
                 <FrameLayout
                     android:id="@+id/sesl_color_picker_color_swatch_view_container"
-                    android:layout_width="@dimen/sesl_color_picker_oneui_3_color_swatch_view_width_background"
-                    android:layout_height="@dimen/sesl_color_picker_oneui_3_color_swatch_view_height_background">
+                    android:layout_height="@dimen/sesl_color_picker_oneui_3_color_swatch_view_height_background"
+                    android:layout_width="@dimen/sesl_color_picker_oneui_3_color_swatch_view_width_background">
 
                     <androidx.picker3.widget.SeslColorSwatchView
                         android:id="@+id/sesl_color_picker_color_swatch_view"
-                        android:layout_width="@dimen/sesl_color_picker_oneui_3_color_swatch_view_width_background"
-                        android:layout_height="@dimen/sesl_color_picker_oneui_3_color_swatch_view_height_background" />
+                        android:layout_height="@dimen/sesl_color_picker_oneui_3_color_swatch_view_height_background"
+                        android:layout_width="@dimen/sesl_color_picker_oneui_3_color_swatch_view_width_background" />
                 </FrameLayout>
 
                 <FrameLayout
                     android:id="@+id/sesl_color_picker_color_spectrum_view_container"
-                    android:layout_width="@dimen/sesl_color_picker_oneui_3_color_swatch_view_width_background"
                     android:layout_height="@dimen/sesl_color_picker_oneui_3_color_swatch_view_height_background"
+                    android:layout_width="@dimen/sesl_color_picker_oneui_3_color_swatch_view_width_background"
                     android:visibility="gone">
 
                     <androidx.picker3.widget.SeslColorSpectrumView
                         android:id="@+id/sesl_color_picker_color_spectrum_view"
-                        android:layout_width="@dimen/sesl_color_picker_oneui_3_color_swatch_view_width_background"
-                        android:layout_height="@dimen/sesl_color_picker_oneui_3_color_swatch_view_height_background" />
+                        android:layout_height="@dimen/sesl_color_picker_oneui_3_color_swatch_view_height_background"
+                        android:layout_width="@dimen/sesl_color_picker_oneui_3_color_swatch_view_width_background" />
                 </FrameLayout>
 
                 <LinearLayout
-                    android:layout_width="@dimen/sesl_color_picker_oneui_3_seekbar_layout_width"
                     android:layout_height="wrap_content"
+                    android:layout_width="@dimen/sesl_color_picker_oneui_3_seekbar_layout_width"
                     android:orientation="vertical"
                     android:paddingBottom="@dimen/sesl_color_picker_oneui_3_dialog_padding_bottom">
 
                     <LinearLayout
-                        android:id="@+id/sesl_color_picker3_saturation_layout"
-                        android:layout_width="match_parent"
+                        android:id="@+id/sesl_color_picker_saturation_layout"
                         android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
                         android:orientation="vertical"
                         android:visibility="invisible">
 
                         <TextView
                             android:id="@+id/sesl_color_picker_saturation_text"
-                            style="@style/SeekbarTitleText"
-                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
                             android:text="@string/sesl_color_saturation_text"
-                            android:visibility="gone" />
+                            android:visibility="gone"
+                            style="@style/SeekbarTitleText" />
 
                         <LinearLayout
-                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/sesl_color_picker_oneui_3_dialog_padding_top"
                             android:layout_marginBottom="@dimen/sesl_color_picker_seekbar_margin_bottom"
+                            android:layout_marginTop="@dimen/sesl_color_picker_oneui_3_dialog_padding_top"
+                            android:layout_width="match_parent"
                             android:orientation="horizontal">
 
                             <FrameLayout
-                                android:id="@+id/sesl_color_picker3_saturation_seekbar_container"
-                                android:layout_width="0dp"
+                                android:id="@+id/sesl_color_picker_saturation_seekbar_container"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1">
+                                android:layout_weight="1"
+                                android:layout_width="0dp">
 
                                 <androidx.picker3.widget.SeslGradientColorSeekBar
-                                    android:id="@+id/sesl_color_picker3_saturation_seekbar"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="@dimen/sesl_color_picker_seekbar_height"
+                                    android:id="@+id/sesl_color_picker_saturation_seekbar"
                                     android:importantForAccessibility="no"
-                                    android:paddingStart="@dimen/sesl_color_picker_oneui_3_seekbar_padding"
-                                    android:paddingEnd="@dimen/sesl_color_picker_oneui_3_seekbar_padding" />
+                                    android:layout_height="@dimen/sesl_color_picker_seekbar_height"
+                                    android:layout_width="match_parent"
+                                    android:paddingEnd="@dimen/sesl_color_picker_oneui_3_seekbar_padding"
+                                    android:paddingStart="@dimen/sesl_color_picker_oneui_3_seekbar_padding" />
                             </FrameLayout>
 
                             <include layout="@layout/sesl_color_picker_saturation_edittext_layout" />
@@ -111,45 +108,45 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/sesl_color_picker3_opacity_layout"
-                        android:layout_width="@dimen/sesl_color_picker_oneui_3_seekbar_layout_width"
+                        android:id="@+id/sesl_color_picker_opacity_layout"
                         android:layout_height="wrap_content"
+                        android:layout_width="@dimen/sesl_color_picker_oneui_3_seekbar_layout_width"
                         android:orientation="vertical"
                         android:paddingBottom="@dimen/sesl_color_picker_oneui_3_dialog_padding_bottom">
 
                         <TextView
                             android:id="@+id/sesl_color_picker_opacity_text"
-                            style="@style/SeekbarTitleText"
-                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
                             android:text="@string/sesl_color_opacity_text"
-                            android:visibility="gone" />
+                            android:visibility="gone"
+                            style="@style/SeekbarTitleText" />
 
                         <LinearLayout
-                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
                             android:orientation="horizontal">
 
                             <FrameLayout
-                                android:id="@+id/sesl_color_picker3_opacity_seekbar_container"
-                                android:layout_width="0dp"
+                                android:id="@+id/sesl_color_picker_opacity_seekbar_container"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1">
+                                android:layout_weight="1"
+                                android:layout_width="0dp">
 
                                 <View
-                                    android:layout_width="match_parent"
-                                    android:layout_height="19.5dp"
-                                    android:layout_gravity="start|center_vertical"
                                     android:background="@drawable/sesl_color_picker_opacity_background"
-                                    android:importantForAccessibility="no" />
+                                    android:importantForAccessibility="no"
+                                    android:layout_gravity="start|center_vertical"
+                                    android:layout_height="19.5dp"
+                                    android:layout_width="match_parent" />
 
                                 <androidx.picker3.widget.SeslOpacitySeekBar
-                                    android:id="@+id/sesl_color_picker3_opacity_seekbar"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="@dimen/sesl_color_picker_seekbar_height"
+                                    android:id="@+id/sesl_color_picker_opacity_seekbar"
                                     android:importantForAccessibility="no"
-                                    android:paddingStart="@dimen/sesl_color_picker_oneui_3_seekbar_padding"
-                                    android:paddingEnd="@dimen/sesl_color_picker_oneui_3_seekbar_padding" />
+                                    android:layout_height="@dimen/sesl_color_picker_seekbar_height"
+                                    android:layout_width="match_parent"
+                                    android:paddingEnd="@dimen/sesl_color_picker_oneui_3_seekbar_padding"
+                                    android:paddingStart="@dimen/sesl_color_picker_oneui_3_seekbar_padding" />
                             </FrameLayout>
 
                             <include layout="@layout/sesl_color_picker_opacity_edittext_layout" />
@@ -159,25 +156,25 @@
                     <include layout="@layout/sesl_color_picker_oneui_3_selected_color_layout" />
 
                     <LinearLayout
-                        android:layout_width="@dimen/sesl_color_picker_selected_color_group_width"
-                        android:layout_height="@dimen/sesl_color_picker_oneui_3_used_color_divider_container_height"
-                        android:layout_gravity="center"
                         android:gravity="center_vertical"
+                        android:layout_gravity="center"
+                        android:layout_height="@dimen/sesl_color_picker_oneui_3_used_color_divider_container_height"
+                        android:layout_width="@dimen/sesl_color_picker_selected_color_group_width"
                         android:visibility="invisible">
 
                         <TextView
                             android:id="@+id/sesl_color_picker_used_color_divider_text"
-                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
                             android:text="@string/sesl_color_picker_recently_used_colors"
                             android:visibility="gone" />
 
                         <View
+                            android:background="@drawable/sesl_color_picker_divider"
                             android:id="@+id/sesl_color_picker_recently_divider"
-                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginStart="16dp"
-                            android:background="@drawable/sesl_color_picker_divider" />
+                            android:layout_width="match_parent" />
                     </LinearLayout>
 
                     <include layout="@layout/sesl_color_picker_oneui_3_used_color_group" />

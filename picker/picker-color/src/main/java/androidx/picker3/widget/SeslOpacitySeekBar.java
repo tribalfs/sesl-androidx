@@ -23,10 +23,24 @@ import android.graphics.drawable.GradientDrawable;
 import android.util.AttributeSet;
 import android.widget.SeekBar;
 
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.ColorUtils;
 import androidx.picker.R;
 
-/*
+/**
+ * Represents a SeekBar for adjusting opacity.
+ * This class extends SeekBar and provides functionality for setting the opacity level of a color.
+ *
+ * <p>The SeekBar displays a gradient representing the opacity range, from fully transparent to
+ * fully opaque. The user can drag the thumb to select the desired opacity level.
+ *
+ * <p>The maximum value of the SeekBar is 255, corresponding to the alpha channel of a color.
+ * The progress of the SeekBar directly maps to the alpha value.
+ *
+ * <p>This class is intended for internal use within the SeslColorPicker library.
+ *
+ * @hide
+ */ /*
  * Original code by Samsung, all rights reserved to the original author.
  */
 class SeslOpacitySeekBar extends SeekBar {
@@ -46,11 +60,11 @@ class SeslOpacitySeekBar extends SeekBar {
             initColor(color);
         }
 
-        Resources res = getContext().getResources();
-        mProgressDrawable = (GradientDrawable) res.getDrawable(R.drawable.sesl_color_picker_opacity_seekbar);
+        Context context = getContext();
+        mProgressDrawable = (GradientDrawable) ContextCompat.getDrawable(context, R.drawable.sesl_color_picker_opacity_seekbar);
         setProgressDrawable(mProgressDrawable);
 
-        setThumb(res.getDrawable(R.drawable.sesl_color_picker_seekbar_cursor));
+        setThumb(ContextCompat.getDrawable(context, R.drawable.sesl_color_picker_seekbar_cursor));
         setThumbOffset(0);
         setSplitTrack(false);
     }

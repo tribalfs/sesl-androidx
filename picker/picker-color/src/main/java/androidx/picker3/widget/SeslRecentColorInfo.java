@@ -23,6 +23,13 @@ import java.util.ArrayList;
 /*
  * Original code by Samsung, all rights reserved to the original author.
  */
+/**
+ * A utility class to manage recent color information for {@link SeslColorPicker}.
+ *
+ * <p>This class stores and manages the currently selected color, the new color being picked,
+ * the current color before picking, and a list of recently used colors. It is used internally
+ * by {@link SeslColorPicker} to provide recent color functionality.
+ */
 public class SeslRecentColorInfo {
     private Integer mSelectedColor = null;
     private Integer mCurrentColor = null;

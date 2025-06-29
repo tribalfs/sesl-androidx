@@ -19,14 +19,23 @@ package androidx.picker3.widget;
 import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 import static android.content.res.Configuration.SCREENLAYOUT_SIZE_LARGE;
 import static android.content.res.Configuration.SCREENLAYOUT_SIZE_MASK;
+import static android.view.MotionEvent.ACTION_CANCEL;
+import static android.view.MotionEvent.ACTION_DOWN;
+import static android.view.MotionEvent.ACTION_UP;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
+import android.os.Build;
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -40,20 +49,28 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.graphics.drawable.SeslRecoilDrawable;
+import androidx.appcompat.util.SeslShapeDrawable;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.content.ContextCompat;
 import androidx.picker.R;
+import androidx.picker.eyeDropper.SeslEyeDropperActivity;
 
 import com.google.android.material.tabs.TabLayout;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -61,6 +78,22 @@ import java.util.Locale;
  * Original code by Samsung, all rights reserved to the original author.
  */
 
+/**
+ * SeslColorPicker is a widget for selecting a color.
+ *
+ * <p>It consists of a color spectrum view, a color swatch view,
+ * a gradient color seek bar for saturation, an opacity seek bar,
+ * and input fields for HEX and RGB color values.
+ * It also displays a list of recently used colors.
+ *
+ * <p>The picker can operate in two modes, selectable via tabs:
+ * <ul>
+ *   <li><b>Spectrum Tab (Default):</b> Allows color selection from a continuous spectrum using
+ *       {@link SeslColorSpectrumView} and a saturation seek bar.
+ *   <li><b>Swatch Tab:</b> Allows color selection from a predefined set of swatches using
+ *       {@link SeslColorSwatchView}.
+ * </ul>
+ */
 public class SeslColorPicker extends LinearLayout {
     static int RECENT_COLOR_SLOT_COUNT = 6;
 
@@ -87,7 +120,6 @@ public class SeslColorPicker extends LinearLayout {
     private String[] mColorDescription = null;
     boolean mFlagVar;
     private final boolean mIsLightTheme;
-    boolean mShowOpacitySeekbar;
     boolean mFromRecentLayoutTouch = false;
     boolean mIsInputFromUser = false;
     private boolean mIsOpacityBarEnabled = false;
@@ -108,8 +140,13 @@ public class SeslColorPicker extends LinearLayout {
     FrameLayout mSpectrumViewContainer;
     FrameLayout mSwatchViewContainer;
 
-    final int MODE_SPECTRUM = 0;
-    final int MODE_SWATCH = 1;
+    static final int MODE_SPECTRUM = 0;
+    static final int MODE_SWATCH = 1;
+
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({MODE_SPECTRUM, MODE_SWATCH})
+    public @interface PickerMode {}
+
     int mTabIndex = MODE_SPECTRUM;
     private final TabLayout mTabLayoutContainer;
     boolean mTextFromRGB = false;
@@ -117,6 +154,25 @@ public class SeslColorPicker extends LinearLayout {
     boolean mfromRGB = false;
     boolean mfromSaturationSeekbar = false;
     private boolean mfromSpectrumTouch = false;
+
+    //Sesl7
+    final HorizontalScrollView mHorizontalScrollView;
+    final AppCompatImageView mEyeDropperView;
+
+    /**
+     * Interface definition for a callback to be invoked when the eye dropper tool
+     * is clicked by the user.
+     *
+     * @see #setOnEyeDropperListener(OnEyeDropperListener)
+     * @see SeslEyeDropperActivity
+     */
+    public interface OnEyeDropperListener {
+        void onEyeDropperClicked();
+    }
+
+    @Nullable
+    private OnEyeDropperListener mOnEyeDropperListener;
+    //sesl7
 
     private final View.OnClickListener mImageButtonClickListener = new View.OnClickListener() {
         @Override
@@ -148,7 +204,8 @@ public class SeslColorPicker extends LinearLayout {
                         int progress = mGradientColorSeekBar.getProgress();
                         mColorPickerSaturationEditText.setText(
                                 "" + String.format(Locale.getDefault(), "%d", progress));
-                        mColorPickerSaturationEditText.setSelection(String.valueOf(progress).length());
+                        mColorPickerSaturationEditText.setSelection(
+                                String.valueOf(progress).length());
                     }
 
                     if (mOnColorChangedListener != null) {
@@ -177,6 +234,8 @@ public class SeslColorPicker extends LinearLayout {
         mIsLightTheme = typedValue.data != 0;
 
         LayoutInflater.from(context).inflate(R.layout.sesl_color_picker_oneui_3_layout, this);
+        mHorizontalScrollView = findViewById(R.id.horizontal_scroll_view);//sesl7
+        mEyeDropperView = findViewById(R.id.sesl_eye_dropper);//sesl7
 
         mRecentColorInfo = new SeslRecentColorInfo();
         mRecentColorValues = mRecentColorInfo.getRecentColorInfo();
@@ -234,6 +293,7 @@ public class SeslColorPicker extends LinearLayout {
         initColorSpectrumView();
         initOpacitySeekBar(mIsOpacityBarEnabled);
         initRecentColorLayout();
+        initEyeDropperView();
         updateCurrentColor();
         setInitialColors();
         initCurrentColorValuesLayout();
@@ -243,7 +303,7 @@ public class SeslColorPicker extends LinearLayout {
      * @param pickerMode Set to either {@link #MODE_SPECTRUM} or {@link #MODE_SWATCH}
      */
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP_PREFIX)
-    public void setPickerMode(int pickerMode){
+    public void setPickerMode(@PickerMode int pickerMode) {
         TabLayout.Tab tabAt = mTabLayoutContainer.getTabAt(pickerMode);
         if (tabAt != null) {
             mTabIndex = pickerMode;
@@ -256,10 +316,31 @@ public class SeslColorPicker extends LinearLayout {
      * @return Either {@link #MODE_SPECTRUM} or {@link #MODE_SWATCH}
      */
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP_PREFIX)
-    public int getPickerMode(){
+    @PickerMode
+    public int getPickerMode() {
         return mTabIndex;
     }
 
+    /**
+     * Configures the ColorPicker to only display the spectrum view.
+     * This method hides the tab layout and swatch view, making the color spectrum
+     * the sole method of color selection.
+     *
+     * <p>It also disables direct input into the HEX and RGB EditText fields by
+     * setting their input type to {@link InputType#TYPE_NULL}.
+     * </p>
+     *
+     * <p>Key actions performed:
+     * <ul>
+     *   <li>Hides the tab layout ({@code mTabLayoutContainer}).</li>
+     *   <li>Initializes the color spectrum view ({@code mColorSpectrumView}).</li>
+     *   <li>Ensures {@code mIsSpectrumSelected} is set to true.</li>
+     *   <li>Hides the swatch view container ({@code mSwatchViewContainer}).</li>
+     *   <li>Makes the spectrum view container ({@code mSpectrumViewContainer}) visible.</li>
+     *   <li>Disables text input for HEX, Red, Green, and Blue EditText fields.</li>
+     * </ul>
+     * </p>
+     */
     public void setOnlySpectrumMode() {
         mTabLayoutContainer.setVisibility(View.GONE);
 
@@ -283,17 +364,22 @@ public class SeslColorPicker extends LinearLayout {
             DisplayMetrics displayMetrics = mResources.getDisplayMetrics();
             float density = displayMetrics.density;
             if (density % 1.0f != 0.0f) {
-                float f2 = displayMetrics.widthPixels;
-                if (isContains((int) (f2 / density))) {
+                float widthPixels = displayMetrics.widthPixels;
+                if (isContains((int) (widthPixels / density))) {
                     int dimensionPixelSize =
-                            mResources.getDimensionPixelSize(R.dimen.sesl_color_picker_seekbar_width);
-                    if (f2 < (mResources.getDimensionPixelSize(R.dimen.sesl_color_picker_oneui_3_dialog_padding_left) * 2) + dimensionPixelSize) {
-                        int i = (int) ((f2 - dimensionPixelSize) / 2.0f);
+                            mResources.getDimensionPixelSize(
+                                    R.dimen.sesl_color_picker_seekbar_width);
+                    if (widthPixels < (mResources.getDimensionPixelSize(
+                            R.dimen.sesl_color_picker_oneui_3_dialog_padding_left) * 2)
+                            + dimensionPixelSize) {
+                        int i = (int) ((widthPixels - dimensionPixelSize) / 2.0f);
                         findViewById(
-                                R.id.sesl_color_picker3_main_content_container).setPadding(i,
-                                mResources.getDimensionPixelSize(R.dimen.sesl_color_picker_oneui_3_dialog_padding_top),
+                                R.id.sesl_color_picker_main_content_container).setPadding(i,
+                                mResources.getDimensionPixelSize(
+                                        R.dimen.sesl_color_picker_oneui_3_dialog_padding_top),
                                 i,
-                                mResources.getDimensionPixelSize(R.dimen.sesl_color_picker_oneui_3_dialog_padding_bottom)
+                                mResources.getDimensionPixelSize(
+                                        R.dimen.sesl_color_picker_oneui_3_dialog_padding_bottom)
                         );
                     }
                 }
@@ -355,7 +441,8 @@ public class SeslColorPicker extends LinearLayout {
                             && mColorPickerOpacityEditText.getText().length() > 1
                     ) {
                         mColorPickerOpacityEditText.setText(
-                                "" + Integer.parseInt(mColorPickerOpacityEditText.getText().toString()));
+                                "" + Integer.parseInt(
+                                        mColorPickerOpacityEditText.getText().toString()));
                     } else if (Integer.parseInt(s.toString()) > 100) {
                         mColorPickerOpacityEditText.setText(
                                 "" + String.format(Locale.getDefault(), "%d", 100));
@@ -363,7 +450,8 @@ public class SeslColorPicker extends LinearLayout {
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
                 }
-                mColorPickerOpacityEditText.setSelection(mColorPickerOpacityEditText.getText().length());
+                mColorPickerOpacityEditText.setSelection(
+                        mColorPickerOpacityEditText.getText().length());
             }
         });
 
@@ -376,44 +464,47 @@ public class SeslColorPicker extends LinearLayout {
                     "" + String.format(Locale.getDefault(), "%d", 0));
         });
 
-        mColorPickerOpacityEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                if (i == 5) {
-                    mColorPickerHexEditText.requestFocus();
-                    return true;
-                }
-                return false;
-            }
-        });
+        mColorPickerOpacityEditText.setOnEditorActionListener(
+                new TextView.OnEditorActionListener() {
+                    @Override
+                    public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                        if (i == 5) {
+                            mColorPickerHexEditText.requestFocus();
+                            return true;
+                        }
+                        return false;
+                    }
+                });
     }
 
     private void initColorSwatchView() {
         mColorSwatchView = findViewById(R.id.sesl_color_picker_color_swatch_view);
         mSwatchViewContainer = findViewById(R.id.sesl_color_picker_color_swatch_view_container);
-        mColorSwatchView.setOnColorSwatchChangedListener(new SeslColorSwatchView.OnColorSwatchChangedListener() {
-            @Override
-            public void onColorSwatchChanged(int i) {
-                mIsInputFromUser = true;
-                mColorSpectrumView.mFromSwatchTouch = true;
+        mColorSwatchView.setOnColorSwatchChangedListener(
+                new SeslColorSwatchView.OnColorSwatchChangedListener() {
+                    @Override
+                    public void onColorSwatchChanged(int i) {
+                        mIsInputFromUser = true;
+                        mColorSpectrumView.mFromSwatchTouch = true;
 
-                if (mLastFocussedEditText != null) {
-                    mLastFocussedEditText.clearFocus();
-                }
+                        if (mLastFocussedEditText != null) {
+                            mLastFocussedEditText.clearFocus();
+                        }
 
-                try {
-                    ((InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE))
-                            .hideSoftInputFromWindow(getWindowToken(), 0);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                        try {
+                            ((InputMethodManager) mContext.getSystemService(
+                                    Context.INPUT_METHOD_SERVICE))
+                                    .hideSoftInputFromWindow(getWindowToken(), 0);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
 
-                mPickedColor.setColorWithAlpha(i, mOpacitySeekBar.getProgress());
-                updateCurrentColor();
-                updateHexAndRGBValues(i);
-                mColorSpectrumView.mFromSwatchTouch = false;
-            }
-        });
+                        mPickedColor.setColorWithAlpha(i, mOpacitySeekBar.getProgress());
+                        updateCurrentColor();
+                        updateHexAndRGBValues(i);
+                        mColorSpectrumView.mFromSwatchTouch = false;
+                    }
+                });
     }
 
     void initColorSpectrumView() {
@@ -469,9 +560,11 @@ public class SeslColorPicker extends LinearLayout {
                     return;
                 }
                 try {
-                    if (mColorPickerSaturationEditText.getText().toString().startsWith("0") && mColorPickerSaturationEditText.getText().length() > 1) {
+                    if (mColorPickerSaturationEditText.getText().toString().startsWith("0")
+                            && mColorPickerSaturationEditText.getText().length() > 1) {
                         mColorPickerSaturationEditText.setText(
-                                "" + Integer.parseInt(mColorPickerSaturationEditText.getText().toString()));
+                                "" + Integer.parseInt(
+                                        mColorPickerSaturationEditText.getText().toString()));
                     } else if (Integer.parseInt(editable.toString()) > 100) {
                         mColorPickerSaturationEditText.setText(
                                 "" + String.format(Locale.getDefault(), "%d", 100));
@@ -479,7 +572,8 @@ public class SeslColorPicker extends LinearLayout {
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
                 }
-                mColorPickerSaturationEditText.setSelection(mColorPickerSaturationEditText.getText().length());
+                mColorPickerSaturationEditText.setSelection(
+                        mColorPickerSaturationEditText.getText().length());
             }
         });
 
@@ -494,8 +588,8 @@ public class SeslColorPicker extends LinearLayout {
 
     @SuppressLint("ClickableViewAccessibility")
     private void initGradientColorSeekBar() {
-        mGradientSeekBarContainer = findViewById(R.id.sesl_color_picker3_saturation_layout);
-        mGradientColorSeekBar = findViewById(R.id.sesl_color_picker3_saturation_seekbar);
+        mGradientSeekBarContainer = findViewById(R.id.sesl_color_picker_saturation_layout);
+        mGradientColorSeekBar = findViewById(R.id.sesl_color_picker_saturation_seekbar);
         mGradientColorSeekBar.init(mPickedColor.getColor());
         mGradientColorSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -553,7 +647,9 @@ public class SeslColorPicker extends LinearLayout {
                     mLastFocussedEditText.clearFocus();
                 }
                 try {
-                    ((InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(getWindowToken(), 0);
+                    ((InputMethodManager) mContext.getSystemService(
+                            Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(getWindowToken(),
+                            0);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -564,10 +660,15 @@ public class SeslColorPicker extends LinearLayout {
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 mFlagVar = true;
                 int action = motionEvent.getAction();
-                if (action == 0) {
+                if (action == ACTION_DOWN) {
+                    //Sesl7
+                    if (mHorizontalScrollView != null) {
+                        mHorizontalScrollView.requestDisallowInterceptTouchEvent(true);
+                    }
+                    //sesl7
                     mGradientColorSeekBar.setSelected(true);
                     return true;
-                } else if (action == 1 || action == 3) {
+                } else if (action == ACTION_UP || action == ACTION_CANCEL) {
                     mGradientColorSeekBar.setSelected(false);
                     return false;
                 } else {
@@ -575,18 +676,20 @@ public class SeslColorPicker extends LinearLayout {
                 }
             }
         });
-        findViewById(R.id.sesl_color_picker3_saturation_seekbar_container)
-                .setContentDescription(mResources.getString(R.string.sesl_color_picker_hue_and_saturation) +
-                        ", " + mResources.getString(R.string.sesl_color_picker_slider) +
-                        ", " + mResources.getString(R.string.sesl_color_picker_double_tap_to_select));
+        findViewById(R.id.sesl_color_picker_saturation_seekbar_container)
+                .setContentDescription(
+                        mResources.getString(R.string.sesl_color_picker_hue_and_saturation) +
+                                ", " + mResources.getString(R.string.sesl_color_picker_slider) +
+                                ", " + mResources.getString(
+                                R.string.sesl_color_picker_double_tap_to_select));
     }
 
 
     @SuppressLint("ClickableViewAccessibility")
     public void initOpacitySeekBar(boolean enabled) {
-        mOpacitySeekBar = findViewById(R.id.sesl_color_picker3_opacity_seekbar);
-        mOpacitySeekBarContainer = findViewById(R.id.sesl_color_picker3_opacity_seekbar_container);
-        mOpacityLayout = findViewById(R.id.sesl_color_picker3_opacity_layout);
+        mOpacitySeekBar = findViewById(R.id.sesl_color_picker_opacity_seekbar);
+        mOpacitySeekBarContainer = findViewById(R.id.sesl_color_picker_opacity_seekbar_container);
+        mOpacityLayout = findViewById(R.id.sesl_color_picker_opacity_layout);
         if (enabled) {
             mOpacityLayout.setVisibility(View.VISIBLE);
         } else {
@@ -630,7 +733,9 @@ public class SeslColorPicker extends LinearLayout {
                     mLastFocussedEditText.clearFocus();
                 }
                 try {
-                    ((InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(getWindowToken(), 0);
+                    ((InputMethodManager) mContext.getSystemService(
+                            Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(getWindowToken(),
+                            0);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -674,7 +779,7 @@ public class SeslColorPicker extends LinearLayout {
             });
         }
         mColorPickerBlueEditText.setOnEditorActionListener((textView, actionId, keyEvent) -> {
-            if (actionId ==  6) {
+            if (actionId == 6) {
                 mColorPickerBlueEditText.clearFocus();
                 return false;
             }
@@ -698,7 +803,7 @@ public class SeslColorPicker extends LinearLayout {
                 if (hexColorLength == 6) {
                     final int parseColor = Color.parseColor("#" + s);
 
-                    if (! mColorPickerRedEditText.getText().toString().trim()
+                    if (!mColorPickerRedEditText.getText().toString().trim()
                             .equalsIgnoreCase("" + Color.red(parseColor))) {
                         mColorPickerRedEditText.setText("" + Color.red(parseColor));
                     }
@@ -761,9 +866,12 @@ public class SeslColorPicker extends LinearLayout {
                         }
                     }
                     mfromRGB = true;
-                    mColorPickerRedEditText.setSelection(mColorPickerRedEditText.getText().length());
-                    mColorPickerGreenEditText.setSelection(mColorPickerGreenEditText.getText().length());
-                    mColorPickerBlueEditText.setSelection(mColorPickerBlueEditText.getText().length());
+                    mColorPickerRedEditText.setSelection(
+                            mColorPickerRedEditText.getText().length());
+                    mColorPickerGreenEditText.setSelection(
+                            mColorPickerGreenEditText.getText().length());
+                    mColorPickerBlueEditText.setSelection(
+                            mColorPickerBlueEditText.getText().length());
                 }
             });
         }
@@ -772,15 +880,15 @@ public class SeslColorPicker extends LinearLayout {
     void updateHexData() {
 
         final int red =
-                Integer.valueOf(!mColorPickerRedEditText.getText().toString().trim().isEmpty()
-                ? mColorPickerRedEditText.getText().toString().trim() : "0" );
+                Integer.parseInt(!mColorPickerRedEditText.getText().toString().trim().isEmpty()
+                        ? mColorPickerRedEditText.getText().toString().trim() : "0");
         final int green =
-                Integer.valueOf(!mColorPickerGreenEditText.getText().toString().trim().isEmpty()
-                ? mColorPickerGreenEditText.getText().toString().trim() : "0");
+                Integer.parseInt(!mColorPickerGreenEditText.getText().toString().trim().isEmpty()
+                        ? mColorPickerGreenEditText.getText().toString().trim() : "0");
 
         final int blue =
-                Integer.valueOf(!mColorPickerBlueEditText.getText().toString().trim().isEmpty() ?
-                mColorPickerBlueEditText.getText().toString().trim() : "0");
+                Integer.parseInt(!mColorPickerBlueEditText.getText().toString().trim().isEmpty() ?
+                        mColorPickerBlueEditText.getText().toString().trim() : "0");
 
         final int color = ((red & 255) << 16)
                 | ((mOpacitySeekBar.getProgress() & 255) << 24)
@@ -788,7 +896,8 @@ public class SeslColorPicker extends LinearLayout {
                 | (blue & 255);
 
         final String colorStr = String.format("%08x", color);
-        mColorPickerHexEditText.setText("" + colorStr.substring(2, colorStr.length()).toUpperCase());
+        mColorPickerHexEditText.setText(
+                "" + colorStr.substring(2, colorStr.length()).toUpperCase());
         mColorPickerHexEditText.setSelection(mColorPickerHexEditText.getText().length());
 
         if (!mfromSaturationSeekbar && !mfromSpectrumTouch) {
@@ -824,12 +933,13 @@ public class SeslColorPicker extends LinearLayout {
                 mResources.getString(R.string.sesl_color_picker_color_six),
                 mResources.getString(R.string.sesl_color_picker_color_seven)};
 
-        final int emptyColor=  ContextCompat.getColor(mContext,
+        final int emptyColor = ContextCompat.getColor(mContext,
                 mIsLightTheme
-                ? R.color.sesl_color_picker_used_color_item_empty_slot_color_light
-                : R.color.sesl_color_picker_used_color_item_empty_slot_color_dark);
+                        ? R.color.sesl_color_picker_used_color_item_empty_slot_color_light
+                        : R.color.sesl_color_picker_used_color_item_empty_slot_color_dark);
 
-        if (mResources.getConfiguration().orientation == ORIENTATION_LANDSCAPE && !isTablet(mContext)) {
+        if (mResources.getConfiguration().orientation == ORIENTATION_LANDSCAPE && !isTablet(
+                mContext)) {
             RECENT_COLOR_SLOT_COUNT = 7;
         } else {
             RECENT_COLOR_SLOT_COUNT = 6;
@@ -841,6 +951,27 @@ public class SeslColorPicker extends LinearLayout {
             recentColorSlot.setFocusable(false);
             recentColorSlot.setClickable(false);
         }
+    }
+
+    private void initEyeDropperView() {
+        mEyeDropperView.setFocusable(true);
+        mEyeDropperView.setClickable(true);
+        if (Build.VERSION.SDK_INT >= 26) {
+            mEyeDropperView.setTooltipText(
+                    getResources().getString(R.string.sesl_color_picker_eye_dropper));
+        }
+
+        mEyeDropperView.setContentDescription(getResources().getString(R.string.sesl_color_picker_eye_dropper));
+        setupEyeDropperBackground();
+        mEyeDropperView.setOnClickListener(view -> {
+            if (mOnEyeDropperListener != null) {
+                mOnEyeDropperListener.onEyeDropperClicked();
+            }
+
+            if (mLastFocussedEditText != null) {
+                mLastFocussedEditText.clearFocus();
+            }
+        });
     }
 
     public void updateRecentColorLayout() {
@@ -897,6 +1028,14 @@ public class SeslColorPicker extends LinearLayout {
         }
     }
 
+    /**
+     * Sets a listener to be notified when the selected color changes.
+     *
+     * @param listener The {@link OnColorChangedListener} to set, or {@code null}
+     *                 to remove the current listener. The listener will be invoked
+     *                 with the new color (as an integer) whenever the user selects
+     *                 a different color in the picker.
+     */
     public void setOnColorChangedListener(@Nullable OnColorChangedListener listener) {
         mOnColorChangedListener = listener;
     }
@@ -1002,7 +1141,7 @@ public class SeslColorPicker extends LinearLayout {
         }
     }
 
-    public final void setCurrentColorViewDescription(int color, int flag) {
+    private void setCurrentColorViewDescription(int color, int flag) {
         StringBuilder description = new StringBuilder();
         StringBuilder colorDescription = new StringBuilder();
         SeslColorSwatchView seslColorSwatchView = mColorSwatchView;
@@ -1025,6 +1164,23 @@ public class SeslColorPicker extends LinearLayout {
         }
     }
 
+    /**
+     * Saves the currently selected color to the list of recent colors.
+     * <p>
+     * This method retrieves the color currently held by the {@link PickedColor} instance
+     * (which reflects the user's latest selection in the picker) and, if a color is set,
+     * it calls {@link SeslRecentColorInfo#saveSelectedColor(int)} to add it to the
+     * persistent list of recently used colors. This list is typically displayed to the
+     * user for quick re-selection.
+     * </p>
+     * <p>
+     * It is recommended to call this method when the color selection is confirmed by the user,
+     * for example, when a dialog containing the color picker is dismissed with a positive action.
+     * </p>
+     *
+     * @see #getRecentColorInfo()
+     * @see SeslRecentColorInfo#saveSelectedColor(int)
+     */
     public void saveSelectedColor() {
         Integer color = mPickedColor.getColor();
         if (color != null) {
@@ -1032,16 +1188,43 @@ public class SeslColorPicker extends LinearLayout {
         }
     }
 
+    /**
+     * Retrieves the {@link SeslRecentColorInfo} object associated with this color picker.
+     * <p>
+     * This object manages the list of recently used colors and the currently selected color.
+     *
+     * @return The {@link SeslRecentColorInfo} instance for this color picker.
+     *         This method never returns {@code null}.
+     */
     @NonNull
     public SeslRecentColorInfo getRecentColorInfo() {
         return mRecentColorInfo;
     }
 
+    /**
+     * Checks if the current color change was initiated by the user.
+     * <p>
+     * This method can be used to distinguish between color changes triggered by user
+     * interaction (e.g., touching the spectrum, swatch, or typing in input fields)
+     * and programmatic changes (e.g., setting an initial color or restoring state).
+     *
+     * @return {@code true} if the color was changed by user input, {@code false} otherwise.
+     */
     public boolean isUserInputValid() {
         return mIsInputFromUser;
     }
 
-
+    /**
+     * Enables or disables the opacity seek bar.
+     * <p>
+     * When enabled, the opacity seek bar and its container become visible, allowing the user
+     * to adjust the alpha (transparency) of the selected color.
+     * When disabled, these views are hidden.
+     * </p>
+     *
+     * @param enabled {@code true} to enable and show the opacity bar, {@code false} to disable
+     *                and hide it.
+     */
     public void setOpacityBarEnabled(boolean enabled) {
         mIsOpacityBarEnabled = enabled;
         if (enabled) {
@@ -1101,7 +1284,60 @@ public class SeslColorPicker extends LinearLayout {
         }
     }
 
-    public static boolean isTablet(@NonNull Context context) {
-        return (context.getResources().getConfiguration().screenLayout & SCREENLAYOUT_SIZE_MASK ) >= SCREENLAYOUT_SIZE_LARGE;
+    private static boolean isTablet(@NonNull Context context) {
+        return (context.getResources().getConfiguration().screenLayout & SCREENLAYOUT_SIZE_MASK)
+                >= SCREENLAYOUT_SIZE_LARGE;
+    }
+
+    //Sesl7
+    private void setupEyeDropperBackground() {
+        GradientDrawable seslShapeDrawable;
+        if (Build.VERSION.SDK_INT >= 23) {
+            seslShapeDrawable = new SeslShapeDrawable();
+        } else {
+            seslShapeDrawable = new GradientDrawable();
+        }
+        seslShapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.sesl_color_picker_transparent));
+        seslShapeDrawable.setShape(GradientDrawable.OVAL);
+
+        final int rippleColor = ContextCompat.getColor(mContext,
+                mIsLightTheme ? androidx.appcompat.R.color.sesl_ripple_color_light
+                        : androidx.appcompat.R.color.sesl_ripple_color_dark);
+
+        Drawable eyeDropperBackground;
+        if (Build.VERSION.SDK_INT >= 29) {
+            eyeDropperBackground = new SeslRecoilDrawable(rippleColor, new Drawable[]{seslShapeDrawable}, null);
+        } else {
+            eyeDropperBackground = new RippleDrawable(ColorStateList.valueOf(rippleColor), seslShapeDrawable, null);
+        }
+        mEyeDropperView.setBackground(eyeDropperBackground);
+    }
+
+    /**
+     * Sets the listener to be invoked when the eye dropper icon is clicked.
+     */
+    public void setOnEyeDropperListener(@Nullable OnEyeDropperListener listener) {
+        mOnEyeDropperListener = listener;
+    }
+
+    /**
+     * Disables or enables the eye dropper tool.
+     * <p>
+     * When disabled, the eye dropper icon is hidden, and the last used color slot
+     * (if available and applicable in the layout) might be made visible as a fallback.
+     * When enabled, the eye dropper icon is shown, and the last used color slot is hidden.
+     * </p>
+     *
+     * @param disable {@code true} to disable and hide the eye dropper, {@code false} to
+     *                enable and show it.
+     */
+    public void setEyeDropperDisable(boolean disable) {
+        if (disable) {
+            mEyeDropperView.setVisibility(View.GONE);
+            findViewById(R.id.sesl_last_used_color_slot).setVisibility(View.VISIBLE);
+        } else {
+            mEyeDropperView.setVisibility(View.VISIBLE);
+            findViewById(R.id.sesl_last_used_color_slot).setVisibility(View.GONE);
+        }
     }
 }

@@ -16,23 +16,36 @@
 
 package androidx.picker3.app;
 
+import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.res.Configuration;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowInsets;
 import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.appcompat.util.SeslMisc;
+import androidx.fragment.app.FragmentActivity;
 import androidx.picker.R;
+import androidx.picker.eyeDropper.SeslBitmapHolder;
+import androidx.picker.eyeDropper.SeslEyeDropperActivity;
 import androidx.picker3.widget.SeslColorPicker;
+import androidx.picker3.widget.SeslColorPicker.OnColorChangedListener;
 
 import java.io.Serializable;
 
@@ -40,7 +53,90 @@ import java.io.Serializable;
  * Original code by Samsung, all rights reserved to the original author.
  */
 
-/** @noinspection unused*/
+/**
+ * A DialogFragment that shows a color picker.
+ *
+ * <p>The basic {@link SeslColorPickerDialogFragment} is created using
+ * {@link SeslColorPickerDialogFragment#newInstance(OnColorSetListener)}
+ * and the {@link SeslColorPickerDialogFragment#show} method.
+ *
+ * <p>The {@link SeslColorPickerDialogFragment#newInstance(OnColorSetListener, int)} constructor can
+ * be used to provide an initial color for the dialog.
+ *
+ * <p>The {@link SeslColorPickerDialogFragment#newInstance(OnColorSetListener, int[])} constructor can
+ * be used to provide an array of recently used colors.
+ *
+ * <p>The {@link SeslColorPickerDialogFragment#newInstance(OnColorSetListener, int, int[], boolean)}
+ * constructor can be used to provide an initial color, an array of recently used colors and
+ * whether to show the opacity bar.
+ *
+ * <p>The {@link SeslColorPickerDialogFragment#newInstance(OnColorSetListener, int, int[], boolean, boolean)}
+ * constructor can be used to provide an initial color, an array of recently used colors,
+ * whether to show the opacity bar, and whether to show only the spectrum view.
+ *
+ * <p><b>Note:</b> You should pay attention to fragment lifecycle. When the activity is recreated
+ * (e.g. on configuration change), the fragment will also be recreated. In this case, you should
+ * use the {@link SeslColorPickerDialogFragment#setOnColorChangedListener(OnColorChangedListener)}
+ * method to set the listener again in the {@link #onCreate(Bundle)} method of your activity.
+ *
+ * <p>If you want to use the eye dropper feature, your Activity must implement
+ * {@link SeslColorPickerDialogFragment.OnBitmapSetListener}. The
+ * {@link SeslColorPickerDialogFragment.OnBitmapSetListener#onBitmapSet()} method will be called
+ * to get the Bitmap to be used for the eye dropper.
+ *
+ * <p>Example:
+ * <pre>
+ * public class MyActivity extends AppCompatActivity implements SeslColorPickerDialogFragment.OnBitmapSetListener {
+ *     private SeslColorPickerDialogFragment mColorPickerDialogFragment;
+ *
+ *     &#64;Override
+ *     protected void onCreate(Bundle savedInstanceState) {
+ *         super.onCreate(savedInstanceState);
+ *         setContentView(R.layout.activity_main);
+ *
+ *         // Create the color picker dialog fragment with a color set listener
+ *         mColorPickerDialogFragment = SeslColorPickerDialogFragment.newInstance(
+ *             new SeslColorPickerDialogFragment.OnColorSetListener() {
+ *                 &#64;Override
+ *                 public void onColorSet(int color) {
+ *                     // Handle the selected color
+ *                     findViewById(R.id.colorPreview).setBackgroundColor(color);
+ *                 }
+ *             },
+ *             Color.RED, // initial color
+ *             new int[] {Color.RED, Color.GREEN, Color.BLUE}, // recently used colors
+ *             true, // show opacity bar
+ *             false // show only spectrum
+ *         );
+ *
+ *         // Optionally set a color changed listener (e.g., for live preview)
+ *         mColorPickerDialogFragment.setOnColorChangedListener(new SeslColorPicker.OnColorChangedListener() {
+ *             &#64;Override
+ *             public void onColorChanged(int color) {
+ *                 // Live update preview
+ *                 findViewById(R.id.colorPreview).setBackgroundColor(color);
+ *             }
+ *         });
+ *
+ *         // Show the dialog when needed, e.g., on button click
+ *         findViewById(R.id.showColorPickerButton).setOnClickListener(v -> {
+ *             mColorPickerDialogFragment.show(getSupportFragmentManager(), "color_picker");
+ *         });
+ *     }
+ *
+ *     // Implement the OnBitmapSetListener for the eye dropper feature
+ *     &#64;NonNull
+ *     &#64;Override
+ *     public Bitmap onBitmapSet() {
+ *        return BitmapFactory.decodeResource(getResources(), R.drawable.your_drawable)
+ *     }
+ * }
+ * </pre>
+ *
+ * <p>Replace <code>R.id.colorPreview</code> and <code>R.id.showColorPickerButton</code> with actual view IDs from your layout.
+ * The <code>onBitmapSet()</code> method should return the bitmap you want to use for the eye dropper feature.
+ * Remember to set the listeners again after configuration changes if needed, as described above.
+ */
 public class SeslColorPickerDialogFragment extends AppCompatDialogFragment
         implements DialogInterface.OnClickListener {
     private static final String TAG = "SeslColorPickerDialogFragment";
@@ -51,10 +147,11 @@ public class SeslColorPickerDialogFragment extends AppCompatDialogFragment
     private static final String KEY_SHOW_OPACITY = "show_opacity_bar";
     private static final String KEY_SHOW_ONLY_SPECTRUM = "show_only_spectrum";
     private static final String KEY_COLOR_SET_LISTENER = "color_set_listener";
+    private static final String KEY_SHOW_EYE_DROPPER = "disable_eye_dropper";//sesl7
 
     private AlertDialog mAlertDialog;
     private SeslColorPicker mColorPicker;
-    private SeslColorPicker.OnColorChangedListener mOnColorChangedListener;
+    private OnColorChangedListener mOnColorChangedListener;
     private OnColorSetListener mOnColorSetListener;
     private Integer mCurrentColor = null;
     private Integer mNewColor = null;
@@ -63,13 +160,33 @@ public class SeslColorPickerDialogFragment extends AppCompatDialogFragment
     private boolean mIsTransparencyControlEnabled = false;
     private boolean mIsOnlySpectrumMode = false;
 
+    /**
+     * Interface definition for a callback to be invoked when a color is set in the dialog.
+     */
     public interface OnColorSetListener extends Serializable {
         void onColorSet(int color);
     }
 
-    public void setOnColorChangedListener(@Nullable SeslColorPicker.OnColorChangedListener listener) {
+    /**
+     * Sets the listener to be called when the color is changed.
+     *
+     * @param listener The listener to be called when the color is changed.
+     */
+    public void setOnColorChangedListener(@Nullable OnColorChangedListener listener) {
         mOnColorChangedListener = listener;
     }
+
+    //Sesl7
+    private OnBitmapSetListener mOnBitmapSetListener;
+    private boolean mIsEyeDropperDisable = true;
+    private Bitmap mBitmap = null;
+    /** Interface definition for a callback to be invoked to get the Bitmap for the eye dropper. */
+    public interface OnBitmapSetListener {
+        /** This method is used to get the Bitmap to be used for the eye dropper feature. */
+        @NonNull
+        Bitmap onBitmapSet();
+    }
+    //sesl7
 
     @NonNull
     public static SeslColorPickerDialogFragment newInstance(@Nullable OnColorSetListener listener) {
@@ -140,6 +257,17 @@ public class SeslColorPickerDialogFragment extends AppCompatDialogFragment
         return instance;
     }
 
+    /** @noinspection deprecation*/
+    @Override
+    public void onActivityCreated(@Nullable Bundle bundle) {
+        super.onActivityCreated(bundle);
+        if (getActivity() instanceof OnBitmapSetListener onBitmapSetListener) {
+            mOnBitmapSetListener = onBitmapSetListener;
+            mBitmap = onBitmapSetListener.onBitmapSet();
+            mColorPicker.setEyeDropperDisable(false);
+        }
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -151,17 +279,34 @@ public class SeslColorPickerDialogFragment extends AppCompatDialogFragment
                     = (Integer) savedInstanceState.getSerializable(KEY_CURRENT_COLOR);
             mIsTransparencyControlEnabled
                     = savedInstanceState.getBoolean(KEY_OPACITY_BAR_ENABLED);
+            mIsEyeDropperDisable = savedInstanceState.getBoolean(KEY_SHOW_EYE_DROPPER);
         }
     }
 
 
     @Nullable
     @Override
+    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                             @Nullable Bundle savedInstanceState) {
         mColorPicker = (SeslColorPicker) inflater.inflate(R.layout.sesl_color_picker_oneui_3_dialog, null);
 
-        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        final Window window;
+        if (getDialog() != null && (window = getDialog().getWindow()) != null) {
+            window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                window.getDecorView().setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
+                    @Override
+                    @NonNull
+                    public WindowInsets onApplyWindowInsets(@NonNull View view, @NonNull WindowInsets windowInsets) {
+                        WindowManager.LayoutParams attributes = window.getAttributes();
+                        attributes.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_NEVER;
+                        window.setAttributes(attributes);
+                        return windowInsets.consumeSystemWindowInsets();
+                    }
+                });
+            }
+        }
 
         final Bundle args = getArguments();
         if (args != null) {
@@ -192,7 +337,67 @@ public class SeslColorPickerDialogFragment extends AppCompatDialogFragment
 
         mAlertDialog.setView(mColorPicker);
 
+        FragmentActivity activity = getActivity();
+        if (activity != null) {
+            mColorPicker.setOnEyeDropperListener(
+                    () -> {
+                        SeslEyeDropperActivity.setOnColorPickListener(
+                                new SeslEyeDropperActivity.ColorPickListener() {
+                                    @Override
+                                    public void onColorPicked(@NonNull Integer color) {
+                                        SeslBitmapHolder.clearBitmap();
+                                        SeslColorPickerDialogFragment.showNewInstance(activity, color, args, mOnColorChangedListener);
+                                    }
+                                }
+                        );
+                        mAlertDialog.dismiss();
+                        startEyeDropperActivity();
+                    }
+            );
+        }
         return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    static void showNewInstance(@NonNull FragmentActivity activity, Integer newColor, Bundle args,
+            @Nullable OnColorChangedListener onColorChangedListener){
+        SeslColorPickerDialogFragment instance = new SeslColorPickerDialogFragment();
+        if (args != null) {
+            instance.setArguments(args);
+        }
+
+        if (onColorChangedListener != null) {
+            instance.setOnColorChangedListener(onColorChangedListener);
+        }
+        instance.setNewColor(newColor);
+
+        if (!activity.getSupportFragmentManager().isStateSaved()) {
+            instance.show(activity.getSupportFragmentManager(), SeslColorPickerDialogFragment.TAG);
+        } else {
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                if (!activity.isFinishing() && !activity.isDestroyed()) {
+                    try {
+                        activity.getSupportFragmentManager()
+                                .beginTransaction()
+                                .add(instance, SeslColorPickerDialogFragment.TAG)
+                                .setReorderingAllowed(true)
+                                .commitAllowingStateLoss();
+                    } catch (IllegalStateException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, 500L);
+        }
+
+    }
+
+    private void startEyeDropperActivity() {
+        Context context = requireContext();
+        SeslBitmapHolder.setBitmapWeakReference(mBitmap);
+        Bundle bundle = ActivityOptions.makeCustomAnimation(
+                context, android.R.anim.fade_in,
+                android.R.anim.fade_out).toBundle();
+        Intent intent = new Intent(context, SeslEyeDropperActivity.class);
+        context.startActivity(intent, bundle);
     }
 
     @NonNull
@@ -237,14 +442,16 @@ public class SeslColorPickerDialogFragment extends AppCompatDialogFragment
         outState.putIntArray(KEY_RECENTLY_USED_COLORS, mRecentlyUsedColors);
         outState.putSerializable(KEY_CURRENT_COLOR, mCurrentColor);
         outState.putBoolean(KEY_OPACITY_BAR_ENABLED, mIsTransparencyControlEnabled);
+        outState.putBoolean(KEY_SHOW_EYE_DROPPER, mIsEyeDropperDisable);
     }
 
+    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     @NonNull
     public SeslColorPicker getColorPicker() {
         return mColorPicker;
     }
 
-    public void setNewColor(Integer newColor) {
+    public void setNewColor(@Nullable Integer newColor) {
         mNewColor = newColor;
     }
 
@@ -264,4 +471,10 @@ public class SeslColorPickerDialogFragment extends AppCompatDialogFragment
                             androidx.appcompat.R.style.ThemeOverlay_AppCompat_Dialog);
         }
     }
+
+    //Sesl7
+    public void disableEyeDropper(boolean disable) {
+        mIsEyeDropperDisable = disable;
+    }
+
 }
