@@ -130,4 +130,23 @@ public class SeslSemBlurInfoReflector {
             }
         }
     }
+
+    //sesl8
+    public static Object semSetBuilderColorCurvePreset(Object builder, int color) {
+        if (DeviceInfo.isOneUI()) {
+            Method method;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                method = SeslBaseReflector.getDeclaredMethod(mBuilderClass, "setColorCurvePreset", Integer.TYPE) ;
+            } else {
+                method = null;
+            }
+
+            if (method != null) {
+                method.setAccessible(true);
+                SeslBaseReflector.invoke(builder, method, color);
+            }
+        }
+        return builder;
+    }
+
 }
