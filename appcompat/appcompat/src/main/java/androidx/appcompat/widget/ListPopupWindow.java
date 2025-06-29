@@ -20,6 +20,8 @@ import static android.os.Build.VERSION.SDK_INT;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP_PREFIX;
 import static androidx.core.view.SemBlurCompat.BLUR_MODE_WINDOW;
+import static androidx.core.view.SemBlurCompat.BLUR_UI_MEDIUM_ULTRA_THICK_DARK;
+import static androidx.core.view.SemBlurCompat.BLUR_UI_MEDIUM_ULTRA_THICK_LIGHT;
 
 import android.app.Activity;
 import android.content.Context;
@@ -70,9 +72,6 @@ import androidx.reflect.os.SeslBuildReflector;
 import androidx.reflect.provider.SeslSettingsReflector;
 import androidx.reflect.view.SeslSemWindowManagerReflector;
 import androidx.reflect.view.SeslViewRuneReflector;
-
-import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.Nullable;
 
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
@@ -771,7 +770,10 @@ public class ListPopupWindow implements ShowableListMenu {
                 }
             }
 
-            setBlurEffect();//sesl
+            //sesl
+            if (setBlurEffect() && (this.mDropDownList) != null) {
+                mDropDownList.setOverScrollMode(View.OVER_SCROLL_NEVER);
+            }
 
             mPopup.setWidth(widthSpec);
             mPopup.setHeight(heightSpec);
@@ -1617,10 +1619,14 @@ public class ListPopupWindow implements ShowableListMenu {
         return null;
     }
 
-    private void setBlurEffect() {
+    private boolean setBlurEffect() {
         View contentView;
         if (mContext == null || (contentView = mPopup.getContentView()) == null || !mPopup.seslIsAvailableBlurBackground()) {
-            return;
+            return false;
+        }
+
+        if (Build.VERSION.SDK_INT >= 35) {
+            return Api35Impl.setBlurEffectPreset(mContext, contentView);
         }
 
         Resources res = mContext.getResources();
@@ -1628,18 +1634,13 @@ public class ListPopupWindow implements ShowableListMenu {
         int blurBgColorRes = SeslMisc.isLightTheme(mContext)
                 ? R.color.sesl_popup_menu_blur_background : R.color.sesl_popup_menu_blur_background_dark;
 
-        if (!SemBlurCompat.setBlurEffect(
+        return SemBlurCompat.setBlurEffect(
                 contentView,
                 ResourcesCompat.getColor(res, blurBgColorRes, mContext.getTheme()),
                 120,
                 BLUR_MODE_WINDOW,
-                res.getDimensionPixelSize(R.dimen.sesl_menu_popup_corner_radius))) {
-            return;
-        }
+                res.getDimensionPixelSize(R.dimen.sesl_menu_popup_corner_radius));
 
-        if (mDropDownList != null) {
-            mDropDownList.setOverScrollMode(View.OVER_SCROLL_NEVER);
-        }
     }
 
     private boolean isReduceTransparencySettingsEnabled() {
@@ -1664,4 +1665,20 @@ public class ListPopupWindow implements ShowableListMenu {
         }
     }
     //sesl
+
+    //sesl8
+    @RequiresApi(35)
+    public static class Api35Impl {
+        private Api35Impl() {
+        }
+
+        public static boolean setBlurEffectPreset(@NonNull Context context, @NonNull View view) {
+            boolean isLightTheme = SeslMisc.isLightTheme(context);
+            int colorCurve = isLightTheme ? BLUR_UI_MEDIUM_ULTRA_THICK_LIGHT : BLUR_UI_MEDIUM_ULTRA_THICK_DARK;
+            Integer color = isLightTheme ? null : context.getResources().getColor(R.color.sesl_popup_menu_blur_background_dark, context.getTheme());
+            float radius = context.getResources().getDimension(R.dimen.sesl_menu_popup_corner_radius);
+            return SemBlurCompat.setBlurEffectPreset(view, BLUR_MODE_WINDOW, colorCurve, color, radius);
+        }
+    }
+
 }
