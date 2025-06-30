@@ -151,7 +151,11 @@ subprojects {
     tasks.withType<KotlinCompile>().configureEach {
         compilerOptions {
             jvmTarget.set(
-                JvmTarget.fromTarget("21")
+                if (project.name in listOf("core", "recyclerview")){
+                    JvmTarget.fromTarget("1.8")
+                } else {
+                    JvmTarget.fromTarget("21")
+                }
             )
         }
     }
@@ -181,8 +185,13 @@ subprojects {
 
                 if (isAndroidLibrary) {
                     compileOptions {
-                        sourceCompatibility = JavaVersion.VERSION_21
-                        targetCompatibility = JavaVersion.VERSION_21
+                        if (project.name in listOf("core", "recyclerview")) {
+                            sourceCompatibility = JavaVersion.VERSION_1_8
+                            targetCompatibility = JavaVersion.VERSION_1_8
+                        } else {
+                            sourceCompatibility = JavaVersion.VERSION_21
+                            targetCompatibility = JavaVersion.VERSION_21
+                        }
                     }
 
                     defaultConfig.versionName = versionName
