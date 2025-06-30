@@ -178,6 +178,8 @@ public class Toolbar extends ViewGroup implements MenuHost {
     private CharSequence mNavTooltipText;
     private ViewTreeObserver.OnGlobalLayoutListener mOnGlobalLayoutListenerForTD;
     private int mUserTopPadding = -1; //sesl6
+    private boolean mAllowEatingTouch = true;//sesl8
+    private View.OnClickListener mNavButtonViewListener = null;//sesl8
     //sesl
 
     ActionMenuView mMenuView;
@@ -1120,6 +1122,7 @@ public class Toolbar extends ViewGroup implements MenuHost {
      */
     public void setNavigationOnClickListener(OnClickListener listener) {
         ensureNavButtonView();
+        mNavButtonViewListener = listener;//sesl8
         mNavButtonView.setOnClickListener(listener);
     }
 
@@ -1792,7 +1795,8 @@ public class Toolbar extends ViewGroup implements MenuHost {
             mEatingTouch = false;
         }
 
-        return true;
+        return mAllowEatingTouch;//sesl8
+
     }
 
     @Override
@@ -3125,5 +3129,20 @@ public class Toolbar extends ViewGroup implements MenuHost {
         }
     }
     //sesl7
+
+    //sesl8
+    public void seslSetEatingTouch(boolean allow) {
+        if (mAllowEatingTouch == allow) return;
+        mAllowEatingTouch = allow;
+        if (allow) {
+            mNavButtonView.setOnClickListener(mNavButtonViewListener);
+            mNavButtonView.setClickable(true);
+            seslSetTouchDelegateForToolbar();
+        } else {
+            mNavButtonView.setOnClickListener(null);
+            mNavButtonView.setClickable(false);
+            seslRemoveListenerForTouchDelegate();
+        }
+    }
 
 }
