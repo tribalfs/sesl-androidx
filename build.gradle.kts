@@ -4,7 +4,6 @@ import com.android.build.gradle.LibraryExtension
 import java.util.Properties
 import java.util.regex.Pattern
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.plugin.KotlinBasePluginWrapper
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -103,6 +102,21 @@ subprojects {
 }
 
 subprojects {
+    configurations.all {
+        resolutionStrategy {
+            componentSelection {
+                all {
+                    if (candidate.version.matches(".*-sesl7.*".toRegex()) ||
+                        candidate.version.matches(".*-sesl6.*".toRegex())) {
+                        reject("Rejecting sesl6 and sesl7 versions")
+                    }
+                }
+            }
+        }
+    }
+}
+
+subprojects {
     plugins.withId("org.jetbrains.dokka") {
         dokka {
             dokkaPublications.html {
@@ -139,17 +153,6 @@ subprojects {
 val pomInfo by lazy { rootProject.extra["pomInfo"] as Map<String, String> }
 
 subprojects {
-    plugins.withType<KotlinBasePluginWrapper> {
-        dependencies {
-            constraints {
-                //Remove when not anymore necessary
-                implementation(libs.sesl.androidx.coreKtx) {
-                    version { reject("1.16.0+1.0.15-sesl7+rev0") }
-                }
-            }
-        }
-    }
-
     tasks.withType<KotlinCompile>().configureEach {
         compilerOptions {
             jvmTarget.set(
