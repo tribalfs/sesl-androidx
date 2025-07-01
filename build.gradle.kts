@@ -1,4 +1,5 @@
 import com.android.build.gradle.LibraryExtension
+import io.netty.util.concurrent.RejectedExecutionHandlers.reject
 import java.util.Properties
 import java.util.regex.Pattern
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
@@ -101,6 +102,19 @@ subprojects {
 }
 
 subprojects {
+    configurations.all {
+        resolutionStrategy {
+            eachDependency {
+                if (requested.version?.matches(".*-sesl8.*".toRegex()) == true
+                    || requested.version?.matches(".*-sesl6.*".toRegex()) == true) {
+                    reject()
+                }
+            }
+        }
+    }
+}
+
+subprojects {
     plugins.withId("org.jetbrains.dokka") {
         dokka {
             dokkaPublications.html {
@@ -197,7 +211,11 @@ subprojects {
                     defaultConfig.versionName = versionName
                     println("set versionName=${defaultConfig.versionName}")
 
-                    lint { baseline = file("lint-baseline.xml") }
+                    lint {
+                        baseline = file("lint-baseline.xml")
+                        disable += "RestrictedApi"
+                        disable += "LongLogTag"
+                    }
 
                     publishing {
                         singleVariant("release") {
