@@ -2164,8 +2164,16 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
             mScrollConsumed[1] = 0;
 
             //Sesl
-            seslDispatchNestedScroll(0, scrolledByMe, 0, unconsumed, mScrollOffset,
-                    ViewCompat.TYPE_NON_TOUCH, mScrollConsumed);
+            if (seslDispatchNestedScroll(0, scrolledByMe, 0, unconsumed, mScrollOffset,
+                    ViewCompat.TYPE_NON_TOUCH, mScrollConsumed)) {
+                mScrollOffset[0] = 0;
+                mScrollOffset[1] = 0;
+            }
+            if (mScrollOffset[0] < 0 || mScrollOffset[1] < 0) {
+                mScrollOffset[0] = 0;
+                mScrollOffset[1] = 0;
+            }
+            //sesl
             unconsumed -= mScrollConsumed[1];
         }
 
