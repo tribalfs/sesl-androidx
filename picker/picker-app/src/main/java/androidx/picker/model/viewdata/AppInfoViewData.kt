@@ -81,8 +81,13 @@ data class AppInfoViewData(
     override val key: Any
         get() = appInfoData.appInfo
 
-    override val searchable: List<String>
-        get() = listOfNotNull(appInfoData.label)
+    //originally read-only
+    override var searchable: List<String> = listOfNotNull(appInfoData.label)
+        set(value: List<String>) {
+            if (value != field) {
+                field = value
+            }
+        }
 
     override var icon: Drawable?
         get() = appInfoData.icon
