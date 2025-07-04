@@ -24,6 +24,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.reflect.DeviceInfo;
 import androidx.reflect.SeslBaseReflector;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -36,10 +37,7 @@ import java.lang.reflect.Method;
  * A specialized {@link GradientDrawable} that enables smooth corners by default.
  *
  * <p>This class extends {@link GradientDrawable} and, during inflation, attempts to invoke
- * a hidden API ({@code setSmoothCorner(true)}) to enable smooth corner rendering.
- * If the API is not available on the current platform, a warning is logged.
- *
- * <p>This class is intended for use on API level 23 and above.
+ * a hidden API ({@code setSmoothCorner(true)}) to enable smooth corner rendering on a supported OneUI device.
  */
 @RequiresApi(api = 23)
 public class SeslShapeDrawable extends GradientDrawable {
@@ -50,11 +48,14 @@ public class SeslShapeDrawable extends GradientDrawable {
             @NonNull AttributeSet attrs, @Nullable Resources.Theme theme)
             throws XmlPullParserException, IOException {
         super.inflate(resources, xmlPullParser, attrs, theme);
-        Method declaredMethod = SeslBaseReflector.getDeclaredMethod(GradientDrawable.class, "setSmoothCorner", Boolean.TYPE);
-        if (declaredMethod == null) {
-            Log.w(TAG, "This API is not supported by the platform.");
-        } else {
-            SeslBaseReflector.invoke(this, declaredMethod, Boolean.TRUE);
+        if (DeviceInfo.isOneUI()) {
+            Method declaredMethod = SeslBaseReflector.getDeclaredMethod(GradientDrawable.class,
+                    "setSmoothCorner", Boolean.TYPE);
+            if (declaredMethod == null) {
+                Log.w(TAG, "This API is not supported by the platform.");
+            } else {
+                SeslBaseReflector.invoke(this, declaredMethod, Boolean.TRUE);
+            }
         }
     }
 }
