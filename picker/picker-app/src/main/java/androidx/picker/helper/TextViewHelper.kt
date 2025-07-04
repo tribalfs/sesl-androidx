@@ -20,6 +20,7 @@ import android.text.SpannableString
 import android.text.TextPaint
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
+import android.util.TypedValue
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.picker.features.search.InitialSearchUtils
@@ -40,8 +41,7 @@ private const val MAX_OFFSET = 200
  * a reasonable layout.
  */
 fun TextView.limitFontLarge() {
-    textSize = 0f
-    setTextSize(0, limitFontScale(this, textSize))
+    setTextSize(TypedValue.COMPLEX_UNIT_PX, limitFontScale(this, textSize))
 }
 
 private fun limitFontScale(textView: TextView, pixel: Float): Float {
