@@ -1,13 +1,8 @@
 package androidx.picker.controller.strategy
 
 import androidx.annotation.Keep
-import androidx.picker.controller.strategy.task.ConvertAppInfoDataTask
-import androidx.picker.controller.strategy.task.ParseAppDataTask
-import androidx.picker.controller.strategy.task.SortAppInfoViewDataTask
 import androidx.picker.di.AppPickerContext
 import androidx.picker.model.AppData
-import androidx.picker.model.AppInfoData
-import androidx.picker.model.viewdata.AppInfoViewData
 import androidx.picker.model.viewdata.ViewData
 
 /**
