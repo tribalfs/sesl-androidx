@@ -251,14 +251,15 @@ public class ButtonBarLayout extends LinearLayout {
         }
     }
 
-    private void setDividerVisible(int i) {
-        int i3;
+    private void setDividerVisible(int childIndex) {
+        int nextChildIndex;
         int childCount = getChildCount();
-        while (i < childCount) {
-            if (!(getChildAt(i) instanceof Button) && (i3 = i + 1) < childCount && (getChildAt(i3) instanceof Button) && getChildAt(i3).getVisibility() == 0) {
-                getChildAt(i).setVisibility(0);
+        while (childIndex < childCount) {
+            if (!(getChildAt(childIndex) instanceof Button) && (nextChildIndex = childIndex + 1) < childCount && (getChildAt(
+                    nextChildIndex) instanceof Button) && getChildAt(nextChildIndex).getVisibility() == View.VISIBLE) {
+                getChildAt(childIndex).setVisibility(View.VISIBLE);
             }
-            i++;
+            childIndex++;
         }
     }
     //sesl
