@@ -1,13 +1,355 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<issues format="6" by="lint 8.8.0-alpha06" type="baseline" client="gradle" dependencies="false" name="AGP (8.8.0-alpha06)" variant="all" version="8.8.0-alpha06">
+<issues format="6" by="lint 8.11.0" type="baseline" client="gradle" dependencies="false" name="AGP (8.11.0)" variant="all" version="8.11.0">
 
     <issue
-        id="BanThreadSleep"
-        message="Uses Thread.sleep()"
-        errorLine1="                Thread.sleep(100);"
-        errorLine2="                       ~~~~~">
+        id="UseGetLayoutInflater"
+        message="Use of LayoutInflater.from(context) detected. Consider using getLayoutInflater() instead"
+        errorLine1="        LayoutInflater inflater = LayoutInflater.from(context);"
+        errorLine2="                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/androidTest/java/androidx/preference/tests/EditTextPreferenceDialogFragmentCompatTest.java"/>
+            file="src/main/java/androidx/preference/PreferenceDialogFragment.java"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="`@android:id/switch_widget` requires API level 24 (current min is 21)"
+        errorLine1="    android:id=&quot;@android:id/switch_widget&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="res/layout/sesl_preference_widget_switch.xml"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="`@android:id/switch_widget` requires API level 24 (current min is 21)"
+        errorLine1="        android:id=&quot;@android:id/switch_widget&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="res/layout/sesl_switch_preference_screen_widget_divider.xml"/>
+    </issue>
+
+    <issue
+        id="UseSwitchCompatOrMaterialXml"
+        message="Use `SwitchCompat` from AppCompat or `MaterialSwitch` from Material library"
+        errorLine1="&lt;Switch"
+        errorLine2="^">
+        <location
+            file="res/layout/preference_widget_switch.xml"/>
+    </issue>
+
+    <issue
+        id="RestrictedApi"
+        message="SwitchCompat.SUPPORT_TOUCH_FEEDBACK can only be accessed from within the same library group (referenced groupId=`sesl.androidx.appcompat` from groupId=`sesl.androidx.preference`)"
+        errorLine1="        return SUPPORT_TOUCH_FEEDBACK"
+        errorLine2="               ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/androidx/preference/SwitchPreference.java"/>
+    </issue>
+
+    <issue
+        id="RestrictedApi"
+        message="SwitchCompat.SUPPORT_TOUCH_FEEDBACK can only be accessed from within the same library group (referenced groupId=`sesl.androidx.appcompat` from groupId=`sesl.androidx.preference`)"
+        errorLine1="        return SUPPORT_TOUCH_FEEDBACK"
+        errorLine2="               ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/androidx/preference/SwitchPreferenceCompat.java"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_list_item_padding_end` is marked as private in sesl.androidx.appcompat:appcompat:1.7.1+1.0.18-sesl8+rev0"
+        errorLine1="    android:paddingEnd=&quot;@dimen/sesl_list_item_padding_end&quot;>"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="res/layout/sesl_preference.xml"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_list_image_end_padding` is marked as private in sesl.androidx.appcompat:appcompat:1.7.1+1.0.18-sesl8+rev0"
+        errorLine1="        android:paddingEnd=&quot;@dimen/sesl_list_image_end_padding&quot;>"
+        errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="res/layout/sesl_preference.xml"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_list_widget_start_padding` is marked as private in sesl.androidx.appcompat:appcompat:1.7.1+1.0.18-sesl8+rev0"
+        errorLine1="        android:paddingStart=&quot;@dimen/sesl_list_widget_start_padding&quot;"
+        errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="res/layout/sesl_preference.xml"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_list_widget_end_padding` is marked as private in sesl.androidx.appcompat:appcompat:1.7.1+1.0.18-sesl8+rev0"
+        errorLine1="        android:paddingEnd=&quot;@dimen/sesl_list_widget_end_padding&quot; />"
+        errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="res/layout/sesl_preference.xml"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_list_subheader_min_height` is marked as private in sesl.androidx.appcompat:appcompat:1.7.1+1.0.18-sesl8+rev0"
+        errorLine1="    android:layout_height=&quot;@dimen/sesl_list_subheader_min_height&quot;"
+        errorLine2="                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="res/layout/sesl_preference_category_empty.xml"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_disabled_color_alpha` is marked as private in sesl.androidx.appcompat:appcompat:1.7.1+1.0.18-sesl8+rev0"
+        errorLine1="    &lt;item android:alpha=&quot;@dimen/sesl_disabled_color_alpha&quot;"
+        errorLine2="                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="res/color/sesl_preference_dot_color.xml"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_list_item_padding_end` is marked as private in sesl.androidx.appcompat:appcompat:1.7.1+1.0.18-sesl8+rev0"
+        errorLine1="        android:paddingEnd=&quot;@dimen/sesl_list_item_padding_end&quot;>"
+        errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="res/layout/sesl_preference_dropdown.xml"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_list_image_end_padding` is marked as private in sesl.androidx.appcompat:appcompat:1.7.1+1.0.18-sesl8+rev0"
+        errorLine1="            android:paddingEnd=&quot;@dimen/sesl_list_image_end_padding&quot;>"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="res/layout/sesl_preference_dropdown.xml"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_list_widget_start_padding` is marked as private in sesl.androidx.appcompat:appcompat:1.7.1+1.0.18-sesl8+rev0"
+        errorLine1="            android:paddingStart=&quot;@dimen/sesl_list_widget_start_padding&quot;"
+        errorLine2="                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="res/layout/sesl_preference_dropdown.xml"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_list_widget_end_padding` is marked as private in sesl.androidx.appcompat:appcompat:1.7.1+1.0.18-sesl8+rev0"
+        errorLine1="            android:paddingEnd=&quot;@dimen/sesl_list_widget_end_padding&quot; />"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="res/layout/sesl_preference_dropdown.xml"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_list_item_padding_end` is marked as private in sesl.androidx.appcompat:appcompat:1.7.1+1.0.18-sesl8+rev0"
+        errorLine1="    android:paddingEnd=&quot;@dimen/sesl_list_item_padding_end&quot;>"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="res/layout/sesl_preference_switch.xml"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_list_image_end_padding` is marked as private in sesl.androidx.appcompat:appcompat:1.7.1+1.0.18-sesl8+rev0"
+        errorLine1="            android:paddingEnd=&quot;@dimen/sesl_list_image_end_padding&quot;>"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="res/layout/sesl_preference_switch.xml"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_list_widget_start_padding` is marked as private in sesl.androidx.appcompat:appcompat:1.7.1+1.0.18-sesl8+rev0"
+        errorLine1="            android:paddingStart=&quot;@dimen/sesl_list_widget_start_padding&quot;"
+        errorLine2="                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="res/layout/sesl_preference_switch.xml"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_list_widget_end_padding` is marked as private in sesl.androidx.appcompat:appcompat:1.7.1+1.0.18-sesl8+rev0"
+        errorLine1="            android:paddingEnd=&quot;@dimen/sesl_list_widget_end_padding&quot; />"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="res/layout/sesl_preference_switch.xml"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_list_widget_end_padding` is marked as private in sesl.androidx.appcompat:appcompat:1.7.1+1.0.18-sesl8+rev0"
+        errorLine1="        android:paddingEnd=&quot;@dimen/sesl_list_widget_end_padding&quot;"
+        errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="res/layout/sesl_preference_switch.xml"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_list_item_padding_end` is marked as private in sesl.androidx.appcompat:appcompat:1.7.1+1.0.18-sesl8+rev0"
+        errorLine1="        android:paddingEnd=&quot;@dimen/sesl_list_item_padding_end&quot;>"
+        errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="res/layout/sesl_preference_switch_screen.xml"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_list_image_end_padding` is marked as private in sesl.androidx.appcompat:appcompat:1.7.1+1.0.18-sesl8+rev0"
+        errorLine1="            android:paddingEnd=&quot;@dimen/sesl_list_image_end_padding&quot;>"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="res/layout/sesl_preference_switch_screen.xml"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_list_widget_end_padding` is marked as private in sesl.androidx.appcompat:appcompat:1.7.1+1.0.18-sesl8+rev0"
+        errorLine1="            android:paddingEnd=&quot;@dimen/sesl_list_widget_end_padding&quot; />"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="res/layout/sesl_preference_switch_screen.xml"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_switch_divider_height` is marked as private in sesl.androidx.appcompat:appcompat:1.7.1+1.0.18-sesl8+rev0"
+        errorLine1="                android:layout_width=&quot;@dimen/sesl_switch_divider_height&quot;"
+        errorLine2="                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="res/layout/sesl_preference_switch_screen.xml"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/sesl_switch_divider_height` is marked as private in sesl.androidx.appcompat:appcompat:1.7.1+1.0.18-sesl8+rev0"
+        errorLine1="        android:layout_width=&quot;@dimen/sesl_switch_divider_height&quot;"
+        errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="res/layout/sesl_switch_preference_screen_widget_divider.xml"/>
+    </issue>
+
+    <issue
+        id="UseCompatLoadingForColorStateLists"
+        message="Use `AppCompatResources.getColorStateList()`"
+        errorLine1="            mTextColorSecondary = context.getResources().getColorStateList(outValue.resourceId);"
+        errorLine2="                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/androidx/preference/Preference.java"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;v7_preference_on&quot; is not translated in &quot;ug&quot; (Uyghur), &quot;bo&quot; (Tibetan), &quot;ga&quot; (Irish), &quot;tg&quot; (Tajik), &quot;tk&quot; (Turkmen)"
+        errorLine1="    &lt;string name=&quot;v7_preference_on&quot;>ON&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="res/values/strings.xml"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;v7_preference_off&quot; is not translated in &quot;ug&quot; (Uyghur), &quot;bo&quot; (Tibetan), &quot;ga&quot; (Irish), &quot;tg&quot; (Tajik), &quot;tk&quot; (Turkmen)"
+        errorLine1="    &lt;string name=&quot;v7_preference_off&quot;>OFF&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="res/values/strings.xml"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;expand_button_title&quot; is not translated in &quot;ug&quot; (Uyghur), &quot;bo&quot; (Tibetan), &quot;ga&quot; (Irish), &quot;tg&quot; (Tajik), &quot;tk&quot; (Turkmen)"
+        errorLine1="    &lt;string name=&quot;expand_button_title&quot;>Advanced&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="res/values/strings.xml"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;summary_collapsed_preference_list&quot; is not translated in &quot;ug&quot; (Uyghur), &quot;bo&quot; (Tibetan), &quot;ga&quot; (Irish), &quot;tg&quot; (Tajik), &quot;tk&quot; (Turkmen)"
+        errorLine1="    &lt;string name=&quot;summary_collapsed_preference_list&quot;>&lt;xliff:g id=&quot;current_items&quot;>%1$s&lt;/xliff:g>, &lt;xliff:g id=&quot;added_items&quot;>%2$s&lt;/xliff:g>&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="res/values/strings.xml"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;copy&quot; is not translated in &quot;ug&quot; (Uyghur), &quot;bo&quot; (Tibetan), &quot;ga&quot; (Irish), &quot;tg&quot; (Tajik), &quot;tk&quot; (Turkmen)"
+        errorLine1="    &lt;string name=&quot;copy&quot;>Copy&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~">
+        <location
+            file="res/values/strings.xml"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;preference_copied&quot; is not translated in &quot;ug&quot; (Uyghur), &quot;bo&quot; (Tibetan), &quot;ga&quot; (Irish), &quot;tg&quot; (Tajik), &quot;tk&quot; (Turkmen)"
+        errorLine1="    &lt;string name=&quot;preference_copied&quot;>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="res/values/strings.xml"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;not_set&quot; is not translated in &quot;ug&quot; (Uyghur), &quot;bo&quot; (Tibetan), &quot;ga&quot; (Irish), &quot;tg&quot; (Tajik), &quot;tk&quot; (Turkmen)"
+        errorLine1="    &lt;string name=&quot;not_set&quot;>Not set&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~">
+        <location
+            file="res/values/strings.xml"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;sesl_preference_on&quot; is not translated in &quot;de&quot; (German), &quot;hi&quot; (Hindi), &quot;lo&quot; (Lao), &quot;pt&quot; (Portuguese), &quot;lt&quot; (Lithuanian), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;hu&quot; (Hungarian), &quot;hy&quot; (Armenian), &quot;ug&quot; (Uyghur), &quot;uk&quot; (Ukrainian), &quot;ur&quot; (Urdu), &quot;mk&quot; (Macedonian), &quot;ml&quot; (Malayalam), &quot;mn&quot; (Mongolian), &quot;af&quot; (Afrikaans), &quot;in&quot; (Indonesian), &quot;mr&quot; (Marathi), &quot;uz&quot; (Uzbek), &quot;ms&quot; (Malay), &quot;el&quot; (Greek), &quot;en&quot; (English), &quot;is&quot; (Icelandic), &quot;it&quot; (Italian), &quot;am&quot; (Amharic), &quot;my&quot; (Burmese), &quot;es&quot; (Spanish), &quot;iw&quot; (Hebrew), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;eu&quot; (Basque), &quot;ar&quot; (Arabic), &quot;as&quot; (Assamese), &quot;vi&quot; (Vietnamese), &quot;nb&quot; (Norwegian Bokmål), &quot;ja&quot; (Japanese), &quot;ne&quot; (Nepali), &quot;az&quot; (Azerbaijani), &quot;fa&quot; (Persian), &quot;zu&quot; (Zulu), &quot;ro&quot; (Romanian), &quot;nl&quot; (Dutch), &quot;be&quot; (Belarusian), &quot;fi&quot; (Finnish), &quot;ru&quot; (Russian), &quot;bg&quot; (Bulgarian), &quot;bn&quot; (Bangla), &quot;fr&quot; (French), &quot;bo&quot; (Tibetan), &quot;bs&quot; (Bosnian), &quot;ka&quot; (Georgian), &quot;si&quot; (Sinhala), &quot;sk&quot; (Slovak), &quot;sl&quot; (Slovenian), &quot;ga&quot; (Irish), &quot;ca&quot; (Catalan), &quot;sq&quot; (Albanian), &quot;sr&quot; (Serbian), &quot;kk&quot; (Kazakh), &quot;km&quot; (Khmer), &quot;kn&quot; (Kannada), &quot;or&quot; (Odia), &quot;sv&quot; (Swedish), &quot;ko&quot; (Korean), &quot;sw&quot; (Swahili), &quot;gl&quot; (Galician), &quot;ta&quot; (Tamil), &quot;gu&quot; (Gujarati), &quot;ky&quot; (Kyrgyz), &quot;cs&quot; (Czech), &quot;pa&quot; (Punjabi), &quot;te&quot; (Telugu), &quot;tg&quot; (Tajik), &quot;th&quot; (Thai), &quot;tk&quot; (Turkmen), &quot;tl&quot; (Tagalog), &quot;pl&quot; (Polish), &quot;da&quot; (Danish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;sesl_preference_on&quot;>ON&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="res/values/strings.xml"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;sesl_preference_off&quot; is not translated in &quot;de&quot; (German), &quot;hi&quot; (Hindi), &quot;lo&quot; (Lao), &quot;pt&quot; (Portuguese), &quot;lt&quot; (Lithuanian), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;hu&quot; (Hungarian), &quot;hy&quot; (Armenian), &quot;ug&quot; (Uyghur), &quot;uk&quot; (Ukrainian), &quot;ur&quot; (Urdu), &quot;mk&quot; (Macedonian), &quot;ml&quot; (Malayalam), &quot;mn&quot; (Mongolian), &quot;af&quot; (Afrikaans), &quot;in&quot; (Indonesian), &quot;mr&quot; (Marathi), &quot;uz&quot; (Uzbek), &quot;ms&quot; (Malay), &quot;el&quot; (Greek), &quot;en&quot; (English), &quot;is&quot; (Icelandic), &quot;it&quot; (Italian), &quot;am&quot; (Amharic), &quot;my&quot; (Burmese), &quot;es&quot; (Spanish), &quot;iw&quot; (Hebrew), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;eu&quot; (Basque), &quot;ar&quot; (Arabic), &quot;as&quot; (Assamese), &quot;vi&quot; (Vietnamese), &quot;nb&quot; (Norwegian Bokmål), &quot;ja&quot; (Japanese), &quot;ne&quot; (Nepali), &quot;az&quot; (Azerbaijani), &quot;fa&quot; (Persian), &quot;zu&quot; (Zulu), &quot;ro&quot; (Romanian), &quot;nl&quot; (Dutch), &quot;be&quot; (Belarusian), &quot;fi&quot; (Finnish), &quot;ru&quot; (Russian), &quot;bg&quot; (Bulgarian), &quot;bn&quot; (Bangla), &quot;fr&quot; (French), &quot;bo&quot; (Tibetan), &quot;bs&quot; (Bosnian), &quot;ka&quot; (Georgian), &quot;si&quot; (Sinhala), &quot;sk&quot; (Slovak), &quot;sl&quot; (Slovenian), &quot;ga&quot; (Irish), &quot;ca&quot; (Catalan), &quot;sq&quot; (Albanian), &quot;sr&quot; (Serbian), &quot;kk&quot; (Kazakh), &quot;km&quot; (Khmer), &quot;kn&quot; (Kannada), &quot;or&quot; (Odia), &quot;sv&quot; (Swedish), &quot;ko&quot; (Korean), &quot;sw&quot; (Swahili), &quot;gl&quot; (Galician), &quot;ta&quot; (Tamil), &quot;gu&quot; (Gujarati), &quot;ky&quot; (Kyrgyz), &quot;cs&quot; (Czech), &quot;pa&quot; (Punjabi), &quot;te&quot; (Telugu), &quot;tg&quot; (Tajik), &quot;th&quot; (Thai), &quot;tk&quot; (Turkmen), &quot;tl&quot; (Tagalog), &quot;pl&quot; (Polish), &quot;da&quot; (Danish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;sesl_preference_off&quot;>OFF&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="res/values/strings.xml"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;sesl_preferencecategory_added_title&quot; is not translated in &quot;af&quot; (Afrikaans), &quot;am&quot; (Amharic), &quot;zu&quot; (Zulu), &quot;sw&quot; (Swahili)"
+        errorLine1="    &lt;string name=&quot;sesl_preferencecategory_added_title&quot;>Header&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="res/values/strings.xml"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;sesl_preferecne_badge_description&quot; is not translated in &quot;de&quot; (German), &quot;hi&quot; (Hindi), &quot;lo&quot; (Lao), &quot;pt&quot; (Portuguese), &quot;lt&quot; (Lithuanian), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;hu&quot; (Hungarian), &quot;hy&quot; (Armenian), &quot;ug&quot; (Uyghur), &quot;mk&quot; (Macedonian), &quot;ml&quot; (Malayalam), &quot;mn&quot; (Mongolian), &quot;af&quot; (Afrikaans), &quot;in&quot; (Indonesian), &quot;mr&quot; (Marathi), &quot;ms&quot; (Malay), &quot;el&quot; (Greek), &quot;en&quot; (English), &quot;is&quot; (Icelandic), &quot;it&quot; (Italian), &quot;am&quot; (Amharic), &quot;my&quot; (Burmese), &quot;es&quot; (Spanish), &quot;iw&quot; (Hebrew), &quot;et&quot; (Estonian), &quot;eu&quot; (Basque), &quot;nb&quot; (Norwegian Bokmål), &quot;ja&quot; (Japanese), &quot;ne&quot; (Nepali), &quot;fa&quot; (Persian), &quot;zu&quot; (Zulu), &quot;ro&quot; (Romanian), &quot;nl&quot; (Dutch), &quot;fi&quot; (Finnish), &quot;ru&quot; (Russian), &quot;bg&quot; (Bulgarian), &quot;bn&quot; (Bangla), &quot;fr&quot; (French), &quot;bo&quot; (Tibetan), &quot;bs&quot; (Bosnian), &quot;ka&quot; (Georgian), &quot;si&quot; (Sinhala), &quot;sk&quot; (Slovak), &quot;sl&quot; (Slovenian), &quot;ga&quot; (Irish), &quot;ca&quot; (Catalan), &quot;sq&quot; (Albanian), &quot;sr&quot; (Serbian), &quot;kk&quot; (Kazakh), &quot;km&quot; (Khmer), &quot;kn&quot; (Kannada), &quot;or&quot; (Odia), &quot;sv&quot; (Swedish), &quot;ko&quot; (Korean), &quot;sw&quot; (Swahili), &quot;gl&quot; (Galician), &quot;ta&quot; (Tamil), &quot;gu&quot; (Gujarati), &quot;ky&quot; (Kyrgyz), &quot;cs&quot; (Czech), &quot;pa&quot; (Punjabi), &quot;pl&quot; (Polish), &quot;da&quot; (Danish)"
+        errorLine1="    &lt;string name=&quot;sesl_preferecne_badge_description&quot;>New notification&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="res/values/strings.xml"/>
+    </issue>
+
+    <issue
+        id="NotifyDataSetChanged"
+        message="It will always be more efficient to use more specific change events if you can. Rely on `notifyDataSetChanged` as a last resort."
+        errorLine1="            notifyDataSetChanged();"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/androidx/preference/PreferenceGroupAdapter.java"/>
     </issue>
 
     <issue
@@ -34,390 +376,327 @@
     </issue>
 
     <issue
-        id="KotlinPropertyAccess"
-        message="This getter should be public such that `onBindEditTextListener` can be accessed as a property from Kotlin; see https://android.github.io/kotlin-guides/interop.html#property-prefixes"
-        errorLine1="    @Nullable OnBindEditTextListener getOnBindEditTextListener() {"
-        errorLine2="                                     ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        id="HandlerLeak"
+        message="This `Handler` class should be static or leaks might occur (anonymous android.os.Handler)"
+        errorLine1="    private final Handler mHandler = new Handler() {"
+        errorLine2="                                     ^">
         <location
-            file="src/main/java/androidx/preference/EditTextPreference.java"/>
+            file="src/main/java/androidx/preference/PreferenceFragment.java"/>
     </issue>
 
     <issue
-        id="KotlinPropertyAccess"
-        message="This getter should be public such that `valueIndex` can be accessed as a property from Kotlin; see https://android.github.io/kotlin-guides/interop.html#property-prefixes"
-        errorLine1="    private int getValueIndex() {"
-        errorLine2="                ~~~~~~~~~~~~~">
+        id="DisableBaselineAlignment"
+        message="Set `android:baselineAligned=&quot;false&quot;` on this element for better performance"
+        errorLine1="&lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
+        errorLine2=" ~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/preference/ListPreference.java"/>
+            file="res/layout/preference.xml"/>
     </issue>
 
     <issue
-        id="KotlinPropertyAccess"
-        message="This getter should be public such that `valueIndex` can be accessed as a property from Kotlin; see https://android.github.io/kotlin-guides/interop.html#property-prefixes"
-        errorLine1="    private int getValueIndex() {"
-        errorLine2="                ~~~~~~~~~~~~~">
+        id="DisableBaselineAlignment"
+        message="Set `android:baselineAligned=&quot;false&quot;` on this element for better performance"
+        errorLine1="&lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot; "
+        errorLine2=" ~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/preference/ListPreference.java"/>
+            file="res/layout/preference_information.xml"/>
     </issue>
 
     <issue
-        id="UnknownNullness"
-        message="Unknown nullability; explicitly declare as `@Nullable` or `@NonNull` to improve Kotlin interoperability; see https://developer.android.com/kotlin/interop#nullability_annotations"
-        errorLine1="    protected Object onGetDefaultValue(@NonNull TypedArray a, int index) {"
-        errorLine2="              ~~~~~~">
+        id="DisableBaselineAlignment"
+        message="Set `android:baselineAligned=&quot;false&quot;` on this element for better performance"
+        errorLine1="&lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
+        errorLine2=" ~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/preference/EditTextPreference.java"/>
+            file="res/layout/preference_information_material.xml"/>
     </issue>
 
     <issue
-        id="UnknownNullness"
-        message="Unknown nullability; explicitly declare as `@Nullable` or `@NonNull` to improve Kotlin interoperability; see https://developer.android.com/kotlin/interop#nullability_annotations"
-        errorLine1="    protected void onSetInitialValue(Object defaultValue) {"
-        errorLine2="                                     ~~~~~~">
+        id="DisableBaselineAlignment"
+        message="Set `android:baselineAligned=&quot;false&quot;` on this element for better performance"
+        errorLine1="&lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
+        errorLine2=" ~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/preference/EditTextPreference.java"/>
+            file="res/layout/sesl_preference.xml"/>
     </issue>
 
     <issue
-        id="UnknownNullness"
-        message="Unknown nullability; explicitly declare as `@Nullable` or `@NonNull` to improve Kotlin interoperability; see https://developer.android.com/kotlin/interop#nullability_annotations"
-        errorLine1="    public void setEntries(CharSequence[] entries) {"
-        errorLine2="                           ~~~~~~~~~~~~~~">
+        id="DisableBaselineAlignment"
+        message="Set `android:baselineAligned=&quot;false&quot;` on this element for better performance"
+        errorLine1="    &lt;LinearLayout"
+        errorLine2="     ~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/preference/ListPreference.java"/>
+            file="res/layout/sesl_preference_dropdown.xml"/>
     </issue>
 
     <issue
-        id="UnknownNullness"
-        message="Unknown nullability; explicitly declare as `@Nullable` or `@NonNull` to improve Kotlin interoperability; see https://developer.android.com/kotlin/interop#nullability_annotations"
-        errorLine1="    public CharSequence[] getEntries() {"
-        errorLine2="           ~~~~~~~~~~~~~~">
+        id="DisableBaselineAlignment"
+        message="Set `android:baselineAligned=&quot;false&quot;` on this element for better performance"
+        errorLine1="    &lt;LinearLayout"
+        errorLine2="     ~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/preference/ListPreference.java"/>
+            file="res/layout/sesl_preference_switch.xml"/>
     </issue>
 
     <issue
-        id="UnknownNullness"
-        message="Unknown nullability; explicitly declare as `@Nullable` or `@NonNull` to improve Kotlin interoperability; see https://developer.android.com/kotlin/interop#nullability_annotations"
-        errorLine1="    public void setEntryValues(CharSequence[] entryValues) {"
-        errorLine2="                               ~~~~~~~~~~~~~~">
+        id="DisableBaselineAlignment"
+        message="Set `android:baselineAligned=&quot;false&quot;` on this element for better performance"
+        errorLine1="    &lt;LinearLayout"
+        errorLine2="     ~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/preference/ListPreference.java"/>
+            file="res/layout/sesl_preference_switch_screen.xml"/>
     </issue>
 
     <issue
-        id="UnknownNullness"
-        message="Unknown nullability; explicitly declare as `@Nullable` or `@NonNull` to improve Kotlin interoperability; see https://developer.android.com/kotlin/interop#nullability_annotations"
-        errorLine1="    public CharSequence[] getEntryValues() {"
-        errorLine2="           ~~~~~~~~~~~~~~">
+        id="DisableBaselineAlignment"
+        message="Set `android:baselineAligned=&quot;false&quot;` on this element for better performance"
+        errorLine1="&lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
+        errorLine2=" ~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/preference/ListPreference.java"/>
+            file="res/layout/sesl_preference_widget_seekbar.xml"/>
     </issue>
 
     <issue
-        id="UnknownNullness"
-        message="Unknown nullability; explicitly declare as `@Nullable` or `@NonNull` to improve Kotlin interoperability; see https://developer.android.com/kotlin/interop#nullability_annotations"
-        errorLine1="    public void setValue(String value) {"
-        errorLine2="                         ~~~~~~">
+        id="InefficientWeight"
+        message="Use a `layout_width` of `0dp` instead of `wrap_content` for better performance"
+        errorLine1="        android:layout_width=&quot;wrap_content&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/preference/ListPreference.java"/>
+            file="res/layout/sesl_preference.xml"/>
     </issue>
 
     <issue
-        id="UnknownNullness"
-        message="Unknown nullability; explicitly declare as `@Nullable` or `@NonNull` to improve Kotlin interoperability; see https://developer.android.com/kotlin/interop#nullability_annotations"
-        errorLine1="    public String getValue() {"
-        errorLine2="           ~~~~~~">
+        id="InefficientWeight"
+        message="Use a `layout_width` of `0dp` instead of `wrap_content` for better performance"
+        errorLine1="            android:layout_width=&quot;wrap_content&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/preference/ListPreference.java"/>
+            file="res/layout/sesl_preference_dropdown.xml"/>
     </issue>
 
     <issue
-        id="UnknownNullness"
-        message="Unknown nullability; explicitly declare as `@Nullable` or `@NonNull` to improve Kotlin interoperability; see https://developer.android.com/kotlin/interop#nullability_annotations"
-        errorLine1="    public int findIndexOfValue(String value) {"
-        errorLine2="                                ~~~~~~">
+        id="InefficientWeight"
+        message="Use a `layout_width` of `0dp` instead of `wrap_content` for better performance"
+        errorLine1="            android:layout_width=&quot;wrap_content&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/preference/ListPreference.java"/>
+            file="res/layout/sesl_preference_switch.xml"/>
     </issue>
 
     <issue
-        id="UnknownNullness"
-        message="Unknown nullability; explicitly declare as `@Nullable` or `@NonNull` to improve Kotlin interoperability; see https://developer.android.com/kotlin/interop#nullability_annotations"
-        errorLine1="    protected Object onGetDefaultValue(@NonNull TypedArray a, int index) {"
-        errorLine2="              ~~~~~~">
+        id="InefficientWeight"
+        message="Use a `layout_width` of `0dp` instead of `wrap_content` for better performance"
+        errorLine1="            android:layout_width=&quot;wrap_content&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/preference/ListPreference.java"/>
+            file="res/layout/sesl_preference_switch_screen.xml"/>
     </issue>
 
     <issue
-        id="UnknownNullness"
-        message="Unknown nullability; explicitly declare as `@Nullable` or `@NonNull` to improve Kotlin interoperability; see https://developer.android.com/kotlin/interop#nullability_annotations"
-        errorLine1="    protected void onSetInitialValue(Object defaultValue) {"
-        errorLine2="                                     ~~~~~~">
+        id="InefficientWeight"
+        message="Use a `layout_width` of `0dp` instead of `wrap_content` for better performance"
+        errorLine1="        android:layout_width=&quot;wrap_content&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/preference/ListPreference.java"/>
+            file="res/layout/sesl_preference_widget_seekbar.xml"/>
     </issue>
 
     <issue
-        id="UnknownNullness"
-        message="Unknown nullability; explicitly declare as `@Nullable` or `@NonNull` to improve Kotlin interoperability; see https://developer.android.com/kotlin/interop#nullability_annotations"
-        errorLine1="    public void setEntries(CharSequence[] entries) {"
-        errorLine2="                           ~~~~~~~~~~~~~~">
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `?android:attr/selectableItemBackground` with a theme that also paints a background (inferred theme is `@android:style/Theme.Holo`)"
+        errorLine1="    android:background=&quot;?android:attr/selectableItemBackground&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/preference/MultiSelectListPreference.java"/>
+            file="res/layout/expand_button.xml"/>
     </issue>
 
     <issue
-        id="UnknownNullness"
-        message="Unknown nullability; explicitly declare as `@Nullable` or `@NonNull` to improve Kotlin interoperability; see https://developer.android.com/kotlin/interop#nullability_annotations"
-        errorLine1="    public CharSequence[] getEntries() {"
-        errorLine2="           ~~~~~~~~~~~~~~">
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `?android:attr/selectableItemBackground` with a theme that also paints a background (inferred theme is `@android:style/Theme.Holo`)"
+        errorLine1="    android:background=&quot;?android:attr/selectableItemBackground&quot;>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/preference/MultiSelectListPreference.java"/>
+            file="res/layout/preference.xml"/>
     </issue>
 
     <issue
-        id="UnknownNullness"
-        message="Unknown nullability; explicitly declare as `@Nullable` or `@NonNull` to improve Kotlin interoperability; see https://developer.android.com/kotlin/interop#nullability_annotations"
-        errorLine1="    public void setEntryValues(CharSequence[] entryValues) {"
-        errorLine2="                               ~~~~~~~~~~~~~~">
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `?android:attr/selectableItemBackground` with a theme that also paints a background (inferred theme is `@android:style/Theme.Holo`)"
+        errorLine1="    android:background=&quot;?android:attr/selectableItemBackground&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/preference/MultiSelectListPreference.java"/>
+            file="res/layout/preference_category_material.xml"/>
     </issue>
 
     <issue
-        id="UnknownNullness"
-        message="Unknown nullability; explicitly declare as `@Nullable` or `@NonNull` to improve Kotlin interoperability; see https://developer.android.com/kotlin/interop#nullability_annotations"
-        errorLine1="    public CharSequence[] getEntryValues() {"
-        errorLine2="           ~~~~~~~~~~~~~~">
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `?android:attr/selectableItemBackground` with a theme that also paints a background (inferred theme is `@android:style/Theme.Holo`)"
+        errorLine1="    android:background=&quot;?android:attr/selectableItemBackground&quot;>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/preference/MultiSelectListPreference.java"/>
+            file="res/layout/preference_dropdown.xml"/>
     </issue>
 
     <issue
-        id="UnknownNullness"
-        message="Unknown nullability; explicitly declare as `@Nullable` or `@NonNull` to improve Kotlin interoperability; see https://developer.android.com/kotlin/interop#nullability_annotations"
-        errorLine1="    public void setValues(Set&lt;String> values) {"
-        errorLine2="                          ~~~~~~~~~~~">
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `?android:attr/selectableItemBackground` with a theme that also paints a background (inferred theme is `@android:style/Theme.Holo`)"
+        errorLine1="    android:background=&quot;?android:attr/selectableItemBackground&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/preference/MultiSelectListPreference.java"/>
+            file="res/layout/preference_material.xml"/>
     </issue>
 
     <issue
-        id="UnknownNullness"
-        message="Unknown nullability; explicitly declare as `@Nullable` or `@NonNull` to improve Kotlin interoperability; see https://developer.android.com/kotlin/interop#nullability_annotations"
-        errorLine1="    public Set&lt;String> getValues() {"
-        errorLine2="           ~~~~~~~~~~~">
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `?android:attr/selectableItemBackground` with a theme that also paints a background (inferred theme is `@android:style/Theme.Holo`)"
+        errorLine1="    android:background=&quot;?android:attr/selectableItemBackground&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/preference/MultiSelectListPreference.java"/>
+            file="res/layout/preference_widget_seekbar_material.xml"/>
     </issue>
 
     <issue
-        id="UnknownNullness"
-        message="Unknown nullability; explicitly declare as `@Nullable` or `@NonNull` to improve Kotlin interoperability; see https://developer.android.com/kotlin/interop#nullability_annotations"
-        errorLine1="    public int findIndexOfValue(String value) {"
-        errorLine2="                                ~~~~~~">
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `?attr/listChoiceBackgroundIndicator` with a theme that also paints a background (inferred theme is `@android:style/Theme.Holo`)"
+        errorLine1="    android:background=&quot;?attr/listChoiceBackgroundIndicator&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/preference/MultiSelectListPreference.java"/>
+            file="res/layout/sesl_preference.xml"/>
     </issue>
 
     <issue
-        id="UnknownNullness"
-        message="Unknown nullability; explicitly declare as `@Nullable` or `@NonNull` to improve Kotlin interoperability; see https://developer.android.com/kotlin/interop#nullability_annotations"
-        errorLine1="    protected boolean[] getSelectedItems() {"
-        errorLine2="              ~~~~~~~~~">
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `?attr/listChoiceBackgroundIndicator` with a theme that also paints a background (inferred theme is `@android:style/Theme.Holo`)"
+        errorLine1="    android:background=&quot;?attr/listChoiceBackgroundIndicator&quot;>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/preference/MultiSelectListPreference.java"/>
+            file="res/layout/sesl_preference_dropdown.xml"/>
     </issue>
 
     <issue
-        id="UnknownNullness"
-        message="Unknown nullability; explicitly declare as `@Nullable` or `@NonNull` to improve Kotlin interoperability; see https://developer.android.com/kotlin/interop#nullability_annotations"
-        errorLine1="    protected void onSetInitialValue(Object defaultValue) {"
-        errorLine2="                                     ~~~~~~">
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `?android:attr/colorBackground` with a theme that also paints a background (inferred theme is `@android:style/Theme.Holo`)"
+        errorLine1="    android:background=&quot;?android:attr/colorBackground&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/preference/MultiSelectListPreference.java"/>
+            file="res/layout/sesl_preference_recyclerview.xml"/>
     </issue>
 
     <issue
-        id="UnknownNullness"
-        message="Unknown nullability; explicitly declare as `@Nullable` or `@NonNull` to improve Kotlin interoperability; see https://developer.android.com/kotlin/interop#nullability_annotations"
-        errorLine1="    public void setKey(String key) {"
-        errorLine2="                       ~~~~~~">
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `?attr/listChoiceBackgroundIndicator` with a theme that also paints a background (inferred theme is `@android:style/Theme.Holo`)"
+        errorLine1="    android:background=&quot;?attr/listChoiceBackgroundIndicator&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/preference/Preference.java"/>
+            file="res/layout/sesl_preference_switch.xml"/>
     </issue>
 
     <issue
-        id="UnknownNullness"
-        message="Unknown nullability; explicitly declare as `@Nullable` or `@NonNull` to improve Kotlin interoperability; see https://developer.android.com/kotlin/interop#nullability_annotations"
-        errorLine1="    public String getKey() {"
-        errorLine2="           ~~~~~~">
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `?attr/listChoiceBackgroundIndicator` with a theme that also paints a background (inferred theme is `@android:style/Theme.Holo`)"
+        errorLine1="    android:background=&quot;?attr/listChoiceBackgroundIndicator&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/preference/Preference.java"/>
+            file="res/layout/sesl_preference_switch_screen.xml"/>
     </issue>
 
     <issue
-        id="UnknownNullness"
-        message="Unknown nullability; explicitly declare as `@Nullable` or `@NonNull` to improve Kotlin interoperability; see https://developer.android.com/kotlin/interop#nullability_annotations"
-        errorLine1="    public boolean callChangeListener(Object newValue) {"
-        errorLine2="                                      ~~~~~~">
+        id="UselessParent"
+        message="This `LinearLayout` layout or its `LinearLayout` parent is unnecessary"
+        errorLine1="        &lt;LinearLayout"
+        errorLine2="         ~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/preference/Preference.java"/>
+            file="res/layout/sesl_preference_switch_screen.xml"/>
     </issue>
 
     <issue
-        id="UnknownNullness"
-        message="Unknown nullability; explicitly declare as `@Nullable` or `@NonNull` to improve Kotlin interoperability; see https://developer.android.com/kotlin/interop#nullability_annotations"
-        errorLine1="    public PreferenceManager getPreferenceManager() {"
-        errorLine2="           ~~~~~~~~~~~~~~~~~">
+        id="TextFields"
+        message="This text field does not specify an `inputType`"
+        errorLine1="    &lt;EditText"
+        errorLine2="     ~~~~~~~~">
         <location
-            file="src/main/java/androidx/preference/Preference.java"/>
+            file="res/layout/preference_dialog_edittext.xml"/>
     </issue>
 
     <issue
-        id="UnknownNullness"
-        message="Unknown nullability; explicitly declare as `@Nullable` or `@NonNull` to improve Kotlin interoperability; see https://developer.android.com/kotlin/interop#nullability_annotations"
-        errorLine1="    public void setDefaultValue(Object defaultValue) {"
-        errorLine2="                                ~~~~~~">
+        id="TextFields"
+        message="This text field does not specify an `inputType`"
+        errorLine1="        &lt;EditText"
+        errorLine2="         ~~~~~~~~">
         <location
-            file="src/main/java/androidx/preference/Preference.java"/>
+            file="res/layout/sesl_preference_dialog_edittext.xml"/>
     </issue>
 
     <issue
-        id="UnknownNullness"
-        message="Unknown nullability; explicitly declare as `@Nullable` or `@NonNull` to improve Kotlin interoperability; see https://developer.android.com/kotlin/interop#nullability_annotations"
-        errorLine1="    protected boolean persistString(String value) {"
-        errorLine2="                                    ~~~~~~">
+        id="Autofill"
+        message="Missing `autofillHints` attribute"
+        errorLine1="    &lt;EditText"
+        errorLine2="     ~~~~~~~~">
         <location
-            file="src/main/java/androidx/preference/Preference.java"/>
+            file="res/layout/preference_dialog_edittext.xml"/>
     </issue>
 
     <issue
-        id="UnknownNullness"
-        message="Unknown nullability; explicitly declare as `@Nullable` or `@NonNull` to improve Kotlin interoperability; see https://developer.android.com/kotlin/interop#nullability_annotations"
-        errorLine1="    protected String getPersistedString(String defaultReturnValue) {"
-        errorLine2="              ~~~~~~">
+        id="Autofill"
+        message="Missing `autofillHints` attribute"
+        errorLine1="        &lt;EditText"
+        errorLine2="         ~~~~~~~~">
         <location
-            file="src/main/java/androidx/preference/Preference.java"/>
+            file="res/layout/sesl_preference_dialog_edittext.xml"/>
     </issue>
 
     <issue
-        id="UnknownNullness"
-        message="Unknown nullability; explicitly declare as `@Nullable` or `@NonNull` to improve Kotlin interoperability; see https://developer.android.com/kotlin/interop#nullability_annotations"
-        errorLine1="    protected String getPersistedString(String defaultReturnValue) {"
-        errorLine2="                                        ~~~~~~">
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="        &lt;ImageView"
+        errorLine2="         ~~~~~~~~~">
         <location
-            file="src/main/java/androidx/preference/Preference.java"/>
+            file="res/layout/preference_information_material.xml"/>
     </issue>
 
     <issue
-        id="UnknownNullness"
-        message="Unknown nullability; explicitly declare as `@Nullable` or `@NonNull` to improve Kotlin interoperability; see https://developer.android.com/kotlin/interop#nullability_annotations"
-        errorLine1="    public boolean persistStringSet(Set&lt;String> values) {"
-        errorLine2="                                    ~~~~~~~~~~~">
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
         <location
-            file="src/main/java/androidx/preference/Preference.java"/>
+            file="res/layout/preference_widget_seekbar.xml"/>
     </issue>
 
     <issue
-        id="UnknownNullness"
-        message="Unknown nullability; explicitly declare as `@Nullable` or `@NonNull` to improve Kotlin interoperability; see https://developer.android.com/kotlin/interop#nullability_annotations"
-        errorLine1="    public Set&lt;String> getPersistedStringSet(Set&lt;String> defaultReturnValue) {"
-        errorLine2="           ~~~~~~~~~~~">
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
         <location
-            file="src/main/java/androidx/preference/Preference.java"/>
+            file="res/layout/sesl_preference_dialog_seekbar.xml"/>
     </issue>
 
     <issue
-        id="UnknownNullness"
-        message="Unknown nullability; explicitly declare as `@Nullable` or `@NonNull` to improve Kotlin interoperability; see https://developer.android.com/kotlin/interop#nullability_annotations"
-        errorLine1="    public Set&lt;String> getPersistedStringSet(Set&lt;String> defaultReturnValue) {"
-        errorLine2="                                             ~~~~~~~~~~~">
+        id="LabelFor"
+        message="Missing accessibility label: provide either a view with an `android:labelFor` that references this view or provide an `android:hint`"
+        errorLine1="    &lt;EditText"
+        errorLine2="     ~~~~~~~~">
         <location
-            file="src/main/java/androidx/preference/Preference.java"/>
+            file="res/layout/preference_dialog_edittext.xml"/>
     </issue>
 
     <issue
-        id="UnknownNullness"
-        message="Unknown nullability; explicitly declare as `@Nullable` or `@NonNull` to improve Kotlin interoperability; see https://developer.android.com/kotlin/interop#nullability_annotations"
-        errorLine1="        boolean onPreferenceChange(@NonNull Preference preference, Object newValue);"
-        errorLine2="                                                                   ~~~~~~">
+        id="LabelFor"
+        message="Missing accessibility label: when using `android:labelFor`, you must also define an `android:text` or an `android:contentDescription`"
+        errorLine1="                android:labelFor=&quot;@id/seekbar&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/preference/Preference.java"/>
+            file="res/layout/preference_widget_seekbar_material.xml"/>
     </issue>
 
     <issue
-        id="UnknownNullness"
-        message="Unknown nullability; explicitly declare as `@Nullable` or `@NonNull` to improve Kotlin interoperability; see https://developer.android.com/kotlin/interop#nullability_annotations"
-        errorLine1="        public BaseSavedState(Parcel source) {"
-        errorLine2="                              ~~~~~~">
+        id="LabelFor"
+        message="Missing accessibility label: provide either a view with an `android:labelFor` that references this view or provide an `android:hint`"
+        errorLine1="        &lt;EditText"
+        errorLine2="         ~~~~~~~~">
         <location
-            file="src/main/java/androidx/preference/Preference.java"/>
-    </issue>
-
-    <issue
-        id="UnknownNullness"
-        message="Unknown nullability; explicitly declare as `@Nullable` or `@NonNull` to improve Kotlin interoperability; see https://developer.android.com/kotlin/interop#nullability_annotations"
-        errorLine1="        public BaseSavedState(Parcelable superState) {"
-        errorLine2="                              ~~~~~~~~~~">
-        <location
-            file="src/main/java/androidx/preference/Preference.java"/>
-    </issue>
-
-    <issue
-        id="UnknownNullness"
-        message="Unknown nullability; explicitly declare as `@Nullable` or `@NonNull` to improve Kotlin interoperability; see https://developer.android.com/kotlin/interop#nullability_annotations"
-        errorLine1="    public static SharedPreferences getDefaultSharedPreferences(@NonNull Context context) {"
-        errorLine2="                  ~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/androidx/preference/PreferenceManager.java"/>
-    </issue>
-
-    <issue
-        id="UnknownNullness"
-        message="Unknown nullability; explicitly declare as `@Nullable` or `@NonNull` to improve Kotlin interoperability; see https://developer.android.com/kotlin/interop#nullability_annotations"
-        errorLine1="    public static void setDefaultValues(@NonNull Context context, String sharedPreferencesName,"
-        errorLine2="                                                                  ~~~~~~">
-        <location
-            file="src/main/java/androidx/preference/PreferenceManager.java"/>
-    </issue>
-
-    <issue
-        id="UnknownNullness"
-        message="Unknown nullability; explicitly declare as `@Nullable` or `@NonNull` to improve Kotlin interoperability; see https://developer.android.com/kotlin/interop#nullability_annotations"
-        errorLine1="    public String getSharedPreferencesName() {"
-        errorLine2="           ~~~~~~">
-        <location
-            file="src/main/java/androidx/preference/PreferenceManager.java"/>
-    </issue>
-
-    <issue
-        id="UnknownNullness"
-        message="Unknown nullability; explicitly declare as `@Nullable` or `@NonNull` to improve Kotlin interoperability; see https://developer.android.com/kotlin/interop#nullability_annotations"
-        errorLine1="    public void setSharedPreferencesName(String sharedPreferencesName) {"
-        errorLine2="                                         ~~~~~~">
-        <location
-            file="src/main/java/androidx/preference/PreferenceManager.java"/>
-    </issue>
-
-    <issue
-        id="UnknownNullness"
-        message="Unknown nullability; explicitly declare as `@Nullable` or `@NonNull` to improve Kotlin interoperability; see https://developer.android.com/kotlin/interop#nullability_annotations"
-        errorLine1="    public PreferenceScreen getPreferenceScreen() {"
-        errorLine2="           ~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/androidx/preference/PreferenceManager.java"/>
-    </issue>
-
-    <issue
-        id="UnknownNullness"
-        message="Unknown nullability; explicitly declare as `@Nullable` or `@NonNull` to improve Kotlin interoperability; see https://developer.android.com/kotlin/interop#nullability_annotations"
-        errorLine1="    public boolean setPreferences(PreferenceScreen preferenceScreen) {"
-        errorLine2="                                  ~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/androidx/preference/PreferenceManager.java"/>
+            file="res/layout/sesl_preference_dialog_edittext.xml"/>
     </issue>
 
 </issues>

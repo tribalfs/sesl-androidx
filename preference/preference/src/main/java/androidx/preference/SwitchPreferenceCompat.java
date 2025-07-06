@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.accessibility.AccessibilityManager;
@@ -366,7 +367,7 @@ public class SwitchPreferenceCompat extends TwoStatePreference {
                 && isChecked != switchCompat.isChecked()
                 && view.hasWindowFocus()
                 && SeslViewReflector.isVisibleToUser(view)
-                && !view.isTemporarilyDetached();
+                && (Build.VERSION.SDK_INT >= 24 && !view.isTemporarilyDetached());
     }
 
     private class DummyClickListener implements View.OnClickListener {
