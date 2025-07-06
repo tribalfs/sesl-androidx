@@ -1,3 +1,5 @@
+@file:Suppress("UNCHECKED_CAST")
+
 import com.android.build.gradle.LibraryExtension
 import java.util.Properties
 import java.util.regex.Pattern
@@ -152,9 +154,9 @@ subprojects {
         compilerOptions {
             jvmTarget.set(
                 if (project.name in listOf("core", "recyclerview")){
-                    JvmTarget.fromTarget("1.8")
+                    JvmTarget.JVM_1_8//https://issuetracker.google.com/issues/210977651
                 } else {
-                    JvmTarget.fromTarget("21")
+                    JvmTarget.JVM_21
                 }
             )
         }
@@ -186,6 +188,7 @@ subprojects {
                 if (isAndroidLibrary) {
                     compileOptions {
                         if (project.name in listOf("core", "recyclerview")) {
+                            //https://issuetracker.google.com/issues/210977651
                             sourceCompatibility = JavaVersion.VERSION_1_8
                             targetCompatibility = JavaVersion.VERSION_1_8
                         } else {

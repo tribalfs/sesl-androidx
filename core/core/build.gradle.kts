@@ -5,14 +5,6 @@ plugins {
 }
 
 dependencies {
-    constraints {
-        implementation(libs.sesl.androidx.coreKtx) {
-            version {
-                require("1.16.0+1.0.0-sesl7+rev0")
-            }
-        }
-    }
-
     api(libs.androidx.annotation)
     api(libs.androidx.annotation.experimental)
     api(libs.androidx.lifecycle.runtime)
