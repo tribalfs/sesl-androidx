@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  Copyright 2024 The Android Open Source Project
+<issues format="6" by="lint 8.11.0" type="baseline" client="gradle" dependencies="false" name="AGP (8.11.0)" variant="all" version="8.11.0">
 
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
+    <issue
+        id="ScrollViewSize"
+        message="This androidx.constraintlayout.widget.ConstraintLayout should use `android:layout_height=&quot;wrap_content&quot;`"
+        errorLine1="        android:layout_height=&quot;match_parent&quot;>"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/sesl_sleep_time_picker.xml"/>
+    </issue>
 
-       http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
-  -->
-
-<issues format="6" by="lint 8.1.2" type="baseline" client="gradle" dependencies="false" name="AGP (8.1.2)" variant="all" version="8.1.2">
+    <issue
+        id="CustomViewStyleable"
+        message="By convention, the custom view (`SeslCircularSeekBarView`) and the declare-styleable (`seslCircularSeekBar`) should have the same name (various editor features rely on this convention)"
+        errorLine1="                R.styleable.seslCircularSeekBar, mDefStyle, 0);"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/androidx/picker/widget/SeslCircularSeekBarView.java"/>
+    </issue>
 
     <issue
         id="CustomViewStyleable"
@@ -23,9 +25,7 @@
         errorLine1="                attrs, R.styleable.DatePicker, defStyleAttr, defStyleRes);"
         errorLine2="                       ~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/picker/widget/SeslDatePicker.java"
-            line="408"
-            column="24"/>
+            file="src/main/java/androidx/picker/widget/SeslDatePicker.java"/>
     </issue>
 
     <issue
@@ -34,9 +34,7 @@
         errorLine1="        TypedArray seslArray = mContext.obtainStyledAttributes(attrs, R.styleable.DatePicker,"
         errorLine2="                                                                      ~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/picker/widget/SeslDatePicker.java"
-            line="428"
-            column="71"/>
+            file="src/main/java/androidx/picker/widget/SeslDatePicker.java"/>
     </issue>
 
     <issue
@@ -45,9 +43,7 @@
         errorLine1="                .obtainStyledAttributes(attrs, R.styleable.DatePicker, defStyle, 0);"
         errorLine2="                                               ~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/picker/widget/SeslSimpleMonthView.java"
-            line="183"
-            column="48"/>
+            file="src/main/java/androidx/picker/widget/SeslSimpleMonthView.java"/>
     </issue>
 
     <issue
@@ -56,9 +52,7 @@
         errorLine1="                attrs, R.styleable.DatePicker, defStyleAttr, defStyleRes);"
         errorLine2="                       ~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/picker/widget/SeslSpinningDatePicker.java"
-            line="416"
-            column="24"/>
+            file="src/main/java/androidx/picker/widget/SeslSpinningDatePicker.java"/>
     </issue>
 
     <issue
@@ -67,20 +61,16 @@
         errorLine1="        TypedArray seslArray = mContext.obtainStyledAttributes(attrs, R.styleable.DatePicker,"
         errorLine2="                                                                      ~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/picker/widget/SeslSpinningDatePicker.java"
-            line="456"
-            column="71"/>
+            file="src/main/java/androidx/picker/widget/SeslSpinningDatePicker.java"/>
     </issue>
 
     <issue
         id="DefaultLocale"
         message="Implicitly using the default locale is a common source of bugs: Use `toUpperCase(Locale)` instead. For strings meant to be internal use `Locale.ROOT`, otherwise `Locale.getDefault()`."
-        errorLine1="                            String var8 = mDayFormatter.format(this.mDayLabelCalendar.getTime()).toUpperCase();"
-        errorLine2="                                                                                                 ~~~~~~~~~~~">
+        errorLine1="                                    mDayFormatter.format(mDayLabelCalendar.getTime()).toUpperCase();"
+        errorLine2="                                                                                      ~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/picker/widget/SeslDatePicker.java"
-            line="1838"
-            column="98"/>
+            file="src/main/java/androidx/picker/widget/SeslDatePicker.java"/>
     </issue>
 
     <issue
@@ -89,9 +79,7 @@
         errorLine1="            mShortMonths[i] = mShortMonths[i].toUpperCase();"
         errorLine2="                                              ~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/picker/widget/SeslDatePickerSpinnerLayout.java"
-            line="446"
-            column="47"/>
+            file="src/main/java/androidx/picker/widget/SeslDatePickerSpinnerLayout.java"/>
     </issue>
 
     <issue
@@ -100,9 +88,7 @@
         errorLine1="                mShortMonths[i] = String.format(&quot;%d&quot;, i + 1);"
         errorLine2="                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/picker/widget/SeslDatePickerSpinnerLayout.java"
-            line="452"
-            column="35"/>
+            file="src/main/java/androidx/picker/widget/SeslDatePickerSpinnerLayout.java"/>
     </issue>
 
     <issue
@@ -111,9 +97,7 @@
         errorLine1="                    value = value.toLowerCase();"
         errorLine2="                                  ~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/picker/widget/SeslNumberPickerSpinnerDelegate.java"
-            line="2404"
-            column="35"/>
+            file="src/main/java/androidx/picker/widget/SeslNumberPickerSpinnerDelegate.java"/>
     </issue>
 
     <issue
@@ -122,9 +106,7 @@
         errorLine1="                    if (mDisplayedValues[i].toLowerCase().startsWith(value)) {"
         errorLine2="                                            ~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/picker/widget/SeslNumberPickerSpinnerDelegate.java"
-            line="2405"
-            column="45"/>
+            file="src/main/java/androidx/picker/widget/SeslNumberPickerSpinnerDelegate.java"/>
     </issue>
 
     <issue
@@ -133,9 +115,7 @@
         errorLine1="                String str = String.valueOf(result).toLowerCase();"
         errorLine2="                                                    ~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/picker/widget/SeslNumberPickerSpinnerDelegate.java"
-            line="2458"
-            column="53"/>
+            file="src/main/java/androidx/picker/widget/SeslNumberPickerSpinnerDelegate.java"/>
     </issue>
 
     <issue
@@ -144,9 +124,7 @@
         errorLine1="                    String valLowerCase = val.toLowerCase();"
         errorLine2="                                              ~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/picker/widget/SeslNumberPickerSpinnerDelegate.java"
-            line="2460"
-            column="47"/>
+            file="src/main/java/androidx/picker/widget/SeslNumberPickerSpinnerDelegate.java"/>
     </issue>
 
     <issue
@@ -155,9 +133,7 @@
         errorLine1="            String searchedLowerCase = searched.toLowerCase();"
         errorLine2="                                                ~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/picker/widget/SeslNumberPickerSpinnerDelegate.java"
-            line="2686"
-            column="49"/>
+            file="src/main/java/androidx/picker/widget/SeslNumberPickerSpinnerDelegate.java"/>
     </issue>
 
     <issue
@@ -166,9 +142,7 @@
         errorLine1="                    if (!TextUtils.isEmpty(text) &amp;&amp; text.toLowerCase().contains(searchedLowerCase)) {"
         errorLine2="                                                         ~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/picker/widget/SeslNumberPickerSpinnerDelegate.java"
-            line="2909"
-            column="58"/>
+            file="src/main/java/androidx/picker/widget/SeslNumberPickerSpinnerDelegate.java"/>
     </issue>
 
     <issue
@@ -177,9 +151,7 @@
         errorLine1="                    if (!TextUtils.isEmpty(text) &amp;&amp; text.toString().toLowerCase().contains(searchedLowerCase)) {"
         errorLine2="                                                                    ~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/picker/widget/SeslNumberPickerSpinnerDelegate.java"
-            line="2915"
-            column="69"/>
+            file="src/main/java/androidx/picker/widget/SeslNumberPickerSpinnerDelegate.java"/>
     </issue>
 
     <issue
@@ -188,9 +160,7 @@
         errorLine1="                    if (!TextUtils.isEmpty(text) &amp;&amp; text.toLowerCase().contains(searchedLowerCase)) {"
         errorLine2="                                                         ~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/picker/widget/SeslNumberPickerSpinnerDelegate.java"
-            line="2921"
-            column="58"/>
+            file="src/main/java/androidx/picker/widget/SeslNumberPickerSpinnerDelegate.java"/>
     </issue>
 
     <issue
@@ -199,9 +169,7 @@
         errorLine1="            var1.drawText(String.format(&quot;%d&quot;, var2), (float)var24, (float)var11, var26);"
         errorLine2="                          ~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/picker/widget/SeslSimpleMonthView.java"
-            line="759"
-            column="27"/>
+            file="src/main/java/androidx/picker/widget/SeslSimpleMonthView.java"/>
     </issue>
 
     <issue
@@ -210,9 +178,7 @@
         errorLine1="                var1.drawText(String.format(&quot;%d&quot;, var2), (float)var31, (float)var16, var26);"
         errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/picker/widget/SeslSimpleMonthView.java"
-            line="849"
-            column="31"/>
+            file="src/main/java/androidx/picker/widget/SeslSimpleMonthView.java"/>
     </issue>
 
     <issue
@@ -221,20 +187,34 @@
         errorLine1="                var1.drawText(String.format(&quot;%d&quot;, var17), (float)var9, (float)var8, var26);"
         errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/picker/widget/SeslSimpleMonthView.java"
-            line="956"
-            column="31"/>
+            file="src/main/java/androidx/picker/widget/SeslSimpleMonthView.java"/>
+    </issue>
+
+    <issue
+        id="DefaultLocale"
+        message="Implicitly using the default locale is a common source of bugs: Use `String.format(Locale, ...)` instead"
+        errorLine1="        return String.format(&quot;%d&quot;, i);"
+        errorLine2="               ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/androidx/picker/util/SeslSleepTimePickerUtil.java"/>
+    </issue>
+
+    <issue
+        id="DefaultLocale"
+        message="Implicitly using the default locale is a common source of bugs: Use `String.format(Locale, ...)` instead"
+        errorLine1="        return String.format(&quot;%02d&quot;, i);"
+        errorLine2="               ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/androidx/picker/util/SeslSleepTimePickerUtil.java"/>
     </issue>
 
     <issue
         id="DefaultLocale"
         message="Implicitly using the default locale is a common source of bugs: Use `toUpperCase(Locale)` instead. For strings meant to be internal use `Locale.ROOT`, otherwise `Locale.getDefault()`."
-        errorLine1="                            String var8 = mDayFormatter.format(this.mDayLabelCalendar.getTime()).toUpperCase();"
-        errorLine2="                                                                                                 ~~~~~~~~~~~">
+        errorLine1="                                    mDayFormatter.format(this.mDayLabelCalendar.getTime()).toUpperCase();"
+        errorLine2="                                                                                           ~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/picker/widget/SeslSpinningDatePicker.java"
-            line="1931"
-            column="98"/>
+            file="src/main/java/androidx/picker/widget/SeslSpinningDatePicker.java"/>
     </issue>
 
     <issue
@@ -243,9 +223,7 @@
         errorLine1="            String searchedLowerCase = searched.toLowerCase();"
         errorLine2="                                                ~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/picker/widget/SeslSpinningDatePickerSpinnerDelegate.java"
-            line="2315"
-            column="49"/>
+            file="src/main/java/androidx/picker/widget/SeslSpinningDatePickerSpinnerDelegate.java"/>
     </issue>
 
     <issue
@@ -254,9 +232,7 @@
         errorLine1="                    if (!TextUtils.isEmpty(text) &amp;&amp; text.toLowerCase().contains(searchedLowerCase)) {"
         errorLine2="                                                         ~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/picker/widget/SeslSpinningDatePickerSpinnerDelegate.java"
-            line="2518"
-            column="58"/>
+            file="src/main/java/androidx/picker/widget/SeslSpinningDatePickerSpinnerDelegate.java"/>
     </issue>
 
     <issue
@@ -265,9 +241,7 @@
         errorLine1="                    if (!TextUtils.isEmpty(text) &amp;&amp; text.toLowerCase().contains(searchedLowerCase)) {"
         errorLine2="                                                         ~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/picker/widget/SeslSpinningDatePickerSpinnerDelegate.java"
-            line="2524"
-            column="58"/>
+            file="src/main/java/androidx/picker/widget/SeslSpinningDatePickerSpinnerDelegate.java"/>
     </issue>
 
     <issue
@@ -276,9 +250,7 @@
         errorLine1="                    if (!TextUtils.isEmpty(text) &amp;&amp; text.toLowerCase().contains(searchedLowerCase)) {"
         errorLine2="                                                         ~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/picker/widget/SeslSpinningDatePickerSpinnerDelegate.java"
-            line="2530"
-            column="58"/>
+            file="src/main/java/androidx/picker/widget/SeslSpinningDatePickerSpinnerDelegate.java"/>
     </issue>
 
     <issue
@@ -287,20 +259,16 @@
         errorLine1="        View view = inflater.inflate(R.layout.sesl_date_picker_dialog, null);"
         errorLine2="                                                                       ~~~~">
         <location
-            file="src/main/java/androidx/picker/app/SeslDatePickerDialog.java"
-            line="94"
-            column="72"/>
+            file="src/main/java/androidx/picker/app/SeslDatePickerDialog.java"/>
     </issue>
 
     <issue
         id="InflateParams"
         message="Avoid passing `null` as the view root (needed to resolve layout parameters on the inflated layout&apos;s root element)"
-        errorLine1="                View view = LayoutInflater.from(mContext).inflate(R.layout.sesl_custom_toast_layout, null);"
-        errorLine2="                                                                                                     ~~~~">
+        errorLine1="                                null);"
+        errorLine2="                                ~~~~">
         <location
-            file="src/main/java/androidx/picker/widget/SeslDatePickerSpinnerLayout.java"
-            line="1036"
-            column="102"/>
+            file="src/main/java/androidx/picker/widget/SeslDatePickerSpinnerLayout.java"/>
     </issue>
 
     <issue
@@ -309,9 +277,7 @@
         errorLine1="                .inflate(R.layout.sesl_custom_toast_layout, null);"
         errorLine2="                                                            ~~~~">
         <location
-            file="src/main/java/androidx/picker/widget/SeslNumberPickerSpinnerDelegate.java"
-            line="2480"
-            column="61"/>
+            file="src/main/java/androidx/picker/widget/SeslNumberPickerSpinnerDelegate.java"/>
     </issue>
 
     <issue
@@ -320,9 +286,7 @@
         errorLine1="                R.layout.sesl_spinning_date_picker_calendar, null, false);"
         errorLine2="                                                             ~~~~">
         <location
-            file="src/main/java/androidx/picker/widget/SeslSpinningDatePicker.java"
-            line="445"
-            column="62"/>
+            file="src/main/java/androidx/picker/widget/SeslSpinningDatePicker.java"/>
     </issue>
 
     <issue
@@ -331,224 +295,2389 @@
         errorLine1="        View view = inflater.inflate(R.layout.sesl_time_picker_spinner_dialog, null);"
         errorLine2="                                                                               ~~~~">
         <location
-            file="src/main/java/androidx/picker/app/SeslTimePickerDialog.java"
-            line="94"
-            column="80"/>
+            file="src/main/java/androidx/picker/app/SeslTimePickerDialog.java"/>
     </issue>
 
     <issue
-        id="RestrictedApi"
-        message="ViewPager.canSupportLayoutDirectionForDatePicker can only be called from within the same library group prefix (referenced groupId=`oneui-core` with prefix &quot;&quot; from groupId=`io.github.oneuiproject.sesl`)"
-        errorLine1="        mCalendarViewPager.canSupportLayoutDirectionForDatePicker(true);"
+        id="VectorRaster"
+        message="Resource references will not work correctly in images generated for this vector icon for API &lt; 24; check generated icon to make sure it looks acceptable"
+        errorLine1="        android:fillColor=&quot;@color/sesl_date_picker_header_spinner&quot;"
         errorLine2="                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/picker/widget/SeslDatePicker.java"
-            line="442"
-            column="28"/>
+            file="src/main/res/drawable-anydpi/sesl_date_picker_header_spinner.xml"/>
     </issue>
 
     <issue
-        id="RestrictedApi"
-        message="ViewPager.seslSetConfigurationChanged can only be called from within the same library group prefix (referenced groupId=`oneui-core` with prefix &quot;&quot; from groupId=`io.github.oneuiproject.sesl`)"
-        errorLine1="                mCalendarViewPager.seslSetConfigurationChanged(true);"
-        errorLine2="                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        id="AppCompatCustomView"
+        message="This custom view should extend `androidx.appcompat.widget.AppCompatEditText` instead"
+        errorLine1="    static class CustomEditText extends EditText {"
+        errorLine2="                                        ~~~~~~~~">
         <location
-            file="src/main/java/androidx/picker/widget/SeslDatePicker.java"
-            line="1662"
-            column="36"/>
+            file="src/main/java/androidx/picker/widget/SeslNumberPicker.java"/>
     </issue>
 
     <issue
-        id="RestrictedApi"
-        message="ViewPager.seslSetConfigurationChanged can only be called from within the same library group prefix (referenced groupId=`oneui-core` with prefix &quot;&quot; from groupId=`io.github.oneuiproject.sesl`)"
-        errorLine1="                mCalendarViewPager.seslSetConfigurationChanged(true);"
-        errorLine2="                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        id="AppCompatCustomView"
+        message="This custom view should extend `androidx.appcompat.widget.AppCompatEditText` instead"
+        errorLine1="    static class CustomEditText extends EditText {"
+        errorLine2="                                        ~~~~~~~~">
         <location
-            file="src/main/java/androidx/picker/widget/SeslSpinningDatePicker.java"
-            line="1754"
-            column="36"/>
+            file="src/main/java/androidx/picker/widget/SeslSpinningDatePickerSpinner.java"/>
     </issue>
 
     <issue
         id="PrivateResource"
-        message="The resource `@color/sesl_text1_dark` is marked as private in io.github.oneuiproject.sesl:appcompat:unspecified"
+        message="The resource `@color/sesl_text1_dark` is marked as private in sesl.androidx.appcompat:appcompat:1.7.1+1.0.18-sesl8+rev0"
         errorLine1="        android:textColor=&quot;@color/sesl_text1_dark&quot;"
         errorLine2="                           ~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/res/layout/sesl_custom_toast_layout.xml"
-            line="32"
-            column="28"/>
+            file="src/main/res/layout/sesl_custom_toast_layout.xml"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@string/sesl_font_family_regular` is marked as private in sesl.androidx.appcompat:appcompat:1.7.1+1.0.18-sesl8+rev0"
+        errorLine1="        &lt;item name=&quot;android:fontFamily&quot;>@string/sesl_font_family_regular&lt;/item>"
+        errorLine2="                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles.xml"/>
     </issue>
 
     <issue
         id="SpUsage"
-        message="Should use &quot;`sp`&quot; instead of &quot;`dp`&quot; for text sizes (`@dimen/sesl_date_picker_calendar_header_month_text_size` is defined as `16dp` in `values\dimens.xml`"
-        errorLine1="                    android:textSize=&quot;@dimen/sesl_date_picker_calendar_header_month_text_size&quot; />"
-        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        message="Should use &quot;`sp`&quot; instead of &quot;`dp`&quot; for text sizes (`@dimen/sesl_sleep_time_text_size` is defined as `30dp` in `values/dimens.xml`"
+        errorLine1="            android:textSize=&quot;@dimen/sesl_sleep_time_text_size&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/res/layout/sesl_date_picker.xml"
-            line="67"
-            column="21"/>
+            file="src/main/res/layout/sesl_bed_time_wakeup_time_top_bottom_layout.xml"/>
         <location
             file="src/main/res/values/dimens.xml"
-            line="51"
-            column="68"
             message="This dp dimension is used as a text size"/>
     </issue>
 
     <issue
         id="SpUsage"
-        message="Should use &quot;`sp`&quot; instead of &quot;`dp`&quot; for text sizes (`@dimen/sesl_date_picker_calendar_header_month_text_size` is defined as `16dp` in `values\dimens.xml`"
+        message="Should use &quot;`sp`&quot; instead of &quot;`dp`&quot; for text sizes (`@dimen/sesl_sleep_time_text_size` is defined as `30dp` in `values/dimens.xml`"
+        errorLine1="                android:textSize=&quot;@dimen/sesl_sleep_time_text_size&quot; />"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-v29/sesl_bed_time_wakeup_time_top_bottom_layout.xml"/>
+        <location
+            file="src/main/res/values/dimens.xml"
+            message="This dp dimension is used as a text size"/>
+    </issue>
+
+    <issue
+        id="SpUsage"
+        message="Should use &quot;`sp`&quot; instead of &quot;`dp`&quot; for text sizes (`@dimen/sesl_sleep_time_text_size` is defined as `30dp` in `values/dimens.xml`"
+        errorLine1="            android:textSize=&quot;@dimen/sesl_sleep_time_text_size&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/sesl_bed_time_wakeup_time_top_bottom_layout.xml"/>
+        <location
+            file="src/main/res/values/dimens.xml"
+            message="This dp dimension is used as a text size"/>
+    </issue>
+
+    <issue
+        id="SpUsage"
+        message="Should use &quot;`sp`&quot; instead of &quot;`dp`&quot; for text sizes (`@dimen/sesl_sleep_time_text_size` is defined as `30dp` in `values/dimens.xml`"
+        errorLine1="                android:textSize=&quot;@dimen/sesl_sleep_time_text_size&quot; />"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-v29/sesl_bed_time_wakeup_time_top_bottom_layout.xml"/>
+        <location
+            file="src/main/res/values/dimens.xml"
+            message="This dp dimension is used as a text size"/>
+    </issue>
+
+    <issue
+        id="SpUsage"
+        message="Should use &quot;`sp`&quot; instead of &quot;`dp`&quot; for text sizes (`@dimen/sesl_date_picker_calendar_header_month_text_size` is defined as `16dp` in `values/dimens.xml`"
+        errorLine1="                        android:textSize=&quot;@dimen/sesl_date_picker_calendar_header_month_text_size&quot; />"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/sesl_date_picker.xml"/>
+        <location
+            file="src/main/res/values/dimens.xml"
+            message="This dp dimension is used as a text size"/>
+    </issue>
+
+    <issue
+        id="SpUsage"
+        message="Should use &quot;`sp`&quot; instead of &quot;`dp`&quot; for text sizes (`@dimen/sesl_date_picker_calendar_header_month_text_size` is defined as `16dp` in `values/dimens.xml`"
+        errorLine1="                        android:textSize=&quot;@dimen/sesl_date_picker_calendar_header_month_text_size&quot; />"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-v29/sesl_date_picker.xml"/>
+        <location
+            file="src/main/res/values/dimens.xml"
+            message="This dp dimension is used as a text size"/>
+    </issue>
+
+    <issue
+        id="SpUsage"
+        message="Should use &quot;`sp`&quot; instead of &quot;`dp`&quot; for text sizes (`@dimen/sesl_date_picker_calendar_header_month_text_size` is defined as `16dp` in `values/dimens.xml`"
         errorLine1="                android:textSize=&quot;@dimen/sesl_date_picker_calendar_header_month_text_size&quot;"
         errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/res/layout/sesl_date_picker_legacy.xml"
-            line="58"
-            column="17"/>
+            file="src/main/res/layout/sesl_date_picker_legacy.xml"/>
         <location
             file="src/main/res/values/dimens.xml"
-            line="51"
-            column="68"
             message="This dp dimension is used as a text size"/>
     </issue>
 
     <issue
         id="SpUsage"
-        message="Should use &quot;`sp`&quot; instead of &quot;`dp`&quot; for text sizes (`@dimen/sesl_time_picker_spinner_text_size` is defined as `28dp` in `values\dimens.xml`"
+        message="Should use &quot;`sp`&quot; instead of &quot;`dp`&quot; for text sizes (`@dimen/sesl_time_picker_spinner_text_size` is defined as `28dp` in `values/dimens.xml`"
         errorLine1="        android:textSize=&quot;@dimen/sesl_time_picker_spinner_text_size&quot;"
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/res/layout/sesl_number_picker_spinner.xml"
-            line="28"
-            column="9"/>
+            file="src/main/res/layout/sesl_number_picker_spinner.xml"/>
         <location
             file="src/main/res/values/dimens.xml"
-            line="39"
-            column="54"
             message="This dp dimension is used as a text size"/>
     </issue>
 
     <issue
         id="SpUsage"
-        message="Should use &quot;`sp`&quot; instead of &quot;`dp`&quot; for text sizes (`@dimen/sesl_date_picker_calendar_header_month_text_size` is defined as `16dp` in `values\dimens.xml`"
+        message="Should use &quot;`sp`&quot; instead of &quot;`dp`&quot; for text sizes (`@dimen/sesl_sleep_time_text_size` is defined as `30dp` in `values/dimens.xml`"
+        errorLine1="                    android:textSize=&quot;@dimen/sesl_sleep_time_text_size&quot; />"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/sesl_sleep_time_picker_layout.xml"/>
+        <location
+            file="src/main/res/values/dimens.xml"
+            message="This dp dimension is used as a text size"/>
+    </issue>
+
+    <issue
+        id="SpUsage"
+        message="Should use &quot;`sp`&quot; instead of &quot;`dp`&quot; for text sizes (`@dimen/sesl_sleep_time_text_size` is defined as `30dp` in `values/dimens.xml`"
+        errorLine1="                    android:textSize=&quot;@dimen/sesl_sleep_time_text_size&quot; />"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/sesl_sleep_time_picker_layout.xml"/>
+        <location
+            file="src/main/res/values/dimens.xml"
+            message="This dp dimension is used as a text size"/>
+    </issue>
+
+    <issue
+        id="SpUsage"
+        message="Should use &quot;`sp`&quot; instead of &quot;`dp`&quot; for text sizes (`@dimen/sesl_date_picker_calendar_header_month_text_size` is defined as `16dp` in `values/dimens.xml`"
         errorLine1="                    android:textSize=&quot;@dimen/sesl_date_picker_calendar_header_month_text_size&quot; />"
         errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/res/layout/sesl_spinning_date_picker_calendar.xml"
-            line="67"
-            column="21"/>
+            file="src/main/res/layout/sesl_spinning_date_picker_calendar.xml"/>
         <location
             file="src/main/res/values/dimens.xml"
-            line="51"
-            column="68"
             message="This dp dimension is used as a text size"/>
     </issue>
 
     <issue
         id="SpUsage"
-        message="Should use &quot;`sp`&quot; instead of &quot;`dp`&quot; for text sizes (`@dimen/sesl_spinning_date_picker_date_spinner_text_size` is defined as `21dp` in `values\dimens.xml`"
+        message="Should use &quot;`sp`&quot; instead of &quot;`dp`&quot; for text sizes (`@dimen/sesl_spinning_date_picker_date_spinner_text_size` is defined as `21dp` in `values/dimens.xml`"
         errorLine1="        android:textSize=&quot;@dimen/sesl_spinning_date_picker_date_spinner_text_size&quot;"
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/res/layout/sesl_spinning_date_picker_spinner.xml"
-            line="25"
-            column="9"/>
+            file="src/main/res/layout/sesl_spinning_date_picker_spinner.xml"/>
         <location
             file="src/main/res/values/dimens.xml"
-            line="26"
-            column="68"
             message="This dp dimension is used as a text size"/>
     </issue>
 
     <issue
         id="SpUsage"
-        message="Should use &quot;`sp`&quot; instead of &quot;`dp`&quot; for text sizes (`@dimen/sesl_time_picker_spinner_divider_text_size` is defined as `32dp` in `values\dimens.xml`"
+        message="Should use &quot;`sp`&quot; instead of &quot;`dp`&quot; for text sizes (`@dimen/sesl_time_picker_spinner_divider_text_size` is defined as `32dp` in `values/dimens.xml`"
         errorLine1="            android:textSize=&quot;@dimen/sesl_time_picker_spinner_divider_text_size&quot; />"
         errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/res/layout/sesl_spinning_datepicker_time_picker_spinner.xml"
-            line="62"
-            column="13"/>
+            file="src/main/res/layout/sesl_spinning_datepicker_time_picker_spinner.xml"/>
         <location
             file="src/main/res/values/dimens.xml"
-            line="37"
-            column="62"
             message="This dp dimension is used as a text size"/>
     </issue>
 
     <issue
         id="SpUsage"
-        message="Should use &quot;`sp`&quot; instead of &quot;`dp`&quot; for text sizes (`@dimen/sesl_time_picker_spinner_divider_text_size` is defined as `32dp` in `values\dimens.xml`"
+        message="Should use &quot;`sp`&quot; instead of &quot;`dp`&quot; for text sizes (`@dimen/sesl_time_picker_spinner_divider_text_size` is defined as `32dp` in `values/dimens.xml`"
         errorLine1="            android:textSize=&quot;@dimen/sesl_time_picker_spinner_divider_text_size&quot; />"
         errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/res/layout-sw600dp/sesl_spinning_datepicker_time_picker_spinner.xml"
-            line="65"
-            column="13"/>
+            file="src/main/res/layout-sw600dp/sesl_spinning_datepicker_time_picker_spinner.xml"/>
         <location
             file="src/main/res/values/dimens.xml"
-            line="37"
-            column="62"
             message="This dp dimension is used as a text size"/>
     </issue>
 
     <issue
         id="SpUsage"
-        message="Should use &quot;`sp`&quot; instead of &quot;`dp`&quot; for text sizes (`@dimen/sesl_time_picker_spinner_divider_text_size` is defined as `32dp` in `values\dimens.xml`"
-        errorLine1="            android:textSize=&quot;@dimen/sesl_time_picker_spinner_divider_text_size&quot;"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/layout/sesl_spinning_datepicker_time_picker_spinner_multipane.xml"
-            line="59"
-            column="13"/>
-        <location
-            file="src/main/res/values/dimens.xml"
-            line="37"
-            column="62"
-            message="This dp dimension is used as a text size"/>
-    </issue>
-
-    <issue
-        id="SpUsage"
-        message="Should use &quot;`sp`&quot; instead of &quot;`dp`&quot; for text sizes (`@dimen/sesl_time_picker_spinner_divider_text_size` is defined as `32dp` in `values\dimens.xml`"
-        errorLine1="            android:textSize=&quot;@dimen/sesl_time_picker_spinner_divider_text_size&quot;"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/layout/sesl_spinning_datepicker_time_picker_spinner_phone.xml"
-            line="59"
-            column="13"/>
-        <location
-            file="src/main/res/values/dimens.xml"
-            line="37"
-            column="62"
-            message="This dp dimension is used as a text size"/>
-    </issue>
-
-    <issue
-        id="SpUsage"
-        message="Should use &quot;`sp`&quot; instead of &quot;`dp`&quot; for text sizes (`@dimen/sesl_time_picker_spinner_divider_text_size` is defined as `32dp` in `values\dimens.xml`"
+        message="Should use &quot;`sp`&quot; instead of &quot;`dp`&quot; for text sizes (`@dimen/sesl_time_picker_spinner_divider_text_size` is defined as `32dp` in `values/dimens.xml`"
         errorLine1="            android:textSize=&quot;@dimen/sesl_time_picker_spinner_divider_text_size&quot; />"
         errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/res/layout/sesl_time_picker_spinner.xml"
-            line="55"
-            column="13"/>
+            file="src/main/res/layout/sesl_spinning_datepicker_time_picker_spinner_multipane.xml"/>
         <location
             file="src/main/res/values/dimens.xml"
-            line="37"
-            column="62"
             message="This dp dimension is used as a text size"/>
+    </issue>
+
+    <issue
+        id="SpUsage"
+        message="Should use &quot;`sp`&quot; instead of &quot;`dp`&quot; for text sizes (`@dimen/sesl_time_picker_spinner_divider_text_size` is defined as `32dp` in `values/dimens.xml`"
+        errorLine1="            android:textSize=&quot;@dimen/sesl_time_picker_spinner_divider_text_size&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/sesl_spinning_datepicker_time_picker_spinner_phone.xml"/>
+        <location
+            file="src/main/res/values/dimens.xml"
+            message="This dp dimension is used as a text size"/>
+    </issue>
+
+    <issue
+        id="SpUsage"
+        message="Should use &quot;`sp`&quot; instead of &quot;`dp`&quot; for text sizes (`@dimen/sesl_time_picker_spinner_divider_text_size` is defined as `32dp` in `values/dimens.xml`"
+        errorLine1="            android:textSize=&quot;@dimen/sesl_time_picker_spinner_divider_text_size&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/sesl_time_picker_spinner.xml"/>
+        <location
+            file="src/main/res/values/dimens.xml"
+            message="This dp dimension is used as a text size"/>
+    </issue>
+
+    <issue
+        id="UseAppTint"
+        message="Must use `app:tint` instead of `android:tint`"
+        errorLine1="                android:tint=&quot;@color/sesl_date_picker_button_tint_color_light&quot; />"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-v29/sesl_date_picker.xml"/>
+    </issue>
+
+    <issue
+        id="UseAppTint"
+        message="Must use `app:tint` instead of `android:tint`"
+        errorLine1="                android:tint=&quot;@color/sesl_date_picker_button_tint_color_light&quot; />"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/sesl_date_picker.xml"/>
+    </issue>
+
+    <issue
+        id="UseAppTint"
+        message="Must use `app:tint` instead of `android:tint`"
+        errorLine1="                android:tint=&quot;@color/sesl_date_picker_button_tint_color_light&quot; />"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-v29/sesl_date_picker.xml"/>
+    </issue>
+
+    <issue
+        id="UseAppTint"
+        message="Must use `app:tint` instead of `android:tint`"
+        errorLine1="                android:tint=&quot;@color/sesl_date_picker_button_tint_color_light&quot; />"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/sesl_date_picker.xml"/>
+    </issue>
+
+    <issue
+        id="UseAppTint"
+        message="Must use `app:tint` instead of `android:tint`"
+        errorLine1="                android:tint=&quot;@color/sesl_date_picker_button_tint_color_light&quot; />"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/sesl_date_picker_legacy.xml"/>
+    </issue>
+
+    <issue
+        id="UseAppTint"
+        message="Must use `app:tint` instead of `android:tint`"
+        errorLine1="                android:tint=&quot;@color/sesl_date_picker_button_tint_color_light&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/sesl_date_picker_legacy.xml"/>
+    </issue>
+
+    <issue
+        id="UseAppTint"
+        message="Must use `app:tint` instead of `android:tint`"
+        errorLine1="                android:tint=&quot;@color/sesl_date_picker_button_tint_color_light&quot; />"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/sesl_spinning_date_picker_calendar.xml"/>
+    </issue>
+
+    <issue
+        id="UseAppTint"
+        message="Must use `app:tint` instead of `android:tint`"
+        errorLine1="                android:tint=&quot;@color/sesl_date_picker_button_tint_color_light&quot; />"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/sesl_spinning_date_picker_calendar.xml"/>
     </issue>
 
     <issue
         id="MissingTranslation"
-        message="&quot;sesl_date_picker_switch_to_month_day_year_view_description&quot; is not translated in &quot;de&quot; (German), &quot;hi&quot; (Hindi), &quot;lo&quot; (Lao), &quot;pt&quot; (Portuguese), &quot;lt&quot; (Lithuanian), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;hu&quot; (Hungarian), &quot;hy&quot; (Armenian), &quot;ug&quot; (Uyghur), &quot;uk&quot; (Ukrainian), &quot;ur&quot; (Urdu), &quot;mk&quot; (Macedonian), &quot;ml&quot; (Malayalam), &quot;mn&quot; (Mongolian), &quot;in&quot; (Indonesian), &quot;mr&quot; (Marathi), &quot;uz&quot; (Uzbek), &quot;ms&quot; (Malay), &quot;el&quot; (Greek), &quot;en&quot; (English), &quot;is&quot; (Icelandic), &quot;it&quot; (Italian), &quot;my&quot; (Burmese), &quot;es&quot; (Spanish), &quot;iw&quot; (Hebrew), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;eu&quot; (Basque), &quot;ar&quot; (Arabic), &quot;as&quot; (Assamese), &quot;vi&quot; (Vietnamese), &quot;nb&quot; (Norwegian Bokmål), &quot;ja&quot; (Japanese), &quot;ne&quot; (Nepali), &quot;az&quot; (Azerbaijani), &quot;fa&quot; (Persian), &quot;ro&quot; (Romanian), &quot;nl&quot; (Dutch), &quot;be&quot; (Belarusian), &quot;fi&quot; (Finnish), &quot;ru&quot; (Russian), &quot;bg&quot; (Bulgarian), &quot;bn&quot; (Bangla), &quot;fr&quot; (French), &quot;bo&quot; (Tibetan), &quot;bs&quot; (Bosnian), &quot;ka&quot; (Georgian), &quot;si&quot; (Sinhala), &quot;sk&quot; (Slovak), &quot;sl&quot; (Slovenian), &quot;ga&quot; (Irish), &quot;ca&quot; (Catalan), &quot;sq&quot; (Albanian), &quot;sr&quot; (Serbian), &quot;kk&quot; (Kazakh), &quot;km&quot; (Khmer), &quot;kn&quot; (Kannada), &quot;or&quot; (Odia), &quot;sv&quot; (Swedish), &quot;ko&quot; (Korean), &quot;gl&quot; (Galician), &quot;ta&quot; (Tamil), &quot;gu&quot; (Gujarati), &quot;ky&quot; (Kyrgyz), &quot;cs&quot; (Czech), &quot;pa&quot; (Punjabi), &quot;te&quot; (Telugu), &quot;tg&quot; (Tajik), &quot;th&quot; (Thai), &quot;tk&quot; (Turkmen), &quot;tl&quot; (Tagalog), &quot;pl&quot; (Polish), &quot;da&quot; (Danish), &quot;tr&quot; (Turkish)"
-        errorLine1="    &lt;string name=&quot;sesl_date_picker_switch_to_month_day_year_view_description&quot;>Double tap to switch to Month-Day-Year view.&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        message="&quot;sesl_sleep_goal_duration_in_hour_plurals&quot; is not translated in &quot;de&quot; (German), &quot;hi&quot; (Hindi), &quot;lo&quot; (Lao), &quot;pt&quot; (Portuguese), &quot;lt&quot; (Lithuanian), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;hu&quot; (Hungarian), &quot;hy&quot; (Armenian), &quot;ug&quot; (Uyghur), &quot;uk&quot; (Ukrainian), &quot;yo&quot; (Yoruba), &quot;ur&quot; (Urdu), &quot;ig&quot; (Igbo), &quot;mk&quot; (Macedonian), &quot;ml&quot; (Malayalam), &quot;mn&quot; (Mongolian), &quot;in&quot; (Indonesian), &quot;mr&quot; (Marathi), &quot;uz&quot; (Uzbek), &quot;ms&quot; (Malay), &quot;el&quot; (Greek), &quot;en&quot; (English), &quot;is&quot; (Icelandic), &quot;it&quot; (Italian), &quot;am&quot; (Amharic), &quot;my&quot; (Burmese), &quot;es&quot; (Spanish), &quot;iw&quot; (Hebrew), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;eu&quot; (Basque), &quot;ar&quot; (Arabic), &quot;as&quot; (Assamese), &quot;vi&quot; (Vietnamese), &quot;nb&quot; (Norwegian Bokmål), &quot;ja&quot; (Japanese), &quot;ne&quot; (Nepali), &quot;az&quot; (Azerbaijani), &quot;fa&quot; (Persian), &quot;ro&quot; (Romanian), &quot;nl&quot; (Dutch), &quot;be&quot; (Belarusian), &quot;fi&quot; (Finnish), &quot;ru&quot; (Russian), &quot;bg&quot; (Bulgarian), &quot;bn&quot; (Bangla), &quot;fr&quot; (French), &quot;bo&quot; (Tibetan), &quot;bs&quot; (Bosnian), &quot;ka&quot; (Georgian), &quot;si&quot; (Sinhala), &quot;sk&quot; (Slovak), &quot;sl&quot; (Slovenian), &quot;ga&quot; (Irish), &quot;ca&quot; (Catalan), &quot;sq&quot; (Albanian), &quot;sr&quot; (Serbian), &quot;kk&quot; (Kazakh), &quot;km&quot; (Khmer), &quot;kn&quot; (Kannada), &quot;or&quot; (Odia), &quot;sv&quot; (Swedish), &quot;ko&quot; (Korean), &quot;sw&quot; (Swahili), &quot;gl&quot; (Galician), &quot;ta&quot; (Tamil), &quot;gu&quot; (Gujarati), &quot;ky&quot; (Kyrgyz), &quot;cs&quot; (Czech), &quot;pa&quot; (Punjabi), &quot;te&quot; (Telugu), &quot;tg&quot; (Tajik), &quot;th&quot; (Thai), &quot;tk&quot; (Turkmen), &quot;tl&quot; (Tagalog), &quot;ha&quot; (Hausa), &quot;pl&quot; (Polish), &quot;da&quot; (Danish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_goal_duration_in_hour_plurals&quot;>"
+        errorLine2="             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/res/values/strings.xml"
-            line="28"
-            column="13"/>
+            file="src/main/res/values/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;sesl_sleep_goal_duration_in_min_plurals&quot; is not translated in &quot;de&quot; (German), &quot;hi&quot; (Hindi), &quot;lo&quot; (Lao), &quot;pt&quot; (Portuguese), &quot;lt&quot; (Lithuanian), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;hu&quot; (Hungarian), &quot;hy&quot; (Armenian), &quot;ug&quot; (Uyghur), &quot;uk&quot; (Ukrainian), &quot;yo&quot; (Yoruba), &quot;ur&quot; (Urdu), &quot;ig&quot; (Igbo), &quot;mk&quot; (Macedonian), &quot;ml&quot; (Malayalam), &quot;mn&quot; (Mongolian), &quot;in&quot; (Indonesian), &quot;mr&quot; (Marathi), &quot;uz&quot; (Uzbek), &quot;ms&quot; (Malay), &quot;el&quot; (Greek), &quot;en&quot; (English), &quot;is&quot; (Icelandic), &quot;it&quot; (Italian), &quot;am&quot; (Amharic), &quot;my&quot; (Burmese), &quot;es&quot; (Spanish), &quot;iw&quot; (Hebrew), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;eu&quot; (Basque), &quot;ar&quot; (Arabic), &quot;as&quot; (Assamese), &quot;vi&quot; (Vietnamese), &quot;nb&quot; (Norwegian Bokmål), &quot;ja&quot; (Japanese), &quot;ne&quot; (Nepali), &quot;az&quot; (Azerbaijani), &quot;fa&quot; (Persian), &quot;ro&quot; (Romanian), &quot;nl&quot; (Dutch), &quot;be&quot; (Belarusian), &quot;fi&quot; (Finnish), &quot;ru&quot; (Russian), &quot;bg&quot; (Bulgarian), &quot;bn&quot; (Bangla), &quot;fr&quot; (French), &quot;bo&quot; (Tibetan), &quot;bs&quot; (Bosnian), &quot;ka&quot; (Georgian), &quot;si&quot; (Sinhala), &quot;sk&quot; (Slovak), &quot;sl&quot; (Slovenian), &quot;ga&quot; (Irish), &quot;ca&quot; (Catalan), &quot;sq&quot; (Albanian), &quot;sr&quot; (Serbian), &quot;kk&quot; (Kazakh), &quot;km&quot; (Khmer), &quot;kn&quot; (Kannada), &quot;or&quot; (Odia), &quot;sv&quot; (Swedish), &quot;ko&quot; (Korean), &quot;sw&quot; (Swahili), &quot;gl&quot; (Galician), &quot;ta&quot; (Tamil), &quot;gu&quot; (Gujarati), &quot;ky&quot; (Kyrgyz), &quot;cs&quot; (Czech), &quot;pa&quot; (Punjabi), &quot;te&quot; (Telugu), &quot;tg&quot; (Tajik), &quot;th&quot; (Thai), &quot;tk&quot; (Turkmen), &quot;tl&quot; (Tagalog), &quot;ha&quot; (Hausa), &quot;pl&quot; (Polish), &quot;da&quot; (Danish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_goal_duration_in_min_plurals&quot;>"
+        errorLine2="             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;sesl_sleep_duration&quot; is not translated in &quot;de&quot; (German), &quot;hi&quot; (Hindi), &quot;lo&quot; (Lao), &quot;pt&quot; (Portuguese), &quot;lt&quot; (Lithuanian), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;hu&quot; (Hungarian), &quot;hy&quot; (Armenian), &quot;ug&quot; (Uyghur), &quot;uk&quot; (Ukrainian), &quot;yo&quot; (Yoruba), &quot;ur&quot; (Urdu), &quot;ig&quot; (Igbo), &quot;mk&quot; (Macedonian), &quot;ml&quot; (Malayalam), &quot;mn&quot; (Mongolian), &quot;in&quot; (Indonesian), &quot;mr&quot; (Marathi), &quot;uz&quot; (Uzbek), &quot;ms&quot; (Malay), &quot;el&quot; (Greek), &quot;en&quot; (English), &quot;is&quot; (Icelandic), &quot;it&quot; (Italian), &quot;am&quot; (Amharic), &quot;my&quot; (Burmese), &quot;es&quot; (Spanish), &quot;iw&quot; (Hebrew), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;eu&quot; (Basque), &quot;ar&quot; (Arabic), &quot;as&quot; (Assamese), &quot;vi&quot; (Vietnamese), &quot;nb&quot; (Norwegian Bokmål), &quot;ja&quot; (Japanese), &quot;ne&quot; (Nepali), &quot;az&quot; (Azerbaijani), &quot;fa&quot; (Persian), &quot;ro&quot; (Romanian), &quot;nl&quot; (Dutch), &quot;be&quot; (Belarusian), &quot;fi&quot; (Finnish), &quot;ru&quot; (Russian), &quot;bg&quot; (Bulgarian), &quot;bn&quot; (Bangla), &quot;fr&quot; (French), &quot;bo&quot; (Tibetan), &quot;bs&quot; (Bosnian), &quot;ka&quot; (Georgian), &quot;si&quot; (Sinhala), &quot;sk&quot; (Slovak), &quot;sl&quot; (Slovenian), &quot;ga&quot; (Irish), &quot;ca&quot; (Catalan), &quot;sq&quot; (Albanian), &quot;sr&quot; (Serbian), &quot;kk&quot; (Kazakh), &quot;km&quot; (Khmer), &quot;kn&quot; (Kannada), &quot;or&quot; (Odia), &quot;sv&quot; (Swedish), &quot;ko&quot; (Korean), &quot;sw&quot; (Swahili), &quot;gl&quot; (Galician), &quot;ta&quot; (Tamil), &quot;gu&quot; (Gujarati), &quot;ky&quot; (Kyrgyz), &quot;cs&quot; (Czech), &quot;pa&quot; (Punjabi), &quot;te&quot; (Telugu), &quot;tg&quot; (Tajik), &quot;th&quot; (Thai), &quot;tk&quot; (Turkmen), &quot;tl&quot; (Tagalog), &quot;ha&quot; (Hausa), &quot;pl&quot; (Polish), &quot;da&quot; (Danish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;sesl_sleep_duration&quot;>Sleep time 9 hours&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;sesl_sleep_picker_numeric_0&quot; is not translated in &quot;de&quot; (German), &quot;hi&quot; (Hindi), &quot;lo&quot; (Lao), &quot;pt&quot; (Portuguese), &quot;lt&quot; (Lithuanian), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;hu&quot; (Hungarian), &quot;hy&quot; (Armenian), &quot;ug&quot; (Uyghur), &quot;uk&quot; (Ukrainian), &quot;yo&quot; (Yoruba), &quot;ur&quot; (Urdu), &quot;ig&quot; (Igbo), &quot;mk&quot; (Macedonian), &quot;ml&quot; (Malayalam), &quot;mn&quot; (Mongolian), &quot;in&quot; (Indonesian), &quot;mr&quot; (Marathi), &quot;uz&quot; (Uzbek), &quot;ms&quot; (Malay), &quot;el&quot; (Greek), &quot;en&quot; (English), &quot;is&quot; (Icelandic), &quot;it&quot; (Italian), &quot;am&quot; (Amharic), &quot;my&quot; (Burmese), &quot;es&quot; (Spanish), &quot;iw&quot; (Hebrew), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;eu&quot; (Basque), &quot;ar&quot; (Arabic), &quot;as&quot; (Assamese), &quot;vi&quot; (Vietnamese), &quot;nb&quot; (Norwegian Bokmål), &quot;ja&quot; (Japanese), &quot;ne&quot; (Nepali), &quot;az&quot; (Azerbaijani), &quot;fa&quot; (Persian), &quot;ro&quot; (Romanian), &quot;nl&quot; (Dutch), &quot;be&quot; (Belarusian), &quot;fi&quot; (Finnish), &quot;ru&quot; (Russian), &quot;bg&quot; (Bulgarian), &quot;bn&quot; (Bangla), &quot;fr&quot; (French), &quot;bo&quot; (Tibetan), &quot;bs&quot; (Bosnian), &quot;ka&quot; (Georgian), &quot;si&quot; (Sinhala), &quot;sk&quot; (Slovak), &quot;sl&quot; (Slovenian), &quot;ga&quot; (Irish), &quot;ca&quot; (Catalan), &quot;sq&quot; (Albanian), &quot;sr&quot; (Serbian), &quot;kk&quot; (Kazakh), &quot;km&quot; (Khmer), &quot;kn&quot; (Kannada), &quot;or&quot; (Odia), &quot;sv&quot; (Swedish), &quot;ko&quot; (Korean), &quot;sw&quot; (Swahili), &quot;gl&quot; (Galician), &quot;ta&quot; (Tamil), &quot;gu&quot; (Gujarati), &quot;ky&quot; (Kyrgyz), &quot;cs&quot; (Czech), &quot;pa&quot; (Punjabi), &quot;te&quot; (Telugu), &quot;tg&quot; (Tajik), &quot;th&quot; (Thai), &quot;tk&quot; (Turkmen), &quot;tl&quot; (Tagalog), &quot;ha&quot; (Hausa), &quot;pl&quot; (Polish), &quot;da&quot; (Danish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;sesl_sleep_picker_numeric_0&quot;>0&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;sesl_sleep_picker_numeric_12&quot; is not translated in &quot;de&quot; (German), &quot;hi&quot; (Hindi), &quot;lo&quot; (Lao), &quot;pt&quot; (Portuguese), &quot;lt&quot; (Lithuanian), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;hu&quot; (Hungarian), &quot;hy&quot; (Armenian), &quot;ug&quot; (Uyghur), &quot;uk&quot; (Ukrainian), &quot;yo&quot; (Yoruba), &quot;ur&quot; (Urdu), &quot;ig&quot; (Igbo), &quot;mk&quot; (Macedonian), &quot;ml&quot; (Malayalam), &quot;mn&quot; (Mongolian), &quot;in&quot; (Indonesian), &quot;mr&quot; (Marathi), &quot;uz&quot; (Uzbek), &quot;ms&quot; (Malay), &quot;el&quot; (Greek), &quot;en&quot; (English), &quot;is&quot; (Icelandic), &quot;it&quot; (Italian), &quot;am&quot; (Amharic), &quot;my&quot; (Burmese), &quot;es&quot; (Spanish), &quot;iw&quot; (Hebrew), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;eu&quot; (Basque), &quot;ar&quot; (Arabic), &quot;as&quot; (Assamese), &quot;vi&quot; (Vietnamese), &quot;nb&quot; (Norwegian Bokmål), &quot;ja&quot; (Japanese), &quot;ne&quot; (Nepali), &quot;az&quot; (Azerbaijani), &quot;fa&quot; (Persian), &quot;ro&quot; (Romanian), &quot;nl&quot; (Dutch), &quot;be&quot; (Belarusian), &quot;fi&quot; (Finnish), &quot;ru&quot; (Russian), &quot;bg&quot; (Bulgarian), &quot;bn&quot; (Bangla), &quot;fr&quot; (French), &quot;bo&quot; (Tibetan), &quot;bs&quot; (Bosnian), &quot;ka&quot; (Georgian), &quot;si&quot; (Sinhala), &quot;sk&quot; (Slovak), &quot;sl&quot; (Slovenian), &quot;ga&quot; (Irish), &quot;ca&quot; (Catalan), &quot;sq&quot; (Albanian), &quot;sr&quot; (Serbian), &quot;kk&quot; (Kazakh), &quot;km&quot; (Khmer), &quot;kn&quot; (Kannada), &quot;or&quot; (Odia), &quot;sv&quot; (Swedish), &quot;ko&quot; (Korean), &quot;sw&quot; (Swahili), &quot;gl&quot; (Galician), &quot;ta&quot; (Tamil), &quot;gu&quot; (Gujarati), &quot;ky&quot; (Kyrgyz), &quot;cs&quot; (Czech), &quot;pa&quot; (Punjabi), &quot;te&quot; (Telugu), &quot;tg&quot; (Tajik), &quot;th&quot; (Thai), &quot;tk&quot; (Turkmen), &quot;tl&quot; (Tagalog), &quot;ha&quot; (Hausa), &quot;pl&quot; (Polish), &quot;da&quot; (Danish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;sesl_sleep_picker_numeric_12&quot;>12&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;sesl_sleep_picker_numeric_18&quot; is not translated in &quot;de&quot; (German), &quot;hi&quot; (Hindi), &quot;lo&quot; (Lao), &quot;pt&quot; (Portuguese), &quot;lt&quot; (Lithuanian), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;hu&quot; (Hungarian), &quot;hy&quot; (Armenian), &quot;ug&quot; (Uyghur), &quot;uk&quot; (Ukrainian), &quot;yo&quot; (Yoruba), &quot;ur&quot; (Urdu), &quot;ig&quot; (Igbo), &quot;mk&quot; (Macedonian), &quot;ml&quot; (Malayalam), &quot;mn&quot; (Mongolian), &quot;in&quot; (Indonesian), &quot;mr&quot; (Marathi), &quot;uz&quot; (Uzbek), &quot;ms&quot; (Malay), &quot;el&quot; (Greek), &quot;en&quot; (English), &quot;is&quot; (Icelandic), &quot;it&quot; (Italian), &quot;am&quot; (Amharic), &quot;my&quot; (Burmese), &quot;es&quot; (Spanish), &quot;iw&quot; (Hebrew), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;eu&quot; (Basque), &quot;ar&quot; (Arabic), &quot;as&quot; (Assamese), &quot;vi&quot; (Vietnamese), &quot;nb&quot; (Norwegian Bokmål), &quot;ja&quot; (Japanese), &quot;ne&quot; (Nepali), &quot;az&quot; (Azerbaijani), &quot;fa&quot; (Persian), &quot;ro&quot; (Romanian), &quot;nl&quot; (Dutch), &quot;be&quot; (Belarusian), &quot;fi&quot; (Finnish), &quot;ru&quot; (Russian), &quot;bg&quot; (Bulgarian), &quot;bn&quot; (Bangla), &quot;fr&quot; (French), &quot;bo&quot; (Tibetan), &quot;bs&quot; (Bosnian), &quot;ka&quot; (Georgian), &quot;si&quot; (Sinhala), &quot;sk&quot; (Slovak), &quot;sl&quot; (Slovenian), &quot;ga&quot; (Irish), &quot;ca&quot; (Catalan), &quot;sq&quot; (Albanian), &quot;sr&quot; (Serbian), &quot;kk&quot; (Kazakh), &quot;km&quot; (Khmer), &quot;kn&quot; (Kannada), &quot;or&quot; (Odia), &quot;sv&quot; (Swedish), &quot;ko&quot; (Korean), &quot;sw&quot; (Swahili), &quot;gl&quot; (Galician), &quot;ta&quot; (Tamil), &quot;gu&quot; (Gujarati), &quot;ky&quot; (Kyrgyz), &quot;cs&quot; (Czech), &quot;pa&quot; (Punjabi), &quot;te&quot; (Telugu), &quot;tg&quot; (Tajik), &quot;th&quot; (Thai), &quot;tk&quot; (Turkmen), &quot;tl&quot; (Tagalog), &quot;ha&quot; (Hausa), &quot;pl&quot; (Polish), &quot;da&quot; (Danish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;sesl_sleep_picker_numeric_18&quot;>18&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;sesl_sleep_picker_numeric_6&quot; is not translated in &quot;de&quot; (German), &quot;hi&quot; (Hindi), &quot;lo&quot; (Lao), &quot;pt&quot; (Portuguese), &quot;lt&quot; (Lithuanian), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;hu&quot; (Hungarian), &quot;hy&quot; (Armenian), &quot;ug&quot; (Uyghur), &quot;uk&quot; (Ukrainian), &quot;yo&quot; (Yoruba), &quot;ur&quot; (Urdu), &quot;ig&quot; (Igbo), &quot;mk&quot; (Macedonian), &quot;ml&quot; (Malayalam), &quot;mn&quot; (Mongolian), &quot;in&quot; (Indonesian), &quot;mr&quot; (Marathi), &quot;uz&quot; (Uzbek), &quot;ms&quot; (Malay), &quot;el&quot; (Greek), &quot;en&quot; (English), &quot;is&quot; (Icelandic), &quot;it&quot; (Italian), &quot;am&quot; (Amharic), &quot;my&quot; (Burmese), &quot;es&quot; (Spanish), &quot;iw&quot; (Hebrew), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;eu&quot; (Basque), &quot;ar&quot; (Arabic), &quot;as&quot; (Assamese), &quot;vi&quot; (Vietnamese), &quot;nb&quot; (Norwegian Bokmål), &quot;ja&quot; (Japanese), &quot;ne&quot; (Nepali), &quot;az&quot; (Azerbaijani), &quot;fa&quot; (Persian), &quot;ro&quot; (Romanian), &quot;nl&quot; (Dutch), &quot;be&quot; (Belarusian), &quot;fi&quot; (Finnish), &quot;ru&quot; (Russian), &quot;bg&quot; (Bulgarian), &quot;bn&quot; (Bangla), &quot;fr&quot; (French), &quot;bo&quot; (Tibetan), &quot;bs&quot; (Bosnian), &quot;ka&quot; (Georgian), &quot;si&quot; (Sinhala), &quot;sk&quot; (Slovak), &quot;sl&quot; (Slovenian), &quot;ga&quot; (Irish), &quot;ca&quot; (Catalan), &quot;sq&quot; (Albanian), &quot;sr&quot; (Serbian), &quot;kk&quot; (Kazakh), &quot;km&quot; (Khmer), &quot;kn&quot; (Kannada), &quot;or&quot; (Odia), &quot;sv&quot; (Swedish), &quot;ko&quot; (Korean), &quot;sw&quot; (Swahili), &quot;gl&quot; (Galician), &quot;ta&quot; (Tamil), &quot;gu&quot; (Gujarati), &quot;ky&quot; (Kyrgyz), &quot;cs&quot; (Czech), &quot;pa&quot; (Punjabi), &quot;te&quot; (Telugu), &quot;tg&quot; (Tajik), &quot;th&quot; (Thai), &quot;tk&quot; (Turkmen), &quot;tl&quot; (Tagalog), &quot;ha&quot; (Hausa), &quot;pl&quot; (Polish), &quot;da&quot; (Danish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;sesl_sleep_picker_numeric_6&quot;>6&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;sesl_sleep_goal_duration_in_hours_minutes&quot; is not translated in &quot;de&quot; (German), &quot;hi&quot; (Hindi), &quot;lo&quot; (Lao), &quot;pt&quot; (Portuguese), &quot;lt&quot; (Lithuanian), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;hu&quot; (Hungarian), &quot;hy&quot; (Armenian), &quot;ug&quot; (Uyghur), &quot;uk&quot; (Ukrainian), &quot;yo&quot; (Yoruba), &quot;ur&quot; (Urdu), &quot;ig&quot; (Igbo), &quot;mk&quot; (Macedonian), &quot;ml&quot; (Malayalam), &quot;mn&quot; (Mongolian), &quot;in&quot; (Indonesian), &quot;mr&quot; (Marathi), &quot;uz&quot; (Uzbek), &quot;ms&quot; (Malay), &quot;el&quot; (Greek), &quot;en&quot; (English), &quot;is&quot; (Icelandic), &quot;it&quot; (Italian), &quot;am&quot; (Amharic), &quot;my&quot; (Burmese), &quot;es&quot; (Spanish), &quot;iw&quot; (Hebrew), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;eu&quot; (Basque), &quot;ar&quot; (Arabic), &quot;as&quot; (Assamese), &quot;vi&quot; (Vietnamese), &quot;nb&quot; (Norwegian Bokmål), &quot;ja&quot; (Japanese), &quot;ne&quot; (Nepali), &quot;az&quot; (Azerbaijani), &quot;fa&quot; (Persian), &quot;ro&quot; (Romanian), &quot;nl&quot; (Dutch), &quot;be&quot; (Belarusian), &quot;fi&quot; (Finnish), &quot;ru&quot; (Russian), &quot;bg&quot; (Bulgarian), &quot;bn&quot; (Bangla), &quot;fr&quot; (French), &quot;bo&quot; (Tibetan), &quot;bs&quot; (Bosnian), &quot;ka&quot; (Georgian), &quot;si&quot; (Sinhala), &quot;sk&quot; (Slovak), &quot;sl&quot; (Slovenian), &quot;ga&quot; (Irish), &quot;ca&quot; (Catalan), &quot;sq&quot; (Albanian), &quot;sr&quot; (Serbian), &quot;kk&quot; (Kazakh), &quot;km&quot; (Khmer), &quot;kn&quot; (Kannada), &quot;or&quot; (Odia), &quot;sv&quot; (Swedish), &quot;ko&quot; (Korean), &quot;sw&quot; (Swahili), &quot;gl&quot; (Galician), &quot;ta&quot; (Tamil), &quot;gu&quot; (Gujarati), &quot;ky&quot; (Kyrgyz), &quot;cs&quot; (Czech), &quot;pa&quot; (Punjabi), &quot;te&quot; (Telugu), &quot;tg&quot; (Tajik), &quot;th&quot; (Thai), &quot;tk&quot; (Turkmen), &quot;tl&quot; (Tagalog), &quot;ha&quot; (Hausa), &quot;pl&quot; (Polish), &quot;da&quot; (Danish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;sesl_sleep_goal_duration_in_hours_minutes&quot;>Your sleep goal %1$d hours %2$d minutes&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;sesl_sleep_goal_duration_in_hours_one_minute&quot; is not translated in &quot;de&quot; (German), &quot;hi&quot; (Hindi), &quot;lo&quot; (Lao), &quot;pt&quot; (Portuguese), &quot;lt&quot; (Lithuanian), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;hu&quot; (Hungarian), &quot;hy&quot; (Armenian), &quot;ug&quot; (Uyghur), &quot;uk&quot; (Ukrainian), &quot;yo&quot; (Yoruba), &quot;ur&quot; (Urdu), &quot;ig&quot; (Igbo), &quot;mk&quot; (Macedonian), &quot;ml&quot; (Malayalam), &quot;mn&quot; (Mongolian), &quot;in&quot; (Indonesian), &quot;mr&quot; (Marathi), &quot;uz&quot; (Uzbek), &quot;ms&quot; (Malay), &quot;el&quot; (Greek), &quot;en&quot; (English), &quot;is&quot; (Icelandic), &quot;it&quot; (Italian), &quot;am&quot; (Amharic), &quot;my&quot; (Burmese), &quot;es&quot; (Spanish), &quot;iw&quot; (Hebrew), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;eu&quot; (Basque), &quot;ar&quot; (Arabic), &quot;as&quot; (Assamese), &quot;vi&quot; (Vietnamese), &quot;nb&quot; (Norwegian Bokmål), &quot;ja&quot; (Japanese), &quot;ne&quot; (Nepali), &quot;az&quot; (Azerbaijani), &quot;fa&quot; (Persian), &quot;ro&quot; (Romanian), &quot;nl&quot; (Dutch), &quot;be&quot; (Belarusian), &quot;fi&quot; (Finnish), &quot;ru&quot; (Russian), &quot;bg&quot; (Bulgarian), &quot;bn&quot; (Bangla), &quot;fr&quot; (French), &quot;bo&quot; (Tibetan), &quot;bs&quot; (Bosnian), &quot;ka&quot; (Georgian), &quot;si&quot; (Sinhala), &quot;sk&quot; (Slovak), &quot;sl&quot; (Slovenian), &quot;ga&quot; (Irish), &quot;ca&quot; (Catalan), &quot;sq&quot; (Albanian), &quot;sr&quot; (Serbian), &quot;kk&quot; (Kazakh), &quot;km&quot; (Khmer), &quot;kn&quot; (Kannada), &quot;or&quot; (Odia), &quot;sv&quot; (Swedish), &quot;ko&quot; (Korean), &quot;sw&quot; (Swahili), &quot;gl&quot; (Galician), &quot;ta&quot; (Tamil), &quot;gu&quot; (Gujarati), &quot;ky&quot; (Kyrgyz), &quot;cs&quot; (Czech), &quot;pa&quot; (Punjabi), &quot;te&quot; (Telugu), &quot;tg&quot; (Tajik), &quot;th&quot; (Thai), &quot;tk&quot; (Turkmen), &quot;tl&quot; (Tagalog), &quot;ha&quot; (Hausa), &quot;pl&quot; (Polish), &quot;da&quot; (Danish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;sesl_sleep_goal_duration_in_hours_one_minute&quot;>Your sleep goal %d hours 1 minute&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;sesl_sleep_goal_duration_in_one_hour_minutes&quot; is not translated in &quot;de&quot; (German), &quot;hi&quot; (Hindi), &quot;lo&quot; (Lao), &quot;pt&quot; (Portuguese), &quot;lt&quot; (Lithuanian), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;hu&quot; (Hungarian), &quot;hy&quot; (Armenian), &quot;ug&quot; (Uyghur), &quot;uk&quot; (Ukrainian), &quot;yo&quot; (Yoruba), &quot;ur&quot; (Urdu), &quot;ig&quot; (Igbo), &quot;mk&quot; (Macedonian), &quot;ml&quot; (Malayalam), &quot;mn&quot; (Mongolian), &quot;in&quot; (Indonesian), &quot;mr&quot; (Marathi), &quot;uz&quot; (Uzbek), &quot;ms&quot; (Malay), &quot;el&quot; (Greek), &quot;en&quot; (English), &quot;is&quot; (Icelandic), &quot;it&quot; (Italian), &quot;am&quot; (Amharic), &quot;my&quot; (Burmese), &quot;es&quot; (Spanish), &quot;iw&quot; (Hebrew), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;eu&quot; (Basque), &quot;ar&quot; (Arabic), &quot;as&quot; (Assamese), &quot;vi&quot; (Vietnamese), &quot;nb&quot; (Norwegian Bokmål), &quot;ja&quot; (Japanese), &quot;ne&quot; (Nepali), &quot;az&quot; (Azerbaijani), &quot;fa&quot; (Persian), &quot;ro&quot; (Romanian), &quot;nl&quot; (Dutch), &quot;be&quot; (Belarusian), &quot;fi&quot; (Finnish), &quot;ru&quot; (Russian), &quot;bg&quot; (Bulgarian), &quot;bn&quot; (Bangla), &quot;fr&quot; (French), &quot;bo&quot; (Tibetan), &quot;bs&quot; (Bosnian), &quot;ka&quot; (Georgian), &quot;si&quot; (Sinhala), &quot;sk&quot; (Slovak), &quot;sl&quot; (Slovenian), &quot;ga&quot; (Irish), &quot;ca&quot; (Catalan), &quot;sq&quot; (Albanian), &quot;sr&quot; (Serbian), &quot;kk&quot; (Kazakh), &quot;km&quot; (Khmer), &quot;kn&quot; (Kannada), &quot;or&quot; (Odia), &quot;sv&quot; (Swedish), &quot;ko&quot; (Korean), &quot;sw&quot; (Swahili), &quot;gl&quot; (Galician), &quot;ta&quot; (Tamil), &quot;gu&quot; (Gujarati), &quot;ky&quot; (Kyrgyz), &quot;cs&quot; (Czech), &quot;pa&quot; (Punjabi), &quot;te&quot; (Telugu), &quot;tg&quot; (Tajik), &quot;th&quot; (Thai), &quot;tk&quot; (Turkmen), &quot;tl&quot; (Tagalog), &quot;ha&quot; (Hausa), &quot;pl&quot; (Polish), &quot;da&quot; (Danish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;sesl_sleep_goal_duration_in_one_hour_minutes&quot;>Your sleep goal 1 hour %d minutes&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;sesl_sleep_goal_duration_one_hour_one_minute&quot; is not translated in &quot;de&quot; (German), &quot;hi&quot; (Hindi), &quot;lo&quot; (Lao), &quot;pt&quot; (Portuguese), &quot;lt&quot; (Lithuanian), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;hu&quot; (Hungarian), &quot;hy&quot; (Armenian), &quot;ug&quot; (Uyghur), &quot;uk&quot; (Ukrainian), &quot;yo&quot; (Yoruba), &quot;ur&quot; (Urdu), &quot;ig&quot; (Igbo), &quot;mk&quot; (Macedonian), &quot;ml&quot; (Malayalam), &quot;mn&quot; (Mongolian), &quot;in&quot; (Indonesian), &quot;mr&quot; (Marathi), &quot;uz&quot; (Uzbek), &quot;ms&quot; (Malay), &quot;el&quot; (Greek), &quot;en&quot; (English), &quot;is&quot; (Icelandic), &quot;it&quot; (Italian), &quot;am&quot; (Amharic), &quot;my&quot; (Burmese), &quot;es&quot; (Spanish), &quot;iw&quot; (Hebrew), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;eu&quot; (Basque), &quot;ar&quot; (Arabic), &quot;as&quot; (Assamese), &quot;vi&quot; (Vietnamese), &quot;nb&quot; (Norwegian Bokmål), &quot;ja&quot; (Japanese), &quot;ne&quot; (Nepali), &quot;az&quot; (Azerbaijani), &quot;fa&quot; (Persian), &quot;ro&quot; (Romanian), &quot;nl&quot; (Dutch), &quot;be&quot; (Belarusian), &quot;fi&quot; (Finnish), &quot;ru&quot; (Russian), &quot;bg&quot; (Bulgarian), &quot;bn&quot; (Bangla), &quot;fr&quot; (French), &quot;bo&quot; (Tibetan), &quot;bs&quot; (Bosnian), &quot;ka&quot; (Georgian), &quot;si&quot; (Sinhala), &quot;sk&quot; (Slovak), &quot;sl&quot; (Slovenian), &quot;ga&quot; (Irish), &quot;ca&quot; (Catalan), &quot;sq&quot; (Albanian), &quot;sr&quot; (Serbian), &quot;kk&quot; (Kazakh), &quot;km&quot; (Khmer), &quot;kn&quot; (Kannada), &quot;or&quot; (Odia), &quot;sv&quot; (Swedish), &quot;ko&quot; (Korean), &quot;sw&quot; (Swahili), &quot;gl&quot; (Galician), &quot;ta&quot; (Tamil), &quot;gu&quot; (Gujarati), &quot;ky&quot; (Kyrgyz), &quot;cs&quot; (Czech), &quot;pa&quot; (Punjabi), &quot;te&quot; (Telugu), &quot;tg&quot; (Tajik), &quot;th&quot; (Thai), &quot;tk&quot; (Turkmen), &quot;tl&quot; (Tagalog), &quot;ha&quot; (Hausa), &quot;pl&quot; (Polish), &quot;da&quot; (Danish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;sesl_sleep_goal_duration_one_hour_one_minute&quot;>Your sleep goal 1 hour 1 minute&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"/>
+    </issue>
+
+    <issue
+        id="Typos"
+        message="Did you mean &quot;DREAM_CLOCK_OPT_SLEEP_TIME_C_P!&quot; instead of &quot;DREAM_CLOCK_OPT_SLEEP_TIME_C_P1&quot;?"
+        errorLine1="    &lt;string name=&quot;sesl_sleep_duration_in_hours_minutes&quot;>DREAM_CLOCK_OPT_SLEEP_TIME_C_P1SD_HOURS_P2SD_MINUTES %1$d %2$d&lt;/string>"
+        errorLine2="                                                        ^">
+        <location
+            file="src/main/res/values-en-rDI/strings.xml"/>
+    </issue>
+
+    <issue
+        id="Typos"
+        message="Did you mean &quot;DREAM_CLOCK_OPT_SLEEP_TIME_C_PD_HOURS_!&quot; instead of &quot;DREAM_CLOCK_OPT_SLEEP_TIME_C_PD_HOURS_1&quot;?"
+        errorLine1="    &lt;string name=&quot;sesl_sleep_duration_in_hours_one_minute&quot;>DREAM_CLOCK_OPT_SLEEP_TIME_C_PD_HOURS_1_MINUTE %d&lt;/string>"
+        errorLine2="                                                           ^">
+        <location
+            file="src/main/res/values-en-rDI/strings.xml"/>
+    </issue>
+
+    <issue
+        id="Typos"
+        message="Did you mean &quot;DREAM_CLOCK_OPT_SLEEP_TIME_C_!&quot; instead of &quot;DREAM_CLOCK_OPT_SLEEP_TIME_C_1&quot;?"
+        errorLine1="    &lt;string name=&quot;sesl_sleep_duration_in_one_hour_minutes&quot;>DREAM_CLOCK_OPT_SLEEP_TIME_C_1_HOUR_PD_MINUTES %d&lt;/string>"
+        errorLine2="                                                           ^">
+        <location
+            file="src/main/res/values-en-rDI/strings.xml"/>
+    </issue>
+
+    <issue
+        id="Typos"
+        message="Did you mean &quot;DREAM_CLOCK_OPT_SLEEP_TIME_C_!&quot; instead of &quot;DREAM_CLOCK_OPT_SLEEP_TIME_C_1&quot;?"
+        errorLine1="    &lt;string name=&quot;sesl_sleep_duration_one_hour_one_minute&quot;>DREAM_CLOCK_OPT_SLEEP_TIME_C_1_HOUR_1_MINUTE&lt;/string>"
+        errorLine2="                                                           ^">
+        <location
+            file="src/main/res/values-en-rDI/strings.xml"/>
+    </issue>
+
+    <issue
+        id="Typos"
+        message="Did you mean &quot;HOUR_!&quot; instead of &quot;HOUR_1&quot;?"
+        errorLine1="    &lt;string name=&quot;sesl_sleep_duration_one_hour_one_minute&quot;>DREAM_CLOCK_OPT_SLEEP_TIME_C_1_HOUR_1_MINUTE&lt;/string>"
+        errorLine2="                                                                                          ^">
+        <location
+            file="src/main/res/values-en-rDI/strings.xml"/>
+    </issue>
+
+    <issue
+        id="PluralsCandidate"
+        message="Formatting %d followed by words (&quot;hours&quot;): This should probably be a plural rather than a string"
+        errorLine1="    &lt;string name=&quot;sesl_sleep_duration_in_hours_minutes&quot;>Sleep time: %1$d hours %2$d minutes&lt;/string>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-en-rCA/strings.xml"/>
+    </issue>
+
+    <issue
+        id="PluralsCandidate"
+        message="Formatting %d followed by words (&quot;hours&quot;): This should probably be a plural rather than a string"
+        errorLine1="    &lt;string name=&quot;sesl_sleep_duration_in_hours_minutes&quot;>Sleep time: %1$d hours %2$d minutes&lt;/string>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-en-rPH/strings.xml"/>
+    </issue>
+
+    <issue
+        id="PluralsCandidate"
+        message="Formatting %d followed by words (&quot;hours&quot;): This should probably be a plural rather than a string"
+        errorLine1="    &lt;string name=&quot;sesl_sleep_duration_in_hours_minutes&quot;>Sleep time: %1$d hours %2$d minutes&lt;/string>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-en-rUS/strings.xml"/>
+    </issue>
+
+    <issue
+        id="PluralsCandidate"
+        message="Formatting %d followed by words (&quot;hours&quot;): This should probably be a plural rather than a string"
+        errorLine1="    &lt;string name=&quot;sesl_sleep_duration_in_hours_minutes&quot;>Sleep time: %1$d hours %2$d minutes&lt;/string>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-en-rZG/strings.xml"/>
+    </issue>
+
+    <issue
+        id="PluralsCandidate"
+        message="Formatting %d followed by words (&quot;hours&quot;): This should probably be a plural rather than a string"
+        errorLine1="    &lt;string name=&quot;sesl_sleep_duration_in_hours_minutes&quot;>Sleep time: %1$d hours %2$d minutes&lt;/string>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-en/strings.xml"/>
+    </issue>
+
+    <issue
+        id="PluralsCandidate"
+        message="Formatting %d followed by words (&quot;hours&quot;): This should probably be a plural rather than a string"
+        errorLine1="    &lt;string name=&quot;sesl_sleep_duration_in_hours_one_minute&quot;>Sleep time: %d hours 1 minute&lt;/string>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-en-rCA/strings.xml"/>
+    </issue>
+
+    <issue
+        id="PluralsCandidate"
+        message="Formatting %d followed by words (&quot;hours&quot;): This should probably be a plural rather than a string"
+        errorLine1="    &lt;string name=&quot;sesl_sleep_duration_in_hours_one_minute&quot;>Sleep time: %d hours 1 minute&lt;/string>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-en-rPH/strings.xml"/>
+    </issue>
+
+    <issue
+        id="PluralsCandidate"
+        message="Formatting %d followed by words (&quot;hours&quot;): This should probably be a plural rather than a string"
+        errorLine1="    &lt;string name=&quot;sesl_sleep_duration_in_hours_one_minute&quot;>Sleep time: %d hours 1 minute&lt;/string>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-en-rUS/strings.xml"/>
+    </issue>
+
+    <issue
+        id="PluralsCandidate"
+        message="Formatting %d followed by words (&quot;hours&quot;): This should probably be a plural rather than a string"
+        errorLine1="    &lt;string name=&quot;sesl_sleep_duration_in_hours_one_minute&quot;>Sleep time: %d hours 1 minute&lt;/string>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-en-rZG/strings.xml"/>
+    </issue>
+
+    <issue
+        id="PluralsCandidate"
+        message="Formatting %d followed by words (&quot;hours&quot;): This should probably be a plural rather than a string"
+        errorLine1="    &lt;string name=&quot;sesl_sleep_duration_in_hours_one_minute&quot;>Sleep time: %d hours 1 minute&lt;/string>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-en/strings.xml"/>
+    </issue>
+
+    <issue
+        id="PluralsCandidate"
+        message="Formatting %d followed by words (&quot;minutes&quot;): This should probably be a plural rather than a string"
+        errorLine1="    &lt;string name=&quot;sesl_sleep_duration_in_one_hour_minutes&quot;>Sleep time: 1 hour %d minutes&lt;/string>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-en-rCA/strings.xml"/>
+    </issue>
+
+    <issue
+        id="PluralsCandidate"
+        message="Formatting %d followed by words (&quot;minutes&quot;): This should probably be a plural rather than a string"
+        errorLine1="    &lt;string name=&quot;sesl_sleep_duration_in_one_hour_minutes&quot;>Sleep time: 1 hour %d minutes&lt;/string>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-en-rPH/strings.xml"/>
+    </issue>
+
+    <issue
+        id="PluralsCandidate"
+        message="Formatting %d followed by words (&quot;minutes&quot;): This should probably be a plural rather than a string"
+        errorLine1="    &lt;string name=&quot;sesl_sleep_duration_in_one_hour_minutes&quot;>Sleep time: 1 hour %d minutes&lt;/string>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-en-rUS/strings.xml"/>
+    </issue>
+
+    <issue
+        id="PluralsCandidate"
+        message="Formatting %d followed by words (&quot;minutes&quot;): This should probably be a plural rather than a string"
+        errorLine1="    &lt;string name=&quot;sesl_sleep_duration_in_one_hour_minutes&quot;>Sleep time: 1 hour %d minutes&lt;/string>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-en-rZG/strings.xml"/>
+    </issue>
+
+    <issue
+        id="PluralsCandidate"
+        message="Formatting %d followed by words (&quot;minutes&quot;): This should probably be a plural rather than a string"
+        errorLine1="    &lt;string name=&quot;sesl_sleep_duration_in_one_hour_minutes&quot;>Sleep time: 1 hour %d minutes&lt;/string>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-en/strings.xml"/>
+    </issue>
+
+    <issue
+        id="PluralsCandidate"
+        message="Formatting %d followed by words (&quot;hours&quot;): This should probably be a plural rather than a string"
+        errorLine1="    &lt;string name=&quot;sesl_sleep_duration_in_hours_minutes&quot;>Sleep time %1$d hours %2$d minutes&lt;/string>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"/>
+    </issue>
+
+    <issue
+        id="PluralsCandidate"
+        message="Formatting %d followed by words (&quot;hours&quot;): This should probably be a plural rather than a string"
+        errorLine1="    &lt;string name=&quot;sesl_sleep_duration_in_hours_one_minute&quot;>Sleep time %d hours 1 minute&lt;/string>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"/>
+    </issue>
+
+    <issue
+        id="PluralsCandidate"
+        message="Formatting %d followed by words (&quot;minutes&quot;): This should probably be a plural rather than a string"
+        errorLine1="    &lt;string name=&quot;sesl_sleep_duration_in_one_hour_minutes&quot;>Sleep time 1 hour %d minutes&lt;/string>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"/>
+    </issue>
+
+    <issue
+        id="PluralsCandidate"
+        message="Formatting %d followed by words (&quot;hours&quot;): This should probably be a plural rather than a string"
+        errorLine1="    &lt;string name=&quot;sesl_sleep_goal_duration_in_hours_minutes&quot;>Your sleep goal %1$d hours %2$d minutes&lt;/string>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"/>
+    </issue>
+
+    <issue
+        id="PluralsCandidate"
+        message="Formatting %d followed by words (&quot;hours&quot;): This should probably be a plural rather than a string"
+        errorLine1="    &lt;string name=&quot;sesl_sleep_goal_duration_in_hours_one_minute&quot;>Your sleep goal %d hours 1 minute&lt;/string>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"/>
+    </issue>
+
+    <issue
+        id="PluralsCandidate"
+        message="Formatting %d followed by words (&quot;minutes&quot;): This should probably be a plural rather than a string"
+        errorLine1="    &lt;string name=&quot;sesl_sleep_goal_duration_in_one_hour_minutes&quot;>Your sleep goal 1 hour %d minutes&lt;/string>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;am&quot; (Amharic) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-am/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;as&quot; (Assamese) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-as/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;bg&quot; (Bulgarian) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-bg/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;bn&quot; (Bangla) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-bn-rBD/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;bn&quot; (Bangla) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-bn-rIN/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;bo&quot; (Tibetan) the following quantities are not relevant: `few`, `many`, `one`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-bo/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;bs&quot; (Bosnian) the following quantities are not relevant: `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-bs/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;ca&quot; (Catalan) the following quantities are not relevant: `few`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-ca/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;cs&quot; (Czech) the following quantities are not relevant: `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-cs/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;da&quot; (Danish) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-da/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;de&quot; (German) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-de/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;el&quot; (Greek) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-el/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;en&quot; (English) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-en-rCA/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;en&quot; (English) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-en-rDI/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;en&quot; (English) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-en-rPH/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;en&quot; (English) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-en-rUS/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;en&quot; (English) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-en-rZG/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;en&quot; (English) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-en/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;es&quot; (Spanish) the following quantities are not relevant: `few`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-es-rES/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;es&quot; (Spanish) the following quantities are not relevant: `few`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-es-rUS/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;et&quot; (Estonian) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-et-rEE/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;eu&quot; (Basque) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-eu-rES/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;fa&quot; (Persian) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-fa/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;fi&quot; (Finnish) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-fi/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;fr&quot; (French) the following quantities are not relevant: `few`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-fr-rCA/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;fr&quot; (French) the following quantities are not relevant: `few`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-fr/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;ga&quot; (Irish) the following quantities are not relevant: `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-ga/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;gl&quot; (Galician) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-gl-rES/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;gu&quot; (Gujarati) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-gu-rIN/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;ha&quot; (Hausa) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-ha/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;hi&quot; (Hindi) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-hi/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;hr&quot; (Croatian) the following quantities are not relevant: `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-hr/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;hu&quot; (Hungarian) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-hu/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;hy&quot; (Armenian) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-hy-rAM/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;ig&quot; (Igbo) the following quantities are not relevant: `few`, `many`, `one`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-ig/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;in&quot; (Indonesian) the following quantities are not relevant: `few`, `many`, `one`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-in/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;is&quot; (Icelandic) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-is-rIS/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;it&quot; (Italian) the following quantities are not relevant: `few`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-it/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;iw&quot; (Hebrew) the following quantities are not relevant: `few`, `many`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-iw/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;ja&quot; (Japanese) the following quantities are not relevant: `few`, `many`, `one`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-ja/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;ka&quot; (Georgian) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-ka-rGE/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;kk&quot; (Kazakh) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-kk-rKZ/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;km&quot; (Khmer) the following quantities are not relevant: `few`, `many`, `one`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-km-rKH/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;kn&quot; (Kannada) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-kn-rIN/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;ko&quot; (Korean) the following quantities are not relevant: `few`, `many`, `one`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-ko/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;ky&quot; (Kyrgyz) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-ky-rKG/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;lo&quot; (Lao) the following quantities are not relevant: `few`, `many`, `one`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-lo-rLA/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;lt&quot; (Lithuanian) the following quantities are not relevant: `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-lt/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;lv&quot; (Latvian) the following quantities are not relevant: `few`, `many`, `two`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-lv/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;mk&quot; (Macedonian) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-mk-rMK/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;ml&quot; (Malayalam) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-ml-rIN/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;mn&quot; (Mongolian) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-mn-rMN/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;mr&quot; (Marathi) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-mr-rIN/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;ms&quot; (Malay) the following quantities are not relevant: `few`, `many`, `one`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-ms-rMY/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;my&quot; (Burmese) the following quantities are not relevant: `few`, `many`, `one`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-my-rMM/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;my&quot; (Burmese) the following quantities are not relevant: `few`, `many`, `one`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-my-rZG/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;nb&quot; (Norwegian Bokmål) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-nb/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;ne&quot; (Nepali) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-ne-rNP/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;ne&quot; (Nepali) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-ne/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;nl&quot; (Dutch) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-nl/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;or&quot; (Odia) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-or/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;pa&quot; (Punjabi) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-pa-rIN/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;pl&quot; (Polish) the following quantities are not relevant: `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-pl-rSP/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;pl&quot; (Polish) the following quantities are not relevant: `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-pl/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;pt&quot; (Portuguese) the following quantities are not relevant: `few`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-pt-rBR/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;pt&quot; (Portuguese) the following quantities are not relevant: `few`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-pt-rPT/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;ro&quot; (Romanian) the following quantities are not relevant: `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-ro/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;ru&quot; (Russian) the following quantities are not relevant: `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-ru/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;si&quot; (Sinhala) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-si-rLK/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;si&quot; (Sinhala) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-si/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;sk&quot; (Slovak) the following quantities are not relevant: `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-sk/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;sl&quot; (Slovenian) the following quantities are not relevant: `many`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-sl/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;sq&quot; (Albanian) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-sq-rAL/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;sr&quot; (Serbian) the following quantities are not relevant: `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-b+sr+Latn/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;sr&quot; (Serbian) the following quantities are not relevant: `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-sr-v34/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;sr&quot; (Serbian) the following quantities are not relevant: `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-sr/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;sv&quot; (Swedish) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-sv/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;sw&quot; (Swahili) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-sw/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;ta&quot; (Tamil) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-ta-rIN/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;te&quot; (Telugu) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-te-rIN/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;th&quot; (Thai) the following quantities are not relevant: `few`, `many`, `one`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-th/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;tk&quot; (Turkmen) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-tk/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;tl&quot; (Tagalog) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-tl/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;tr&quot; (Turkish) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-tr/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;ug&quot; (Uyghur) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-ug-rCN/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;uk&quot; (Ukrainian) the following quantities are not relevant: `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-uk/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;ur&quot; (Urdu) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-ur-rPK/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;uz&quot; (Uzbek) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-uz-rUZ/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;vi&quot; (Vietnamese) the following quantities are not relevant: `few`, `many`, `one`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-vi/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;yo&quot; (Yoruba) the following quantities are not relevant: `few`, `many`, `one`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-yo/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;zh&quot; (Chinese) the following quantities are not relevant: `few`, `many`, `one`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-zh-rCN/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;zh&quot; (Chinese) the following quantities are not relevant: `few`, `many`, `one`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-zh-rHK/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;zh&quot; (Chinese) the following quantities are not relevant: `few`, `many`, `one`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-zh-rTW/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;am&quot; (Amharic) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-am/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;as&quot; (Assamese) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-as/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;bg&quot; (Bulgarian) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-bg/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;bn&quot; (Bangla) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-bn-rBD/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;bn&quot; (Bangla) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-bn-rIN/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;bo&quot; (Tibetan) the following quantities are not relevant: `few`, `many`, `one`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-bo/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;bs&quot; (Bosnian) the following quantities are not relevant: `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-bs/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;ca&quot; (Catalan) the following quantities are not relevant: `few`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-ca/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;cs&quot; (Czech) the following quantities are not relevant: `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-cs/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;da&quot; (Danish) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-da/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;de&quot; (German) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-de/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;el&quot; (Greek) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-el/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;en&quot; (English) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-en-rCA/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;en&quot; (English) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-en-rDI/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;en&quot; (English) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-en-rPH/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;en&quot; (English) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-en-rUS/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;en&quot; (English) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-en-rZG/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;en&quot; (English) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-en/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;es&quot; (Spanish) the following quantities are not relevant: `few`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-es-rES/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;es&quot; (Spanish) the following quantities are not relevant: `few`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-es-rUS/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;et&quot; (Estonian) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-et-rEE/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;eu&quot; (Basque) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-eu-rES/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;fa&quot; (Persian) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-fa/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;fi&quot; (Finnish) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-fi/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;fr&quot; (French) the following quantities are not relevant: `few`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-fr-rCA/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;fr&quot; (French) the following quantities are not relevant: `few`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-fr/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;ga&quot; (Irish) the following quantities are not relevant: `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-ga/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;gl&quot; (Galician) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-gl-rES/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;gu&quot; (Gujarati) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-gu-rIN/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;ha&quot; (Hausa) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-ha/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;hi&quot; (Hindi) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-hi/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;hr&quot; (Croatian) the following quantities are not relevant: `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-hr/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;hu&quot; (Hungarian) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-hu/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;hy&quot; (Armenian) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-hy-rAM/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;ig&quot; (Igbo) the following quantities are not relevant: `few`, `many`, `one`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-ig/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;in&quot; (Indonesian) the following quantities are not relevant: `few`, `many`, `one`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-in/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;is&quot; (Icelandic) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-is-rIS/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;it&quot; (Italian) the following quantities are not relevant: `few`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-it/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;iw&quot; (Hebrew) the following quantities are not relevant: `few`, `many`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-iw/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;ja&quot; (Japanese) the following quantities are not relevant: `few`, `many`, `one`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-ja/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;ka&quot; (Georgian) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-ka-rGE/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;kk&quot; (Kazakh) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-kk-rKZ/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;km&quot; (Khmer) the following quantities are not relevant: `few`, `many`, `one`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-km-rKH/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;kn&quot; (Kannada) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-kn-rIN/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;ko&quot; (Korean) the following quantities are not relevant: `few`, `many`, `one`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-ko/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;ky&quot; (Kyrgyz) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-ky-rKG/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;lo&quot; (Lao) the following quantities are not relevant: `few`, `many`, `one`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-lo-rLA/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;lt&quot; (Lithuanian) the following quantities are not relevant: `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-lt/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;lv&quot; (Latvian) the following quantities are not relevant: `few`, `many`, `two`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-lv/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;mk&quot; (Macedonian) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-mk-rMK/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;ml&quot; (Malayalam) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-ml-rIN/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;mn&quot; (Mongolian) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-mn-rMN/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;mr&quot; (Marathi) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-mr-rIN/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;ms&quot; (Malay) the following quantities are not relevant: `few`, `many`, `one`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-ms-rMY/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;my&quot; (Burmese) the following quantities are not relevant: `few`, `many`, `one`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-my-rMM/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;my&quot; (Burmese) the following quantities are not relevant: `few`, `many`, `one`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-my-rZG/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;nb&quot; (Norwegian Bokmål) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-nb/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;ne&quot; (Nepali) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-ne-rNP/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;ne&quot; (Nepali) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-ne/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;nl&quot; (Dutch) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-nl/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;or&quot; (Odia) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-or/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;pa&quot; (Punjabi) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-pa-rIN/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;pl&quot; (Polish) the following quantities are not relevant: `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-pl-rSP/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;pl&quot; (Polish) the following quantities are not relevant: `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-pl/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;pt&quot; (Portuguese) the following quantities are not relevant: `few`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-pt-rBR/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;pt&quot; (Portuguese) the following quantities are not relevant: `few`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-pt-rPT/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;ro&quot; (Romanian) the following quantities are not relevant: `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-ro/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;ru&quot; (Russian) the following quantities are not relevant: `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-ru/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;si&quot; (Sinhala) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-si-rLK/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;si&quot; (Sinhala) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-si/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;sk&quot; (Slovak) the following quantities are not relevant: `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-sk/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;sl&quot; (Slovenian) the following quantities are not relevant: `many`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-sl/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;sq&quot; (Albanian) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-sq-rAL/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;sr&quot; (Serbian) the following quantities are not relevant: `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-b+sr+Latn/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;sr&quot; (Serbian) the following quantities are not relevant: `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-sr-v34/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;sr&quot; (Serbian) the following quantities are not relevant: `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-sr/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;sv&quot; (Swedish) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-sv/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;sw&quot; (Swahili) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-sw/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;ta&quot; (Tamil) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-ta-rIN/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;te&quot; (Telugu) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-te-rIN/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;th&quot; (Thai) the following quantities are not relevant: `few`, `many`, `one`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-th/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;tk&quot; (Turkmen) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-tk/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;tl&quot; (Tagalog) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-tl/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;tr&quot; (Turkish) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-tr/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;ug&quot; (Uyghur) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-ug-rCN/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;uk&quot; (Ukrainian) the following quantities are not relevant: `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-uk/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;ur&quot; (Urdu) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-ur-rPK/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;uz&quot; (Uzbek) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-uz-rUZ/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;vi&quot; (Vietnamese) the following quantities are not relevant: `few`, `many`, `one`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-vi/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;yo&quot; (Yoruba) the following quantities are not relevant: `few`, `many`, `one`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-yo/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;zh&quot; (Chinese) the following quantities are not relevant: `few`, `many`, `one`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-zh-rCN/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;zh&quot; (Chinese) the following quantities are not relevant: `few`, `many`, `one`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-zh-rHK/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;zh&quot; (Chinese) the following quantities are not relevant: `few`, `many`, `one`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-zh-rTW/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;az&quot; (Azerbaijani) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-az-rAZ/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;be&quot; (Belarusian) the following quantities are not relevant: `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_hour_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-be-rBY/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;az&quot; (Azerbaijani) the following quantities are not relevant: `few`, `many`, `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-az-rAZ/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;be&quot; (Belarusian) the following quantities are not relevant: `two`, `zero`"
+        errorLine1="    &lt;plurals name=&quot;sesl_sleep_duration_in_min_plurals&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-be-rBY/plurals.xml"/>
+    </issue>
+
+    <issue
+        id="DrawAllocation"
+        message="Avoid object allocations during draw/layout operations (preallocate and reuse instead)"
+        errorLine1="        final SweepGradient shader = new SweepGradient(centerX2, centerY, sweepGradientVariable.color, sweepGradientVariable.pos);"
+        errorLine2="                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/androidx/picker/widget/SeslCircularSeekBarView.java"/>
+    </issue>
+
+    <issue
+        id="DrawAllocation"
+        message="Avoid object allocations during draw/layout operations (preallocate and reuse instead)"
+        errorLine1="        final Matrix matrix = new Matrix();"
+        errorLine2="                              ~~~~~~~~~~~~">
+        <location
+            file="src/main/java/androidx/picker/widget/SeslCircularSeekBarView.java"/>
     </issue>
 
     <issue
@@ -557,20 +2686,7 @@
         errorLine1="                mCustomButtonLayout.setLayoutParams(new LinearLayout.LayoutParams("
         errorLine2="                                                    ^">
         <location
-            file="src/main/java/androidx/picker/widget/SeslDatePicker.java"
-            line="1649"
-            column="53"/>
-    </issue>
-
-    <issue
-        id="DrawAllocation"
-        message="Avoid object allocations during draw/layout operations (preallocate and reuse instead)"
-        errorLine1="                mCustomButtonLayout.setLayoutParams(new LinearLayout.LayoutParams("
-        errorLine2="                                                    ^">
-        <location
-            file="src/main/java/androidx/picker/widget/SeslSpinningDatePicker.java"
-            line="1739"
-            column="53"/>
+            file="src/main/java/androidx/picker/widget/SeslSpinningDatePicker.java"/>
     </issue>
 
     <issue
@@ -579,53 +2695,34 @@
         errorLine1="        TypedArray a2 = context.obtainStyledAttributes(attrs, R.styleable.DatePicker, defStyleAttr, defStyleRes);"
         errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/picker/widget/SeslSpinningDatePickerSpinnerDelegate.java"
-            line="321"
-            column="33"/>
+            file="src/main/java/androidx/picker/widget/SeslSpinningDatePickerSpinnerDelegate.java"/>
     </issue>
 
     <issue
         id="ObsoleteSdkInt"
-        message="Unnecessary; SDK_INT is always >= 23"
-        errorLine1="        inflater.inflate(Build.VERSION.SDK_INT >= 23 ?"
-        errorLine2="                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        message="Unnecessary; `SDK_INT` is always >= 21"
+        errorLine1="    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/picker/widget/SeslDatePicker.java"
-            line="415"
-            column="26"/>
+            file="src/main/java/androidx/picker/widget/SeslDatePickerSpinnerLayout.java"/>
     </issue>
 
     <issue
-        id="ObsoleteSdkInt"
-        message="Unnecessary; SDK_INT is always >= 23"
-        errorLine1="                inflater.inflate(Build.VERSION.SDK_INT >= 23 ?"
-        errorLine2="                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        id="InefficientWeight"
+        message="Use a `layout_width` of `0dp` instead of `wrap_content` for better performance"
+        errorLine1="                        android:layout_width=&quot;wrap_content&quot;"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/picker/widget/SeslSpinningDatePicker.java"
-            line="427"
-            column="34"/>
+            file="src/main/res/layout/sesl_date_picker.xml"/>
     </issue>
 
     <issue
-        id="ObsoleteSdkInt"
-        message="Unnecessary; SDK_INT is always >= 23"
-        errorLine1="                inflater.inflate(Build.VERSION.SDK_INT >= 23 ?"
-        errorLine2="                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        id="InefficientWeight"
+        message="Use a `layout_width` of `0dp` instead of `wrap_content` for better performance"
+        errorLine1="                        android:layout_width=&quot;wrap_content&quot;"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/picker/widget/SeslSpinningDatePicker.java"
-            line="432"
-            column="34"/>
-    </issue>
-
-    <issue
-        id="ObsoleteSdkInt"
-        message="Unnecessary; SDK_INT is always >= 23"
-        errorLine1="                inflater.inflate(Build.VERSION.SDK_INT >= 23 ?"
-        errorLine2="                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/androidx/picker/widget/SeslSpinningDatePicker.java"
-            line="438"
-            column="34"/>
+            file="src/main/res/layout-v29/sesl_date_picker.xml"/>
     </issue>
 
     <issue
@@ -634,9 +2731,7 @@
         errorLine1="            android:layout_weight=&quot;@integer/sesl_spinning_datepicker_time_hr_weight&quot;"
         errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/res/layout/sesl_spinning_datepicker_time_picker_spinner.xml"
-            line="49"
-            column="13"/>
+            file="src/main/res/layout/sesl_spinning_datepicker_time_picker_spinner.xml"/>
     </issue>
 
     <issue
@@ -645,9 +2740,7 @@
         errorLine1="            android:layout_weight=&quot;200&quot;"
         errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/res/layout-sw600dp/sesl_spinning_datepicker_time_picker_spinner.xml"
-            line="52"
-            column="13"/>
+            file="src/main/res/layout-sw600dp/sesl_spinning_datepicker_time_picker_spinner.xml"/>
     </issue>
 
     <issue
@@ -656,9 +2749,7 @@
         errorLine1="            android:layout_weight=&quot;12&quot;"
         errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/res/layout/sesl_spinning_datepicker_time_picker_spinner_multipane.xml"
-            line="49"
-            column="13"/>
+            file="src/main/res/layout/sesl_spinning_datepicker_time_picker_spinner_multipane.xml"/>
     </issue>
 
     <issue
@@ -667,9 +2758,7 @@
         errorLine1="            android:layout_weight=&quot;@integer/sesl_spinning_datepicker_time_hr_weight&quot;"
         errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/res/layout/sesl_spinning_datepicker_time_picker_spinner_phone.xml"
-            line="49"
-            column="13"/>
+            file="src/main/res/layout/sesl_spinning_datepicker_time_picker_spinner_phone.xml"/>
     </issue>
 
     <issue
@@ -678,9 +2767,7 @@
         errorLine1="            android:layout_weight=&quot;1260&quot;"
         errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/res/layout/sesl_time_picker_spinner.xml"
-            line="41"
-            column="13"/>
+            file="src/main/res/layout/sesl_time_picker_spinner.xml"/>
     </issue>
 
     <issue
@@ -689,9 +2776,7 @@
         errorLine1="        &lt;RelativeLayout"
         errorLine2="         ~~~~~~~~~~~~~~">
         <location
-            file="src/main/res/layout/sesl_date_picker.xml"
-            line="29"
-            column="10"/>
+            file="src/main/res/layout-v29/sesl_date_picker.xml"/>
     </issue>
 
     <issue
@@ -700,9 +2785,16 @@
         errorLine1="        &lt;RelativeLayout"
         errorLine2="         ~~~~~~~~~~~~~~">
         <location
-            file="src/main/res/layout/sesl_date_picker_legacy.xml"
-            line="30"
-            column="10"/>
+            file="src/main/res/layout/sesl_date_picker.xml"/>
+    </issue>
+
+    <issue
+        id="UselessParent"
+        message="This `LinearLayout` layout or its `LinearLayout` parent is possibly unnecessary; transfer the `background` attribute to the other view"
+        errorLine1="                &lt;LinearLayout"
+        errorLine2="                 ~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/sesl_date_picker.xml"/>
     </issue>
 
     <issue
@@ -711,75 +2803,34 @@
         errorLine1="        &lt;RelativeLayout"
         errorLine2="         ~~~~~~~~~~~~~~">
         <location
-            file="src/main/res/layout/sesl_spinning_date_picker_calendar.xml"
-            line="29"
-            column="10"/>
+            file="src/main/res/layout/sesl_date_picker_legacy.xml"/>
+    </issue>
+
+    <issue
+        id="UselessParent"
+        message="This `RelativeLayout` layout or its `LinearLayout` parent is possibly unnecessary"
+        errorLine1="    &lt;RelativeLayout"
+        errorLine2="     ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/sesl_sleep_time_picker_layout.xml"/>
+    </issue>
+
+    <issue
+        id="UselessParent"
+        message="This `RelativeLayout` layout or its `RelativeLayout` parent is possibly unnecessary"
+        errorLine1="        &lt;RelativeLayout"
+        errorLine2="         ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/sesl_spinning_date_picker_calendar.xml"/>
     </issue>
 
     <issue
         id="ClickableViewAccessibility"
-        message="`onTouch` should call `View#performClick` when a click is detected"
-        errorLine1="        public boolean onTouch(View v, MotionEvent event) {"
-        errorLine2="                       ~~~~~~~">
+        message="Custom view `SeslCircularSeekBarView` overrides `onTouchEvent` but not `performClick`"
+        errorLine1="    public final boolean onTouchEvent(MotionEvent ev) {"
+        errorLine2="                         ~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/picker/widget/SeslDatePicker.java"
-            line="323"
-            column="24"/>
-    </issue>
-
-    <issue
-        id="ClickableViewAccessibility"
-        message="Custom view ``ImageButton`` has `setOnTouchListener` called on it but does not override `performClick`"
-        errorLine1="        mPrevButton.setOnTouchListener(mMonthBtnTouchListener);"
-        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/androidx/picker/widget/SeslDatePicker.java"
-            line="568"
-            column="9"/>
-    </issue>
-
-    <issue
-        id="ClickableViewAccessibility"
-        message="Custom view ``ImageButton`` has `setOnTouchListener` called on it but does not override `performClick`"
-        errorLine1="        mNextButton.setOnTouchListener(mMonthBtnTouchListener);"
-        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/androidx/picker/widget/SeslDatePicker.java"
-            line="569"
-            column="9"/>
-    </issue>
-
-    <issue
-        id="ClickableViewAccessibility"
-        message="`SeslNumberPicker#onTouchEvent` should call `SeslNumberPicker#performClick` when a click is detected"
-        errorLine1="    public boolean onTouchEvent(MotionEvent event) {"
-        errorLine2="                   ~~~~~~~~~~~~">
-        <location
-            file="src/main/java/androidx/picker/widget/SeslNumberPicker.java"
-            line="243"
-            column="20"/>
-    </issue>
-
-    <issue
-        id="ClickableViewAccessibility"
-        message="Custom view ``EditText`` has `setOnTouchListener` called on it but does not override `performClick`"
-        errorLine1="        mInputText.setOnTouchListener(new View.OnTouchListener() {"
-        errorLine2="        ^">
-        <location
-            file="src/main/java/androidx/picker/widget/SeslNumberPickerSpinnerDelegate.java"
-            line="453"
-            column="9"/>
-    </issue>
-
-    <issue
-        id="ClickableViewAccessibility"
-        message="`onTouch` should call `View#performClick` when a click is detected"
-        errorLine1="            public boolean onTouch(View v, MotionEvent event) {"
-        errorLine2="                           ~~~~~~~">
-        <location
-            file="src/main/java/androidx/picker/widget/SeslNumberPickerSpinnerDelegate.java"
-            line="455"
-            column="28"/>
+            file="src/main/java/androidx/picker/widget/SeslCircularSeekBarView.java"/>
     </issue>
 
     <issue
@@ -788,42 +2839,7 @@
         errorLine1="    public boolean onTouchEvent(MotionEvent event) {"
         errorLine2="                   ~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/picker/widget/SeslSimpleMonthView.java"
-            line="271"
-            column="20"/>
-    </issue>
-
-    <issue
-        id="ClickableViewAccessibility"
-        message="`onTouch` should call `View#performClick` when a click is detected"
-        errorLine1="        public boolean onTouch(View v, MotionEvent event) {"
-        errorLine2="                       ~~~~~~~">
-        <location
-            file="src/main/java/androidx/picker/widget/SeslSpinningDatePicker.java"
-            line="319"
-            column="24"/>
-    </issue>
-
-    <issue
-        id="ClickableViewAccessibility"
-        message="Custom view ``ImageButton`` has `setOnTouchListener` called on it but does not override `performClick`"
-        errorLine1="        mPrevButton.setOnTouchListener(mMonthBtnTouchListener);"
-        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/androidx/picker/widget/SeslSpinningDatePicker.java"
-            line="589"
-            column="9"/>
-    </issue>
-
-    <issue
-        id="ClickableViewAccessibility"
-        message="Custom view ``ImageButton`` has `setOnTouchListener` called on it but does not override `performClick`"
-        errorLine1="        mNextButton.setOnTouchListener(mMonthBtnTouchListener);"
-        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/androidx/picker/widget/SeslSpinningDatePicker.java"
-            line="590"
-            column="9"/>
+            file="src/main/java/androidx/picker/widget/SeslSimpleMonthView.java"/>
     </issue>
 
     <issue
@@ -832,20 +2848,223 @@
         errorLine1="    public boolean onTouchEvent(MotionEvent event) {"
         errorLine2="                   ~~~~~~~~~~~~">
         <location
-            file="src/main/java/androidx/picker/widget/SeslSpinningDatePickerSpinner.java"
-            line="227"
-            column="20"/>
+            file="src/main/java/androidx/picker/widget/SeslSpinningDatePickerSpinner.java"/>
     </issue>
 
     <issue
-        id="RelativeOverlap"
-        message="`@id/sesl_date_picker_calendar_header_text_spinner_layout` can overlap `@id/sesl_date_picker_calendar_header_next_button` if @id/sesl_date_picker_calendar_header_text_spinner_layout grows due to localized text expansion"
-        errorLine1="            &lt;LinearLayout"
-        errorLine2="             ~~~~~~~~~~~~">
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="        &lt;ImageView"
+        errorLine2="         ~~~~~~~~~">
         <location
-            file="src/main/res/layout/sesl_date_picker.xml"
-            line="48"
-            column="14"/>
+            file="src/main/res/layout/sesl_bed_time_wakeup_time_top_bottom_layout.xml"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="            &lt;ImageView"
+        errorLine2="             ~~~~~~~~~">
+        <location
+            file="src/main/res/layout-v29/sesl_bed_time_wakeup_time_top_bottom_layout.xml"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="            &lt;ImageView"
+        errorLine2="             ~~~~~~~~~">
+        <location
+            file="src/main/res/layout-v29/sesl_bed_time_wakeup_time_top_bottom_layout.xml"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="        &lt;ImageView"
+        errorLine2="         ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/sesl_bed_time_wakeup_time_top_bottom_layout.xml"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="        &lt;ImageView"
+        errorLine2="         ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/sesl_bed_time_wakeup_time_top_bottom_layout.xml"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="            &lt;ImageView"
+        errorLine2="             ~~~~~~~~~">
+        <location
+            file="src/main/res/layout-v29/sesl_bed_time_wakeup_time_top_bottom_layout.xml"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="            &lt;ImageView"
+        errorLine2="             ~~~~~~~~~">
+        <location
+            file="src/main/res/layout-v29/sesl_bed_time_wakeup_time_top_bottom_layout.xml"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="        &lt;ImageView"
+        errorLine2="         ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/sesl_bed_time_wakeup_time_top_bottom_layout.xml"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="                &lt;ImageView"
+        errorLine2="                 ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/sesl_sleep_time_picker_layout.xml"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="                &lt;ImageView"
+        errorLine2="                 ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/sesl_sleep_time_picker_layout.xml"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="                &lt;ImageView"
+        errorLine2="                 ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/sesl_sleep_time_picker_layout.xml"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="                &lt;ImageView"
+        errorLine2="                 ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/sesl_sleep_time_picker_layout.xml"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;am&quot;, should use `@string` resource"
+        errorLine1="            android:text=&quot;am&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/sesl_bed_time_wakeup_time_top_bottom_layout.xml"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;11:00 PM&quot;, should use `@string` resource"
+        errorLine1="            android:text=&quot;11:00 PM&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/sesl_bed_time_wakeup_time_top_bottom_layout.xml"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;am&quot;, should use `@string` resource"
+        errorLine1="            android:text=&quot;am&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/sesl_bed_time_wakeup_time_top_bottom_layout.xml"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;11:00 PM&quot;, should use `@string` resource"
+        errorLine1="                android:text=&quot;11:00 PM&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-v29/sesl_bed_time_wakeup_time_top_bottom_layout.xml"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;am&quot;, should use `@string` resource"
+        errorLine1="                android:text=&quot;am&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-v29/sesl_bed_time_wakeup_time_top_bottom_layout.xml"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;am&quot;, should use `@string` resource"
+        errorLine1="                android:text=&quot;am&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-v29/sesl_bed_time_wakeup_time_top_bottom_layout.xml"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;11:00 PM&quot;, should use `@string` resource"
+        errorLine1="                    android:text=&quot;11:00 PM&quot;"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/sesl_sleep_time_picker_layout.xml"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;am&quot;, should use `@string` resource"
+        errorLine1="                    android:text=&quot;am&quot;"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/sesl_sleep_time_picker_layout.xml"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;am&quot;, should use `@string` resource"
+        errorLine1="                    android:text=&quot;am&quot;"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/sesl_sleep_time_picker_layout.xml"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;11:00 PM&quot;, should use `@string` resource"
+        errorLine1="                    android:text=&quot;11:00 PM&quot;"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/sesl_sleep_time_picker_layout.xml"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;am&quot;, should use `@string` resource"
+        errorLine1="                    android:text=&quot;am&quot;"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/sesl_sleep_time_picker_layout.xml"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;am&quot;, should use `@string` resource"
+        errorLine1="                    android:text=&quot;am&quot;"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/sesl_sleep_time_picker_layout.xml"/>
     </issue>
 
     <issue
@@ -854,9 +3073,7 @@
         errorLine1="            &lt;TextView"
         errorLine2="             ~~~~~~~~">
         <location
-            file="src/main/res/layout/sesl_date_picker_legacy.xml"
-            line="48"
-            column="14"/>
+            file="src/main/res/layout/sesl_date_picker_legacy.xml"/>
     </issue>
 
     <issue
@@ -865,9 +3082,7 @@
         errorLine1="            &lt;LinearLayout"
         errorLine2="             ~~~~~~~~~~~~">
         <location
-            file="src/main/res/layout/sesl_spinning_date_picker_calendar.xml"
-            line="48"
-            column="14"/>
+            file="src/main/res/layout/sesl_spinning_date_picker_calendar.xml"/>
     </issue>
 
 </issues>
