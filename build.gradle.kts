@@ -185,6 +185,10 @@ subprojects {
                 defaultConfig.minSdk = artifactInfo[3] as Int
                 defaultConfig.targetSdk = compileSdk
 
+                when (compileSdk) {
+                    35 -> buildToolsVersion = "35.0.1"//https://issuetracker.google.com/issues/354735915
+                }
+
                 if (isAndroidLibrary) {
                     compileOptions {
                         if (project.name in listOf("core", "recyclerview")) {
