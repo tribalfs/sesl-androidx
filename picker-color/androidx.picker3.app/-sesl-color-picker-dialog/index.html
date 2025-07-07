@@ -94,7 +94,35 @@
   <div class="breadcrumbs"><a href="../../index.html">picker-color</a><span class="delimiter">/</span><a href="../index.html">androidx.picker3.app</a><span class="delimiter">/</span><span class="current">SeslColorPickerDialog</span></div>
   <div class="cover ">
     <h1 class="cover"><span>Sesl</span><wbr><span>Color</span><wbr><span>Picker</span><wbr><span><span>Dialog</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-color/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="index.html">SeslColorPickerDialog</a> : <a href="https://developer.android.com/reference/kotlin/androidx/appcompat/app/AlertDialog.html">AlertDialog</a>, <a href="https://developer.android.com/reference/kotlin/android/content/DialogInterface.OnClickListener.html">DialogInterface.OnClickListener</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/tribalfs/sesl-androidx/blob/sesl-androidx-main/picker/picker-color/src/main/java/androidx/picker3/app/SeslColorPickerDialog.java#L39">source</a>)</span></span></div></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-color/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="index.html">SeslColorPickerDialog</a> : <a href="https://developer.android.com/reference/kotlin/androidx/appcompat/app/AlertDialog.html">AlertDialog</a>, <a href="https://developer.android.com/reference/kotlin/android/content/DialogInterface.OnClickListener.html">DialogInterface.OnClickListener</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/tribalfs/sesl-androidx/blob/sesl-androidx-main/picker/picker-color/src/main/java/androidx/picker3/app/SeslColorPickerDialog.java#L103">source</a>)</span></span></div><p class="paragraph">A dialog that shows a <a href="../../androidx.picker3.widget/-sesl-color-picker/index.html">SeslColorPicker</a>. </p><p class="paragraph">This dialog allows users to select a color using various methods, including a spectrum view, RGB/HSV input fields, and an eyedropper tool. It provides options to set an initial color, recently used colors, and toggle the visibility of an opacity bar.</p><p class="paragraph">The dialog can be configured to use an eyedropper tool by providing an image via <a href="set-on-bitmap-set-listener.html">setOnBitmapSetListener</a>. When an image is set, the eyedropper tool becomes visible, allowing users to pick colors directly from the image. If no image is provided, or if it's set to <code class="lang-kotlin">null</code>, the eyedropper tool is hidden, and a "last used color slot" might be shown instead, depending on the <a href="../../androidx.picker3.widget/-sesl-color-picker/index.html">SeslColorPicker</a> configuration.</p><p class="paragraph">The selected color can be retrieved through the <a href="-on-color-set-listener/index.html">OnColorSetListener</a> interface, which is invoked when the user confirms their selection.</p><p class="paragraph">Example usage:</p><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">
+SeslColorPickerDialog colorPickerDialog = new SeslColorPickerDialog(
+    context,
+    new SeslColorPickerDialog.OnColorSetListener() {
+        
+        public void onColorSet(int color) {
+            // Handle the selected color
+        }
+    },
+    initialColor, // Optional: set an initial color
+    recentlyUsedColors, // Optional: provide an array of recently used colors
+    true // Optional: show the opacity bar
+);
+
+// To use the eyedropper with an image:
+colorPickerDialog.setOnBitmapSetListener(new SeslColorPickerDialog.OnBitmapSetListener() {
+    
+    public Bitmap onBitmapSet() {
+        // Return the Bitmap to be used by the eyedropper
+        // For example, load from resources:
+        // return BitmapFactory.decodeResource(getResources(), R.drawable.my_image);
+        return yourBitmap;
+    }
+});
+
+colorPickerDialog.show();
+</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph"><strong>Note:</strong> To use the eye dropper tool, you must declare <code class="lang-kotlin">androidx.picker.eyeDropper.SeslEyeDropperActivity</code> in your app's <code class="lang-kotlin">AndroidManifest.xml</code>: </p><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">&lt;activity android:name="androidx.picker.eyeDropper.SeslEyeDropperActivity"
+          android:exported="false" /&gt;
+</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><h4 class="">See also</h4><div class="table"><div class="table-row" data-filterable-current=":picker-color/main" data-filterable-set=":picker-color/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../../androidx.picker3.widget/-sesl-color-picker/index.html"><span>Sesl</span><wbr><span>Color</span><wbr><span><span>Picker</span></span></a></div></span></div><div></div></div></div><div class="table-row" data-filterable-current=":picker-color/main" data-filterable-set=":picker-color/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="-on-color-set-listener/index.html"><span>Sesl</span><wbr><span>Color</span><wbr><span>Picker</span><wbr><span>Dialog.</span><wbr><span>On</span><wbr><span>Color</span><wbr><span>Set</span><wbr><span><span>Listener</span></span></a></div></span></div><div></div></div></div></div></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
@@ -120,7 +148,22 @@
       </div>
       <div data-togglable="TYPE">
         <h2 class="">Types</h2>
-        <div class="table"><a data-name="-1658505597%2FClasslikes%2F-1177509730" anchor-label="OnColorSetListener" id="-1658505597%2FClasslikes%2F-1177509730" data-filterable-set=":picker-color/main"></a>
+        <div class="table"><a data-name="1849737573%2FClasslikes%2F-1177509730" anchor-label="OnBitmapSetListener" id="1849737573%2FClasslikes%2F-1177509730" data-filterable-set=":picker-color/main"></a>
+          <div class="table-row" data-filterable-current=":picker-color/main" data-filterable-set=":picker-color/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-on-bitmap-set-listener/index.html"><span>On</span><wbr><span>Bitmap</span><wbr><span>Set</span><wbr><span><span>Listener</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1849737573%2FClasslikes%2F-1177509730"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-color/main"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-on-bitmap-set-listener/index.html">OnBitmapSetListener</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1658505597%2FClasslikes%2F-1177509730" anchor-label="OnColorSetListener" id="-1658505597%2FClasslikes%2F-1177509730" data-filterable-set=":picker-color/main"></a>
           <div class="table-row" data-filterable-current=":picker-color/main" data-filterable-set=":picker-color/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
@@ -130,7 +173,7 @@
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-color/main"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-on-color-set-listener/index.html">OnColorSetListener</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-color/main"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-on-color-set-listener/index.html">OnColorSetListener</a></div><div class="brief ">Interface used to indicate that the user has finished selecting a color.</div></div></div>
                 </div>
               </div>
             </div>
@@ -139,7 +182,22 @@
       </div>
       <div data-togglable="FUNCTION">
         <h2 class="">Functions</h2>
-        <div class="table"><a data-name="394281573%2FFunctions%2F-1177509730" anchor-label="getColorPicker" id="394281573%2FFunctions%2F-1177509730" data-filterable-set=":picker-color/main"></a>
+        <div class="table"><a data-name="-1791963579%2FFunctions%2F-1177509730" anchor-label="disableEyeDropper" id="-1791963579%2FFunctions%2F-1177509730" data-filterable-set=":picker-color/main"></a>
+          <div class="table-row" data-filterable-current=":picker-color/main" data-filterable-set=":picker-color/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="disable-eye-dropper.html"><span>disable</span><wbr><span>Eye</span><wbr><span><span>Dropper</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1791963579%2FFunctions%2F-1177509730"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-color/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="disable-eye-dropper.html"><span class="token function">disableEyeDropper</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">disable<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Disables or enables the eye dropper tool.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="394281573%2FFunctions%2F-1177509730" anchor-label="getColorPicker" id="394281573%2FFunctions%2F-1177509730" data-filterable-set=":picker-color/main"></a>
           <div class="table-row" data-filterable-current=":picker-color/main" data-filterable-set=":picker-color/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
@@ -149,7 +207,7 @@
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-color/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-color-picker.html"><span class="token function">getColorPicker</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../androidx.picker3.widget/-sesl-color-picker/index.html">SeslColorPicker</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-color/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-color-picker.html"><span class="token function">getColorPicker</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../androidx.picker3.widget/-sesl-color-picker/index.html">SeslColorPicker</a></div><div class="brief ">Returns the <a href="../../androidx.picker3.widget/-sesl-color-picker/index.html">SeslColorPicker</a> instance used by this dialog.</div></div></div>
                 </div>
               </div>
             </div>
@@ -164,7 +222,7 @@
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-color/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-mode.html"><span class="token function">getMode</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-color/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-mode.html"><span class="token function">getMode</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Retrieves the current mode of the color picker.</div></div></div>
                 </div>
               </div>
             </div>
@@ -224,7 +282,7 @@
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-color/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-mode.html"><span class="token function">setMode</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">mode<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-color/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-mode.html"><span class="token function">setMode</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">mode<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Sets the display mode of the color picker.</div></div></div>
                 </div>
               </div>
             </div>
@@ -239,7 +297,22 @@
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-color/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-new-color.html"><span class="token function">setNewColor</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">newColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/Integer.html">Integer</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-color/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-new-color.html"><span class="token function">setNewColor</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>newColor<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/Integer.html">Integer</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Sets the new color in the color picker.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1343711699%2FFunctions%2F-1177509730" anchor-label="setOnBitmapSetListener" id="-1343711699%2FFunctions%2F-1177509730" data-filterable-set=":picker-color/main"></a>
+          <div class="table-row" data-filterable-current=":picker-color/main" data-filterable-set=":picker-color/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-on-bitmap-set-listener.html"><span>set</span><wbr><span>On</span><wbr><span>Bitmap</span><wbr><span>Set</span><wbr><span><span>Listener</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1343711699%2FFunctions%2F-1177509730"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-color/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-on-bitmap-set-listener.html"><span class="token function">setOnBitmapSetListener</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>listener<span class="token operator">: </span><a href="-on-bitmap-set-listener/index.html">SeslColorPickerDialog.OnBitmapSetListener</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Sets a listener to provide a <a href="https://developer.android.com/reference/kotlin/android/graphics/Bitmap.html">Bitmap</a> for the eye dropper tool.</div></div></div>
                 </div>
               </div>
             </div>
@@ -254,7 +327,7 @@
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-color/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-only-spectrum-mode.html"><span class="token function">setOnlySpectrumMode</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-color/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-only-spectrum-mode.html"><span class="token function">setOnlySpectrumMode</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief ">Sets the color picker to only show the spectrum mode.</div></div></div>
                 </div>
               </div>
             </div>
@@ -269,7 +342,7 @@
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-color/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-transparency-control-enabled.html"><span class="token function">setTransparencyControlEnabled</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">enabled<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-color/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-transparency-control-enabled.html"><span class="token function">setTransparencyControlEnabled</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">enabled<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Sets whether the transparency control (opacity bar) is enabled in the color picker.</div></div></div>
                 </div>
               </div>
             </div>

@@ -1,0 +1,761 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>ViewDragHelper</title>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+    <nav class="navigation theme-dark" id="navigation-wrapper">
+<a class="library-name--link" href="../../../index.html">
+                    sesl.androidx
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+        </div>
+        <div class="navigation-controls">
+        <div class="filter-section filter-section_loading" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":customview/main">main</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
+                    <div class="dropdown--header"><span>Platform filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":customview/main" data-filter=":customview/main">
+                                <span class="checkbox--icon"></span>
+                                main
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </div>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox">
+                        <div class="dropdown--header">
+                            <span>
+                                    sesl.androidx
+                            </span>
+                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                            </button>
+                        </div>
+                        <div class="sidebar--inner" id="sideMenu"></div>
+                    </ul>
+                    <div class="dropdown--overlay"></div>
+                </div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="customview::androidx.customview.widget/ViewDragHelper///PointingToDeclaration//1849518188">
+  <div class="breadcrumbs"><a href="../../index.html">customview</a><span class="delimiter">/</span><a href="../index.html">androidx.customview.widget</a><span class="delimiter">/</span><span class="current">ViewDragHelper</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>View</span><wbr><span>Drag</span><wbr><span><span>Helper</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="index.html">ViewDragHelper</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/tribalfs/sesl-androidx/blob/sesl-androidx-main/customview/customview/src/main/java/androidx/customview/widget/ViewDragHelper.java#L46">source</a>)</span></span></div><p class="paragraph">(SESL modified) ViewDragHelper is a utility class for writing custom ViewGroups. It offers a number of useful operations and state tracking for allowing a user to drag and reposition views within their parent ViewGroup.</p></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="TYPE">
+        <h2 class="">Types</h2>
+        <div class="table"><a data-name="1627328541%2FClasslikes%2F1849518188" anchor-label="Callback" id="1627328541%2FClasslikes%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-callback/index.html"><span><span>Callback</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1627328541%2FClasslikes%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">class </span><a href="-callback/index.html">Callback</a></div><div class="brief ">A Callback is used as a communication channel with the ViewDragHelper back to the parent view using it.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="-244450964%2FProperties%2F1849518188" anchor-label="DIRECTION_ALL" id="-244450964%2FProperties%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-d-i-r-e-c-t-i-o-n_-a-l-l.html"><span>DIRECTION_</span><wbr><span>ALL</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-244450964%2FProperties%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-d-i-r-e-c-t-i-o-n_-a-l-l.html">DIRECTION_ALL</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">3</span></div><div class="brief ">Indicates that a check should occur along all axes</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1734747639%2FProperties%2F1849518188" anchor-label="DIRECTION_HORIZONTAL" id="-1734747639%2FProperties%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-d-i-r-e-c-t-i-o-n_-h-o-r-i-z-o-n-t-a-l.html"><span>DIRECTION_</span><wbr><span>HORIZONTAL</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1734747639%2FProperties%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-d-i-r-e-c-t-i-o-n_-h-o-r-i-z-o-n-t-a-l.html">DIRECTION_HORIZONTAL</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">1</span></div><div class="brief ">Indicates that a check should occur along the horizontal axis</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1901906185%2FProperties%2F1849518188" anchor-label="DIRECTION_VERTICAL" id="-1901906185%2FProperties%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-d-i-r-e-c-t-i-o-n_-v-e-r-t-i-c-a-l.html"><span>DIRECTION_</span><wbr><span>VERTICAL</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1901906185%2FProperties%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-d-i-r-e-c-t-i-o-n_-v-e-r-t-i-c-a-l.html">DIRECTION_VERTICAL</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">2</span></div><div class="brief ">Indicates that a check should occur along the vertical axis</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1185356654%2FProperties%2F1849518188" anchor-label="EDGE_ALL" id="1185356654%2FProperties%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-e-d-g-e_-a-l-l.html"><span>EDGE_</span><wbr><span>ALL</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1185356654%2FProperties%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-e-d-g-e_-a-l-l.html">EDGE_ALL</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">15</span></div><div class="brief ">Edge flag set indicating all edges should be affected.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-243808096%2FProperties%2F1849518188" anchor-label="EDGE_BOTTOM" id="-243808096%2FProperties%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-e-d-g-e_-b-o-t-t-o-m.html"><span>EDGE_</span><wbr><span>BOTTOM</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-243808096%2FProperties%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-e-d-g-e_-b-o-t-t-o-m.html">EDGE_BOTTOM</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">8</span></div><div class="brief ">Edge flag indicating that the bottom edge should be affected.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1961385532%2FProperties%2F1849518188" anchor-label="EDGE_LEFT" id="-1961385532%2FProperties%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-e-d-g-e_-l-e-f-t.html"><span>EDGE_</span><wbr><span>LEFT</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1961385532%2FProperties%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-e-d-g-e_-l-e-f-t.html">EDGE_LEFT</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">1</span></div><div class="brief ">Edge flag indicating that the left edge should be affected.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-432635181%2FProperties%2F1849518188" anchor-label="EDGE_RIGHT" id="-432635181%2FProperties%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-e-d-g-e_-r-i-g-h-t.html"><span>EDGE_</span><wbr><span>RIGHT</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-432635181%2FProperties%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-e-d-g-e_-r-i-g-h-t.html">EDGE_RIGHT</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">2</span></div><div class="brief ">Edge flag indicating that the right edge should be affected.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-645716422%2FProperties%2F1849518188" anchor-label="EDGE_TOP" id="-645716422%2FProperties%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-e-d-g-e_-t-o-p.html"><span>EDGE_</span><wbr><span>TOP</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-645716422%2FProperties%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-e-d-g-e_-t-o-p.html">EDGE_TOP</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">4</span></div><div class="brief ">Edge flag indicating that the top edge should be affected.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1041375448%2FProperties%2F1849518188" anchor-label="INVALID_POINTER" id="1041375448%2FProperties%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-i-n-v-a-l-i-d_-p-o-i-n-t-e-r.html"><span>INVALID_</span><wbr><span>POINTER</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1041375448%2FProperties%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-i-n-v-a-l-i-d_-p-o-i-n-t-e-r.html">INVALID_POINTER</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">-1</span></div><div class="brief ">A null/invalid pointer ID.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-923684912%2FProperties%2F1849518188" anchor-label="STATE_DRAGGING" id="-923684912%2FProperties%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-s-t-a-t-e_-d-r-a-g-g-i-n-g.html"><span>STATE_</span><wbr><span>DRAGGING</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-923684912%2FProperties%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-s-t-a-t-e_-d-r-a-g-g-i-n-g.html">STATE_DRAGGING</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">1</span></div><div class="brief ">A view is currently being dragged.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1074284011%2FProperties%2F1849518188" anchor-label="STATE_IDLE" id="1074284011%2FProperties%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-s-t-a-t-e_-i-d-l-e.html"><span>STATE_</span><wbr><span>IDLE</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1074284011%2FProperties%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-s-t-a-t-e_-i-d-l-e.html">STATE_IDLE</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span></div><div class="brief ">A view is not currently being dragged or animating as a result of a fling/snap.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1564639241%2FProperties%2F1849518188" anchor-label="STATE_SETTLING" id="-1564639241%2FProperties%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-s-t-a-t-e_-s-e-t-t-l-i-n-g.html"><span>STATE_</span><wbr><span>SETTLING</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1564639241%2FProperties%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-s-t-a-t-e_-s-e-t-t-l-i-n-g.html">STATE_SETTLING</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">2</span></div><div class="brief ">A view is currently settling into place as a result of a fling or predefined non-interactive motion.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="52867517%2FFunctions%2F1849518188" anchor-label="abort" id="52867517%2FFunctions%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="abort.html"><span><span>abort</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="52867517%2FFunctions%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="abort.html"><span class="token function">abort</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><a href="cancel.html">cancel</a>, but also abort all motion in progress and snap to the end of any animation.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="971963731%2FFunctions%2F1849518188" anchor-label="cancel" id="971963731%2FFunctions%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="cancel.html"><span><span>cancel</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="971963731%2FFunctions%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="cancel.html"><span class="token function">cancel</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief ">The result of a call to this method is equivalent to <a href="process-touch-event.html">processTouchEvent</a> receiving an ACTION_CANCEL event.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1132674667%2FFunctions%2F1849518188" anchor-label="captureChildView" id="-1132674667%2FFunctions%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="capture-child-view.html"><span>capture</span><wbr><span>Child</span><wbr><span><span>View</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1132674667%2FFunctions%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="capture-child-view.html"><span class="token function">captureChildView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>childView<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token punctuation">, </span></span><span class="parameter ">activePointerId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Capture a specific child view for dragging within the parent.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1148930378%2FFunctions%2F1849518188" anchor-label="checkTouchSlop" id="-1148930378%2FFunctions%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="check-touch-slop.html"><span>check</span><wbr><span>Touch</span><wbr><span><span>Slop</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1148930378%2FFunctions%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="check-touch-slop.html"><span class="token function">checkTouchSlop</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">directions<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Check if any pointer tracked in the current gesture has crossed the required slop threshold.</div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="check-touch-slop.html"><span class="token function">checkTouchSlop</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">directions<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">pointerId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Check if the specified pointer tracked in the current gesture has crossed the required slop threshold.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-768324100%2FFunctions%2F1849518188" anchor-label="continueSettling" id="-768324100%2FFunctions%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="continue-settling.html"><span>continue</span><wbr><span><span>Settling</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-768324100%2FFunctions%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="continue-settling.html"><span class="token function">continueSettling</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">deferCallbacks<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Move the captured settling view by the appropriate amount for the current time.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-478057697%2FFunctions%2F1849518188" anchor-label="create" id="-478057697%2FFunctions%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="create.html"><span><span>create</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-478057697%2FFunctions%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="create.html"><span class="token function">create</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>forParent<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/view/ViewGroup.html">ViewGroup</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>cb<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="-callback/index.html">ViewDragHelper.Callback</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="index.html">ViewDragHelper</a></div><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="create.html"><span class="token function">create</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>forParent<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/view/ViewGroup.html">ViewGroup</a><span class="token punctuation">, </span></span><span class="parameter ">sensitivity<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>cb<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="-callback/index.html">ViewDragHelper.Callback</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="index.html">ViewDragHelper</a></div><div class="brief ">Factory method to create a new ViewDragHelper.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-520823022%2FFunctions%2F1849518188" anchor-label="findTopChildUnder" id="-520823022%2FFunctions%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="find-top-child-under.html"><span>find</span><wbr><span>Top</span><wbr><span>Child</span><wbr><span><span>Under</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-520823022%2FFunctions%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="find-top-child-under.html"><span class="token function">findTopChildUnder</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">x<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">y<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a></div><div class="brief ">Find the topmost child under the given point within the parent view's coordinate system.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1836126143%2FFunctions%2F1849518188" anchor-label="flingCapturedView" id="-1836126143%2FFunctions%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="fling-captured-view.html"><span>fling</span><wbr><span>Captured</span><wbr><span><span>View</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1836126143%2FFunctions%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="fling-captured-view.html"><span class="token function">flingCapturedView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">minLeft<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">minTop<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">maxLeft<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">maxTop<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Settle the captured view based on standard free-moving fling behavior.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1509181327%2FFunctions%2F1849518188" anchor-label="getActivePointerId" id="-1509181327%2FFunctions%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-active-pointer-id.html"><span>get</span><wbr><span>Active</span><wbr><span>Pointer</span><wbr><span><span>Id</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1509181327%2FFunctions%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-active-pointer-id.html"><span class="token function">getActivePointerId</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-81003276%2FFunctions%2F1849518188" anchor-label="getCapturedView" id="-81003276%2FFunctions%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-captured-view.html"><span>get</span><wbr><span>Captured</span><wbr><span><span>View</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-81003276%2FFunctions%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-captured-view.html"><span class="token function">getCapturedView</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-228688860%2FFunctions%2F1849518188" anchor-label="getDefaultEdgeSize" id="-228688860%2FFunctions%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-default-edge-size.html"><span>get</span><wbr><span>Default</span><wbr><span>Edge</span><wbr><span><span>Size</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-228688860%2FFunctions%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Px.html"><span class="token annotation builtin">Px</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-default-edge-size.html"><span class="token function">getDefaultEdgeSize</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Return the default size used for edge tracking.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2069645159%2FFunctions%2F1849518188" anchor-label="getEdgeSize" id="-2069645159%2FFunctions%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-edge-size.html"><span>get</span><wbr><span>Edge</span><wbr><span><span>Size</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2069645159%2FFunctions%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Px.html"><span class="token annotation builtin">Px</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-edge-size.html"><span class="token function">getEdgeSize</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Return the size of an edge.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-876969836%2FFunctions%2F1849518188" anchor-label="getMinVelocity" id="-876969836%2FFunctions%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-min-velocity.html"><span>get</span><wbr><span>Min</span><wbr><span><span>Velocity</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-876969836%2FFunctions%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-min-velocity.html"><span class="token function">getMinVelocity</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></div><div class="brief ">Return the currently configured minimum velocity.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1084143818%2FFunctions%2F1849518188" anchor-label="getTouchSlop" id="1084143818%2FFunctions%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-touch-slop.html"><span>get</span><wbr><span>Touch</span><wbr><span><span>Slop</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1084143818%2FFunctions%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Px.html"><span class="token annotation builtin">Px</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-touch-slop.html"><span class="token function">getTouchSlop</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2048236011%2FFunctions%2F1849518188" anchor-label="getViewDragState" id="2048236011%2FFunctions%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-view-drag-state.html"><span>get</span><wbr><span>View</span><wbr><span>Drag</span><wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2048236011%2FFunctions%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-view-drag-state.html"><span class="token function">getViewDragState</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Retrieve the current drag state of this helper.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-483818267%2FFunctions%2F1849518188" anchor-label="isCapturedViewUnder" id="-483818267%2FFunctions%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-captured-view-under.html"><span>is</span><wbr><span>Captured</span><wbr><span>View</span><wbr><span><span>Under</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-483818267%2FFunctions%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-captured-view-under.html"><span class="token function">isCapturedViewUnder</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">x<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">y<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Determine if the currently captured view is under the given point in the parent view's coordinate system.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1783059688%2FFunctions%2F1849518188" anchor-label="isEdgeTouched" id="-1783059688%2FFunctions%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-edge-touched.html"><span>is</span><wbr><span>Edge</span><wbr><span><span>Touched</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1783059688%2FFunctions%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-edge-touched.html"><span class="token function">isEdgeTouched</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">edges<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Check if any of the edges specified were initially touched in the currently active gesture.</div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-edge-touched.html"><span class="token function">isEdgeTouched</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">edges<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">pointerId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Check if any of the edges specified were initially touched by the pointer with the specified ID.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-785175973%2FFunctions%2F1849518188" anchor-label="isPointerDown" id="-785175973%2FFunctions%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-pointer-down.html"><span>is</span><wbr><span>Pointer</span><wbr><span><span>Down</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-785175973%2FFunctions%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-pointer-down.html"><span class="token function">isPointerDown</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">pointerId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Check if the given pointer ID represents a pointer that is currently down (to the best of the ViewDragHelper's knowledge).</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1757074743%2FFunctions%2F1849518188" anchor-label="isViewUnder" id="1757074743%2FFunctions%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-view-under.html"><span>is</span><wbr><span>View</span><wbr><span><span>Under</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1757074743%2FFunctions%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-view-under.html"><span class="token function">isViewUnder</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span>view<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token punctuation">, </span></span><span class="parameter ">x<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">y<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Determine if the supplied view is under the given point in the parent view's coordinate system.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="21034057%2FFunctions%2F1849518188" anchor-label="processTouchEvent" id="21034057%2FFunctions%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="process-touch-event.html"><span>process</span><wbr><span>Touch</span><wbr><span><span>Event</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="21034057%2FFunctions%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="process-touch-event.html"><span class="token function">processTouchEvent</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>ev<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/view/MotionEvent.html">MotionEvent</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Process a touch event received by the parent view.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1424603411%2FFunctions%2F1849518188" anchor-label="seslCreate" id="-1424603411%2FFunctions%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="sesl-create.html"><span>sesl</span><wbr><span><span>Create</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1424603411%2FFunctions%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="sesl-create.html"><span class="token function">seslCreate</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>forParent<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/view/ViewGroup.html">ViewGroup</a><span class="token punctuation">, </span></span><span class="parameter ">sensitivity<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>cb<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="-callback/index.html">ViewDragHelper.Callback</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="index.html">ViewDragHelper</a></div><div class="brief ">Factory method to create a new ViewDragHelper.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1419705830%2FFunctions%2F1849518188" anchor-label="seslSetUpdateOffsetLR" id="1419705830%2FFunctions%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="sesl-set-update-offset-l-r.html"><span>sesl</span><wbr><span>Set</span><wbr><span>Update</span><wbr><span>Offset</span><wbr><span><span>LR</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1419705830%2FFunctions%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="sesl-set-update-offset-l-r.html"><span class="token function">seslSetUpdateOffsetLR</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">update<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Sets whether to update the left and right offsets of the captured view during dragging and settling.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1141673158%2FFunctions%2F1849518188" anchor-label="setEdgeSize" id="1141673158%2FFunctions%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-edge-size.html"><span>set</span><wbr><span>Edge</span><wbr><span><span>Size</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1141673158%2FFunctions%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-edge-size.html"><span class="token function">setEdgeSize</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Px.html"><span class="token annotation builtin">Px</span></a>&nbsp;<span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/IntRange.html"><span class="token annotation builtin">IntRange</span></a><span class="token punctuation">(</span><span>from<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">0</span></span></span><wbr><span class="token punctuation">)</span>&nbsp;</span>size<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Set the range in pixels along the edges of this view that will actively detect edge touches or drags if edge tracking is enabled.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1577462289%2FFunctions%2F1849518188" anchor-label="setEdgeTrackingEnabled" id="1577462289%2FFunctions%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-edge-tracking-enabled.html"><span>set</span><wbr><span>Edge</span><wbr><span>Tracking</span><wbr><span><span>Enabled</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1577462289%2FFunctions%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-edge-tracking-enabled.html"><span class="token function">setEdgeTrackingEnabled</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">edgeFlags<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Enable edge tracking for the selected edges of the parent view.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="328806406%2FFunctions%2F1849518188" anchor-label="setMinVelocity" id="328806406%2FFunctions%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-min-velocity.html"><span>set</span><wbr><span>Min</span><wbr><span><span>Velocity</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="328806406%2FFunctions%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-min-velocity.html"><span class="token function">setMinVelocity</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">minVel<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Set the minimum velocity that will be detected as having a magnitude greater than zero in pixels per second.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1884143173%2FFunctions%2F1849518188" anchor-label="settleCapturedViewAt" id="-1884143173%2FFunctions%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="settle-captured-view-at.html"><span>settle</span><wbr><span>Captured</span><wbr><span>View</span><wbr><span><span>At</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1884143173%2FFunctions%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="settle-captured-view-at.html"><span class="token function">settleCapturedViewAt</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">finalLeft<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">finalTop<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Settle the captured view at the given (left, top) position.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1805878877%2FFunctions%2F1849518188" anchor-label="setTouchSlop" id="1805878877%2FFunctions%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-touch-slop.html"><span>set</span><wbr><span>Touch</span><wbr><span><span>Slop</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1805878877%2FFunctions%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY_GROUP_PREFIX">LIBRARY_GROUP_PREFIX</a></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-touch-slop.html"><span class="token function">setTouchSlop</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">touchSlop<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1983524247%2FFunctions%2F1849518188" anchor-label="shouldInterceptTouchEvent" id="-1983524247%2FFunctions%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="should-intercept-touch-event.html"><span>should</span><wbr><span>Intercept</span><wbr><span>Touch</span><wbr><span><span>Event</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1983524247%2FFunctions%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="should-intercept-touch-event.html"><span class="token function">shouldInterceptTouchEvent</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>ev<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/view/MotionEvent.html">MotionEvent</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Check if this event as provided to the parent view's onInterceptTouchEvent should cause the parent to intercept the touch event stream.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1401075376%2FFunctions%2F1849518188" anchor-label="smoothSlideViewTo" id="-1401075376%2FFunctions%2F1849518188" data-filterable-set=":customview/main"></a>
+          <div class="table-row" data-filterable-current=":customview/main" data-filterable-set=":customview/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="smooth-slide-view-to.html"><span>smooth</span><wbr><span>Slide</span><wbr><span>View</span><wbr><span><span>To</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1401075376%2FFunctions%2F1849518188"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":customview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="smooth-slide-view-to.html"><span class="token function">smoothSlideViewTo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>child<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token punctuation">, </span></span><span class="parameter ">finalLeft<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">finalTop<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="smooth-slide-view-to.html"><span class="token function">smoothSlideViewTo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>child<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token punctuation">, </span></span><span class="parameter ">finalLeft<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">finalTop<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">duration<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span>interpolator<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/view/animation/Interpolator.html">Interpolator</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Animate the view <code class="lang-kotlin">child</code> to the given (left, top) position.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+        <span>© 2025 Copyright</span>
+        <span class="pull-right">
+            <span>Generated by </span>
+            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                <span>dokka</span>
+            </a>
+        </span>
+    </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

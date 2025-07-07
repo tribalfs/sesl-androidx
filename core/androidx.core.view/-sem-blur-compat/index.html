@@ -1,0 +1,356 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>SemBlurCompat</title>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+    <nav class="navigation theme-dark" id="navigation-wrapper">
+<a class="library-name--link" href="../../../index.html">
+                    sesl.androidx
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+        </div>
+        <div class="navigation-controls">
+        <div class="filter-section filter-section_loading" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":core/main">main</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
+                    <div class="dropdown--header"><span>Platform filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":core/main" data-filter=":core/main">
+                                <span class="checkbox--icon"></span>
+                                main
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </div>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox">
+                        <div class="dropdown--header">
+                            <span>
+                                    sesl.androidx
+                            </span>
+                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                            </button>
+                        </div>
+                        <div class="sidebar--inner" id="sideMenu"></div>
+                    </ul>
+                    <div class="dropdown--overlay"></div>
+                </div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="core::androidx.core.view/SemBlurCompat///PointingToDeclaration//-108886845">
+  <div class="breadcrumbs"><a href="../../index.html">core</a><span class="delimiter">/</span><a href="../index.html">androidx.core.view</a><span class="delimiter">/</span><span class="current">SemBlurCompat</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Sem</span><wbr><span>Blur</span><wbr><span><span>Compat</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="index.html">SemBlurCompat</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/tribalfs/sesl-androidx/blob/sesl-androidx-main/core/core/src/main/java/androidx/core/view/SemBlurCompat.kt#L45">source</a>)</span></span></div><p class="paragraph">Provides compatibility methods for Samsung's blur effects.</p><p class="paragraph">This object allows applying blur effects to views, with options for different blur modes, colors, radii, and corner radii. It also handles checks for theme application and accessibility settings that might disable blur effects.</p><p class="paragraph">The blur functionality is based on Samsung's internal APIs and may not work on all devices or Android versions.</p></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="TYPE">
+        <h2 class="">Types</h2>
+        <div class="table"><a data-name="-1602157454%2FClasslikes%2F-108886845" anchor-label="SeslBlurMode" id="-1602157454%2FClasslikes%2F-108886845" data-filterable-set=":core/main"></a>
+          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-sesl-blur-mode/index.html"><span>Sesl</span><wbr><span>Blur</span><wbr><span><span>Mode</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1602157454%2FClasslikes%2F-108886845"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">annotation class </span><a href="-sesl-blur-mode/index.html">SeslBlurMode</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="-132655927%2FProperties%2F-108886845" anchor-label="BLUR_BASE_OFFSET" id="-132655927%2FProperties%2F-108886845" data-filterable-set=":core/main"></a>
+          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-b-l-u-r_-b-a-s-e_-o-f-f-s-e-t.html"><span>BLUR_</span><wbr><span>BASE_</span><wbr><span>OFFSET</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-132655927%2FProperties%2F-108886845"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-b-l-u-r_-b-a-s-e_-o-f-f-s-e-t.html">BLUR_BASE_OFFSET</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">101</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="962143862%2FProperties%2F-108886845" anchor-label="BLUR_MODE_CANVAS" id="962143862%2FProperties%2F-108886845" data-filterable-set=":core/main"></a>
+          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-b-l-u-r_-m-o-d-e_-c-a-n-v-a-s.html"><span>BLUR_</span><wbr><span>MODE_</span><wbr><span>CANVAS</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="962143862%2FProperties%2F-108886845"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-b-l-u-r_-m-o-d-e_-c-a-n-v-a-s.html">BLUR_MODE_CANVAS</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">2</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="470801118%2FProperties%2F-108886845" anchor-label="BLUR_MODE_WINDOW" id="470801118%2FProperties%2F-108886845" data-filterable-set=":core/main"></a>
+          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-b-l-u-r_-m-o-d-e_-w-i-n-d-o-w.html"><span>BLUR_</span><wbr><span>MODE_</span><wbr><span>WINDOW</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="470801118%2FProperties%2F-108886845"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-b-l-u-r_-m-o-d-e_-w-i-n-d-o-w.html">BLUR_MODE_WINDOW</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1436889825%2FProperties%2F-108886845" anchor-label="BLUR_MODE_WINDOW_CAPTURED" id="-1436889825%2FProperties%2F-108886845" data-filterable-set=":core/main"></a>
+          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-b-l-u-r_-m-o-d-e_-w-i-n-d-o-w_-c-a-p-t-u-r-e-d.html"><span>BLUR_</span><wbr><span>MODE_</span><wbr><span>WINDOW_</span><wbr><span>CAPTURED</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1436889825%2FProperties%2F-108886845"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-b-l-u-r_-m-o-d-e_-w-i-n-d-o-w_-c-a-p-t-u-r-e-d.html">BLUR_MODE_WINDOW_CAPTURED</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">1</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-189898803%2FProperties%2F-108886845" anchor-label="BLUR_UI_HIGH_ULTRA_THICK_D" id="-189898803%2FProperties%2F-108886845" data-filterable-set=":core/main"></a>
+          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-b-l-u-r_-u-i_-h-i-g-h_-u-l-t-r-a_-t-h-i-c-k_-d.html"><span>BLUR_</span><wbr><span>UI_</span><wbr><span>HIGH_</span><wbr><span>ULTRA_</span><wbr><span>THICK_</span><wbr><span>D</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-189898803%2FProperties%2F-108886845"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-b-l-u-r_-u-i_-h-i-g-h_-u-l-t-r-a_-t-h-i-c-k_-d.html">BLUR_UI_HIGH_ULTRA_THICK_D</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">130</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1158964571%2FProperties%2F-108886845" anchor-label="BLUR_UI_HIGH_ULTRA_THICK_LIGHT" id="1158964571%2FProperties%2F-108886845" data-filterable-set=":core/main"></a>
+          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-b-l-u-r_-u-i_-h-i-g-h_-u-l-t-r-a_-t-h-i-c-k_-l-i-g-h-t.html"><span>BLUR_</span><wbr><span>UI_</span><wbr><span>HIGH_</span><wbr><span>ULTRA_</span><wbr><span>THICK_</span><wbr><span>LIGHT</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1158964571%2FProperties%2F-108886845"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-b-l-u-r_-u-i_-h-i-g-h_-u-l-t-r-a_-t-h-i-c-k_-l-i-g-h-t.html">BLUR_UI_HIGH_ULTRA_THICK_LIGHT</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">115</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1307687689%2FProperties%2F-108886845" anchor-label="BLUR_UI_LOW_ULTRA_THICK_DARK" id="1307687689%2FProperties%2F-108886845" data-filterable-set=":core/main"></a>
+          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-b-l-u-r_-u-i_-l-o-w_-u-l-t-r-a_-t-h-i-c-k_-d-a-r-k.html"><span>BLUR_</span><wbr><span>UI_</span><wbr><span>LOW_</span><wbr><span>ULTRA_</span><wbr><span>THICK_</span><wbr><span>DARK</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1307687689%2FProperties%2F-108886845"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-b-l-u-r_-u-i_-l-o-w_-u-l-t-r-a_-t-h-i-c-k_-d-a-r-k.html">BLUR_UI_LOW_ULTRA_THICK_DARK</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">120</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-549078587%2FProperties%2F-108886845" anchor-label="BLUR_UI_LOW_ULTRA_THICK_LIGHT" id="-549078587%2FProperties%2F-108886845" data-filterable-set=":core/main"></a>
+          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-b-l-u-r_-u-i_-l-o-w_-u-l-t-r-a_-t-h-i-c-k_-l-i-g-h-t.html"><span>BLUR_</span><wbr><span>UI_</span><wbr><span>LOW_</span><wbr><span>ULTRA_</span><wbr><span>THICK_</span><wbr><span>LIGHT</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-549078587%2FProperties%2F-108886845"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-b-l-u-r_-u-i_-l-o-w_-u-l-t-r-a_-t-h-i-c-k_-l-i-g-h-t.html">BLUR_UI_LOW_ULTRA_THICK_LIGHT</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">105</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1727769786%2FProperties%2F-108886845" anchor-label="BLUR_UI_MEDIUM_ULTRA_THICK_DARK" id="-1727769786%2FProperties%2F-108886845" data-filterable-set=":core/main"></a>
+          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-b-l-u-r_-u-i_-m-e-d-i-u-m_-u-l-t-r-a_-t-h-i-c-k_-d-a-r-k.html"><span>BLUR_</span><wbr><span>UI_</span><wbr><span>MEDIUM_</span><wbr><span>ULTRA_</span><wbr><span>THICK_</span><wbr><span>DARK</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1727769786%2FProperties%2F-108886845"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-b-l-u-r_-u-i_-m-e-d-i-u-m_-u-l-t-r-a_-t-h-i-c-k_-d-a-r-k.html">BLUR_UI_MEDIUM_ULTRA_THICK_DARK</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">125</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-158979800%2FProperties%2F-108886845" anchor-label="BLUR_UI_MEDIUM_ULTRA_THICK_LIGHT" id="-158979800%2FProperties%2F-108886845" data-filterable-set=":core/main"></a>
+          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-b-l-u-r_-u-i_-m-e-d-i-u-m_-u-l-t-r-a_-t-h-i-c-k_-l-i-g-h-t.html"><span>BLUR_</span><wbr><span>UI_</span><wbr><span>MEDIUM_</span><wbr><span>ULTRA_</span><wbr><span>THICK_</span><wbr><span>LIGHT</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-158979800%2FProperties%2F-108886845"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-b-l-u-r_-u-i_-m-e-d-i-u-m_-u-l-t-r-a_-t-h-i-c-k_-l-i-g-h-t.html">BLUR_UI_MEDIUM_ULTRA_THICK_LIGHT</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">110</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="215829210%2FFunctions%2F-108886845" anchor-label="isBlurEffectPresetSupport" id="215829210%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
+          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-blur-effect-preset-support.html"><span>is</span><wbr><span>Blur</span><wbr><span>Effect</span><wbr><span>Preset</span><wbr><span><span>Support</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="215829210%2FFunctions%2F-108886845"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div></div><span class="token keyword">fun </span><a href="is-blur-effect-preset-support.html"><span class="token function">isBlurEffectPresetSupport</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1867534392%2FFunctions%2F-108886845" anchor-label="setBlurEffect" id="1867534392%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
+          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-blur-effect.html"><span>set</span><wbr><span>Blur</span><wbr><span><span>Effect</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1867534392%2FFunctions%2F-108886845"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div></div><span class="token keyword">fun </span><a href="set-blur-effect.html"><span class="token function">setBlurEffect</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">view<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ColorInt.html"><span class="token annotation builtin">ColorInt</span></a>&nbsp;</span>color<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">radius<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">blurMode<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">cornerRadius<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1760069475%2FFunctions%2F-108886845" anchor-label="setBlurEffectPreset" id="-1760069475%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
+          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-blur-effect-preset.html"><span>set</span><wbr><span>Blur</span><wbr><span>Effect</span><wbr><span><span>Preset</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1760069475%2FFunctions%2F-108886845"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-overloads/index.html"><span class="token annotation builtin">JvmOverloads</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RequiresApi.html"><span class="token annotation builtin">RequiresApi</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">35</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="set-blur-effect-preset.html"><span class="token function">setBlurEffectPreset</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">view<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token punctuation">, </span></span><span class="parameter ">blurMode<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">colorCurvePreset<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ColorInt.html"><span class="token annotation builtin">ColorInt</span></a>&nbsp;</span>color<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">cornerRadius<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1581853705%2FFunctions%2F-108886845" anchor-label="setBlurInfoClear" id="-1581853705%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
+          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-blur-info-clear.html"><span>set</span><wbr><span>Blur</span><wbr><span>Info</span><wbr><span><span>Clear</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1581853705%2FFunctions%2F-108886845"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div></div><span class="token keyword">fun </span><a href="set-blur-info-clear.html"><span class="token function">setBlurInfoClear</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">view<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+        <span>© 2025 Copyright</span>
+        <span class="pull-right">
+            <span>Generated by </span>
+            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                <span>dokka</span>
+            </a>
+        </span>
+    </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
