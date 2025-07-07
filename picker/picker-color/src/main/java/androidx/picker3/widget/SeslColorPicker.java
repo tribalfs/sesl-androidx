@@ -897,7 +897,7 @@ public class SeslColorPicker extends LinearLayout {
 
         final String colorStr = String.format("%08x", color);
         mColorPickerHexEditText.setText(
-                "" + colorStr.substring(2, colorStr.length()).toUpperCase());
+                "" + colorStr.substring(2, colorStr.length()).toUpperCase(Locale.getDefault()));
         mColorPickerHexEditText.setSelection(mColorPickerHexEditText.getText().length());
 
         if (!mfromSaturationSeekbar && !mfromSpectrumTouch) {
@@ -913,7 +913,7 @@ public class SeslColorPicker extends LinearLayout {
         if (color != 0) {
             final String format = String.format("%08x", color);
             final String colorStr = format.substring(2);
-            mColorPickerHexEditText.setText(colorStr.toUpperCase());
+            mColorPickerHexEditText.setText(colorStr.toUpperCase(Locale.getDefault()));
             mColorPickerHexEditText.setSelection(mColorPickerHexEditText.getText().length());
 
             final int parseColor = Color.parseColor("#" + colorStr);
