@@ -33,6 +33,9 @@ import androidx.picker.widget.SeslTimePicker;
 /*
  * Original code by Samsung, all rights reserved to the original author.
  */
+/**
+ * A simple dialog containing an {@link SeslTimePicker}.
+ */
 public class SeslTimePickerDialog extends AlertDialog
         implements DialogInterface.OnClickListener, SeslTimePicker.OnTimeChangedListener {
 
@@ -110,6 +113,13 @@ public class SeslTimePickerDialog extends AlertDialog
         mTimePicker.startAnimation(283, () -> mIsStartAnimation = false);
     }
 
+    /**
+     * Called upon a time change.
+     *
+     * @param view The view associated with this listener.
+     * @param hourOfDay The current hour.
+     * @param minute The current minute.
+     */
     @Override
     public void onTimeChanged(@NonNull SeslTimePicker view, int hourOfDay, int minute) {
     }
@@ -141,6 +151,12 @@ public class SeslTimePickerDialog extends AlertDialog
         }
     }
 
+    /**
+     * Sets the current time.
+     *
+     * @param hourOfDay The current hour within the day.
+     * @param minuteOfHour The current minute within the hour.
+     */
     public void updateTime(int hourOfDay, int minuteOfHour) {
         mTimePicker.setHour(hourOfDay);
         mTimePicker.setMinute(minuteOfHour);

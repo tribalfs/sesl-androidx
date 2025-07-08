@@ -19,8 +19,6 @@ package androidx.picker.util;
 import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 import android.content.Context;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.provider.Settings;

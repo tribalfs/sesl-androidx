@@ -35,6 +35,10 @@ import androidx.picker.widget.SeslDatePicker;
 /*
  * Original code by Samsung, all rights reserved to the original author.
  */
+/**
+ * A simple dialog containing an {@link SeslDatePicker}.
+
+ */
 public class SeslDatePickerDialog extends AlertDialog
         implements DialogInterface.OnClickListener, SeslDatePicker.OnDateChangedListener {
 
@@ -115,6 +119,14 @@ public class SeslDatePickerDialog extends AlertDialog
         getButton(BUTTON_NEGATIVE).setOnFocusChangeListener(mBtnFocusChangeListener);
     }
 
+    /**
+     * Called when the date has changed.
+     *
+     * @param view The view associated with this listener.
+     * @param year The selected year.
+     * @param month The selected month (0-11 for compatibility with {@link java.util.Calendar}).
+     * @param day The selected day of the month.
+     */
     @Override
     public void onDateChanged(@NonNull SeslDatePicker view, int year, int month, int day) {
     }
@@ -141,10 +153,22 @@ public class SeslDatePickerDialog extends AlertDialog
         }
     }
 
+    /**
+     * Returns the {@link SeslDatePicker} contained in this dialog.
+     *
+     * @return The date picker
+     */
     public @NonNull SeslDatePicker getDatePicker() {
         return mDatePicker;
     }
 
+    /**
+     * Sets the current date.
+     *
+     * @param year The year.
+     * @param monthOfYear The month of the year.
+     * @param dayOfMonth The day of the month.
+     */
     public void updateDate(int year, int monthOfYear, int dayOfMonth) {
         mDatePicker.updateDate(year, monthOfYear, dayOfMonth);
     }

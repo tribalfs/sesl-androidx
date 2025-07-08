@@ -60,6 +60,7 @@ import android.view.ViewParent;
 import android.view.Window;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.animation.PathInterpolator;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -69,6 +70,7 @@ import android.widget.TextView;
 import android.widget.ViewAnimator;
 
 import androidx.annotation.IntDef;
+import androidx.annotation.IntRange;
 import androidx.annotation.RestrictTo;
 import androidx.appcompat.widget.TooltipCompat;
 import androidx.core.content.res.ResourcesCompat;
@@ -92,6 +94,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Formatter;
 import java.util.Locale;
+import java.util.TimeZone;
 
 /*
  * Original code by Samsung, all rights reserved to the original author.
@@ -157,11 +160,34 @@ public class SeslDatePicker extends LinearLayout
     public static final int VIEW_TYPE_CALENDAR = 0;
     public static final int VIEW_TYPE_SPINNER = 1;
 
+    /**
+     * The default selection mode where user can select a date.
+     */
     public static final int DATE_MODE_NONE = 0;
+    /**
+     * This mode  to select the start of a date range. This is typically used
+     * in conjunction with {@link #DATE_MODE_END}.
+     */
     public static final int DATE_MODE_START = 1;
+    /**
+     * This mode to select the start of a date range. This is typically used
+     * in conjunction with {@link #DATE_MODE_START}.
+     */
     public static final int DATE_MODE_END = 2;
+    /**
+     * The mode where the user can select a week.
+     */
     public static final int DATE_MODE_WEEK_SELECT = 3;
 
+    /**
+     * Interface to define the different date selection modes.
+     * <ul>
+     * <li>{@link #DATE_MODE_NONE}</li>
+     * <li>{@link #DATE_MODE_START}</li>
+     * <li>{@link #DATE_MODE_END}</li>
+     * <li>{@link #DATE_MODE_WEEK_SELECT}</li>
+     * </ul>
+     */
     @IntDef({
             DATE_MODE_NONE,
             DATE_MODE_START,
@@ -376,15 +402,48 @@ public class SeslDatePicker extends LinearLayout
         }
     };
 
+
+    /**
+     * The callback used to indicate the user changed the date.
+     */
     public interface OnDateChangedListener {
+        /**
+         * Called upon a date change.
+         *
+         * @param view The view associated with this listener.
+         * @param year The year that was set.
+         * @param month The month that was set (0-11) for compatibility
+         *            with {@link Calendar}.
+         * @param day The day of the month that was set.
+         */
         void onDateChanged(@NonNull SeslDatePicker view, int year, int month, int day);
     }
 
+    /**
+     * Interface definition for a callback to be invoked when the edit text mode of a DatePicker changes.
+     */
     public interface OnEditTextModeChangedListener {
+        /**
+         * Called when the edit text mode of the DatePicker has changed.
+         *
+         * @param view The DatePicker whose edit text mode has changed.
+         * @param editTextMode True if the DatePicker is now in edit text mode, false otherwise.
+         */
         void onEditTextModeChanged(@NonNull SeslDatePicker view, boolean editTextMode);
     }
 
+    /**
+     * Interface definition for a callback to be invoked when the current
+     * view type is changed.
+     */
     public interface OnViewTypeChangedListener {
+        /**
+         * Called when the current view type is changed to either {@link #VIEW_TYPE_CALENDAR} or
+         * {@link #VIEW_TYPE_SPINNER}.
+         *
+         * @param view The picker whose view type is changed.
+         * @see #getCurrentViewType
+         */
         void onViewTypeChanged(@NonNull SeslDatePicker view);
     }
 
@@ -765,10 +824,23 @@ public class SeslDatePicker extends LinearLayout
         }
     }
 
+    /**
+     * Sets a listener to be notified when the view type changes.
+     *
+     * @param listener The listener to be notified, or null to remove the current listener.
+     */
     public void setOnViewTypeChangedListener(@Nullable OnViewTypeChangedListener listener) {
         mOnViewTypeChangedListener = listener;
     }
 
+    /**
+     * Initialize the DatePicker.
+     *
+     * @param year The initial year.
+     * @param monthOfYear The initial month.
+     * @param dayOfMonth The initial day of the month.
+     * @param onDateChangedListener How user is notified date is changed by user, can be null.
+     */
     public void init(int year, int monthOfYear, int dayOfMonth,
             @Nullable OnDateChangedListener onDateChangedListener) {
         mCurrentDate.set(Calendar.YEAR, year);
@@ -821,6 +893,13 @@ public class SeslDatePicker extends LinearLayout
         calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
     }
 
+    /**
+     * Updates the current date.
+     *
+     * @param year The year.
+     * @param month The month which is <strong>starting from zero</strong>.
+     * @param dayOfMonth The day of the month.
+     */
     public void updateDate(int year, int month, int dayOfMonth) {
         mTempDate.set(Calendar.YEAR, year);
         mTempDate.set(Calendar.MONTH, month);
@@ -960,6 +1039,12 @@ public class SeslDatePicker extends LinearLayout
         }
     }
 
+    /**
+     * Gets the current year.
+     *
+     * @return The current year. If the calendar is lunar, it returns the lunar year. Otherwise,
+     * it returns the Gregorian year from the current date.
+     */
     public int getYear() {
         if (mIsLunar) {
             return mLunarCurrentYear;
@@ -967,6 +1052,15 @@ public class SeslDatePicker extends LinearLayout
         return mCurrentDate.get(Calendar.YEAR);
     }
 
+    /**
+     * Gets the current month.
+     * <p>
+     * If the calendar is lunar, it returns the lunar month.
+     * Otherwise, it returns the Gregorian month (0-11).
+     * </p>
+     *
+     * @return The current month.
+     */
     public int getMonth() {
         if (mIsLunar) {
             return mLunarCurrentMonth;
@@ -974,6 +1068,9 @@ public class SeslDatePicker extends LinearLayout
         return mCurrentDate.get(Calendar.MONTH);
     }
 
+    /**
+     * @return The selected day of month.
+     */
     public int getDayOfMonth() {
         if (mIsLunar) {
             return mLunarCurrentDay;
@@ -981,10 +1078,25 @@ public class SeslDatePicker extends LinearLayout
         return mCurrentDate.get(Calendar.DAY_OF_MONTH);
     }
 
+    /**
+     * @return The minimal date allowed to be selected in milliseconds,
+     * or -1 if there is no minimum date.
+     */
     public long getMinDate() {
         return mMinDate.getTimeInMillis();
     }
 
+    /**
+     * Sets the minimal date that can be selected in this NumberPicker.
+     *
+     * This method updates the internal representation of the minimum date and
+     * refreshes the UI components to reflect this change. If the current
+     * selected date is before the new minimum date, the current date will be
+     * adjusted to the new minimum date.
+     *
+     * @param minDate The minimal supported date, represented as milliseconds since
+     *                January 1, 1970, 00:00:00 GMT.
+     */
     public void setMinDate(long minDate) {
         mTempMinMaxDate.setTimeInMillis(minDate);
         if (mTempMinMaxDate.get(Calendar.YEAR) != mMinDate.get(Calendar.YEAR)
@@ -1003,10 +1115,21 @@ public class SeslDatePicker extends LinearLayout
         }
     }
 
+    /**
+     * @return The maximal date supported by this in
+     *         milliseconds since January 1, 1970 00:00:00 GMT
+     */
     public long getMaxDate() {
         return mMaxDate.getTimeInMillis();
     }
 
+    /**
+     * Sets the maximal date supported by this {@link DatePicker} in
+     * milliseconds since January 1, 1970 00:00:00 in
+     * {@link TimeZone#getDefault()} time zone.
+     *
+     * @param maxDate The maximal supported date.
+     */
     public void setMaxDate(long maxDate) {
         mTempMinMaxDate.setTimeInMillis(maxDate);
         if (mTempMinMaxDate.get(Calendar.YEAR) != mMaxDate.get(Calendar.YEAR)
@@ -1068,12 +1191,23 @@ public class SeslDatePicker extends LinearLayout
         return mIsEnabled;
     }
 
+    /**
+     * Use this method to enable/disable the calendar view.
+     * Set true to disable the calendar view.
+     * @param disable boolean value
+     * @see #getCalendarViewDisabled
+     */
     public void setCalendarViewDisabled(@NonNull Boolean disable){
         mIsCalendarViewDisabled = disable;
         requestLayout();
-
     }
 
+    /**
+     * Gets a boolean indicating whether the calendar view is disabled.
+     *
+     * @return true if the calendar view is disabled, false otherwise.
+     * @see #setCalendarViewDisabled
+     */
     public @NonNull Boolean getCalendarViewDisabled(){
         return mIsCalendarViewDisabled;
     }
@@ -1136,13 +1270,27 @@ public class SeslDatePicker extends LinearLayout
         checkMaxFontSize();
     }
 
-    public void setFirstDayOfWeek(int firstDayOfWeek) {
+    /**
+     * Sets the first day of the week.
+     *
+     * @param firstDayOfWeek The first day of the week, represented as an integer from 1 to 7,
+     *                       where 1 is Sunday and 7 is Saturday.
+     * @throws IllegalArgumentException if firstDayOfWeek is not between 1 and 7.
+     * @see #getFirstDayOfWeek
+     */
+    public void setFirstDayOfWeek(@IntRange(from = 1, to = 7) int firstDayOfWeek) {
         if (firstDayOfWeek < 1 || firstDayOfWeek > 7) {
             throw new IllegalArgumentException("firstDayOfWeek must be between 1 and 7");
         }
         mFirstDayOfWeek = firstDayOfWeek;
     }
 
+    /**
+     * Gets the first day of the week.
+     *
+     * @return The first day of the week.
+     * @see #setFirstDayOfWeek
+     */
     public int getFirstDayOfWeek() {
         return mFirstDayOfWeek != 0 ? mFirstDayOfWeek : mCurrentDate.getFirstDayOfWeek();
     }
@@ -1332,10 +1480,20 @@ public class SeslDatePicker extends LinearLayout
         return newCalendar;
     }
 
+    /**
+     * Gets the start date of the date range.
+     *
+     * @return A non-null Calendar object representing the start date.
+     */
     public @NonNull Calendar getStartDate() {
         return mStartDate;
     }
 
+    /**
+     * Retrieves the end date.
+     *
+     * @return A non-null Calendar object representing the end date.
+     */
     public @NonNull Calendar getEndDate() {
         return mEndDate;
     }
@@ -1422,6 +1580,16 @@ public class SeslDatePicker extends LinearLayout
         return directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT || directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC;
     }
 
+    /**
+     * Handles the click event on a day in the month view.
+     * This method updates the selected day, notifies the adapter if the selection has changed,
+     * and refreshes the month view to reflect the new selection and any lunar calendar settings.
+     *
+     * @param view  The {@link SeslSimpleMonthView} that was clicked.
+     * @param year  The year of the clicked day.
+     * @param month The month of the clicked day (0-indexed).
+     * @param day   The day of the month that was clicked.
+     */
     @Override
     public void onDayClick(@NonNull SeslSimpleMonthView view, int year, int month, int day) {
         debugLog("onDayClick day : " + day);
@@ -1480,6 +1648,16 @@ public class SeslDatePicker extends LinearLayout
         mIsCalledFromDeactivatedDayClick = false;
     }
 
+    /**
+     * Handles the click event for a deactivated day in the calendar view.
+     *
+     * @param view The SeslSimpleMonthView that was clicked.
+     * @param year The year of the clicked day.
+     * @param month The month of the clicked day.
+     * @param selectedDay The day of the month that was clicked.
+     * @param isLeapMonth True if the month is a leap month, false otherwise.
+     * @param isPrevMonth True if the clicked day is in the previous month, false otherwise.
+     */
     @Override
     public void onDeactivatedDayClick(@NonNull SeslSimpleMonthView view, int year, int month,
             int selectedDay,
@@ -2048,7 +2226,12 @@ public class SeslDatePicker extends LinearLayout
         }
     }
 
-    public void setDateMode(int mode) {
+    /**
+     * Sets the {@link DateMode selection mode} for the DatePicker.
+     *
+     * @param mode The {@link DateMode selection mode} to set.}
+     */
+    public void setDateMode(@DateMode int mode) {
         mMode = mode;
         mIsWeekRangeSet = false;
 
@@ -2118,7 +2301,12 @@ public class SeslDatePicker extends LinearLayout
         mCalendarPagerAdapter.notifyDataSetChanged();
     }
 
-    public int getDateMode() {
+    /**
+     * Gets the current date selection mode.
+     *
+     * @return  The current {@link DateMode set}
+     */
+    public @DateMode int getDateMode() {
         return mMode;
     }
 
@@ -2132,6 +2320,13 @@ public class SeslDatePicker extends LinearLayout
         }
     }
 
+    /**
+     * Sets the current view type.
+     *
+     * @param type The view type to set. Must be one of {@link #VIEW_TYPE_CALENDAR} or
+     *             {@link #VIEW_TYPE_SPINNER}.
+     * @see #getCurrentViewType()
+     */
     public void setCurrentViewType(int type) {
         boolean typeChanged = false;
 
@@ -2231,25 +2426,53 @@ public class SeslDatePicker extends LinearLayout
         }
     }
 
+    /**
+     * Gets the current view type.
+     *
+     * @return the current view type. Must be one of {@link #VIEW_TYPE_CALENDAR} or
+     *            {@link #VIEW_TYPE_SPINNER}.
+     */
     public int getCurrentViewType() {
         return mCurrentViewType;
     }
 
+    /**
+     * Sets the edit text mode for the spinner layout.
+     * If the current view type is {@link #VIEW_TYPE_SPINNER}, this method will set the
+     * spinner layout to edit mode where user can directly input the date.
+     *
+     * @param editTextMode true to enable edit text mode, false otherwise.
+     * @see #isEditTextMode
+     */
     public void setEditTextMode(boolean editTextMode) {
         if (mCurrentViewType != VIEW_TYPE_CALENDAR) {
             mSpinnerLayout.setEditTextMode(editTextMode);
         }
     }
 
+    /**
+     * @return true if the current view type is {@link #VIEW_TYPE_SPINNER} and in edit mode.
+     * @see #setEditTextMode
+     */
     public boolean isEditTextMode() {
         return mCurrentViewType != VIEW_TYPE_CALENDAR
                 && mSpinnerLayout.isEditTextMode();
     }
 
+    /**
+     * Sets a listener to be notified when the {@link #isEditTextMode} is changed.
+     *
+     * @param onEditModeChangedListener the listener to set, or null to remove the current listener
+     */
     public void setOnEditTextModeChangedListener(@Nullable OnEditTextModeChangedListener onEditModeChangedListener) {
         mSpinnerLayout.setOnEditTextModeChangedListener(this, onEditModeChangedListener);
     }
 
+    /**
+     * Gets the {@link EditText} used for the picker given.
+     * @param picker The picker.
+     * @return The {@link EditText} for the given picker.
+     */
     public @NonNull EditText getEditText(int picker) {
         return mSpinnerLayout.getEditText(picker);
     }

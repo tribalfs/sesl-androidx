@@ -40,6 +40,9 @@ import androidx.picker.util.SeslAnimationListener;
 
 import java.util.Locale;
 
+/*
+ * Original code by Samsung, all rights reserved to the original author.
+ */
 /**
  * A widget for selecting a time of day, in either 24-hour or AM/PM mode.
  *
@@ -76,8 +79,6 @@ import java.util.Locale;
  *
  * <p>The time picker supports accessibility by providing a delegate for handling
  * accessibility events.
- */ /*
- * Original code by Samsung, all rights reserved to the original author.
  */
 public class SeslTimePicker extends FrameLayout {
     public static final int PICKER_AMPM = 2;
