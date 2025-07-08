@@ -16,12 +16,12 @@
 
 package androidx.indexscroll.widget;
 
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP_PREFIX;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 
 import java.util.List;
@@ -53,9 +53,8 @@ import java.util.List;
 public class SeslArrayIndexer extends SeslAbsIndexer {
     private final String TAG = "SeslArrayIndexer";
     private final boolean DEBUG = false;
-    @NonNull
     @RestrictTo(LIBRARY_GROUP_PREFIX)
-    protected List<String> mData;
+    protected @NonNull List<String> mData;
 
     public SeslArrayIndexer(@NonNull List<String> listData, @NonNull CharSequence indexCharacters) {
         super(indexCharacters);
@@ -68,17 +67,15 @@ public class SeslArrayIndexer extends SeslAbsIndexer {
         return mData.size();
     }
 
-    @NonNull
     @Override
     @RestrictTo(LIBRARY_GROUP_PREFIX)
-    protected String getItemAt(int pos) {
+    protected @NonNull String getItemAt(int pos) {
         return mData.get(pos);
     }
 
-    @Nullable
     @Override
     @RestrictTo(LIBRARY_GROUP_PREFIX)
-    protected Bundle getBundle() {
+    protected @Nullable Bundle getBundle() {
         return null;
     }
 

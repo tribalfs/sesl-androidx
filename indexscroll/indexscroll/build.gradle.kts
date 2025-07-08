@@ -13,6 +13,7 @@ android {
 
 dependencies {
     api(libs.androidx.annotation)
+    api(libs.jspecify)
 
     api(libs.sesl.androidx.appcompat)
     api(libs.sesl.androidx.core)

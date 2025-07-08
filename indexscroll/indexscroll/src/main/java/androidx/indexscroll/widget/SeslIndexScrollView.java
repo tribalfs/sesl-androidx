@@ -16,6 +16,8 @@
 
 package androidx.indexscroll.widget;
 
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP_PREFIX;
 
 import android.animation.AnimatorSet;
@@ -50,8 +52,6 @@ import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 
 import androidx.annotation.IntDef;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.appcompat.animation.SeslAnimationUtils;
 import androidx.core.content.res.ResourcesCompat;
@@ -63,8 +63,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.reflect.view.SeslHapticFeedbackConstantsReflector;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -332,7 +330,7 @@ public class SeslIndexScrollView extends FrameLayout {
      *
      * @param recyclerView The RecyclerView instance to which you want to add this scrollbar
      */
-    public void attachToRecyclerView(@NotNull RecyclerView recyclerView) {
+    public void attachToRecyclerView(@NonNull RecyclerView recyclerView) {
         if (mIndexScroll.mRecyclerView != recyclerView) {
             if (mIndexScroll.mRecyclerView != null) {
                 mIndexScroll.mRecyclerView

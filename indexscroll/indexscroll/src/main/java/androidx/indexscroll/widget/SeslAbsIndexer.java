@@ -16,6 +16,7 @@
 
 package androidx.indexscroll.widget;
 
+import org.jspecify.annotations.NonNull;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY;
 import static androidx.recyclerview.widget.LinearLayoutManager.INVALID_OFFSET;
 
@@ -25,12 +26,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseIntArray;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 import androidx.indexscroll.widget.SeslIndexScrollView.IndexScroll;
 
 import java.text.Collator;
-import java.util.HashMap;
 
 /*
  * Original code by Samsung, all rights reserved to the original author.
