@@ -1199,78 +1199,61 @@ class SeslSpinningDatePickerSpinnerDelegate extends SeslSpinningDatePickerSpinne
         mIsLongClicked = true;
     }
 
-    // TODO rework this method
-    // kang
+
     private void tryComputeMaxWidth() {
-        if (this.mComputeMaxWidth) {
-            byte var1 = 0;
-            float var2 = 0.0F;
-            int var3 = 0;
+        if (!mComputeMaxWidth) return;
+        byte monthIndex = 0;
+        float maxMonthWidth = 0.0F;
+        int index = 0;
 
-            float var4;
-            float var5;
-            float var6;
-            for(var4 = 0.0F; var3 <= 9; var4 = var6) {
-                var5 = this.mSelectorWheelPaint.measureText(formatNumberWithLocale(var3));
-                var6 = var4;
-                if (var5 > var4) {
-                    var6 = var5;
-                }
+        float currentMaximumWidth;
+        float currentWidth;
+        float maxWeekdayWidth;
+        for(currentMaximumWidth = 0.0F; index <= 9; currentMaximumWidth = maxWeekdayWidth) {
+            currentWidth = mSelectorWheelPaint.measureText(formatNumberWithLocale(index));
+            maxWeekdayWidth = Math.max(currentWidth, currentMaximumWidth);
+            ++index;
+        }
 
-                ++var3;
-            }
+        float maxNumberWidth = (float)((int)(2f * currentMaximumWidth));
+        String[] weekdayOrMonthNames = (new DateFormatSymbols(Locale.getDefault())).getShortWeekdays();
+        int weekdayOrMonthNameCount = weekdayOrMonthNames.length;
+        index = 0;
 
-            float var7 = (float)((int)((float)2 * var4));
-            String[] var8 = (new DateFormatSymbols(Locale.getDefault())).getShortWeekdays();
-            int var9 = var8.length;
-            var3 = 0;
+        String weekdayOrMonthName;
+        for(maxWeekdayWidth = 0.0F; index < weekdayOrMonthNameCount; maxWeekdayWidth = currentMaximumWidth) {
+            weekdayOrMonthName = weekdayOrMonthNames[index];
+            currentWidth = mSelectorWheelPaint.measureText(weekdayOrMonthName);
+            currentMaximumWidth = Math.max(currentWidth, maxWeekdayWidth);
 
-            String var10;
-            for(var6 = 0.0F; var3 < var9; var6 = var4) {
-                var10 = var8[var3];
-                var5 = this.mSelectorWheelPaint.measureText(var10);
-                var4 = var6;
-                if (var5 > var6) {
-                    var4 = var5;
-                }
+            ++index;
+        }
 
-                ++var3;
-            }
+        weekdayOrMonthNames = (new DateFormatSymbols(Locale.getDefault())).getShortMonths();
+        weekdayOrMonthNameCount = weekdayOrMonthNames.length;
 
-            var8 = (new DateFormatSymbols(Locale.getDefault())).getShortMonths();
-            var9 = var8.length;
+        for(index = monthIndex; index < weekdayOrMonthNameCount; maxMonthWidth =
+                currentMaximumWidth) {
+            weekdayOrMonthName = weekdayOrMonthNames[index];
+            currentWidth = this.mSelectorWheelPaint.measureText(weekdayOrMonthName);
+            currentMaximumWidth = Math.max(currentWidth, maxMonthWidth);
+            ++index;
+        }
 
-            for(var3 = var1; var3 < var9; var2 = var4) {
-                var10 = var8[var3];
-                var5 = this.mSelectorWheelPaint.measureText(var10);
-                var4 = var2;
-                if (var5 > var2) {
-                    var4 = var5;
-                }
+        int newMaxWidth = (int)(maxNumberWidth + maxWeekdayWidth + maxMonthWidth
+                + mSelectorWheelPaint.measureText(" ") * 2.0F
+                + mSelectorWheelPaint.measureText(","))
+                + mInputText.getPaddingLeft() + mInputText.getPaddingRight();
 
-                ++var3;
-            }
+        if (isHighContrastFontEnabled()) {
+            newMaxWidth = newMaxWidth + (int)Math.ceil(SeslPaintReflector.getHCTStrokeWidth(mSelectorWheelPaint) / 2.0F) * 13;
+        }
 
-            int var11 = (int)(var7 + var6 + var2 + this.mSelectorWheelPaint.measureText(" ") * 2.0F + this.mSelectorWheelPaint.measureText(",")) + this.mInputText.getPaddingLeft() + this.mInputText.getPaddingRight();
-            var3 = var11;
-            if (this.isHighContrastFontEnabled()) {
-                var3 = var11 + (int)Math.ceil((double)(SeslPaintReflector.getHCTStrokeWidth(this.mSelectorWheelPaint) / 2.0F)) * 13;
-            }
-
-            if (this.mMaxWidth != var3) {
-                var11 = this.mMinWidth;
-                if (var3 > var11) {
-                    this.mMaxWidth = var3;
-                } else {
-                    this.mMaxWidth = var11;
-                }
-
-                this.mDelegator.invalidate();
-            }
-
+        if (mMaxWidth != newMaxWidth) {
+            mMaxWidth = Math.max(newMaxWidth, mMinWidth);
+            mDelegator.invalidate();
         }
     }
-    // kang
 
     @Override
     public boolean getWrapSelectorWheel() {
