@@ -16,6 +16,8 @@
 
 package androidx.picker.eyeDropper;
 
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -32,8 +34,6 @@ import android.view.View;
 import android.view.animation.PathInterpolator;
 import android.widget.ImageView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.picker.R;
 import androidx.picker3.app.SeslColorPickerDialog;

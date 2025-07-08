@@ -16,6 +16,8 @@
 
 package androidx.picker3.app;
 
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.content.Context;
@@ -34,8 +36,6 @@ import android.view.Window;
 import android.view.WindowInsets;
 import android.view.WindowManager;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
@@ -188,8 +188,7 @@ public class SeslColorPickerDialogFragment extends AppCompatDialogFragment
     }
     //sesl7
 
-    @NonNull
-    public static SeslColorPickerDialogFragment newInstance(@Nullable OnColorSetListener listener) {
+    public @NonNull static SeslColorPickerDialogFragment newInstance(@Nullable OnColorSetListener listener) {
         SeslColorPickerDialogFragment instance = new SeslColorPickerDialogFragment();
 
         final Bundle args = new Bundle();
@@ -199,8 +198,7 @@ public class SeslColorPickerDialogFragment extends AppCompatDialogFragment
         return instance;
     }
 
-    @NonNull
-    public static SeslColorPickerDialogFragment newInstance(@Nullable OnColorSetListener listener,
+    public @NonNull static SeslColorPickerDialogFragment newInstance(@Nullable OnColorSetListener listener,
                                                             int currentColor) {
         SeslColorPickerDialogFragment instance = new SeslColorPickerDialogFragment();
 
@@ -212,8 +210,7 @@ public class SeslColorPickerDialogFragment extends AppCompatDialogFragment
         return instance;
     }
 
-    @NonNull
-    public static SeslColorPickerDialogFragment newInstance(@Nullable OnColorSetListener onColorSetListener,
+    public @NonNull static SeslColorPickerDialogFragment newInstance(@Nullable OnColorSetListener onColorSetListener,
                                                             int[] recentlyUsedColors) {
         SeslColorPickerDialogFragment instance = new SeslColorPickerDialogFragment();
 
@@ -225,8 +222,7 @@ public class SeslColorPickerDialogFragment extends AppCompatDialogFragment
         return instance;
     }
 
-    @NonNull
-    public static SeslColorPickerDialogFragment newInstance(@Nullable OnColorSetListener onColorSetListener,
+    public @NonNull static SeslColorPickerDialogFragment newInstance(@Nullable OnColorSetListener onColorSetListener,
                                                             int currentColor,
             int[] recentlyUsedColors, boolean showOpacityBar) {
         SeslColorPickerDialogFragment instance = new SeslColorPickerDialogFragment();
@@ -241,8 +237,7 @@ public class SeslColorPickerDialogFragment extends AppCompatDialogFragment
         return instance;
     }
 
-    @NonNull
-    public static SeslColorPickerDialogFragment newInstance(@Nullable OnColorSetListener onColorSetListener,
+    public @NonNull static SeslColorPickerDialogFragment newInstance(@Nullable OnColorSetListener onColorSetListener,
             int currentColor, int[] recentlyUsedColors, boolean showOpacityBar, boolean showOnlySpectrum) {
         SeslColorPickerDialogFragment instance = new SeslColorPickerDialogFragment();
 
@@ -297,8 +292,7 @@ public class SeslColorPickerDialogFragment extends AppCompatDialogFragment
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 window.getDecorView().setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
                     @Override
-                    @NonNull
-                    public WindowInsets onApplyWindowInsets(@NonNull View view, @NonNull WindowInsets windowInsets) {
+                    public @NonNull WindowInsets onApplyWindowInsets(@NonNull View view, @NonNull WindowInsets windowInsets) {
                         WindowManager.LayoutParams attributes = window.getAttributes();
                         attributes.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_NEVER;
                         window.setAttributes(attributes);
@@ -446,8 +440,7 @@ public class SeslColorPickerDialogFragment extends AppCompatDialogFragment
     }
 
     @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
-    @NonNull
-    public SeslColorPicker getColorPicker() {
+    public @NonNull SeslColorPicker getColorPicker() {
         return mColorPicker;
     }
 

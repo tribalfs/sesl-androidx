@@ -16,6 +16,8 @@
 
 package androidx.picker.app;
 
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.util.TypedValue;
@@ -24,8 +26,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.picker.R;
 import androidx.picker.widget.SeslColorPicker;

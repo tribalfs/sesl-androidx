@@ -20,6 +20,8 @@ dependencies {
     constraints {
         implementation(libs.sesl.androidx.coreKtx)
     }
+
+    api(libs.jspecify)
 }
 
 extra.set(

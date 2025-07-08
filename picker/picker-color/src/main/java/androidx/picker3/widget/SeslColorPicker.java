@@ -16,6 +16,8 @@
 
 package androidx.picker3.widget;
 
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 import static android.content.res.Configuration.SCREENLAYOUT_SIZE_LARGE;
 import static android.content.res.Configuration.SCREENLAYOUT_SIZE_MASK;
@@ -24,10 +26,7 @@ import static android.view.MotionEvent.ACTION_DOWN;
 import static android.view.MotionEvent.ACTION_UP;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.ActivityOptions;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -35,7 +34,6 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -56,8 +54,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.IntDef;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.graphics.drawable.SeslRecoilDrawable;
@@ -1196,8 +1192,7 @@ public class SeslColorPicker extends LinearLayout {
      * @return The {@link SeslRecentColorInfo} instance for this color picker.
      *         This method never returns {@code null}.
      */
-    @NonNull
-    public SeslRecentColorInfo getRecentColorInfo() {
+    public @NonNull SeslRecentColorInfo getRecentColorInfo() {
         return mRecentColorInfo;
     }
 

@@ -16,6 +16,8 @@
 
 package androidx.picker3.app;
 
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Context;
@@ -30,8 +32,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.picker.R;
 import androidx.picker.eyeDropper.SeslBitmapHolder;
@@ -195,8 +195,7 @@ public class SeslColorPickerDialog extends AlertDialog
      *
      * @return The {@link SeslColorPicker} instance.
      */
-    @NonNull
-    public SeslColorPicker getColorPicker() {
+    public @NonNull SeslColorPicker getColorPicker() {
         return mColorPicker;
     }
 

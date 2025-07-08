@@ -16,10 +16,9 @@
 
 package androidx.picker.eyeDropper;
 
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 import android.graphics.Bitmap;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import java.lang.ref.WeakReference;
 
@@ -60,8 +59,7 @@ public class SeslBitmapHolder {
      *
      * @return The Bitmap if available, otherwise null.
      */
-    @Nullable
-    public static Bitmap getBitmap() {
+    public @Nullable static Bitmap getBitmap() {
         WeakReference<Bitmap> weakReference = sBitmapWeakReference;
         if (weakReference != null) {
             return weakReference.get();

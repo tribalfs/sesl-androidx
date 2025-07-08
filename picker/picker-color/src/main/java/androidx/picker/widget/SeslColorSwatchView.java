@@ -16,6 +16,7 @@
 
 package androidx.picker.widget;
 
+import org.jspecify.annotations.NonNull;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
@@ -31,7 +32,6 @@ import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.Button;
 
-import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.customview.widget.ExploreByTouchHelper;

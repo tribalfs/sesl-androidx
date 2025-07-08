@@ -16,6 +16,8 @@
 
 package androidx.picker.app;
 
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -24,8 +26,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.appcompat.util.SeslMisc;
@@ -59,12 +59,11 @@ public class SeslColorPickerDialogFragment extends AppCompatDialogFragment
         void onColorSet(int color);
     }
 
-    public void setOnColorChangedListener(@Nullable SeslColorPicker.OnColorChangedListener listener) {
+    public void setOnColorChangedListener(SeslColorPicker.@Nullable OnColorChangedListener listener) {
         mOnColorChangedListener = listener;
     }
 
-    @NonNull
-    public static SeslColorPickerDialogFragment newInstance(@Nullable OnColorSetListener listener) {
+    public @NonNull static SeslColorPickerDialogFragment newInstance(@Nullable OnColorSetListener listener) {
         SeslColorPickerDialogFragment instance = new SeslColorPickerDialogFragment();
 
         final Bundle args = new Bundle();
@@ -74,8 +73,7 @@ public class SeslColorPickerDialogFragment extends AppCompatDialogFragment
         return instance;
     }
 
-    @NonNull
-    public static SeslColorPickerDialogFragment newInstance(@Nullable OnColorSetListener listener,
+    public @NonNull static SeslColorPickerDialogFragment newInstance(@Nullable OnColorSetListener listener,
                                                             int currentColor) {
         SeslColorPickerDialogFragment instance = new SeslColorPickerDialogFragment();
 
@@ -87,8 +85,7 @@ public class SeslColorPickerDialogFragment extends AppCompatDialogFragment
         return instance;
     }
 
-    @NonNull
-    public static SeslColorPickerDialogFragment newInstance(@Nullable OnColorSetListener onColorSetListener,
+    public @NonNull static SeslColorPickerDialogFragment newInstance(@Nullable OnColorSetListener onColorSetListener,
                                                             int[] recentlyUsedColors) {
         SeslColorPickerDialogFragment instance = new SeslColorPickerDialogFragment();
 
@@ -100,8 +97,7 @@ public class SeslColorPickerDialogFragment extends AppCompatDialogFragment
         return instance;
     }
 
-    @NonNull
-    public static SeslColorPickerDialogFragment newInstance(@Nullable OnColorSetListener onColorSetListener,
+    public @NonNull static SeslColorPickerDialogFragment newInstance(@Nullable OnColorSetListener onColorSetListener,
                                                             int currentColor,
             int[] recentlyUsedColors) {
         SeslColorPickerDialogFragment instance = new SeslColorPickerDialogFragment();

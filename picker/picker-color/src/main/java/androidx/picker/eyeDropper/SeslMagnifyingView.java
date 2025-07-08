@@ -16,6 +16,7 @@
 
 package androidx.picker.eyeDropper;
 
+import org.jspecify.annotations.NonNull;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -26,7 +27,6 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.picker.R;
 
 /**

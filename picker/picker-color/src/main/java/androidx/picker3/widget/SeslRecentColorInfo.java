@@ -16,8 +16,7 @@
 
 package androidx.picker3.widget;
 
-import androidx.annotation.Nullable;
-
+import org.jspecify.annotations.Nullable;
 import java.util.ArrayList;
 
 /*
@@ -44,8 +43,7 @@ public class SeslRecentColorInfo {
         mCurrentColor = currentColor;
     }
 
-    @Nullable
-    public Integer getCurrentColor() {
+    public @Nullable Integer getCurrentColor() {
         return mCurrentColor;
     }
 
@@ -53,13 +51,11 @@ public class SeslRecentColorInfo {
         mNewColor = newColor;
     }
 
-    @Nullable
-    public Integer getNewColor() {
+    public @Nullable Integer getNewColor() {
         return mNewColor;
     }
 
-    @Nullable
-    public Integer getSelectedColor() {
+    public @Nullable Integer getSelectedColor() {
         return mSelectedColor;
     }
 
