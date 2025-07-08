@@ -16,13 +16,12 @@
 
 package androidx.picker.widget;
 
+import org.jspecify.annotations.NonNull;
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.PathInterpolator;
-
-import androidx.annotation.NonNull;
 
 /**
  * Provides reveal animation for the {@link SeslCircularSeekBarView}.

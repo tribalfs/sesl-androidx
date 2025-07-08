@@ -16,6 +16,8 @@
 
 package androidx.picker.widget;
 
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY;
 
 import android.annotation.SuppressLint;
@@ -38,8 +40,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import androidx.annotation.IntDef;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.picker.util.SeslAnimationListener;
@@ -80,8 +80,7 @@ public class SeslNumberPicker extends LinearLayout {
             mZeroDigit = getZeroDigit(locale);
         }
 
-        @NonNull
-        public String format(int value) {
+        public @NonNull String format(int value) {
             final Locale currentLocale = Locale.getDefault();
             if (mZeroDigit != getZeroDigit(currentLocale)) {
                 init(currentLocale);
@@ -415,8 +414,7 @@ public class SeslNumberPicker extends LinearLayout {
         mDelegate.setMaxValue(maxValue);
     }
 
-    @Nullable
-    public String[] getDisplayedValues() {
+    public @Nullable String[] getDisplayedValues() {
         return mDelegate.getDisplayedValues();
     }
 
@@ -498,8 +496,7 @@ public class SeslNumberPicker extends LinearLayout {
         mDelegate.setMaxInputLength(limit);
     }
 
-    @NonNull
-    public EditText getEditText() {
+    public @NonNull EditText getEditText() {
         return mDelegate.getEditText();
     }
 

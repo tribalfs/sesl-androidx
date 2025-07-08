@@ -16,16 +16,15 @@
 
 package androidx.picker.util;
 
+import org.jspecify.annotations.NonNull;
 import android.graphics.Typeface;
 import android.os.Build;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 public class SeslDatePickerFontUtil {
-    @NonNull
-    public static Typeface getRegularFontTypeface() {
+    public @NonNull static Typeface getRegularFontTypeface() {
         if (Build.VERSION.SDK_INT >= 33) {
             return Typeface.create(Typeface.create("sec", Typeface.NORMAL), 400, false);
         }else{
@@ -33,8 +32,7 @@ public class SeslDatePickerFontUtil {
         }
     }
 
-    @NonNull
-    public static Typeface getBoldFontTypeface() {
+    public @NonNull static Typeface getBoldFontTypeface() {
         if (Build.VERSION.SDK_INT >= 33) {
             return Typeface.create(Typeface.create("sec", Typeface.NORMAL), 600, false);
         }else{

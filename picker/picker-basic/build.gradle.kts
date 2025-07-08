@@ -16,6 +16,7 @@ dependencies {
     api(libs.androidx.annotation)
     api(libs.androidx.dynamicanimation)
     implementation(libs.androidx.constraintLayout)
+    api(libs.jspecify)
 
     api(libs.sesl.androidx.appcompat)
     api(libs.sesl.androidx.core)

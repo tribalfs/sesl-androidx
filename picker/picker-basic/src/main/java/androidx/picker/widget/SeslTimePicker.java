@@ -16,6 +16,8 @@
 
 package androidx.picker.widget;
 
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY;
 
 import android.content.Context;
@@ -31,8 +33,6 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 
 import androidx.annotation.IntRange;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.core.math.MathUtils;
@@ -257,13 +257,11 @@ public class SeslTimePicker extends FrameLayout {
         mDelegate.startAnimation(delayTime, listener);
     }
 
-    @NonNull
-    public EditText getEditText(int picker) {
+    public @NonNull EditText getEditText(int picker) {
         return mDelegate.getEditText(picker);
     }
 
-    @NonNull
-    public SeslNumberPicker getNumberPicker(int picker) {
+    public @NonNull SeslNumberPicker getNumberPicker(int picker) {
         return mDelegate.getNumberPicker(picker);
     }
 

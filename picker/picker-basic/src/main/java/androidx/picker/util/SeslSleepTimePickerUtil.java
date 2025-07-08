@@ -16,6 +16,8 @@
 
 package androidx.picker.util;
 
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -28,8 +30,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 
 import java.util.Locale;
@@ -48,8 +48,7 @@ public class SeslSleepTimePickerUtil {
         return (((((((int) (point / DEGREE_BIAS)) * DEGREE_BIAS) - 270.0f) + TOTAL_DEGREE) % TOTAL_DEGREE) * TOTAL_MINUTES) / TOTAL_DEGREE;
     }
 
-    @Nullable
-    public static Typeface getFontFromOpenTheme(@NonNull Context context) {
+    public @Nullable static Typeface getFontFromOpenTheme(@NonNull Context context) {
         String string = Settings.System.getString(context.getContentResolver(), "theme_font_clock");
         if (string != null) {
             try {
@@ -113,13 +112,11 @@ public class SeslSleepTimePickerUtil {
         return DateFormat.getBestDateTimePattern(Locale.getDefault(), "hm").startsWith("a");
     }
 
-    @NonNull
-    public static String toDigitString(int i) {
+    public @NonNull static String toDigitString(int i) {
         return String.format("%d", i);
     }
 
-    @NonNull
-    public static String toTwoDigitString(int i) {
+    public @NonNull static String toTwoDigitString(int i) {
         return String.format("%02d", i);
     }
 
@@ -137,8 +134,7 @@ public class SeslSleepTimePickerUtil {
         return false;
     }
 
-    @NonNull
-    public static String getTimeSeparatorText(@NonNull Context context) {
+    public @NonNull static String getTimeSeparatorText(@NonNull Context context) {
         String finalTimeSeparator;
         String bestDateTimePattern = DateFormat.getBestDateTimePattern(Locale.getDefault(),
                 DateFormat.is24HourFormat(context) ? "Hm" : "hm");

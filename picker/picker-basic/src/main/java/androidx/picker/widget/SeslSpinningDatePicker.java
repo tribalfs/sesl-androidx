@@ -16,6 +16,8 @@
 
 package androidx.picker.widget;
 
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY;
 import static androidx.picker.util.SeslDatePickerFontUtil.getRegularFontTypeface;
 
@@ -60,8 +62,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewAnimator;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.ViewCompat;
@@ -1551,8 +1551,7 @@ public class SeslSpinningDatePicker extends LinearLayout
             return mPositionCount;
         }
 
-        @NonNull
-        public Object instantiateItem(@NonNull View pager, int position) {
+        public @NonNull Object instantiateItem(@NonNull View pager, int position) {
             SeslSimpleMonthView v = new SeslSimpleMonthView(mContext);
             debugLog("instantiateItem : " + position);
             v.setClickable(true);

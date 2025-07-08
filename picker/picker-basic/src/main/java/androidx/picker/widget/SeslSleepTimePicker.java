@@ -16,6 +16,8 @@
 
 package androidx.picker.widget;
 
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 import static android.util.TypedValue.COMPLEX_UNIT_PX;
 
 import static androidx.picker.util.SeslSleepTimePickerUtil.getFontFromOpenTheme;
@@ -54,8 +56,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.TextViewCompat;
@@ -890,9 +890,8 @@ public class SeslSleepTimePicker extends LinearLayout {
         initSleepTimePickerData();
     }
 
-    @NonNull
     @Override
-    public final Parcelable onSaveInstanceState() {
+    public @NonNull final Parcelable onSaveInstanceState() {
         Parcelable onSaveInstanceState = super.onSaveInstanceState();
         Bundle bundle = new Bundle();
         bundle.putParcelable("PARENT", onSaveInstanceState);
@@ -919,13 +918,11 @@ public class SeslSleepTimePicker extends LinearLayout {
         }
     }
 
-    @NonNull
-    public LinearLayout getBedTimeView() {
+    public @NonNull LinearLayout getBedTimeView() {
         return mBedTimeView;
     }
 
-    @NonNull
-    public LinearLayout getWakeUpTimeView() {
+    public @NonNull LinearLayout getWakeUpTimeView() {
         return mWakeUpTimeView;
     }
 

@@ -16,6 +16,8 @@
 
 package androidx.picker.widget;
 
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 import static android.view.MotionEvent.ACTION_CANCEL;
 import static android.view.MotionEvent.ACTION_DOWN;
 import static android.view.MotionEvent.ACTION_MOVE;
@@ -48,8 +50,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.PathInterpolator;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.picker.R;
 import androidx.picker.util.SeslSleepTimePickerUtil;
@@ -931,9 +931,8 @@ public class SeslCircularSeekBarView extends View {
         recalculateAll();
     }
 
-    @NonNull
     @Override
-    public final Parcelable onSaveInstanceState() {
+    public @NonNull final Parcelable onSaveInstanceState() {
         Parcelable onSaveInstanceState = super.onSaveInstanceState();
         Bundle bundle = new Bundle();
         bundle.putParcelable("PARENT", onSaveInstanceState);

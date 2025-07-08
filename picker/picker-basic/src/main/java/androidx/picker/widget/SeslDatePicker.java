@@ -16,6 +16,8 @@
 
 package androidx.picker.widget;
 
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static androidx.picker.util.SeslDatePickerFontUtil.getRegularFontTypeface;
@@ -67,8 +69,6 @@ import android.widget.TextView;
 import android.widget.ViewAnimator;
 
 import androidx.annotation.IntDef;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.appcompat.widget.TooltipCompat;
 import androidx.core.content.res.ResourcesCompat;
@@ -1074,8 +1074,7 @@ public class SeslDatePicker extends LinearLayout
 
     }
 
-    @NonNull
-    public Boolean getCalendarViewDisabled(){
+    public @NonNull Boolean getCalendarViewDisabled(){
         return mIsCalendarViewDisabled;
     }
 
@@ -1153,9 +1152,8 @@ public class SeslDatePicker extends LinearLayout
         dispatchThawSelfOnly(container);
     }
 
-    @NonNull
     @Override
-    protected Parcelable onSaveInstanceState() {
+    protected @NonNull Parcelable onSaveInstanceState() {
         Parcelable superState = super.onSaveInstanceState();
         int year = mCurrentDate.get(Calendar.YEAR);
         int month = mCurrentDate.get(Calendar.MONTH);
@@ -1334,13 +1332,11 @@ public class SeslDatePicker extends LinearLayout
         return newCalendar;
     }
 
-    @NonNull
-    public Calendar getStartDate() {
+    public @NonNull Calendar getStartDate() {
         return mStartDate;
     }
 
-    @NonNull
-    public Calendar getEndDate() {
+    public @NonNull Calendar getEndDate() {
         return mEndDate;
     }
 
@@ -1400,7 +1396,7 @@ public class SeslDatePicker extends LinearLayout
             return mMaxDate;
         }
 
-        public static final @NonNull Parcelable.Creator<SavedState> CREATOR = new Creator<>() {
+        public static final Parcelable.@NonNull Creator<SavedState> CREATOR = new Creator<>() {
             public SavedState createFromParcel(Parcel in) {
                 return new SavedState(in);
             }
@@ -1604,8 +1600,7 @@ public class SeslDatePicker extends LinearLayout
             return mPositionCount;
         }
 
-        @NonNull
-        public Object instantiateItem(@NonNull View pager, int position) {
+        public @NonNull Object instantiateItem(@NonNull View pager, int position) {
             SeslSimpleMonthView v = new SeslSimpleMonthView(mContext);
             debugLog("instantiateItem : " + position);
             v.setClickable(true);
@@ -2255,13 +2250,11 @@ public class SeslDatePicker extends LinearLayout
         mSpinnerLayout.setOnEditTextModeChangedListener(this, onEditModeChangedListener);
     }
 
-    @NonNull
-    public EditText getEditText(int picker) {
+    public @NonNull EditText getEditText(int picker) {
         return mSpinnerLayout.getEditText(picker);
     }
 
-    @NonNull
-    public SeslNumberPicker getNumberPicker(int picker) {
+    public @NonNull SeslNumberPicker getNumberPicker(int picker) {
         return mSpinnerLayout.getNumberPicker(picker);
     }
 
@@ -2625,8 +2618,7 @@ public class SeslDatePicker extends LinearLayout
         mIsLeapStartMonth = isLeapStartMonth ? LEAP_MONTH : NOT_LEAP_MONTH;
     }
 
-    @NonNull
-    public int[] getLunarStartDate() {
+    public int @NonNull [] getLunarStartDate() {
         return new int[]{mLunarStartYear, mLunarStartMonth, mLunarStartDay, mIsLeapStartMonth};
     }
 
@@ -2637,8 +2629,7 @@ public class SeslDatePicker extends LinearLayout
         mIsLeapEndMonth = isLeapEndMonth ? LEAP_MONTH : NOT_LEAP_MONTH;
     }
 
-    @NonNull
-    public int[] getLunarEndDate() {
+    public int @NonNull [] getLunarEndDate() {
         return new int[]{mLunarEndYear, mLunarEndMonth, mLunarEndDay, mIsLeapEndMonth};
     }
 

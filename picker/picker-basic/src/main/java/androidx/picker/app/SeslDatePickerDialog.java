@@ -16,6 +16,8 @@
 
 package androidx.picker.app;
 
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -24,8 +26,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.util.SeslMisc;
@@ -141,8 +141,7 @@ public class SeslDatePickerDialog extends AlertDialog
         }
     }
 
-    @NonNull
-    public SeslDatePicker getDatePicker() {
+    public @NonNull SeslDatePicker getDatePicker() {
         return mDatePicker;
     }
 
@@ -151,9 +150,8 @@ public class SeslDatePickerDialog extends AlertDialog
     }
 
 
-    @NonNull
     @Override
-    public Bundle onSaveInstanceState() {
+    public @NonNull Bundle onSaveInstanceState() {
         Bundle state = super.onSaveInstanceState();
         state.putInt(YEAR, mDatePicker.getYear());
         state.putInt(MONTH, mDatePicker.getMonth());

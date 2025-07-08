@@ -16,6 +16,7 @@
 
 package androidx.picker.widget;
 
+import org.jspecify.annotations.NonNull;
 import static android.view.View.IMPORTANT_FOR_ACCESSIBILITY_AUTO;
 import static android.view.View.IMPORTANT_FOR_ACCESSIBILITY_YES;
 
@@ -56,7 +57,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.picker.R;
 import androidx.picker.util.SeslAnimationListener;
 import androidx.reflect.icu.SeslLocaleDataReflector;

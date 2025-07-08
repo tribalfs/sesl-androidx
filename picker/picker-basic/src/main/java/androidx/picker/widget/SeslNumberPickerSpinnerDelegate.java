@@ -16,6 +16,7 @@
 
 package androidx.picker.widget;
 
+import org.jspecify.annotations.NonNull;
 import static android.view.View.IMPORTANT_FOR_ACCESSIBILITY_AUTO;
 import static android.view.View.IMPORTANT_FOR_ACCESSIBILITY_YES;
 
@@ -75,7 +76,6 @@ import android.widget.Scroller;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 import androidx.appcompat.util.SeslMisc;
 import androidx.core.content.res.ResourcesCompat;
@@ -2422,9 +2422,8 @@ class SeslNumberPickerSpinnerDelegate extends SeslNumberPicker.AbsNumberPickerDe
             return InputType.TYPE_CLASS_TEXT;
         }
 
-        @NonNull
         @Override
-        protected char[] getAcceptedChars() {
+        protected char @NonNull [] getAcceptedChars() {
             return DIGIT_CHARACTERS;
         }
 

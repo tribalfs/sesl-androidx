@@ -16,6 +16,7 @@
 
 package androidx.picker.widget;
 
+import org.jspecify.annotations.NonNull;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY;
 import static androidx.picker.util.SeslDatePickerFontUtil.getBoldFontTypeface;
 import static androidx.picker.util.SeslDatePickerFontUtil.getRegularFontTypeface;
@@ -41,7 +42,6 @@ import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;

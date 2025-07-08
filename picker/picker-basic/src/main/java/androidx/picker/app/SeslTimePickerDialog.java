@@ -16,6 +16,8 @@
 
 package androidx.picker.app;
 
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -23,8 +25,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.util.SeslMisc;
 import androidx.picker.R;
@@ -147,9 +147,8 @@ public class SeslTimePickerDialog extends AlertDialog
     }
 
 
-    @NonNull
     @Override
-    public Bundle onSaveInstanceState() {
+    public @NonNull Bundle onSaveInstanceState() {
         Bundle state = super.onSaveInstanceState();
         state.putInt(HOUR, mTimePicker.getHour());
         state.putInt(MINUTE, mTimePicker.getMinute());

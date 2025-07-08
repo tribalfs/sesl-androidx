@@ -16,6 +16,7 @@
 
 package androidx.picker.widget;
 
+import org.jspecify.annotations.NonNull;
 import static android.view.View.IMPORTANT_FOR_ACCESSIBILITY_AUTO;
 import static android.view.View.IMPORTANT_FOR_ACCESSIBILITY_YES;
 
@@ -65,7 +66,6 @@ import android.widget.OverScroller;
 import android.widget.Scroller;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.util.SeslMisc;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.dynamicanimation.animation.DynamicAnimation;
