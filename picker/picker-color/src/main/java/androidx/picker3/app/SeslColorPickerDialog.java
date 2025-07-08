@@ -356,8 +356,7 @@ public class SeslColorPickerDialog extends AlertDialog
      * </p>
      *
      * @param listener The listener to be invoked when a bitmap is needed for the
-     *                 eye dropper, or {@code null} to disable the eye dropper
-     *                 by removing any previously set bitmap.
+     *                 eye dropper
      * @see OnBitmapSetListener
      * @see #disableEyeDropper(boolean)
      */
