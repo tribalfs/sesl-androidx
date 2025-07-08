@@ -1228,52 +1228,138 @@ public class SeslColorPicker extends LinearLayout {
         }
     }
 
+    /**
+     * Represents the currently selected color in the picker.
+     * <p>
+     * This class encapsulates the color as an ARGB integer, its alpha component
+     * (scaled to 0-255 range), and its HSV (Hue, Saturation, Value) representation.
+     * It provides methods to set the color from various sources (integer, HSV components)
+     * and retrieve its components.
+     * </p>
+     * <p>
+     * The alpha value is stored internally as an integer from 0 to 255, but some
+     * methods may accept or return it as a percentage (0-100).
+     * The HSV components are stored as a float array:
+     * <ul>
+     *   <li>{@code mHsv[0]} (Hue): 0-360 degrees</li>
+     *   <li>{@code mHsv[1]} (Saturation): 0.0-1.0</li>
+     *   <li>{@code mHsv[2]} (Value/Brightness): 0.0-1.0</li>
+     * </ul>
+     * </p>
+     */
     public static class PickedColor {
         private Integer mColor = null;
         private int mAlpha = 255;
         private final float[] mHsv = new float[3];
 
+        /**
+         * Sets the current color.
+         * <p>
+         * This method updates the internal color representation, its alpha component,
+         * and its HSV (Hue, Saturation, Value) representation based on the provided
+         * {@code color} integer.
+         *
+         * @param color The new color to set, as an ARGB integer. Must not be null.
+         *              The alpha component will be extracted from this color.
+         */
         public void setColor(@NonNull Integer color) {
             mColor = color;
             mAlpha = Color.alpha(color);
             Color.colorToHSV(mColor, mHsv);
         }
 
-        @Nullable
-        public Integer getColor() {
+        /**
+         * Returns the current color selected in the picker.
+         *
+         * @return The currently selected ARGB color as an integer, or {@code null}
+         *         if no color has been set or selected yet.
+         */
+        public @Nullable Integer getColor() {
             return mColor;
         }
 
-        public void setColorWithAlpha(int i, int i2) {
-            mColor = i;
-            mAlpha = (int) Math.ceil((i2 * 100) / 255.0f);
+        /**
+         * Sets the current color and its alpha value.
+         * <p>
+         * The color is stored internally, and its HSV (Hue, Saturation, Value)
+         * components are extracted. The provided alpha value is scaled from a 0-255 range
+         * to a 0-100 range for internal representation.
+         * </p>
+         *
+         * @param color The base color (RGB integer value, alpha component is ignored and
+         *              replaced by the {@code alpha} parameter).
+         * @param alpha The alpha value for the color, in the range 0 (transparent) to 255 (opaque).
+         *              This will be internally scaled to a 0-100 range.
+         */
+        public void setColorWithAlpha(int color, int alpha) {
+            mColor = color;
+            mAlpha = (int) Math.ceil((alpha * 100) / 255.0f);
             Color.colorToHSV(mColor, mHsv);
         }
 
-        public void setHS(float f, float f2, int i) {
+        /**
+         * Sets the hue and saturation of the color, maintaining the current alpha.
+         * The value (brightness) component of the HSV color is set to 1.0f (fully bright).
+         * The alpha is updated based on the provided {@code value} parameter,
+         * which is treated as a percentage (0-100) and scaled to an alpha value (0-255).
+         *
+         * @param hue        The hue component of the color (0-360).
+         * @param saturation The saturation component of the color (0-1).
+         * @param value      The desired opacity percentage (0-100), which will be
+         *                   converted to an alpha value (0-255).
+         */
+        public void setHS(float hue, float saturation, int value) {
             float[] fArr = mHsv;
-            fArr[0] = f;
-            fArr[1] = f2;
+            fArr[0] = hue;
+            fArr[1] = saturation;
             fArr[2] = 1.0f;
             mColor = Color.HSVToColor(mAlpha, fArr);
-            mAlpha = (int) Math.ceil((i * 100) / 255.0f);
+            mAlpha = (int) Math.ceil((value * 100) / 255.0f);
         }
 
-        public void setV(float f) {
-            float[] fArr = mHsv;
-            fArr[2] = f;
-            mColor = Color.HSVToColor(mAlpha, fArr);
+        /**
+         * Sets the Value (brightness) component of the color in the HSV model.
+         * The Hue and Saturation components remain unchanged. The alpha value
+         * also remains unchanged.
+         *
+         * @param value The new Value, ranging from 0.0 (black) to 1.0 (full brightness).
+         *              Values outside this range will be clamped.
+         */
+        public void setV(float value) {
+            float[] hsvArray = mHsv;
+            hsvArray[2] = value;
+            mColor = Color.HSVToColor(mAlpha, hsvArray);
         }
 
-        public void setAlpha(int i) {
-            mAlpha = i;
-            mColor = Color.HSVToColor(i, mHsv);
+        /**
+         * Sets the alpha (transparency) value of the picked color.
+         *
+         * <p>This method updates the internal alpha value and recalculates the
+         * {@code mColor} based on the current HSV values and the new alpha.
+         *
+         * @param alpha The new alpha value, typically ranging from 0 (fully transparent)
+         *              to 255 (fully opaque).
+         */
+        public void setAlpha(int alpha) {
+            mAlpha = alpha;
+            mColor = Color.HSVToColor(alpha, mHsv);
         }
 
+        /**
+         * Gets the current value (brightness) component of the color in HSV model.
+         * The value ranges from 0.0 (black) to 1.0 (full brightness).
+         *
+         * @return The value component of the current color.
+         */
         public float getV() {
             return mHsv[2];
         }
 
+        /**
+         * Retrieves the alpha component of the current color.
+         *
+         * @return The alpha value, ranging from 0 (fully transparent) to 255 (fully opaque).
+         */
         public int getAlpha() {
             return mAlpha;
         }
