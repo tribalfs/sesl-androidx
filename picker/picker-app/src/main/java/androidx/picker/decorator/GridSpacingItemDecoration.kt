@@ -18,9 +18,10 @@ import androidx.recyclerview.widget.RecyclerView.NO_POSITION
  * The spacing is distributed such that the outer edges of the grid have half the spacing,
  * and the inner gaps between items have the full spacing amount.
  *
- * @param spacing The amount of spacing to apply in pixels.
+ * @param itemWidth The width of the grid item.
+ * @param itemTopBottomSpacing The amount of total top and bottom spacing to apply in pixels.
  */
-class GridSpacingItemDecoration(private val spacing: Int) : RecyclerView.ItemDecoration() {
+class GridSpacingItemDecoration(private val itemWidth: Int, private val itemTopBottomSpacing: Int) : RecyclerView.ItemDecoration() {
 
     override fun getItemOffsets(
         rect: Rect,
@@ -42,11 +43,14 @@ class GridSpacingItemDecoration(private val spacing: Int) : RecyclerView.ItemDec
             val layoutParams = view.layoutParams
             val spanIndex =
                 if (layoutParams is GridLayoutManager.LayoutParams) layoutParams.spanIndex else childAdapterPosition % spanCount
-            val spacing = this.spacing
-            rect.left = spacing - ((spanIndex * spacing) / spanCount)
-            rect.right = ((spanIndex + 1) * spacing) / spanCount
-            rect.top = spacing / 2
-            rect.bottom = spacing / 2
+            val availableWidth =  with(recyclerView) { width - paddingStart - paddingEnd }
+            val itemLeftRightSpacing = (availableWidth - (itemWidth * spanCount)) / (spanCount + 1)
+            rect.left = itemLeftRightSpacing - ((spanIndex * itemLeftRightSpacing) / spanCount)
+            rect.right = ((spanIndex + 1) * itemLeftRightSpacing) / spanCount
+            (itemTopBottomSpacing / 2).let{
+                rect.top = it
+                rect.bottom = it
+            }
         }
     }
 }

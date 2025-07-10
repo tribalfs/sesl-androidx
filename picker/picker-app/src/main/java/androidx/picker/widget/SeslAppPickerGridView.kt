@@ -155,6 +155,7 @@ class SeslAppPickerGridView @JvmOverloads constructor(
         super.setItemDecoration(i, headerFooterAdapter)
         addItemDecoration(
             GridSpacingItemDecoration(
+                context.resources.getDimensionPixelOffset(R.dimen.picker_app_grid_main_item_view_title_width),
                 context.resources.getDimensionPixelOffset(R.dimen.picker_app_grid_item_interval_spacing)
             )
         )

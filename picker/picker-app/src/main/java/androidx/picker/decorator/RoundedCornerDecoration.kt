@@ -66,7 +66,7 @@ class RoundedCornerDecoration(
         for (view in parent.children) {
             val childViewHolder = parent.getChildViewHolder(view)
             if (childViewHolder is GroupTitleViewHolder) {
-                subHeaderRoundedCorner.roundedCorners = 15
+                subHeaderRoundedCorner.roundedCorners = ROUNDED_CORNER_ALL
                 subHeaderRoundedCorner.drawRoundedCorner(view, c)
             } else {
                 val headerFooterAdapter = adapter as? HeaderFooterAdapter

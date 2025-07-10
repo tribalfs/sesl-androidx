@@ -32,9 +32,8 @@ class ListSpacingItemDecoration(
     private val spacing: Int = context.resources.getDimensionPixelOffset(R.dimen.picker_app_list_category_margin_left)
 
     private fun isIgnoreType(composableType: ComposableType): Boolean {
-        val companion = ComposableType
-        return companion.isSame(composableType, ComposableTypeSet.CheckBoxExpander) ||
-        companion.isSame(composableType, ComposableTypeSet.AllSwitch)
+        return ComposableType.isSame(composableType, ComposableTypeSet.CheckBoxExpander) ||
+            ComposableType.isSame(composableType, ComposableTypeSet.AllSwitch)
     }
 
     override fun getItemOffsets(
