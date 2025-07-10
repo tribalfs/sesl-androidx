@@ -30,9 +30,9 @@ class AutoFitGridLayoutManager(context: Context) : GridLayoutManager(context, 1)
     override fun onLayoutChildren(recycler: RecyclerView.Recycler?, state: RecyclerView.State?) {
         if (!forcedSpanCount && (prevWidth != width || (columnWidthChanged && columnWidth > 0))) {
             val availableWidth = width - paddingStart - paddingEnd
-            val coerceAtLeast = max(1, (availableWidth + horizontalInterval) / (columnWidth + horizontalInterval))
-            debug("onLayoutChildren $spanCount -> $coerceAtLeast, availableWidth=$availableWidth")
-            spanCount = coerceAtLeast
+            val computedSpanCount = max(1, (availableWidth + horizontalInterval) / (columnWidth + horizontalInterval))
+            debug("onLayoutChildren $spanCount -> $computedSpanCount, availableWidth=$availableWidth")
+            spanCount = computedSpanCount
             columnWidthChanged = false
             prevWidth = width
         }
