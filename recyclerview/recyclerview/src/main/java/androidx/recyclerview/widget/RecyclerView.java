@@ -17848,7 +17848,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
     }
 
     /**
-     * Enables or disables smooth scrolling.
+     * Enables or disables OneUI-device-specific smooth scrolling behavior on user flings.
      *
      * @param enabled True to enable smooth scrolling, false to disable.
      */
