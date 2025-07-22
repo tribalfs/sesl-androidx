@@ -23,6 +23,7 @@ import android.view.View
 import androidx.annotation.ColorInt
 import androidx.annotation.IntDef
 import androidx.annotation.RequiresApi
+import androidx.reflect.DeviceInfo
 import androidx.reflect.provider.SeslSettingsReflector
 import androidx.reflect.view.SeslSemBlurInfoReflector
 import androidx.reflect.view.SeslViewReflector
@@ -48,7 +49,10 @@ object SemBlurCompat {
     const val BLUR_MODE_CANVAS = 2
 
     const val BLUR_BASE_OFFSET = 101
-    const val BLUR_UI_HIGH_ULTRA_THICK_D = 130
+    const val BLUR_UI_HIGH_ULTRA_THICK_DARK = 130
+    @Deprecated("This is a typo error for `BLUR_UI_HIGH_ULTRA_THICK_DARK` constant.",
+        level = DeprecationLevel.ERROR)
+    const val BLUR_UI_HIGH_ULTRA_THICK_D = BLUR_UI_HIGH_ULTRA_THICK_DARK
     const val BLUR_UI_HIGH_ULTRA_THICK_LIGHT = 115
     const val BLUR_UI_LOW_ULTRA_THICK_DARK = 120
     const val BLUR_UI_LOW_ULTRA_THICK_LIGHT= 105
@@ -66,7 +70,7 @@ object SemBlurCompat {
     private fun isReduceTransparencySettingsEnabled(context: Context): Boolean {
         val field_A11Y_REDUCE_TRANSPARENCY = SeslSettingsReflector.SeslSystemReflector.getField_SEM_ACCESSIBILITY_REDUCE_TRANSPARENCY()
         return field_A11Y_REDUCE_TRANSPARENCY != "not_supported" && Settings.System.getInt(
-            context.getContentResolver(),
+            context.contentResolver,
             field_A11Y_REDUCE_TRANSPARENCY,
             BLUR_MODE_WINDOW
         ) == BLUR_MODE_WINDOW_CAPTURED
@@ -77,6 +81,24 @@ object SemBlurCompat {
         return Settings.System.getString(context.contentResolver, "current_sec_active_themepackage") != null
     }
 
+    /**
+     * Sets a blur effect on the given view on a device running Samsung's One UI.
+     *
+     * This function allows applying a blur effect with specific parameters for color, radius,
+     * blur mode, and corner radius.
+     *
+     * The blur effect will not be applied if a custom theme is applied or if the "reduce transparency and blur"
+     * accessibility setting is enabled.
+     *
+     * @param view The view to apply the blur effect to.
+     * @param color The background color for the blur effect.
+     * @param radius The radius of the blur.
+     * @param blurMode The blur mode to use. Must be one of [BLUR_MODE_WINDOW],
+     *   [BLUR_MODE_WINDOW_CAPTURED], or [BLUR_MODE_CANVAS].
+     * @param cornerRadius The corner radius for the blurred background.
+     * @return `true` if the blur effect was successfully applied, `false` otherwise (e.g., if
+     *   themes are applied, reduce transparency is enabled, or the blur builder creation failed).
+     */
     @JvmStatic
     fun setBlurEffect(
         view: View,
@@ -103,6 +125,27 @@ object SemBlurCompat {
         return true
     }
 
+    /**
+     * Sets a preset blur effect on the given view on a device running Samsung's One UI.
+     *
+     * This function allows applying a predefined blur effect using a color curve preset.
+     * It also allows optional customization of the background color and corner radius.
+     *
+     * The blur effect will not be applied if a custom theme is applied or if the "reduce transparency"
+     * accessibility setting is enabled.
+     *
+     * @param view The view to apply the blur effect to.
+     * @param blurMode The blur mode to use. Must be one of [BLUR_MODE_WINDOW],
+     *   [BLUR_MODE_WINDOW_CAPTURED], or [BLUR_MODE_CANVAS].
+     * @param colorCurvePreset The preset for the color curve of the blur effect.
+     *   Refer to constants like [BLUR_UI_HIGH_ULTRA_THICK_DARK] for available presets.
+     * @param color Optional: The background color for the blur effect. If null, a default
+     *   color based on the will might be used.
+     * @param cornerRadius Optional: The corner radius for the blurred background. If null,
+     *   a default corner radius might be used.
+     * @return `true` if the blur effect was successfully applied, `false` otherwise (e.g., if
+     *   themes are applied, reduce transparency is enabled, or the blur builder creation failed).
+     */
     @JvmStatic
     @JvmOverloads
     @RequiresApi(35)
@@ -139,10 +182,26 @@ object SemBlurCompat {
         return true
     }
 
+    /**
+     * Checks if the blur effect preset functionality is supported on the current device.
+     *
+     * This method verifies if the Android SDK version is 35 or higher and if the device
+     * is running Samsung's One UI.
+     *
+     * @return `true` if blur effect presets are supported, `false` otherwise.
+     */
     @JvmStatic
     @SuppressLint("AnnotateVersionCheck")
-    fun isBlurEffectPresetSupport(): Boolean = Build.VERSION.SDK_INT >= 35
+    fun isBlurEffectPresetSupport(): Boolean = Build.VERSION.SDK_INT >= 35 && DeviceInfo.isOneUI()
 
+    /**
+     * Clears any blur information previously set on the given view.
+     *
+     * This function effectively removes any blur effect that was applied to the view
+     * using [setBlurEffect] or [setBlurEffectPreset].
+     *
+     * @param view The view from which to clear the blur information.
+     */
     @JvmStatic
     fun setBlurInfoClear(view: View) {
         SeslViewReflector.semSetBlurInfo(view, null)
