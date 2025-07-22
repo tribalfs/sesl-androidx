@@ -20,7 +20,7 @@ extra.apply {
             "androidx.viewpager2" to listOf("1.1.0", "1.0.0-sesl8", "rev0", 21, 35),
             "androidx.swiperefreshlayout" to listOf("1.2.0-alpha01", "1.0.0-sesl8", "rev0", 21, 35),
             "androidx.indexscroll" to listOf("1.0.0", "1.0.0-sesl8", "rev0", 21, 35),
-            "androidx.picker-basic" to listOf("1.0.7", "1.0.7-sesl8", "rev0", 21, 35),
+            "androidx.picker-basic" to listOf("1.0.7", "1.0.7-sesl8", "rev1", 21, 35),
             "androidx.picker-color" to listOf("1.0.2", "1.0.2-sesl8", "rev0", 21, 35),
             "androidx.picker-app" to listOf("1.0.6", "1.0.6-sesl8", "rev0", 21, 35),
             "androidx.apppickerview" to listOf("1.0.1", "1.0.1-sesl7", "rev1", 21, 35),
