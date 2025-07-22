@@ -238,15 +238,10 @@ class AppCompatPopupWindow extends PopupWindow {
         if (!DeviceInfo.isOneUI() && !mIsReplacedPoupBackground) {
             View contentView = getContentView();
             ViewOutlineProvider outlineProvider = contentView.getOutlineProvider();
+            if (outlineProvider instanceof RoundedOutlineProvider) return;
 
             final float cornerRadius = mContext.getResources().getDimensionPixelSize(R.dimen.sesl_menu_popup_corner_radius);
-            RoundedOutlineProvider roundedOutlineProvider = new RoundedOutlineProvider(cornerRadius);
-
-            if (outlineProvider != null && outlineProvider.equals(roundedOutlineProvider)){
-                return;
-            }
-
-            contentView.setOutlineProvider(roundedOutlineProvider);
+            contentView.setOutlineProvider(new RoundedOutlineProvider(cornerRadius));
             contentView.setClipToOutline(true);
         }
     }
