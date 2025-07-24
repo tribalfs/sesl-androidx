@@ -2938,11 +2938,15 @@ class AppCompatDelegateImpl extends AppCompatDelegate
             Lifecycle lifecycle = ((LifecycleOwner) activity).getLifecycle();
             if (lifecycle.getCurrentState().isAtLeast(Lifecycle.State.CREATED)) {
                 activity.onConfigurationChanged(conf);
+                // Dispatch the configuration change through the view tree
+                mWindow.getDecorView().dispatchConfigurationChanged(conf);
             }
         } else {
             // Otherwise, we'll fallback to our internal created and destroyed flags.
             if (mCreated && !mDestroyed) {
                 activity.onConfigurationChanged(conf);
+                // Dispatch the configuration change through the view tree
+                mWindow.getDecorView().dispatchConfigurationChanged(conf);
             }
         }
     }
