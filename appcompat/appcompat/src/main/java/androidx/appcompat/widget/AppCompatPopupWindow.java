@@ -58,9 +58,6 @@ import org.jspecify.annotations.Nullable;
  */
 class AppCompatPopupWindow extends PopupWindow {
 
-    private static final boolean COMPAT_OVERLAP_ANCHOR = Build.VERSION.SDK_INT < 21;
-
-    private boolean mOverlapAnchor;
     //Sesl
     private static final int[] ONEUI_BLUR_POPUP_BACKGROUND_RES = new int[] {
             R.drawable.sesl_menu_popup_background,
@@ -127,10 +124,6 @@ class AppCompatPopupWindow extends PopupWindow {
 
     @Override
     public void showAsDropDown(View anchor, int xoff, int yoff) {
-        if (COMPAT_OVERLAP_ANCHOR && mOverlapAnchor) {
-            // If we're pre-L, emulate overlapAnchor by modifying the yOff
-            yoff -= anchor.getHeight();
-        }
         super.showAsDropDown(anchor, xoff, yoff);
 
         fixRoundedCorners();//custom
@@ -138,10 +131,6 @@ class AppCompatPopupWindow extends PopupWindow {
 
     @Override
     public void showAsDropDown(View anchor, int xoff, int yoff, int gravity) {
-        if (COMPAT_OVERLAP_ANCHOR && mOverlapAnchor) {
-            // If we're pre-L, emulate overlapAnchor by modifying the yOff
-            yoff -= anchor.getHeight();
-        }
         super.showAsDropDown(anchor, xoff, yoff, gravity);
 
         fixRoundedCorners();//custom
@@ -149,19 +138,11 @@ class AppCompatPopupWindow extends PopupWindow {
 
     @Override
     public void update(View anchor, int xoff, int yoff, int width, int height) {
-        if (COMPAT_OVERLAP_ANCHOR && mOverlapAnchor) {
-            // If we're pre-L, emulate overlapAnchor by modifying the yOff
-            yoff -= anchor.getHeight();
-        }
         super.update(anchor, xoff, yoff, width, height);
     }
 
     private void setSupportOverlapAnchor(boolean overlapAnchor) {
-        if (COMPAT_OVERLAP_ANCHOR) {
-            mOverlapAnchor = overlapAnchor;
-        } else {
-            PopupWindowCompat.setOverlapAnchor(this, overlapAnchor);
-        }
+        PopupWindowCompat.setOverlapAnchor(this, overlapAnchor);
     }
 
     //Sesl
