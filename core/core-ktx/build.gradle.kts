@@ -13,7 +13,7 @@ dependencies {
     api(libs.androidx.annotation)
 
     api(libs.sesl.androidx.core){
-        version { require("1.17.0-beta01+1.0.7-sesl8+rev0") }
+        version { require("1.17.0-rc01+1.0.7-sesl8+rev0") }
     }
 }
 
