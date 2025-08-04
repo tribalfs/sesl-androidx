@@ -421,6 +421,7 @@ final class BackStackRecord extends FragmentTransaction implements
                     mManager.setPrimaryNavigationFragment(null);
                     break;
                 case OP_SET_MAX_LIFECYCLE:
+                    op.mOldMaxState = f.mMaxState;
                     mManager.setMaxLifecycle(f, op.mCurrentMaxState);
                     break;
                 default:
@@ -478,6 +479,7 @@ final class BackStackRecord extends FragmentTransaction implements
                     mManager.setPrimaryNavigationFragment(f);
                     break;
                 case OP_SET_MAX_LIFECYCLE:
+                    op.mCurrentMaxState = f.mMaxState;
                     mManager.setMaxLifecycle(f, op.mOldMaxState);
                     break;
                 default:
