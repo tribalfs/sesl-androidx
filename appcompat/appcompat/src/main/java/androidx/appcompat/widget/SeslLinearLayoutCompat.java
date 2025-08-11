@@ -148,9 +148,10 @@ public class SeslLinearLayoutCompat extends LinearLayoutCompat {
         View foundView = null;
 
         if (view instanceof ViewGroup viewGroup) {
+            int[] xy = transformCoordinate(viewGroup, x, y);
             for (int i = 0; i < viewGroup.getChildCount(); i++) {
                 View child = viewGroup.getChildAt(i);
-                if (isViewUnder(child, x, y) && (foundView = findChildViewUnder(child, x, y)) != null){
+                if (isPointInsideView(xy[0], xy[1], child) && (foundView = findChildViewUnder(child, x, y)) != null){
                     break;
                 }
             }
@@ -163,14 +164,17 @@ public class SeslLinearLayoutCompat extends LinearLayoutCompat {
         return foundView;
     }
 
-    private boolean isViewUnder(View childView, int x, int y) {
-        Rect parentRect = new Rect();
-        Rect childRect = new Rect();
-        childView.getGlobalVisibleRect(childRect);
-        getGlobalVisibleRect(parentRect);
-        return childRect.contains(
-                parentRect.width() + ((x + parentRect.left) - getWidth()),
-                parentRect.height() + ((y + parentRect.top) - getHeight()));
+    private int[] transformCoordinate(View child, int x, int y) {
+        return new int[]{x - child.getLeft(), y - child.getTop()};
+    }
+
+    private boolean isPointInsideView(int x, int y, View childView) {
+        return new Rect(
+                childView.getLeft(),
+                childView.getTop(),
+                childView.getRight(),
+                childView.getBottom()
+        ).contains(x, y);
     }
 
     private View findClickableChildUnder(MotionEvent event) {
@@ -178,7 +182,7 @@ public class SeslLinearLayoutCompat extends LinearLayoutCompat {
 
         for (int i = 0; i < getChildCount(); i++) {
             child = getChildAt(i);
-            if (isViewUnder(child, (int) event.getX(),  (int) event.getY())) {
+            if (isPointInsideView((int) event.getX(), (int) event.getY(), child)) {
                 break;
             }
         }
