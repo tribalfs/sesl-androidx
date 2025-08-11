@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
+@file:Suppress("NOTHING_TO_INLINE")
+
 package androidx.slidingpanelayout.widget
 
 import android.content.Context
 import android.content.res.Configuration
-import android.content.res.Configuration.ORIENTATION_LANDSCAPE
-import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.graphics.Canvas
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
@@ -279,7 +279,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
     private var slidingPaneDragArea = 0
     private var pendingAction = -1
     private var doubleCheckState = -1
-    private var prevOrientation = 0
+    private var isDefaultOpen = false
     private var setResizeChild = false
     private var resizeChild: View? = null
     private var resizeChildList: ArrayList<View>? = null
@@ -753,10 +753,9 @@ open class SlidingPaneLayout @JvmOverloads constructor(
             }
         }
 
-        val defaultOpen = resources.getBoolean(R.bool.sesl_sliding_layout_default_open)
+        isDefaultOpen = resources.getBoolean(R.bool.sesl_sliding_layout_default_open)
         slidingPaneDragArea = resources.getDimensionPixelSize(R.dimen.sesl_sliding_pane_contents_drag_width_default)
-        pendingAction = if (defaultOpen) PENDING_ACTION_EXPANDED else PENDING_ACTION_COLLAPSED
-        prevOrientation = resources.configuration.orientation
+        pendingAction = if (isDefaultOpen) PENDING_ACTION_EXPANDED else PENDING_ACTION_COLLAPSED
         slidingState = SeslSlidingState()
         //sesl
     }
@@ -1092,7 +1091,9 @@ open class SlidingPaneLayout @JvmOverloads constructor(
                             if (widthMode == MeasureSpec.UNSPECIFIED) widthMode else MeasureSpec.AT_MOST
                         )
                     } else {
-                        MeasureSpec.makeMeasureSpec(getFixedPaneWidth(widthSize- overhangSize), MeasureSpec.EXACTLY)
+                        val fixedPaneWidthMax = widthSize- overhangSize
+                        val fixedPaneWidth = getFixedPaneWidth().let { if (it == MATCH_PARENT) fixedPaneWidthMax else it.coerceAtMost(fixedPaneWidthMax)  }
+                        MeasureSpec.makeMeasureSpec(fixedPaneWidth, MeasureSpec.EXACTLY)
                     }
                 }
                 MATCH_PARENT -> MeasureSpec.makeMeasureSpec(
@@ -2990,38 +2991,28 @@ open class SlidingPaneLayout @JvmOverloads constructor(
     override fun onConfigurationChanged(configuration: Configuration) {
         super.onConfigurationChanged(configuration)
         if (!hasPrefContentWidth) prefContentWidth = null//to update value
-        if (!customPendingAction) {
-            val rotatedToPortrait = configuration.orientation == ORIENTATION_PORTRAIT
-                && prevOrientation == ORIENTATION_LANDSCAPE
-            pendingAction = if (!isOpen || rotatedToPortrait) {
-                PENDING_ACTION_COLLAPSED //2
-            } else {
-                PENDING_ACTION_EXPANDED //1
-            }
-        }
+
         if (isLocked) {
             pendingAction = if (isOpen) {
                 PENDING_ACTION_EXPANDED
             } else {
                 PENDING_ACTION_COLLAPSED
             }
+        } else if (!customPendingAction) {
+            val previousIsDefaultOpen = isDefaultOpen
+            isDefaultOpen = resources.getBoolean(R.bool.sesl_sliding_layout_default_open)
+            pendingAction = if (previousIsDefaultOpen != isDefaultOpen) {
+                if (isDefaultOpen) PENDING_ACTION_EXPANDED else PENDING_ACTION_COLLAPSED
+            } else {
+                if (isOpen) PENDING_ACTION_EXPANDED else PENDING_ACTION_COLLAPSED
+            }
         }
-        prevOrientation = configuration.orientation
         seslSetDrawerPaneWidth()
     }
 
     private fun seslSetDrawerPaneWidth() {
-        if (drawerPanel == null) {
-            Log.e(TAG, "mDrawerPanel is null")
-            return
-        }
-        val typedValue = TypedValue().also {resources.getValue(R.dimen.sesl_sliding_pane_drawer_width, it, true) }
-        val drawerWidth = when (typedValue.type) {
-            TypedValue.TYPE_FLOAT -> (windowWidth * typedValue.float).toInt()
-            TypedValue.TYPE_DIMENSION -> typedValue.getDimension(resources.displayMetrics).toInt()
-            else -> MATCH_PARENT
-        }
-        drawerPanel!!.updateLayoutParams { width = drawerWidth }
+        drawerPanel?.updateLayoutParams { width = getFixedPaneWidth() }
+            ?:  Log.e(TAG, "mDrawerPanel is null")
     }
 
     class SeslSlidingState() {
@@ -3038,7 +3029,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
      * to [openPane] or [closePane] fail (which is due to failure
      * of internally called [ViewDragHelper.smoothSlideViewTo])
      */
-    private fun doubleCheckSettledState(){
+    private inline fun doubleCheckSettledState(){
         if (doubleCheckState != -1) {
             if (doubleCheckState == 1) {
                 openPane(0, true)
@@ -3049,7 +3040,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
         }
     }
 
-    private fun updateDispatchSlidingState() {
+    private inline fun updateDispatchSlidingState() {
         if (slidingState != null && slideableView != null) {
             if (currentSlideOffset == 0.0f) {
                 if (slidingState.state != SESL_STATE_CLOSE) {
@@ -3178,8 +3169,8 @@ open class SlidingPaneLayout @JvmOverloads constructor(
         }
     }
 
-    private fun getFixedPaneWidth(fixedPanelWidthLimit: Int): Int {
-        return (if (userPreferredDrawerSize != -1) {
+    private inline fun getFixedPaneWidth(): Int {
+        return if (userPreferredDrawerSize != -1) {
             userPreferredDrawerSize
         } else {
             if (prefDrawerWidth == null) {
@@ -3189,9 +3180,9 @@ open class SlidingPaneLayout @JvmOverloads constructor(
             when (prefDrawerWidth!!.type) {
                 TypedValue.TYPE_FLOAT -> (windowWidth * prefDrawerWidth!!.float).toInt()
                 TypedValue.TYPE_DIMENSION -> prefDrawerWidth!!.getDimension(resources.displayMetrics).toInt()
-                else -> fixedPanelWidthLimit
+                else -> MATCH_PARENT
             }
-        }).coerceAtMost(fixedPanelWidthLimit)
+        }
     }
 
     internal val windowWidth: Int get() = resources.displayMetrics.widthPixels
@@ -3282,7 +3273,6 @@ open class SlidingPaneLayout @JvmOverloads constructor(
      */
     fun seslRequestPreferredDrawerPixelSize(@Px drawerPixelSize: Int) {
         userPreferredDrawerSize = drawerPixelSize
-        seslSetDrawerPaneWidth()
         resizeSlideableView(currentSlideOffset)
     }
 
