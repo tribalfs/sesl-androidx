@@ -1084,7 +1084,7 @@ public class AppCompatSpinner extends Spinner implements TintableBackgroundView 
                     @Override
                     public void onDismiss() {
                         final ViewTreeObserver vto = getViewTreeObserver();
-                        if (vto != null) {
+                        if (vto != null && vto.isAlive()) {
                             vto.removeGlobalOnLayoutListener(layoutListener);
                         }
                     }
@@ -1154,12 +1154,23 @@ public class AppCompatSpinner extends Spinner implements TintableBackgroundView 
         return width;
     }
 
+    /**
+     * Dismisses the popup window of choices.
+     * Only valid in {@link #MODE_DROPDOWN} or {@link #MODE_DIALOG}; other modes will no-op.
+     */
     public void seslDismissPopup() {
         if (mPopup != null && mPopup.isShowing()) {
             mPopup.dismiss();
         }
     }
 
+    /**
+     * Set the gravity of the dropdown list. This is commonly used to
+     * set gravity to START or END for alignment with the anchor.
+     *
+     * @param gravity Gravity constant for the dropdown list
+     * @see Gravity
+     */
     public void seslSetDropDownGravity(int gravity) {
         mDropDownGravity = gravity;
         if (mListPopupWindow != null) {
@@ -1214,4 +1225,30 @@ public class AppCompatSpinner extends Spinner implements TintableBackgroundView 
         }
     }
     //sesl7
+
+    //Sesl8
+    /**
+     * Sets the height of the dropdown popup.
+     *
+     * <p><b>Note:</b> This method has no effect if the spinner's mode is
+     * {@link #MODE_DIALOG}.
+     *
+     * @param height the height in pixels
+     */
+    public void seslSetDropDownHeight(int height) {
+        if (mPopup instanceof DropdownPopup) {
+            mListPopupWindow.setHeight(height);
+        } else {
+            Log.e(TAG, "Cannot set dropdown height for MODE_DIALOG, ignoring");
+        }
+    }
+
+    /**
+     * Show the popup window for the spinner.
+     * This method is a wrapper around the internal {@code showPopup} method.
+     */
+    public void seslShowPopup() {
+        showPopup();
+    }
+    //sesl8
 }
