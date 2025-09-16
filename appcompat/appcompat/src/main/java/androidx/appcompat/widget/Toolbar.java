@@ -2046,6 +2046,10 @@ public class Toolbar extends ViewGroup implements MenuHost {
                     mSubtitleTextView.getMeasuredState());
         }
 
+        if (shouldLayout(mTitleTextView) || shouldLayout(mSubtitleTextView)) {
+            titleHeight += titleVertMargins;
+        }
+
         width += titleWidth;
         height = Math.max(height, titleHeight);
 
