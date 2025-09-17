@@ -51,6 +51,7 @@ import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.core.R;
 import androidx.core.accessibilityservice.AccessibilityServiceInfoCompat;
+import androidx.core.os.BuildCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityViewCommand.CommandArguments;
 import androidx.core.view.accessibility.AccessibilityViewCommand.MoveAtGranularityArguments;
@@ -1202,6 +1203,49 @@ public class AccessibilityNodeInfoCompat {
      * </p>
      */
     public static class CollectionItemInfoCompat {
+        /**
+         * There is no sort direction.
+         *
+         * @see #getSortDirection()
+         * @see Builder#setSortDirection(int)
+         */
+        public static final int SORT_DIRECTION_NONE = 0;
+
+        /**
+         * Items are sorted in ascending order (e.g., A-Z, 0-9).
+         *
+         * @see #getSortDirection()
+         * @see Builder#setSortDirection(int)
+         */
+        public static final int SORT_DIRECTION_ASCENDING = 1;
+
+        /**
+         * Items are sorted in descending order (e.g., Z-A, 9-0).
+         *
+         * @see #getSortDirection()
+         * @see Builder#setSortDirection(int)
+         */
+        public static final int SORT_DIRECTION_DESCENDING = 2;
+
+        /**
+         * Items are sorted, but using a method other than ascending
+         * or descending (e.g., based on relevance or a custom algorithm).
+         *
+         * @see #getSortDirection()
+         * @see Builder#setSortDirection(int)
+         */
+        public static final int SORT_DIRECTION_OTHER = 3;
+
+        @RestrictTo(LIBRARY_GROUP_PREFIX)
+        @Retention(RetentionPolicy.SOURCE)
+        @IntDef(
+                value = {
+                        SORT_DIRECTION_NONE,
+                        SORT_DIRECTION_ASCENDING,
+                        SORT_DIRECTION_DESCENDING,
+                        SORT_DIRECTION_OTHER,
+                })
+        public @interface SortDirection {}
 
         final Object mInfo;
 
@@ -1331,6 +1375,34 @@ public class AccessibilityNodeInfoCompat {
         }
 
         /**
+         * Gets the sort direction applied to the data associated with this
+         * node.
+         *
+         * <p>
+         * This item can only be set on a heading node within a table collection.
+         * Given the heading node's collection item, a subsequent collection
+         * item uses this sort direction if it has the same row or column index,
+         * and a greater index in the other dimension. For example, an item at
+         * row 2, column 2 can reference a heading at row 2, column 1 for its
+         * sort direction.
+         *
+         * <p>
+         * Compatibility:
+         * <ul>
+         *     <li>API &lt; 36.1: Always returns SORT_DIRECTION_NONE</li>
+         * </ul>
+         *
+         * @return The current sort direction.
+         */
+        public @SortDirection int getSortDirection() {
+            if (BuildCompat.isAtLeastB_1()) {
+                return Api36MinorImpl.getCollectionItemSortDirection(mInfo);
+            }
+
+            return SORT_DIRECTION_NONE;
+        }
+
+        /**
          * Builder for creating {@link CollectionItemInfoCompat} objects.
          */
         public static final class Builder {
@@ -1342,6 +1414,7 @@ public class AccessibilityNodeInfoCompat {
             private boolean mSelected;
             private String mRowTitle;
             private String mColumnTitle;
+            private int mSortDirection;
 
             /**
              * Creates a new Builder.
@@ -1438,10 +1511,35 @@ public class AccessibilityNodeInfoCompat {
             }
 
             /**
+             * Sets the sort direction for this item.
+             *
+             * <p>
+             * Valid only if {@link AccessibilityNodeInfo#isHeading()} returns
+             * {@code true}. Indicates that collection content associated with
+             * this heading is presented in the indicated sort direction. It
+             * should only be called by accessibility providers. For
+             * accessibility services, see {@link #getSortDirection()} to query
+             * the current state.
+             *
+             * @param sortDirection the sort direction of this collection item info
+             * @return This builder
+             */
+            @NonNull
+            public Builder setSortDirection(@SortDirection int sortDirection) {
+                mSortDirection = sortDirection;
+                return this;
+            }
+
+            /**
              * Builds and returns a {@link AccessibilityNodeInfo.CollectionItemInfo}.
              */
+
             public @NonNull CollectionItemInfoCompat build() {
-                if (Build.VERSION.SDK_INT >= 33) {
+                if (BuildCompat.isAtLeastB_1()) {
+                    return Api36MinorImpl.buildCollectionItemInfoCompat(mHeading, mColumnIndex,
+                            mRowIndex, mColumnSpan, mRowSpan, mSelected, mRowTitle, mColumnTitle,
+                            mSortDirection);
+                } else if (Build.VERSION.SDK_INT >= 33) {
                     return Api33Impl.buildCollectionItemInfoCompat(mHeading, mColumnIndex,
                             mRowIndex, mColumnSpan, mRowSpan, mSelected, mRowTitle, mColumnTitle);
                 } else {
