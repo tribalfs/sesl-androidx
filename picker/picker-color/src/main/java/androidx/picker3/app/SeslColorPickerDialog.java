@@ -136,7 +136,7 @@ public class SeslColorPickerDialog extends AlertDialog
 
         setButton(BUTTON_POSITIVE, context.getString(R.string.sesl_picker_done), this);
         setButton(BUTTON_NEGATIVE, context.getString(R.string.sesl_picker_cancel), this);
-
+        seslSetBackgroundBlurEnabled();
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
