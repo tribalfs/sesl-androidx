@@ -21,7 +21,7 @@ See also: [OneUI Design Library (Unofficial)](https://github.com/tribalfs/oneui-
 - [![latest version](https://img.shields.io/badge/sesl.androidx.appcompat:appcompat-1.7.1%2B1.0.21--sesl8%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110021)
 - [![latest version](https://img.shields.io/badge/sesl.androidx.slidingpanelayout:slidingpanelayout-1.2.0%2B1.0.4--sesl8%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110034)
 - [![latest version](https://img.shields.io/badge/sesl.androidx.recyclerview:recyclerview-1.4.0%2B1.0.12--sesl8%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110033)
-- [![latest version](https://img.shields.io/badge/sesl.androidx.picker:picker--basic-1.0.7%2B1.0.7--sesl8%2Brev1-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110030)
+- [![latest version](https://img.shields.io/badge/sesl.androidx.picker:picker--basic-1.0.7%2B1.0.7--sesl8%2Brev2-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110030)
 - [![latest version](https://img.shields.io/badge/sesl.androidx.picker:picker--app-1.0.6%2B1.0.6--sesl8%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2552924)
 - [![latest version](https://img.shields.io/badge/sesl.androidx.indexscroll:indexscroll-1.0.0%2B1.0.0--sesl8%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110029)
 - [![latest version](https://img.shields.io/badge/sesl.androidx.preference:preference-1.2.1%2B1.0.0--sesl8%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110032)
