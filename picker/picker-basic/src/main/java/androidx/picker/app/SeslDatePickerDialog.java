@@ -86,6 +86,7 @@ public class SeslDatePickerDialog extends AlertDialog
         setView(view);
         setButton(BUTTON_POSITIVE, themeContext.getString(R.string.sesl_picker_done), this);
         setButton(BUTTON_NEGATIVE, themeContext.getString(R.string.sesl_picker_cancel), this);
+        seslSetBackgroundBlurEnabled();
         mDatePicker = view.findViewById(R.id.sesl_datePicker);
 
         mDatePicker.init(year, monthOfYear, dayOfMonth, this);

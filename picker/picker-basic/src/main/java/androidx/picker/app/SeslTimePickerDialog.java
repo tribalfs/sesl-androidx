@@ -90,6 +90,7 @@ public class SeslTimePickerDialog extends AlertDialog
         setView(view);
         setButton(BUTTON_POSITIVE, themeContext.getString(R.string.sesl_picker_done), this);
         setButton(BUTTON_NEGATIVE, themeContext.getString(R.string.sesl_picker_cancel), this);
+        seslSetBackgroundBlurEnabled();
         mTimePicker = view.findViewById(R.id.timePicker);
 
         mTimePicker.setIs24HourView(is24HourView);
