@@ -4785,6 +4785,9 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
                         ? -mVelocityTracker.getYVelocity(mScrollPointerId) : 0;
                 if (!((xvel != 0 || yvel != 0) && fling((int) xvel, (int) yvel))) {
                     setScrollState(SCROLL_STATE_IDLE);
+                    // to ensure subsequent call to stopGlowAnimations()
+                    // in onInterceptTouchEvent returns correct value.
+                    forceFinishGlows();
                 }
                 Log.i("SeslRecyclerView", "onTouchUp() velocity : " + yvel + ","
                         + " last move skip : " + mIsSkipMoveEvent + "(" + mFrameLatency + "),"
@@ -18454,4 +18457,20 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         }
     }
     //sesl
+
+    //Custom
+    private void forceFinishGlows() {
+        if (mLeftGlow != null) {
+            mLeftGlow.finish();
+        }
+        if (mTopGlow != null) {
+            mTopGlow.finish();
+        }
+        if (mRightGlow != null) {
+            mRightGlow.finish();
+        }
+        if (mBottomGlow != null) {
+            mBottomGlow.finish();
+        }
+    }
 }
