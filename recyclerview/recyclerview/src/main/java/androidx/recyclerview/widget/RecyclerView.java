@@ -4506,6 +4506,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
                     if (mGapWorker != null && (lastTouchXDiff != 0 || lastTouchYDiff != 0)) {
                         mGapWorker.postFromTraversal(this, lastTouchXDiff, lastTouchYDiff);
                     }
+                    obtain.recycle();
                 }
                 adjustNestedScrollRangeBy(lastTouchYDiff);
                 //sesl
@@ -4671,6 +4672,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
                 if (index < 0) {
                     Log.e(TAG, "Error processing scroll; pointer index for id "
                             + mScrollPointerId + " not found. Did any MotionEvents get skipped?");
+                    vtev.recycle();
                     return false;
                 }
 
@@ -4730,9 +4732,10 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
                     mLastTouchY = y - mScrollOffset[1];
 
                     //Sesl
-                    if ((e.getFlags() & 0x200000/*mMotionEventUpPendingFlag*/) != 0) {
+                    if ((e.getFlags() & 0x2000000/*mMotionEventUpPendingFlag*/) != 0) {
                         mVelocityTracker.addMovement(vtev);
                         mIsSkipMoveEvent = true;
+                        vtev.recycle();
                         return false;
                     }
                     //sesl
