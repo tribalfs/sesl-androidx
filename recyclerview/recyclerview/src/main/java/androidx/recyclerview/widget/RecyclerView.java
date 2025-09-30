@@ -4421,6 +4421,15 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
                         mTouchSlop = mTouchSlop2;
                     }
                 }
+
+                if (sVerboseLoggingEnabled) {
+                    Log.d(TAG, "onIntercept DOWN mTouchSlop[" + mTouchSlop + "] "
+                            + "mTouchSlop[" + mTouchSlop2 + "] "
+                            + "mPagingTouchSlop[" + mPagingTouchSlop + "] "
+                            + "mLastTouchX[" + mLastTouchX + "] "
+                            + "mLastTouchY[" + mLastTouchY + "] ");
+                }
+
                 View clickableChild;
                 ViewHolder containingViewHolder;
                 if (mIsRecoilSupported && mIsRecoilEnabled && mScrollState == 0
@@ -4455,6 +4464,12 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
                 mScrollPointerId = e.getPointerId(actionIndex);
                 mInitialTouchX = mLastTouchX = (int) (e.getX(actionIndex) + 0.5f);
                 mInitialTouchY = mLastTouchY = (int) (e.getY(actionIndex) + 0.5f);
+
+                if (sVerboseLoggingEnabled) {
+                    Log.d(TAG, "onIntercept POINTER_DOWN mLastTouchX[" + mLastTouchX + "] "
+                            + "mLastTouchY[" + mLastTouchY + "] ");
+                }
+
                 break;
 
             case MotionEvent.ACTION_MOVE: {
