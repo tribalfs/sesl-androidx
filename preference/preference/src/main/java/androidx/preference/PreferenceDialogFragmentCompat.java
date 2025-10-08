@@ -158,7 +158,8 @@ public abstract class PreferenceDialogFragmentCompat extends DialogFragment impl
         onPrepareDialogBuilder(builder);
 
         // Create the dialog
-        final Dialog dialog = builder.create();
+        final AlertDialog dialog = builder.create();
+        dialog.seslSetBackgroundBlurEnabled();
         if (needInputMethod()) {
             requestInputMethod(dialog);
         }
