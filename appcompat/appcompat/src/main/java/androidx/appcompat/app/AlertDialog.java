@@ -1009,8 +1009,13 @@ public class AlertDialog extends AppCompatDialog implements DialogInterface {
         }
     }
 
-    //sesl8
+    //Sesl8
     public final void seslSetBackgroundBlurEnabled() {
         mAlert.seslSetBackgroundBlurEnabled(true);
     }
+
+    public final void seslSetBackgroundBlurEnabled(boolean enable) {
+        mAlert.seslSetBackgroundBlurEnabled(enable);
+    }
+    //sesl8
 }
