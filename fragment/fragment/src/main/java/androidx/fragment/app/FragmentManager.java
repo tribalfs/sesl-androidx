@@ -2599,6 +2599,10 @@ public abstract class FragmentManager implements FragmentResultOwner {
 
     boolean prepareBackStackState(@NonNull ArrayList<BackStackRecord> records,
             @NonNull ArrayList<Boolean> isRecordPop) {
+        // Custom fix for java.lang.IndexOutOfBoundsException
+        // at androidx.fragment.app.FragmentManager.prepareBackStackState
+        // occurring on android 14 devices.
+        if (mBackStack.isEmpty()) return false;
         // The transitioning record is the last one on the back stack.
         mTransitioningOp = mBackStack.get(mBackStack.size() - 1);
         // Mark all fragments in the record as transitioning
