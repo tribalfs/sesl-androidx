@@ -74,9 +74,6 @@ import androidx.reflect.view.SeslViewRuneReflector;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
-import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.Nullable;
-
 import java.lang.reflect.Method;
 
 
@@ -1664,4 +1661,19 @@ public class ListPopupWindow implements ShowableListMenu {
         }
     }
     //sesl
+
+    //Sesl7
+    @Nullable
+    public View seslGetBackgroundView() {
+        if (mPopup != null) {
+            return mPopup.seslGetBackgroundView();
+        }
+        return null;
+    }
+
+    @Nullable
+    public PopupWindow seslGetPopupWindow() {
+        return this.mPopup;
+    }
+    //sesl7
 }

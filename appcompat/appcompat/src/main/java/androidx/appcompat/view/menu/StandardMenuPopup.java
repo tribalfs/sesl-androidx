@@ -38,6 +38,8 @@ import androidx.appcompat.R;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.MenuPopupWindow;
 
+import org.jspecify.annotations.Nullable;
+
 /**
  * (SESL modified)
  *
@@ -428,4 +430,23 @@ final class StandardMenuPopup extends MenuPopup implements OnDismissListener, On
         mAllowScrollingAnchorParent = enabled;
     }
     //sesl
+
+    //Sesl7
+    @Nullable
+    public View seslGetBackgroundView() {
+        if (mPopup != null) {
+            return mPopup.seslGetBackgroundView();
+        }
+        return null;
+    }
+
+    @Nullable
+    public PopupWindow seslGetPopupWindow() {
+        if (mPopup != null) {
+            return mPopup.seslGetPopupWindow();
+        }
+        return null;
+    }
+    //sesl7
+
 }

@@ -388,4 +388,23 @@ public class MenuPopupHelper implements MenuHelper {
     public void seslSetAllowScrollingAnchorParent(boolean enabled) {
         mAllowScrollingAnchorParent = enabled;
     }
+    //sesl
+
+    //Sesl7
+    @Nullable
+    public View seslGetBackgroundView() {
+        if (mPopup instanceof StandardMenuPopup) {
+            return ((StandardMenuPopup) mPopup).seslGetBackgroundView();
+        }
+        return null;
+    }
+
+    @Nullable
+    public PopupWindow seslGetPopupWindow() {
+        if (mPopup instanceof StandardMenuPopup) {
+            return ((StandardMenuPopup) mPopup).seslGetPopupWindow();
+        }
+        return null;
+    }
+    //sesl7
 }

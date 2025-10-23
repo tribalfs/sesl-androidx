@@ -362,4 +362,22 @@ public class PopupMenu {
         return mPopup != null && mPopup.isShowing();
     }
     //sesl
+
+    //Sesl7
+    @Nullable
+    public View seslGetBackgroundView() {
+        if (mPopup != null) {
+            return mPopup.seslGetBackgroundView();
+        }
+        return null;
+    }
+
+    @Nullable
+    public PopupWindow seslGetPopupWindow() {
+        if (mPopup != null) {
+            return mPopup.seslGetPopupWindow();
+        }
+        return null;
+    }
+    //sesl7
 }

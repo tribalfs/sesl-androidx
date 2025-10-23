@@ -39,6 +39,7 @@ import androidx.appcompat.R;
 import androidx.appcompat.view.ActionBarPolicy;
 import androidx.core.widget.PopupWindowCompat;
 import androidx.reflect.DeviceInfo;
+import androidx.reflect.os.SeslBuildReflector;
 import androidx.reflect.view.SeslViewReflector;
 import androidx.reflect.widget.SeslPopupWindowReflector;
 
@@ -230,6 +231,15 @@ class AppCompatPopupWindow extends PopupWindow {
     }
     //sesl
 
+    //Sesl7
+    @Nullable
+    public View seslGetBackgroundView() {
+        Object backgroundView = SeslPopupWindowReflector.getBackgroundView(this);
+        if (backgroundView instanceof View) {
+            return (View) backgroundView;
+        }
+        return null;
+    }
 
     /**
      * Custom: Ensure selector/ripple have rounded corners in non-Samsung Basic Interaction devices.
