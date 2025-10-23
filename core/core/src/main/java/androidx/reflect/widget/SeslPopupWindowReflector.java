@@ -39,6 +39,15 @@ public class SeslPopupWindowReflector {
     private SeslPopupWindowReflector() {
     }
 
+    @Nullable
+    public static Object getBackgroundView(@NonNull PopupWindow popupWindow) {
+        Method declaredMethod = SeslBaseReflector.getDeclaredMethod(mClass, "hidden_semGetBackgroundView", (Class<?>[]) new Class[0]);
+        if (declaredMethod != null) {
+            return SeslBaseReflector.invoke(popupWindow, declaredMethod, new Object[0]);
+        }
+        return null;
+    }
+
     public static void setAllowScrollingAnchorParent(@NonNull PopupWindow popupWindow, boolean enabled) {
         Method method = SeslBaseReflector.getDeclaredMethod(mClass, "setAllowScrollingAnchorParent", Boolean.TYPE);
 
