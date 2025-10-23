@@ -1224,6 +1224,23 @@ public class AppCompatSpinner extends Spinner implements TintableBackgroundView 
             isNeedToSkipRefreshDrawable = false;
         }
     }
+
+    @Nullable
+    public View seslGetPopupBackgroundView() {
+        if (mListPopupWindow != null) {
+            return mListPopupWindow.seslGetBackgroundView();
+        }
+        return null;
+    }
+
+    @Nullable
+    public PopupWindow seslGetPopupWindow() {
+        if (mListPopupWindow != null) {
+            return mListPopupWindow.seslGetPopupWindow();
+        }
+        return null;
+    }
+
     //sesl7
 
     //Sesl8

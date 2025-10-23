@@ -1666,6 +1666,21 @@ public class ListPopupWindow implements ShowableListMenu {
     }
     //sesl
 
+    //Sesl7
+    @Nullable
+    public View seslGetBackgroundView() {
+        if (mPopup != null) {
+            return mPopup.seslGetBackgroundView();
+        }
+        return null;
+    }
+
+    @Nullable
+    public PopupWindow seslGetPopupWindow() {
+        return this.mPopup;
+    }
+    //sesl7
+
     //sesl8
     @RequiresApi(35)
     public static class Api35Impl {
