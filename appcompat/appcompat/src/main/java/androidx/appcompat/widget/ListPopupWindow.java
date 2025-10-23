@@ -33,6 +33,8 @@ import android.graphics.Insets;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.hardware.display.DisplayManager;
 import android.os.Build;
 import android.os.Handler;
@@ -774,6 +776,21 @@ public class ListPopupWindow implements ShowableListMenu {
             if (setBlurEffect() && (this.mDropDownList) != null) {
                 mDropDownList.setOverScrollMode(View.OVER_SCROLL_NEVER);
             }
+
+            //Sesl8
+           if (!SeslMisc.isDefaultTheme(mContext) && mPopup.seslIsAvailableBlurBackground()) {
+                Drawable background = mPopup.getBackground();
+                if (background instanceof LayerDrawable) {
+                    Drawable drawable = ((LayerDrawable) background).getDrawable(0);
+                    if (drawable instanceof GradientDrawable) {
+                        ((GradientDrawable) drawable).setStroke(
+                                mContext.getResources().getDimensionPixelSize(R.dimen.sesl_menu_popup_stroke_width),
+                                ResourcesCompat.getColor(mContext.getResources(),R.color.sesl_menu_popup_background_stroke_color, mContext.getTheme())
+                        );
+                    }
+                }
+            }
+            //sesl8
 
             mPopup.setWidth(widthSpec);
             mPopup.setHeight(heightSpec);
