@@ -18,16 +18,21 @@ package androidx.appcompat.widget;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP_PREFIX;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.res.Configuration;
 import android.graphics.Outline;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.hardware.display.DisplayManager;
 import android.os.Build;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.transition.TransitionSet;
 import android.util.AttributeSet;
+import android.view.Display;
 import android.view.View;
 import android.view.ViewOutlineProvider;
 import android.widget.PopupWindow;
@@ -40,7 +45,9 @@ import androidx.appcompat.view.ActionBarPolicy;
 import androidx.core.widget.PopupWindowCompat;
 import androidx.reflect.DeviceInfo;
 import androidx.reflect.os.SeslBuildReflector;
+import androidx.reflect.view.SeslSemWindowManagerReflector;
 import androidx.reflect.view.SeslViewReflector;
+import androidx.reflect.view.SeslViewRuneReflector;
 import androidx.reflect.widget.SeslPopupWindowReflector;
 
 import org.jspecify.annotations.NonNull;
@@ -64,6 +71,7 @@ class AppCompatPopupWindow extends PopupWindow {
     private int mNavigationBarHeight;
     private boolean mIsReplacedPoupBackground;
     private final Rect mTempRect = new Rect();
+    private static final boolean ONEUI_5_1_1 = SeslBuildReflector.SeslVersionReflector.getField_SEM_PLATFORM_INT() >= 140500;
     //sesl
 
     public AppCompatPopupWindow(@NonNull Context context, @Nullable AttributeSet attrs,
@@ -202,24 +210,33 @@ class AppCompatPopupWindow extends PopupWindow {
 
         final int[] anchorPos = new int[2];
         anchor.getLocationOnScreen(anchorPos);
+        //Sesl7
+        int foldCenterPoint = seslGetCenterPointForFoldable();
+        int anchorTop = anchorPos[1];
 
-        int bottomEdge = displayFrame.bottom;
-        final int distanceToBottom;
-        final int distanceToTop = (anchorPos[1] - displayFrame.top) + yOffset;
-        if (getSupportOverlapAnchor()) {
-            distanceToBottom = bottomEdge - anchorPos[1] - yOffset;
-        } else {
-            distanceToBottom = bottomEdge - (anchorPos[1] + anchor.getHeight()) - yOffset;
+        int topLimit = displayFrame.top;
+        if (foldCenterPoint > 0 && anchorTop < foldCenterPoint) {
+            topLimit = foldCenterPoint;
         }
 
-        // anchorPos[1] is distance from anchor to top of screen
+        int bottomLimit = displayFrame.bottom;
+        if (foldCenterPoint > 0 && anchorTop >= foldCenterPoint) {
+            bottomLimit = foldCenterPoint;
+        }
+
+        int popupTop = getSupportOverlapAnchor() ? anchorTop : anchorTop + anchor.getHeight();
+        int distanceToBottom = bottomLimit - popupTop - yOffset;
+        int distanceToTop = anchorTop - topLimit + yOffset;
+
         int returnedHeight = Math.max(distanceToBottom, distanceToTop);
+
         if (getBackground() != null) {
             getBackground().getPadding(mTempRect);
-            return returnedHeight - (mTempRect.top + mTempRect.bottom);
+            returnedHeight -= (mTempRect.top + mTempRect.bottom);
         }
 
         return returnedHeight;
+        //sesl7
     }
 
     public void seslSetAllowScrollingAnchorParent(boolean enabled) {
@@ -237,6 +254,83 @@ class AppCompatPopupWindow extends PopupWindow {
         Object backgroundView = SeslPopupWindowReflector.getBackgroundView(this);
         if (backgroundView instanceof View) {
             return (View) backgroundView;
+        }
+        return null;
+    }
+
+    /**
+     * Calculates the center point of the screen on foldable devices for UI positioning.
+     *
+     * @return The coordinate of the center axis (x or y depending on orientation and device type),
+     * or 0 if not applicable (not a foldable, in multi-window mode, etc.).
+     */
+    public int seslGetCenterPointForFoldable() {
+        // Only proceed if the device is on One UI 5.1.1 or newer.
+        if (!ONEUI_5_1_1) {
+            return 0;
+        }
+
+        // Check for multi-window mode, as the center point logic doesn't apply.
+        // This check requires Android N (API 24) or higher.
+        Activity activity = getActivity(mContext);
+        if (activity != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
+                && activity.isInMultiWindowMode()) {
+            return 0;
+        }
+
+        // This logic only applies in table mode (unfolded state).
+        if (!SeslSemWindowManagerReflector.isTableMode()) {
+            return 0;
+        }
+
+        DisplayManager displayManager = (DisplayManager) mContext.getSystemService(
+                Context.DISPLAY_SERVICE);
+        if (displayManager == null) {
+            return 0;
+        }
+
+        Display display = displayManager.getDisplay(Display.DEFAULT_DISPLAY);
+        if (display == null) {
+            return 0;
+        }
+
+        Point displaySize = new Point();
+        display.getRealSize(displaySize);
+
+        Configuration config = mContext.getResources().getConfiguration();
+
+        // Logic for foldable devices with a dual display (e.g., Z Fold).
+        if (SeslViewRuneReflector.supportFoldableDualDisplay()) {
+            // This logic is only for landscape orientation.
+            if (config.orientation != Configuration.ORIENTATION_LANDSCAPE) {
+                return 0;
+            }
+
+            // In landscape, the fold is vertical, so we return the center X coordinate.
+            return displaySize.x / 2;
+        }
+
+        // Logic for foldable devices without a sub-display (e.g., Z Flip).
+        if (SeslViewRuneReflector.supportFoldableNoSubDisplay()) {
+            // This logic is only for portrait orientation.
+            if (config.orientation != Configuration.ORIENTATION_PORTRAIT) {
+                return 0;
+            }
+
+            // In portrait, the fold is horizontal, so we return the center Y coordinate.
+            return displaySize.y / 2;
+        }
+
+        return 0;
+    }
+
+
+    private Activity getActivity(Context context) {
+        while (context instanceof ContextWrapper) {
+            if (context instanceof Activity) {
+                return (Activity) context;
+            }
+            context = ((ContextWrapper) context).getBaseContext();
         }
         return null;
     }
