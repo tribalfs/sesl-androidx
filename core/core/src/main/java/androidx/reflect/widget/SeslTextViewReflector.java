@@ -21,8 +21,9 @@ import static androidx.reflect.DeviceInfo.isOneUI;
 import android.os.Build;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.reflect.SeslBaseReflector;
+
+import org.jspecify.annotations.NonNull;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

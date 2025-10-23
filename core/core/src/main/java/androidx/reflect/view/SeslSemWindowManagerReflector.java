@@ -18,9 +18,10 @@ package androidx.reflect.view;
 
 import android.os.Handler;
 
-import androidx.annotation.NonNull;
 import androidx.reflect.DeviceInfo;
 import androidx.reflect.SeslBaseReflector;
+
+import org.jspecify.annotations.NonNull;
 
 import java.lang.reflect.Method;
 

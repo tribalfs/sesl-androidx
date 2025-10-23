@@ -23,9 +23,10 @@ import android.os.Build;
 import android.widget.AdapterView;
 
 import androidx.annotation.ColorInt;
-import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 import androidx.reflect.SeslBaseReflector;
+
+import org.jspecify.annotations.NonNull;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

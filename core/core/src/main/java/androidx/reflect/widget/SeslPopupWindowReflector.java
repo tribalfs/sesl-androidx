@@ -20,9 +20,11 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP_PREFIX;
 
 import android.widget.PopupWindow;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 import androidx.reflect.SeslBaseReflector;
+
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.lang.reflect.Method;
 

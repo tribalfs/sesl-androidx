@@ -21,10 +21,11 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP_PREFIX;
 import android.os.Build;
 import android.os.UserHandle;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.reflect.DeviceInfo;
 import androidx.reflect.SeslBaseReflector;
+
+import org.jspecify.annotations.Nullable;
 
 import java.lang.reflect.Method;
 

@@ -22,10 +22,11 @@ import android.content.Context;
 import android.os.Build;
 import android.os.UserHandle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.reflect.SeslBaseReflector;
+
+import org.jspecify.annotations.NonNull;
 
 import java.lang.reflect.Method;
 

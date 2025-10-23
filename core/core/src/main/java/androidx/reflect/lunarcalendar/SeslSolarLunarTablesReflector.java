@@ -18,7 +18,6 @@ package androidx.reflect.lunarcalendar;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP_PREFIX;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 import androidx.reflect.SeslBaseReflector;
 import androidx.reflect.SeslPathClassReflector;
@@ -27,6 +26,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import dalvik.system.PathClassLoader;
+
+import org.jspecify.annotations.NonNull;
 
 /*
  * Original code by Samsung, all rights reserved to the original author.

@@ -22,9 +22,10 @@ import static androidx.reflect.DeviceInfo.isOneUI;
 import android.os.Build;
 import android.widget.OverScroller;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 import androidx.reflect.SeslBaseReflector;
+
+import org.jspecify.annotations.NonNull;
 
 import java.lang.reflect.Method;
 
