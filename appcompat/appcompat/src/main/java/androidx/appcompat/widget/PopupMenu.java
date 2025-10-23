@@ -319,7 +319,7 @@ public class PopupMenu {
      * @return The view representing the list of menu items.
      */
     @RestrictTo(LIBRARY_GROUP_PREFIX)
-    ListView getMenuListView() {
+    public ListView getMenuListView() {
         if (!mPopup.isShowing()) {
             return null;
         }
@@ -380,4 +380,11 @@ public class PopupMenu {
         return null;
     }
     //sesl7
+
+    //Sesl8
+    public void seslSetOverlapAnchor(boolean overlapAnchor) {
+        if (mPopup != null) {
+            mPopup.seslSetOverlapAnchor(overlapAnchor);
+        }
+    }
 }
