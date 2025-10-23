@@ -22,10 +22,11 @@ import android.os.Build;
 import android.util.Log;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 import androidx.reflect.DeviceInfo;
 import androidx.reflect.SeslBaseReflector;
+
+import org.jspecify.annotations.NonNull;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

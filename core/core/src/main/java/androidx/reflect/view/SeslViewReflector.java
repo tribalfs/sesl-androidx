@@ -24,11 +24,12 @@ import android.util.Log;
 import android.view.PointerIcon;
 import android.view.View;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.reflect.DeviceInfo;
 import androidx.reflect.SeslBaseReflector;
+
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

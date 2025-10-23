@@ -22,9 +22,10 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 import androidx.reflect.SeslBaseReflector;
+
+import org.jspecify.annotations.NonNull;
 
 import java.lang.reflect.Method;
 
