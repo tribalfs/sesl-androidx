@@ -40,6 +40,8 @@ import android.util.SparseArray;
 import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
+import android.view.accessibility.AccessibilityNodeInfo.Selection;
+import android.view.accessibility.AccessibilityNodeInfo.SelectionPosition;
 import android.view.accessibility.AccessibilityNodeInfo.TouchDelegateInfo;
 
 import androidx.annotation.IntDef;
@@ -740,6 +742,25 @@ public class AccessibilityNodeInfoCompat {
                 new AccessibilityActionCompat(
                         Build.VERSION.SDK_INT >= 34 ? Api34Impl.getActionScrollInDirection() : null,
                         android.R.id.accessibilityActionScrollInDirection, null, null, null);
+
+        /**
+         * Action to set the extended selection. Performing this action with no arguments clears the
+         * selection.
+         *
+         * <strong>Example:</strong> <code><pre><p>
+         *  Bundle arguments = new Bundle();
+         *  SelectionCompat selection = new SelectionCompat(null, null);
+         *  arguments.setParcelable(
+         *          AccessibilityNodeInfoCompat.ACTION_ARGUMENT_SELECTION_PARCELABLE,
+         *          selection.mSelection);
+         *  info.performAction(
+         *          AccessibilityActionCompat.ACTION_SET_EXTENDED_SELECTION.getId(), arguments);
+         * </pre></code>
+         */
+        public static final @NonNull AccessibilityActionCompat ACTION_SET_EXTENDED_SELECTION =
+                new AccessibilityActionCompat(BuildCompat.isAtLeastB_1()
+                        ? Api36MinorImpl.getActionSetExtendedSelection() : null,
+                        android.R.id.accessibilityActionSetExtendedSelection, null, null, null);
 
         final Object mAction;
         private final int mId;
@@ -1606,6 +1627,254 @@ public class AccessibilityNodeInfoCompat {
         }
     }
 
+    /**
+     * Compat class for AccessibilityNodeInfo.SelectionPosition, which is a
+     * class that defines either the start or end of a selection that can span
+     * across multiple AccessibilityNodeInfo objects.
+     *
+     * @see AccessibilityNodeInfo.SelectionPosition
+     *
+     * Compatibility:
+     * <ul>
+     *     <li>API &lt: 36.1: Class methods perform no-op behavior.</li>
+     * </ul>
+     */
+    public static final class SelectionPositionCompat {
+        final SelectionPosition mPosition;
+
+        /**
+         * Instantiates a new SelectionPositionCompat.
+         *
+         * @param node The {@link AccessibilityNodeInfoCompat} for the node of this selection
+         *     position.
+         * @param offset The offset for a {@link SelectionPositionCompat} within {@code view}'s text
+         *     content, which should be a value between 0 and the length of {@code view}'s text.
+         */
+        public SelectionPositionCompat(@NonNull AccessibilityNodeInfoCompat node, int offset) {
+            if (BuildCompat.isAtLeastB_1()) {
+                mPosition = new SelectionPosition(node.unwrap(), offset);
+            } else {
+                mPosition = null;
+            }
+        }
+
+        /**
+         * Instantiates a new SelectionPositionCompat.
+         *
+         * @param view The {@link View} containing the text associated with this selection
+         *     position.
+         * @param offset The offset for a selection position within {@code view}'s text content,
+         *     which should be a value between 0 and the length of {@code view}'s text.
+         */
+        public SelectionPositionCompat(@NonNull View view, int offset) {
+            if (BuildCompat.isAtLeastB_1()) {
+                mPosition = new SelectionPosition(view, offset);
+            } else {
+                mPosition = null;
+            }
+        }
+
+        /**
+         * Instantiates a new SelectionPositionCompat.
+         *
+         * @param view The view whose virtual descendant is associated with the selection position.
+         * @param virtualDescendantId The ID of the virtual descendant within {@code view}'s virtual
+         *     subtree that contains the selection position.
+         * @param offset The offset for a selection position within the virtual descendant's text
+         *     content, which should be a value between 0 and the length of the descendant's text.
+         */
+        public SelectionPositionCompat(@NonNull View view, int virtualDescendantId, int offset) {
+            if (BuildCompat.isAtLeastB_1()) {
+                mPosition = new SelectionPosition(view, virtualDescendantId, offset);
+            } else {
+                mPosition = null;
+            }
+        }
+
+        /**
+         * Instantiates a new SelectionPositionCompat.
+         *
+         * @param position The underlying SelectionPosition to wrap.
+         */
+        public SelectionPositionCompat(@NonNull SelectionPosition position) {
+            if (BuildCompat.isAtLeastB_1()) {
+                mPosition = position;
+            } else {
+                mPosition = null;
+            }
+        }
+
+        /**
+         * @return The node associated with {@code this} {@link SelectionPositionCompat}
+         *
+         * Compatibility:
+         * <ul>
+         *     <li>API &lt: 36.1: Always returns {@code null}</li>
+         * </ul>
+         */
+        public @Nullable AccessibilityNodeInfoCompat getNode() {
+            if (BuildCompat.isAtLeastB_1()) {
+                return AccessibilityNodeInfoCompat.wrap(mPosition.getNode());
+            } else {
+                return null;
+            }
+
+        }
+
+        /**
+         * @return A value from 0 to the length of {@link #getNode()}'s content representing the
+         *     offset of the {@link SelectionPositionCompat}
+         *
+         * Compatibility:
+         * <ul>
+         *     <li>API &lt: 36.1: Always returns {@code -1}</li>
+         * </ul>
+         */
+        public int getOffset() {
+            if (BuildCompat.isAtLeastB_1()) {
+                return mPosition.getOffset();
+            } else {
+                return -1;
+            }
+        }
+
+        /**
+         * Compatibility:
+         * <ul>
+         *     <li>API &lt: 36.1: Always returns {@code 0}</li>
+         * </ul>
+         */
+        @Override
+        public int hashCode() {
+            if (BuildCompat.isAtLeastB_1()) {
+                return mPosition != null ? mPosition.hashCode() : 0;
+            } else {
+                return 0;
+            }
+        }
+
+        /**
+         * Compatibility:
+         * <ul>
+         *     <li>API &lt: 36.1: Always returns {@code false}</li>
+         * </ul>
+         */
+        @Override
+        public boolean equals(Object other) {
+            if (BuildCompat.isAtLeastB_1()) {
+                return mPosition != null ? mPosition.equals(other) : false;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    /**
+     * Compat class for AccessibilityNodeInfo.Selection, which is a class that
+     * represents a selection of content that may extend across more than one
+     * {@link AccessibilityNodeInfo} instance.
+     *
+     * @see AccessibilityNodeInfo.Selection
+     *
+     * Compatibility:
+     * <ul>
+     *     <li>API &lt: 36.1: Class methods perform no-op behavior.</li>
+     * </ul>
+     */
+    public static final class SelectionCompat {
+        final Selection mSelection;
+
+        /**
+         * Instantiates a new SelectionCompat.
+         *
+         * @param start The start of the extended selection.
+         * @param end The end of the extended selection.
+         */
+        public SelectionCompat(@NonNull SelectionPositionCompat start,
+                @NonNull SelectionPositionCompat end) {
+            if (BuildCompat.isAtLeastB_1()) {
+                mSelection = new Selection(start.mPosition, end.mPosition);
+            } else {
+                mSelection = null;
+            }
+        }
+
+        /**
+         * Instantiates a new SelectionCompat.
+         *
+         * @param selection The underlying Selection to wrap.
+         */
+        public SelectionCompat(@Nullable Selection selection) {
+            if (BuildCompat.isAtLeastB_1()) {
+                mSelection = selection;
+            } else {
+                mSelection = null;
+            }
+        }
+
+        /**
+         * @return The start of the extended selection.
+         *
+         * Compatibility:
+         * <ul>
+         *     <li>API &lt: 36.1: Always returns {@code null}</li>
+         * </ul>
+         */
+        public @Nullable SelectionPositionCompat getStart() {
+            if (BuildCompat.isAtLeastB_1()) {
+                return new SelectionPositionCompat(mSelection.getStart());
+            } else {
+                return null;
+            }
+        }
+
+        /**
+         * @return The end of the extended selection.
+         *
+         * Compatibility:
+         * <ul>
+         *     <li>API &lt: 36.1: Always returns {@code null}</li>
+         * </ul>
+         */
+        public @Nullable SelectionPositionCompat getEnd() {
+            if (BuildCompat.isAtLeastB_1()) {
+                return new SelectionPositionCompat(mSelection.getEnd());
+            } else {
+                return null;
+            }
+        }
+
+        /**
+         * Compatibility:
+         * <ul>
+         *     <li>API &lt: 36.1: Always returns {@code 0}</li>
+         * </ul>
+         */
+        @Override
+        public int hashCode() {
+            if (BuildCompat.isAtLeastB_1()) {
+                return mSelection != null ? mSelection.hashCode() : 0;
+            } else {
+                return 0;
+            }
+        }
+
+        /**
+         * Compatibility:
+         * <ul>
+         *     <li>API &lt: 36.1: Always returns {@code false}</li>
+         * </ul>
+         */
+        @Override
+        public boolean equals(Object obj) {
+            if (BuildCompat.isAtLeastB_1()) {
+                return mSelection != null ? mSelection.equals(obj) : false;
+            } else {
+                return false;
+            }
+        }
+    }
+
     private static final String ROLE_DESCRIPTION_KEY =
             "AccessibilityNodeInfo.roleDescription";
 
@@ -1947,6 +2216,21 @@ public class AccessibilityNodeInfoCompat {
      */
     public static final String ACTION_ARGUMENT_HTML_ELEMENT_STRING =
         "ACTION_ARGUMENT_HTML_ELEMENT_STRING";
+
+    /**
+     * Argument for specifying the extended selection.
+     *
+     * <p><strong>Type:</strong> {@link AccessibilityNodeInfoCompat.SelectionCompat}<br>
+     * <strong>Actions:</strong>
+     *
+     * <ul>
+     *   <li>{@link AccessibilityActionCompat#ACTION_SET_EXTENDED_SELECTION}
+     * </ul>
+     *
+     * @see AccessibilityActionCompat#ACTION_SET_EXTENDED_SELECTION
+     */
+    public static final String ACTION_ARGUMENT_SELECTION_PARCELABLE =
+            "androidx.core.view.accessibility.action.ARGUMENT_SELECTION_PARCELABLE";
 
     /**
      * Argument for whether when moving at granularity to extend the selection
@@ -4161,6 +4445,30 @@ public class AccessibilityNodeInfoCompat {
     }
 
     /**
+     * Gets the
+     * {@link android.view.accessibility.AccessibilityNodeInfo#Selection selection}
+     * of this node.
+     *
+     * @return The selection, or {@code null} if the node has no selection.
+     *
+     * Compatibility:
+     * <ul>
+     *     <li>API &lt: 36.1: Always returns {@code null}</li>
+     * </ul>
+     */
+    @Nullable
+    public SelectionCompat getSelection() {
+        if (BuildCompat.isAtLeastB_1()) {
+            Selection selection = mInfo.getSelection();
+            if (selection != null) {
+                return new SelectionCompat(selection);
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Gets the actions that can be performed on the node.
      *
      * @return A list of AccessibilityActions.
@@ -5007,6 +5315,36 @@ public class AccessibilityNodeInfoCompat {
     }
 
     /**
+     * Sets the
+     * {@link android.view.accessibility.AccessibilityNodeInfo#Selection selection}
+     * of this node.
+     *
+     * <p>
+     * <strong>Note:</strong> Cannot be called from an
+     * {@link android.accessibilityservice.AccessibilityService}.
+     * This class is made immutable before being delivered to an AccessibilityService.
+     * </p>
+     *
+     * @param selection The selection, or {@code null} to clear the selection.
+     *
+     * Compatibility:
+     * <ul>
+     *     <li>API &lt: 36.1: Do nothing</li>
+     * </ul>
+     *
+     * @throws IllegalStateException If called from an AccessibilityService.
+     */
+    public void setSelection(@Nullable SelectionCompat selection) {
+        if (BuildCompat.isAtLeastB_1()) {
+            if (selection == null) {
+                mInfo.setSelection(null);
+            } else {
+                mInfo.setSelection(selection.mSelection);
+            }
+        }
+    }
+
+    /**
      * Returns whether the node's text represents a hint for the user to enter text. It should only
      * be {@code true} if the node has editable text.
      *
@@ -5572,6 +5910,8 @@ public class AccessibilityNodeInfoCompat {
                 return "ACTION_DRAG_CANCEL";
             case android.R.id.accessibilityActionScrollInDirection:
                 return "ACTION_SCROLL_IN_DIRECTION";
+            case android.R.id.accessibilityActionSetExtendedSelection:
+                return "ACTION_SET_EXTENDED_SELECTION";
             default:
                 return "ACTION_UNKNOWN";
         }
@@ -5825,6 +6165,39 @@ public class AccessibilityNodeInfoCompat {
         private static boolean removeLabeledBy(AccessibilityNodeInfo info, @NonNull View root,
                 int virtualDescendantId) {
             return info.removeLabeledBy(root, virtualDescendantId);
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES_FULL.BAKLAVA_1)
+    private static class Api36MinorImpl {
+        private Api36MinorImpl() {
+            // This class is non instantiable.
+        }
+
+        public static CollectionItemInfoCompat buildCollectionItemInfoCompat(
+                boolean heading, int columnIndex, int rowIndex, int columnSpan,
+                int rowSpan, boolean selected, String rowTitle, String columnTitle,
+                @CollectionItemInfoCompat.SortDirection int sortDirection) {
+            return new CollectionItemInfoCompat(
+                    new AccessibilityNodeInfo.CollectionItemInfo.Builder()
+                            .setHeading(heading).setColumnIndex(columnIndex)
+                            .setRowIndex(rowIndex)
+                            .setColumnSpan(columnSpan)
+                            .setRowSpan(rowSpan)
+                            .setSelected(selected)
+                            .setRowTitle(rowTitle)
+                            .setColumnTitle(columnTitle)
+                            .setSortDirection(sortDirection)
+                            .build());
+        }
+
+        public static @CollectionItemInfoCompat.SortDirection int
+                getCollectionItemSortDirection(Object info) {
+            return ((AccessibilityNodeInfo.CollectionItemInfo) info).getSortDirection();
+        }
+
+        public static AccessibilityNodeInfo.AccessibilityAction getActionSetExtendedSelection() {
+            return AccessibilityNodeInfo.AccessibilityAction.ACTION_SET_EXTENDED_SELECTION;
         }
     }
 }

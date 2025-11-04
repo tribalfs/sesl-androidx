@@ -3708,6 +3708,7 @@ package androidx.core.view.accessibility {
     method public androidx.core.view.accessibility.AccessibilityNodeInfoCompat? getParent(int);
     method public androidx.core.view.accessibility.AccessibilityNodeInfoCompat.RangeInfoCompat! getRangeInfo();
     method public CharSequence? getRoleDescription();
+    method public androidx.core.view.accessibility.AccessibilityNodeInfoCompat.SelectionCompat? getSelection();
     method public CharSequence? getStateDescription();
     method public CharSequence? getSupplementalDescription();
     method public CharSequence! getText();
@@ -3815,6 +3816,7 @@ package androidx.core.view.accessibility {
     method public void setScreenReaderFocusable(boolean);
     method public void setScrollable(boolean);
     method public void setSelected(boolean);
+    method public void setSelection(androidx.core.view.accessibility.AccessibilityNodeInfoCompat.SelectionCompat?);
     method public void setShowingHintText(boolean);
     method public void setSource(android.view.View!);
     method public void setSource(android.view.View!, int);
@@ -3848,6 +3850,7 @@ package androidx.core.view.accessibility {
     field public static final String ACTION_ARGUMENT_ROW_INT = "android.view.accessibility.action.ARGUMENT_ROW_INT";
     field public static final String ACTION_ARGUMENT_SCROLL_AMOUNT_FLOAT = "androidx.core.view.accessibility.action.ARGUMENT_SCROLL_AMOUNT_FLOAT";
     field public static final String ACTION_ARGUMENT_SELECTION_END_INT = "ACTION_ARGUMENT_SELECTION_END_INT";
+    field public static final String ACTION_ARGUMENT_SELECTION_PARCELABLE = "androidx.core.view.accessibility.action.ARGUMENT_SELECTION_PARCELABLE";
     field public static final String ACTION_ARGUMENT_SELECTION_START_INT = "ACTION_ARGUMENT_SELECTION_START_INT";
     field public static final String ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE = "ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE";
     field public static final int ACTION_CLEAR_ACCESSIBILITY_FOCUS = 128; // 0x80
@@ -3934,6 +3937,7 @@ package androidx.core.view.accessibility {
     field public static final androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat! ACTION_SCROLL_TO_POSITION;
     field public static final androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat! ACTION_SCROLL_UP;
     field public static final androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat! ACTION_SELECT;
+    field public static final androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat ACTION_SET_EXTENDED_SELECTION;
     field public static final androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat! ACTION_SET_PROGRESS;
     field public static final androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat! ACTION_SET_SELECTION;
     field public static final androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat! ACTION_SET_TEXT;
@@ -4004,6 +4008,22 @@ package androidx.core.view.accessibility {
     field public static final int RANGE_TYPE_FLOAT = 1; // 0x1
     field public static final int RANGE_TYPE_INT = 0; // 0x0
     field public static final int RANGE_TYPE_PERCENT = 2; // 0x2
+  }
+
+  public static final class AccessibilityNodeInfoCompat.SelectionCompat {
+    ctor public AccessibilityNodeInfoCompat.SelectionCompat(android.view.accessibility.AccessibilityNodeInfo.Selection?);
+    ctor public AccessibilityNodeInfoCompat.SelectionCompat(androidx.core.view.accessibility.AccessibilityNodeInfoCompat.SelectionPositionCompat, androidx.core.view.accessibility.AccessibilityNodeInfoCompat.SelectionPositionCompat);
+    method public androidx.core.view.accessibility.AccessibilityNodeInfoCompat.SelectionPositionCompat? getEnd();
+    method public androidx.core.view.accessibility.AccessibilityNodeInfoCompat.SelectionPositionCompat? getStart();
+  }
+
+  public static final class AccessibilityNodeInfoCompat.SelectionPositionCompat {
+    ctor public AccessibilityNodeInfoCompat.SelectionPositionCompat(android.view.accessibility.AccessibilityNodeInfo.SelectionPosition);
+    ctor public AccessibilityNodeInfoCompat.SelectionPositionCompat(android.view.View, int);
+    ctor public AccessibilityNodeInfoCompat.SelectionPositionCompat(android.view.View, int, int);
+    ctor public AccessibilityNodeInfoCompat.SelectionPositionCompat(androidx.core.view.accessibility.AccessibilityNodeInfoCompat, int);
+    method public androidx.core.view.accessibility.AccessibilityNodeInfoCompat? getNode();
+    method public int getOffset();
   }
 
   public static final class AccessibilityNodeInfoCompat.TouchDelegateInfoCompat {
