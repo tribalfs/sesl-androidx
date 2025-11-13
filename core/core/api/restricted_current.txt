@@ -1038,6 +1038,11 @@ package androidx.core.app {
     method public void removeOnPictureInPictureModeChangedListener(androidx.core.util.Consumer<androidx.core.app.PictureInPictureModeChangedInfo> listener);
   }
 
+  public interface OnPictureInPictureUiStateChangedProvider {
+    method public void addOnPictureInPictureUiStateChangedListener(androidx.core.util.Consumer<androidx.core.app.PictureInPictureUiStateCompat> listener);
+    method public void removeOnPictureInPictureUiStateChangedListener(androidx.core.util.Consumer<androidx.core.app.PictureInPictureUiStateCompat> listener);
+  }
+
   public interface OnUserLeaveHintProvider {
     method public void addOnUserLeaveHintListener(Runnable listener);
     method public void removeOnUserLeaveHintListener(Runnable listener);
@@ -1091,6 +1096,20 @@ package androidx.core.app {
     method public boolean isInPictureInPictureMode();
     property public boolean isInPictureInPictureMode;
     property @RequiresApi(26) public android.content.res.Configuration newConfig;
+  }
+
+  public final class PictureInPictureUiStateCompat {
+    ctor public PictureInPictureUiStateCompat(boolean isStashed, boolean isTransitioningToPip);
+    method public static androidx.core.app.PictureInPictureUiStateCompat fromPictureInPictureUiState(android.app.PictureInPictureUiState uiState);
+    method @InaccessibleFromKotlin public boolean isStashed();
+    method @InaccessibleFromKotlin public boolean isTransitioningToPip();
+    property public boolean isStashed;
+    property public boolean isTransitioningToPip;
+    field public static final androidx.core.app.PictureInPictureUiStateCompat.Companion Companion;
+  }
+
+  public static final class PictureInPictureUiStateCompat.Companion {
+    method public androidx.core.app.PictureInPictureUiStateCompat fromPictureInPictureUiState(android.app.PictureInPictureUiState uiState);
   }
 
   @androidx.versionedparcelable.VersionedParcelize(jetifyAs="android.support.v4.app.RemoteActionCompat") public final class RemoteActionCompat implements androidx.versionedparcelable.VersionedParcelable {
