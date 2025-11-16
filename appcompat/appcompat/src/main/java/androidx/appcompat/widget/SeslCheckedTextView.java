@@ -18,6 +18,7 @@ package androidx.appcompat.widget;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP_PREFIX;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
@@ -37,8 +38,8 @@ import android.widget.Checkable;
 import android.widget.TextView;
 
 import androidx.annotation.DrawableRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.appcompat.R;
 import androidx.core.content.ContextCompat;
@@ -90,6 +91,7 @@ public class SeslCheckedTextView extends TextView implements Checkable {
         this(context, attrs, defStyleAttr, 0);
     }
 
+    @SuppressLint("RestrictedApi")
     public SeslCheckedTextView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
 
@@ -280,7 +282,7 @@ public class SeslCheckedTextView extends TextView implements Checkable {
      * @see #setCheckMarkTintList(ColorStateList)
      * @see Drawable#setTintMode(PorterDuff.Mode)
      */
-    public void setCheckMarkTintMode(@Nullable PorterDuff.Mode tintMode) {
+    public void setCheckMarkTintMode(PorterDuff.@Nullable Mode tintMode) {
         mCheckMarkTintMode = tintMode;
         mHasCheckMarkTintMode = true;
 
@@ -296,8 +298,7 @@ public class SeslCheckedTextView extends TextView implements Checkable {
      * @attr ref android.R.styleable#CheckedTextView_checkMarkTintMode
      * @see #setCheckMarkTintMode(PorterDuff.Mode)
      */
-    @Nullable
-    public PorterDuff.Mode getCheckMarkTintMode() {
+    public PorterDuff.@Nullable Mode getCheckMarkTintMode() {
         return mCheckMarkTintMode;
     }
 
@@ -368,7 +369,7 @@ public class SeslCheckedTextView extends TextView implements Checkable {
 
     @Override
     @RestrictTo(LIBRARY_GROUP_PREFIX)
-    public void invalidateDrawable(Drawable drawable) {
+    public void invalidateDrawable(@NonNull Drawable drawable) {
         super.invalidateDrawable(drawable);
         if (verifyDrawable(drawable)) {
             Rect bounds = drawable.getBounds();
@@ -518,6 +519,7 @@ public class SeslCheckedTextView extends TextView implements Checkable {
             out.writeValue(checked);
         }
 
+        @NonNull
         @Override
         public String toString() {
             return "SeslCheckedTextView.SavedState{"
