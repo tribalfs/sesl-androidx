@@ -44,6 +44,7 @@ import androidx.annotation.RestrictTo;
 import androidx.appcompat.R;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.view.ViewCompat;
 import androidx.reflect.view.SeslViewReflector;
 import androidx.reflect.widget.SeslTextViewReflector;
 
@@ -72,8 +73,6 @@ public class SeslCheckedTextView extends TextView implements Checkable {
     private int mCheckMarkGravity = Gravity.START;
 
     private boolean mNeedRequestlayout;
-
-    private boolean isBasePaddingInitialized = false;//custom
 
     private static final int[] CHECKED_STATE_SET = {
         android.R.attr.state_checked
@@ -220,21 +219,10 @@ public class SeslCheckedTextView extends TextView implements Checkable {
 
         applyCheckMarkTint();
 
-        /*SeslViewReflector.resolvePadding(this);
-        setBasePadding(isCheckMarkAtStart());*/
-
-        // Custom
-        // Note: The original logic above incorrectly initializes the base padding.
-        // `setBasePadding` initializer must be called after `internalSetPadding` but before `updatePadding`.
-        // `resolvePadding` protected method will internally call `internalSetPadding`
-        // (also a protected method) and `onRtlPropertiesChanged` (a public method)
-        // which is overridden in this class that invokes `updatePadding` inside.
-
-        // Initialize the base padding. No need to perform prior call to `resolvePadding`
-        // as it will be implicitly invoked inside.
+        // Do padding resolution. This will call internalSetPadding() and do a
+        // requestLayout() if needed.
+        SeslViewReflector.resolvePadding(this);
         setBasePadding(isCheckMarkAtStart());
-        // Manually invoke after initializing base padding
-        updatePadding();
     }
 
     /**
@@ -362,9 +350,7 @@ public class SeslCheckedTextView extends TextView implements Checkable {
     @Override
     public void onRtlPropertiesChanged(int layoutDirection) {
         super.onRtlPropertiesChanged(layoutDirection);
-        if (isBasePaddingInitialized) {
-            updatePadding();
-        }
+        updatePadding();
     }
 
     @Override
@@ -397,14 +383,11 @@ public class SeslCheckedTextView extends TextView implements Checkable {
     }
 
     private void setBasePadding(boolean checkmarkAtStart) {
-        // Padding resolution is implicitly triggered
-        // via getPaddingLeft/Right.
         if (checkmarkAtStart) {
             mBasePadding = getPaddingLeft();
         } else {
             mBasePadding = getPaddingRight();
         }
-        isBasePaddingInitialized = true;
     }
 
     private boolean isCheckMarkAtStart() {
