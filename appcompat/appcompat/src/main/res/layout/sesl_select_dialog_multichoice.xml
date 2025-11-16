@@ -16,7 +16,8 @@
 -->
 <!-- Original code by Samsung, all rights reserved to the original author. -->
 
-<CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.SeslCheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@android:id/text1"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -27,8 +28,9 @@
     android:paddingTop="@dimen/sesl_select_dialog_item_padding_vertical"
     android:paddingBottom="@dimen/sesl_select_dialog_item_padding_vertical"
     android:textAppearance="?attr/textAppearanceListItem"
-    android:drawableStart="?android:listChoiceIndicatorMultiple"
-    android:drawablePadding="@dimen/sesl_checked_text_padding"
+    android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+    app:checkMarkGravity="start"
     android:stateListAnimator="?seslLargeTouchAnimator" />
 
-    <!--Note: Modified to use drawableStart instead checkMark to be  compatible with non-oneui OS.-->
+    <!--Note: Modified to use SeslCheckedTextView instead of framework CheckedTextView
+    to be  compatible with non-oneui OS.-->
