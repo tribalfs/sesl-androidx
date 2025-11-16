@@ -18,7 +18,7 @@ See also: [OneUI Design Library (Unofficial)](https://github.com/tribalfs/oneui-
 - [![latest version](https://img.shields.io/badge/sesl.androidx.swiperefreshlayout:swiperefreshlayout-1.2.0--alpha01%2B1.0.1--sesl7%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110035)
 - [![latest version](https://img.shields.io/badge/sesl.androidx.coordinatorlayout:coordinatorlayout-1.3.0%2B1.0.0--sesl7%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110023)
 - [![latest version](https://img.shields.io/badge/sesl.androidx.fragment:fragment-1.8.8%2B1.0.9--sesl7%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110028)
-- [![latest version](https://img.shields.io/badge/sesl.androidx.recyclerview:recyclerview-1.4.0%2B1.0.33--sesl7%2Brev4-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110033)
+- [![latest version](https://img.shields.io/badge/sesl.androidx.recyclerview:recyclerview-1.4.0%2B1.0.33--sesl7%2Brev5-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110033)
 - [![latest version](https://img.shields.io/badge/sesl.androidx.appcompat:appcompat-1.7.1%2B1.0.47000--sesl7%2Brev2-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110021)
 - [![latest version](https://img.shields.io/badge/sesl.androidx.viewpager2:viewpager2-1.1.0%2B1.0.4--sesl7%2Brev0-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110041)
 - [![latest version](https://img.shields.io/badge/sesl.androidx.slidingpanelayout:slidingpanelayout-1.2.0%2B1.0.5--sesl7%2Brev1-blue?logo=GitHub)](https://github.com/tribalfs/sesl-androidx/packages/2110034)
