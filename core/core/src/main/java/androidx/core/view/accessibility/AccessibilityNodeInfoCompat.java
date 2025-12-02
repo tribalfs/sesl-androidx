@@ -4458,12 +4458,15 @@ public class AccessibilityNodeInfoCompat {
      */
     @Nullable
     public SelectionCompat getSelection() {
+        // Temporarily no-op'ed due to b/459474438.
+        /*
         if (BuildCompat.isAtLeastB_1()) {
             Selection selection = mInfo.getSelection();
             if (selection != null) {
                 return new SelectionCompat(selection);
             }
         }
+        */
 
         return null;
     }
@@ -5335,6 +5338,8 @@ public class AccessibilityNodeInfoCompat {
      * @throws IllegalStateException If called from an AccessibilityService.
      */
     public void setSelection(@Nullable SelectionCompat selection) {
+        // Temporarily no-op'ed due to b/459474438.
+        /*
         if (BuildCompat.isAtLeastB_1()) {
             if (selection == null) {
                 mInfo.setSelection(null);
@@ -5342,6 +5347,7 @@ public class AccessibilityNodeInfoCompat {
                 mInfo.setSelection(selection.mSelection);
             }
         }
+        */
     }
 
     /**
