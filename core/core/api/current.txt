@@ -1029,6 +1029,11 @@ package androidx.core.app {
     method public androidx.core.app.PictureInPictureParamsCompat.Builder setTitle(CharSequence? title);
   }
 
+  public interface PictureInPictureProvider extends androidx.core.app.OnPictureInPictureModeChangedProvider androidx.core.app.OnPictureInPictureUiStateChangedProvider {
+    method public void enterPictureInPictureMode(androidx.core.app.PictureInPictureParamsCompat params);
+    method public void setPictureInPictureParams(androidx.core.app.PictureInPictureParamsCompat params);
+  }
+
   public final class PictureInPictureUiStateCompat {
     ctor public PictureInPictureUiStateCompat(boolean isStashed, boolean isTransitioningToPip);
     method public static androidx.core.app.PictureInPictureUiStateCompat fromPictureInPictureUiState(android.app.PictureInPictureUiState uiState);
