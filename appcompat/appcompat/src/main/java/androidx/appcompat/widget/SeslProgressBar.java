@@ -286,6 +286,8 @@ public class SeslProgressBar extends View {
 
     private boolean mFirstMeasure = true;
 
+    private int mCircleProgressColor = -1;
+
     /**
      * Create a new progress bar with range 0...100 and initial progress of 0.
      * @param context the application environment
@@ -449,6 +451,8 @@ public class SeslProgressBar extends View {
         }
 
         mUseHorizontalProgress = a.getBoolean(R.styleable.ProgressBar_useHorizontalProgress, false);
+
+        mCircleProgressColor = a.getColor(R.styleable.ProgressBar_seslCircleProgressColor, -1);
 
         a.recycle();
 
@@ -2550,9 +2554,14 @@ public class SeslProgressBar extends View {
         CirCleProgressDrawable background
                 = new CirCleProgressDrawable(true,
                 colorToColorStateList(res.getColor(R.color.sesl_progress_control_color_background)));
+        //Custom
+        if (mCircleProgressColor == -1) {
+            mCircleProgressColor = res.getColor(R.color.sesl_progress_control_color_activated_light);
+        }
         CirCleProgressDrawable primaryProgress
                 = new CirCleProgressDrawable(false,
-                colorToColorStateList(res.getColor(R.color.sesl_progress_control_color_activated_light)));
+                colorToColorStateList(mCircleProgressColor));
+       //custom
         Drawable[] drawables = {background, primaryProgress};
 
         LayerDrawable layer = new LayerDrawable(drawables);

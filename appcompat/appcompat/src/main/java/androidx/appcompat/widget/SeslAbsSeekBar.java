@@ -37,7 +37,6 @@ import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.animation.LinearInterpolator;
-import android.widget.SeekBar;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
@@ -334,8 +333,18 @@ public abstract class SeslAbsSeekBar extends SeslProgressBar {
                     colorToColorStateList(res.getColor(R.color.sesl_seekbar_control_color_default));
             mDefaultSecondaryProgressColor =
                     colorToColorStateList(res.getColor(R.color.sesl_seekbar_control_color_secondary));
-            mDefaultActivatedProgressColor =
-                    colorToColorStateList(res.getColor(R.color.sesl_seekbar_control_color_activated));
+
+            //Custom
+            int progressColorActivated;
+            if (a.hasValue(R.styleable.AppCompatSeekBar_seslActivatedProgressColor)) {
+                mDefaultActivatedProgressColor =
+                        colorToColorStateList(a.getColor(R.styleable.AppCompatSeekBar_seslActivatedProgressColor, 0));
+            } else {
+                mDefaultActivatedProgressColor =
+                        colorToColorStateList(res.getColor(R.color.sesl_seekbar_control_color_activated));
+            }
+            //custom
+
             mOverlapNormalProgressColor = colorToColorStateList(res.getColor(mIsLightTheme ?
                     R.color.sesl_seekbar_overlap_color_default_light :
                     R.color.sesl_seekbar_overlap_color_default_dark));
@@ -348,12 +357,21 @@ public abstract class SeslAbsSeekBar extends SeslProgressBar {
                 final int[][] states = {new int[]{android.R.attr.state_enabled},
                         new int[]{-android.R.attr.state_enabled}};
                 int[] colors = new int[2];
-                colors[0] = res.getColor(R.color.sesl_thumb_control_color_activated);
+                if (a.hasValue(R.styleable.AppCompatSeekBar_seslActivatedThumbColor)) {
+                    colors[0] = a.getColor(R.styleable.AppCompatSeekBar_seslActivatedThumbColor, 0);
+                } else {
+                    colors[0] = res.getColor(R.color.sesl_thumb_control_color_activated);
+                }
                 colors[1] = res.getColor(mIsLightTheme ?
                         R.color.sesl_seekbar_disable_color_activated_light :
                         R.color.sesl_seekbar_disable_color_activated_dark);
                 mDefaultActivatedThumbColor = new ColorStateList(states, colors);
             }
+
+            if (a.hasValue(R.styleable.AppCompatSeekBar_seslLevelBarThumb)) {
+                mLevelBarThumbDrawable = a.getDrawable(R.styleable.AppCompatSeekBar_seslLevelBarThumb);
+            }
+            //custom
 
             mAllowedSeekBarAnimation = res.getBoolean(R.bool.sesl_seekbar_sliding_animation);
             if (mAllowedSeekBarAnimation) {
@@ -1987,7 +2005,9 @@ public abstract class SeslAbsSeekBar extends SeslProgressBar {
                 mLevelDrawPadding = context.getResources().getDimension(R.dimen.sesl_seekbar_level_progress_padding_start_end);
                 setProgressDrawable(context.getDrawable(R.drawable.sesl_level_seekbar_progress));
                 setTickMark(context.getDrawable(R.drawable.sesl_level_seekbar_tick_mark));
-                mLevelBarThumbDrawable = context.getDrawable(R.drawable.sesl_level_seekbar_thumb);
+                if (mLevelBarThumbDrawable == null) {
+                    mLevelBarThumbDrawable = context.getDrawable(R.drawable.sesl_level_seekbar_thumb);
+                }
                 setThumb(mLevelBarThumbDrawable);
                 setBackgroundResource(R.drawable.sesl_seek_bar_background_borderless);
                 break;
