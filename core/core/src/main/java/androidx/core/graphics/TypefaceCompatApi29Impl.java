@@ -27,6 +27,7 @@ import android.graphics.fonts.FontFamily;
 import android.graphics.fonts.FontStyle;
 import android.os.CancellationSignal;
 import android.os.ParcelFileDescriptor;
+import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
@@ -111,12 +112,15 @@ public class TypefaceCompatApi29Impl extends TypefaceCompatBaseImpl {
                 if (pfd == null) {
                     continue;  // keep adding succeeded fonts.
                 }
-                final Font platformFont = new Font.Builder(pfd)
+                Font.Builder builder = new Font.Builder(pfd)
                         .setWeight(font.getWeight())
                         .setSlant(font.isItalic() ? FontStyle.FONT_SLANT_ITALIC
                                 : FontStyle.FONT_SLANT_UPRIGHT)
-                        .setTtcIndex(font.getTtcIndex())
-                        .build();  // TODO: font variation settings?
+                        .setTtcIndex(font.getTtcIndex());
+                if (!TextUtils.isEmpty(font.getVariationSettings())) {
+                    builder.setFontVariationSettings(font.getVariationSettings());
+                }
+                final Font platformFont = builder.build();
                 if (familyBuilder == null) {
                     familyBuilder = new FontFamily.Builder(platformFont);
                 } else {
