@@ -130,8 +130,12 @@ public class SeslRecoilAnimator {
          */
         public void removeAllUpdateListeners() {
             for (SeslRecoilAnimator animator : mAnimators) {
+                if (animator.isActive()) {
+                    animator.mAnimator.end();
+                }
                 animator.mAnimator.removeAllUpdateListeners();
             }
+            mAnimators.clear();
         }
 
         /**
