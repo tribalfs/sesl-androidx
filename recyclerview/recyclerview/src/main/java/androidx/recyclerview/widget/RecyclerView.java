@@ -388,6 +388,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
     boolean mIsLongPressMultiSelection = false;
     private boolean mIsNeedCheckLatency = false;
     private boolean mIsNeedPenSelection = false;
+    private boolean mIsPenButtonPressed = false;
     private final boolean mIsPenDragBlockEnabled = true;
     boolean mIsPenHovered = false;
     boolean mIsPenPressed = false;
@@ -4403,6 +4404,9 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         if (mFastScroller != null && mFastScroller.onInterceptTouchEvent(e)) {
             return true;
         }
+
+        boolean isPenInput = e.getToolType(0) == TOOL_TYPE_STYLUS;
+        boolean isPenButtonPressed = (e.getButtonState() & BUTTON_STYLUS_PRIMARY) != 0;
         //sesl
 
         switch (action) {
@@ -4410,9 +4414,24 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
                 if (mIgnoreMotionEventTillDown) {
                     mIgnoreMotionEventTillDown = false;
                 }
+
+                //Sesl
+                if (mIsCtrlMultiSelection && e.getToolType(0) == TOOL_TYPE_MOUSE) {
+                    return mIsPenSelectionEnabled;
+                }
+
+                if (isPenInput && isPenButtonPressed) {
+                    // If pen selection is disabled, don't
+                    // intercept and allow child under to process.
+                    // Otherwise, intercept it.
+                    return mIsPenSelectionEnabled;
+                }
+                //sesl
+
                 mScrollPointerId = e.getPointerId(0);
                 mInitialTouchX = mLastTouchX = (int) (e.getX() + 0.5f);
                 mInitialTouchY = mLastTouchY = (int) (e.getY() + 0.5f);
+
                 //Sesl
                 if (mUsePagingTouchSlopForStylus) {
                     if (e.isFromSource(InputDeviceCompat.SOURCE_STYLUS)) {
@@ -4421,6 +4440,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
                         mTouchSlop = mTouchSlop2;
                     }
                 }
+                //sesl
 
                 if (sVerboseLoggingEnabled) {
                     Log.d(TAG, "onIntercept DOWN mTouchSlop[" + mTouchSlop + "] "
@@ -4440,15 +4460,17 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
                     mItemAnimatorHolder.setPress(clickableChild);
                 }
 
-                //sesl
+                //Sesl
                 if (stopGlowAnimations(e) || mScrollState == SCROLL_STATE_SETTLING) {
                     getParent().requestDisallowInterceptTouchEvent(true);
                     setScrollState(SCROLL_STATE_DRAGGING);
                     stopNestedScroll(TYPE_NON_TOUCH);
                 }
+                //sesl
 
                 // Clear the nested offsets
                 mNestedOffsets[0] = mNestedOffsets[1] = 0;
+
                 //Sesl
                 if (mHasNestedScrollRange) {
                     adjustNestedScrollRange();
@@ -4458,6 +4480,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
 
                 startNestedScrollForType(TYPE_TOUCH);
                 mIsSkipMoveEvent = false;//sesl
+
                 break;
 
             case MotionEvent.ACTION_POINTER_DOWN:
@@ -4473,6 +4496,20 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
                 break;
 
             case MotionEvent.ACTION_MOVE: {
+                //Sesl
+                if (mIsCtrlKeyPressed && e.getToolType(0) == TOOL_TYPE_MOUSE) {
+                    if (!mIsPenSelectionEnabled) {
+                        return super.onInterceptTouchEvent(e);
+                    }
+                }
+
+                if (isPenInput && isPenButtonPressed) {
+                    if (!mIsPenSelectionEnabled) {
+                        return super.onInterceptTouchEvent(e);
+                    }
+                }
+                //sesl
+
                 final int index = e.findPointerIndex(mScrollPointerId);
                 if (index < 0) {
                     Log.e(TAG, "Error processing scroll; pointer index for id "
@@ -4539,7 +4576,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
             }
             break;
 
-            case MotionEvent.ACTION_CANCEL: {
+            case MotionEvent.ACTION_CANCEL: { //3
                 cancelScroll();
                 //Sesl
                 if (mIsRecoilSupported && mIsRecoilEnabled) {
@@ -4551,7 +4588,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
             break;
 
             //sesl
-            case MOTION_EVENT_ACTION_PEN_DOWN: {
+            case MOTION_EVENT_ACTION_PEN_DOWN: { //211
                 if (mIgnoreMotionEventTillDown) {
                     mIgnoreMotionEventTillDown = false;
                 }
@@ -15759,7 +15796,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
          *
          * @param view The view where the selection happened
          * @param child The view within the RecyclerView that was clicked
-         * @param position The position of the view in the adapter
+         * @param position The layout position of the selected item
          * @param id The stable id of the item that was clicked or {@link #NO_ID} if not using stable ids.
          */
         void onItemSelected(@NonNull RecyclerView view, @NonNull View child, int position, long id);
@@ -15809,7 +15846,10 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
          */
         void onMultiSelectStop(int endX, int endY);
 
-        void onMultiSelected(@NonNull RecyclerView view, @NonNull View child, int position,
+        /**
+         * No op. Not implemented.
+         */
+        void onMultiSelected(@NonNull RecyclerView view, @Nullable View child, int position,
                 long id);
     }
 
@@ -16184,7 +16224,39 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
                 && !SeslTextViewReflector.semIsTextSelectionProgressing();
 
         switch (action) {
-            case MotionEvent.ACTION_DOWN: {
+            case MotionEvent.ACTION_DOWN: { //0
+                //Sesl
+                boolean isPenInput = ev.getToolType(0) == TOOL_TYPE_STYLUS;
+                boolean isPenButtonPressed = (ev.getButtonState() & BUTTON_STYLUS_PRIMARY) != 0;
+
+                if (isPenInput && isPenButtonPressed) {
+                    if (mIsPenSelectionEnabled) {
+                        mIsPenButtonPressed = true;
+                        return true;
+                    } else {
+                        // Pass ACTION_DOWN to onInterceptTouchEvent.
+                        // which always returns false unless scrolling
+                        // - this allows child under to receive the event
+                        mIsPenButtonPressed = false;
+                        return super.dispatchTouchEvent(ev);
+                    }
+                }
+
+                if (mIsCtrlKeyPressed
+                        && ev.getToolType(0) == TOOL_TYPE_MOUSE) {
+                    if (mIsPenSelectionEnabled) {
+                        mIsCtrlMultiSelection = true;
+                        mIsNeedPenSelection = true;
+                        return true;
+                    } else {
+                        // Pass ACTION_DOWN to onInterceptTouchEvent.
+                        // which always returns false unless scrolling
+                        // - this allows child under to receive the event
+                        mIsCtrlMultiSelection = false;
+                        return super.dispatchTouchEvent(ev);
+                    }
+                }
+
                 if (isSupportGotoTop()) {
                     mGoToToping = false;
                 }
@@ -16195,61 +16267,43 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
                     mGoToTopView.setPressed(true);
                     return true;
                 }
-
-                if (mIsCtrlKeyPressed
-                        && ev.getToolType(0) == TOOL_TYPE_MOUSE) {
-                    mIsCtrlMultiSelection = true;
-                    mIsNeedPenSelection = true;
-                    multiSelection(touchX, touchY, contentTop, contentBottom, false);
-                    return true;
-                }
+                //sesl
 
                 return super.dispatchTouchEvent(ev);
             }
 
-            case MotionEvent.ACTION_UP: {
-                if (mIsCtrlMultiSelection) {
-                    multiSelectionEnd(touchX, touchY);
-                    mIsCtrlMultiSelection = false;
+            case MotionEvent.ACTION_UP: { //1
+                //Sesl
+                if (mIsRecoilSupported && mIsRecoilEnabled) {
+                    mItemBackgroundHolder.setRelease();
+                    mItemAnimatorHolder.setRelease();
+                }
+
+                mIsPenButtonPressed = false;
+                mIsCtrlMultiSelection = false;
+
+                // Ctrl multiselection uses same pipeline as Pen multiselection.
+                // Thus, also uses mIsPenPressed flag.
+                boolean isPenPressed = mIsPenPressed;
+
+                // 1. Resets pen drag points and sets mIsPenPressed to false
+                // 2. Invokes callback only if mIsPenPressed is true
+                multiSelectionEnd(touchX, touchY);
+                if (isPenPressed) {
+                    // Signal immediately handled
                     return true;
                 }
 
                 if (mIsLongPressMultiSelection) {
-                    if (mLongPressMultiSelectionListener != null) {
-                        mLongPressMultiSelectionListener
-                                .onLongPressMultiSelectionEnded(touchX, touchY);
-                    }
-
-                    mIsFirstMultiSelectionMove = true;
-                    mPenDragSelectedViewPosition = NO_POSITION;
-                    mPenDragStartX = 0;
-                    mPenDragStartY = 0;
-                    mPenDragEndX = 0;
-                    mPenDragEndY = 0;
-                    mPenDragBlockLeft = 0;
-                    mPenDragBlockTop = 0;
-                    mPenDragBlockRight = 0;
-                    mPenDragBlockBottom = 0;
-                    mPenDragSelectedItemArray.clear();
-                    mPenTrackedChild = null;
-                    mPenDistanceFromTrackedChildTop = 0;
-
-                    if (mHoverHandler.hasMessages(MSG_HOVERSCROLL_MOVE)) {
-                        mHoverHandler.removeMessages(MSG_HOVERSCROLL_MOVE);
-                        if (mScrollState == SCROLL_STATE_DRAGGING) {
-                            setScrollState(SCROLL_STATE_IDLE);
-                        }
-                    }
-
-                    mIsHoverOverscrolled = false;
-                    invalidate();
-                    mIsLongPressMultiSelection = false;
+                    endLongPressMultiSelection(touchX, touchY);
                 }
+                //sesl
             }
             break;
 
-            case MotionEvent.ACTION_MOVE: {
-                if (mIsCtrlMultiSelection) {
+            case MotionEvent.ACTION_MOVE: { //2
+                //Sesl
+                if (mIsPenButtonPressed || mIsCtrlMultiSelection) {
                     multiSelection(touchX, touchY, contentTop, contentBottom, false);
                     return true;
                 }
@@ -16268,11 +16322,13 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
 
                     return true;
                 }
-
+                //sesl
                 return super.dispatchTouchEvent(ev);
             }
 
-            case MotionEvent.ACTION_CANCEL: {
+
+            case MotionEvent.ACTION_CANCEL: { //3
+                //Sesl
                 if (isSupportGotoTop()) {
                     if (mGoToTopState != GTP_STATE_NONE) {
                         if (mGoToTopState == GTP_STATE_PRESSED) {
@@ -16281,23 +16337,42 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
                         mGoToTopView.setPressed(false);
                     }
                 }
+
                 if (mIsLongPressMultiSelection) {
                     mIsLongPressMultiSelection = false;
                 }
+
+                // Ensure we finished multiselection
+                if (mIsPenPressed || mIsCtrlMultiSelection) {
+                    mIsCtrlMultiSelection = false;
+                    multiSelectionEnd(touchX, touchY);
+                    return true;
+                }
+                // Note: Recoil animation release handled in onInterceptTouchEvent
+                //sesl
             }
             break;
 
-            case MOTION_EVENT_ACTION_PEN_DOWN: {
-                if (mPenDragSelectedItemArray == null) {
-                    mPenDragSelectedItemArray = new ArrayList<>();
-                }
+            case MOTION_EVENT_ACTION_PEN_DOWN: {//211
                 return super.dispatchTouchEvent(ev);
             }
 
-            case MOTION_EVENT_ACTION_PEN_UP:
-                break;
+            case MOTION_EVENT_ACTION_PEN_UP: { //212
+                //Sesl
+                mIsPenButtonPressed = false;
 
-            case MOTION_EVENT_ACTION_PEN_MOVE: {
+                boolean isPenPressed = mIsPenPressed;
+                // This invokes callback only if mIsPenPressed is true
+                // Always resets pen drag points and mIsPenPressed = false
+                multiSelectionEnd(touchX, touchY);
+                if (isPenPressed) {
+                    //If previously pressed, signal  immediately handled
+                    return true;
+                }
+                //sesl
+            }
+
+            case MOTION_EVENT_ACTION_PEN_MOVE: { //213
                 multiSelection(touchX, touchY, contentTop, contentBottom, false);
                 return super.dispatchTouchEvent(ev);
             }
@@ -16308,6 +16383,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         }
 
         if (mGoToTopState == GTP_STATE_PRESSED) {
+            //Sesl
             if (canScrollUp()) {
                 if (mOnGoToTopClickListener != null
                         && mOnGoToTopClickListener.onGoToTopClick(this)) {
@@ -16320,13 +16396,8 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
 
             autoHide(GTP_STATE_NONE);
             playSoundEffect(SoundEffectConstants.CLICK);
+            //sesl
             return true;
-        }
-
-        multiSelectionEnd(touchX, touchY);
-        if (mIsRecoilSupported && mIsRecoilEnabled) {
-            mItemBackgroundHolder.setRelease();
-            mItemAnimatorHolder.setRelease();
         }
 
         return super.dispatchTouchEvent(ev);
@@ -16944,28 +17015,29 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
                 mPenDragSelectedViewPosition = getChildLayoutPosition(child);
 
                 if (child.getVisibility() == View.VISIBLE) {
+                    int penDragSelectedViewPosition = mPenDragSelectedViewPosition;
 
                     final boolean needSelected
-                            = mPenDragSelectedViewPosition >= startPosition
-                            && mPenDragSelectedViewPosition <= endPosition
-                            && mPenDragSelectedViewPosition != mPenTrackedChildPosition;
+                            = penDragSelectedViewPosition >= startPosition
+                            && penDragSelectedViewPosition <= endPosition
+                            && penDragSelectedViewPosition != mPenTrackedChildPosition;
 
                     if (needSelected) {
-                        if (mPenDragSelectedViewPosition != NO_POSITION
-                                && !mPenDragSelectedItemArray.contains(mPenDragSelectedViewPosition)) {
-                            mPenDragSelectedItemArray.add(mPenDragSelectedViewPosition);
+                        if (penDragSelectedViewPosition != NO_POSITION
+                                && !mPenDragSelectedItemArray.contains(penDragSelectedViewPosition)) {
+                            mPenDragSelectedItemArray.add(penDragSelectedViewPosition);
                             if (mLongPressMultiSelectionListener != null) {
                                 mLongPressMultiSelectionListener.onItemSelected(this, child,
-                                        mPenDragSelectedViewPosition, getChildItemId(child));
+                                        penDragSelectedViewPosition, getChildItemId(child));
                             }
                         }
                     } else {
-                        if (mPenDragSelectedViewPosition != NO_POSITION
-                                && mPenDragSelectedItemArray.contains(mPenDragSelectedViewPosition)) {
-                            mPenDragSelectedItemArray.remove((Object)mPenDragSelectedViewPosition);
+                        if (penDragSelectedViewPosition != NO_POSITION
+                                && mPenDragSelectedItemArray.contains(penDragSelectedViewPosition)) {
+                            mPenDragSelectedItemArray.remove((Object)penDragSelectedViewPosition);
                             if (mLongPressMultiSelectionListener != null) {
                                 mLongPressMultiSelectionListener.onItemSelected(this, child,
-                                        mPenDragSelectedViewPosition, getChildItemId(child));
+                                        penDragSelectedViewPosition, getChildItemId(child));
                             }
                         }
                     }
@@ -17035,6 +17107,86 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         invalidate();
     }
 
+    private void endLongPressMultiSelection(int touchX, int touchY) {
+        if (mLongPressMultiSelectionListener != null) {
+            mLongPressMultiSelectionListener
+                    .onLongPressMultiSelectionEnded(touchX, touchY);
+        }
+
+        mIsFirstMultiSelectionMove = true;
+        mPenDragSelectedViewPosition = NO_POSITION;
+        mPenDragStartX = 0;
+        mPenDragStartY = 0;
+        mPenDragEndX = 0;
+        mPenDragEndY = 0;
+        mPenDragBlockLeft = 0;
+        mPenDragBlockTop = 0;
+        mPenDragBlockRight = 0;
+        mPenDragBlockBottom = 0;
+        mPenDragSelectedItemArray.clear();
+        mPenTrackedChild = null;
+        mPenDistanceFromTrackedChildTop = 0;
+        mIsLongPressMultiSelection = false;
+
+
+        if (mHoverHandler.hasMessages(MSG_HOVERSCROLL_MOVE)) {
+            mHoverHandler.removeMessages(MSG_HOVERSCROLL_MOVE);
+            if (mScrollState == SCROLL_STATE_DRAGGING) {
+                setScrollState(SCROLL_STATE_IDLE);
+            }
+        }
+
+        mIsHoverOverscrolled = false;
+        invalidate();
+    }
+
+    /**
+     * Handles stylus/pen or mouse input drag multi-selection and auto-scroll, if necessary.
+     *
+     * <p>This method is invoked while processing stylus or mouse move/drag events when it
+     * is enabled. It tracks the initial pen-down position, the current pen position, and computes
+     * a drag "selection block" rectangle (see {@link #mPenDragBlockLeft}, {@link #mPenDragBlockTop},
+     * {@link #mPenDragBlockRight}, {@link #mPenDragBlockBottom}). The rectangle is used for drawing
+     * the selection block overlay and can be used by callers to determine which adapter positions
+     * are considered selected.</p>
+     *
+     * <h3>High-level flow</h3>
+     * <ol>
+     *     <li>On the first pen move event, determine the tracked/anchor child under the pen
+     *     (or nearest child) and notify {@link SeslOnMultiSelectedListener#onMultiSelectStart(int, int)}
+     *     if present.</li>
+     *     <li>Update the current drag end point ({@link #mPenDragEndX}, {@link #mPenDragEndY}) and clamp
+     *     Y to the content bounds.</li>
+     *     <li>Compute the current selection block rectangle from drag start and end coordinates.</li>
+     *     <li>Request auto-scroll when the pointer is near the top/bottom hover regions.</li>
+     * </ol>
+     *
+     * <h3>State mutated</h3>
+     * <ul>
+     *     <li>Anchor/tracked view and position: {@link #mPenTrackedChild},
+     *     {@link #mPenTrackedChildPosition}</li>
+     *     <li>Drag start/end coordinates: {@link #mPenDragStartX}, {@link #mPenDragStartY},
+     *     {@link #mPenDragEndX}, {@link #mPenDragEndY}</li>
+     *     <li>Selection block rectangle: {@link #mPenDragBlockLeft}, {@link #mPenDragBlockTop},
+     *     {@link #mPenDragBlockRight}, {@link #mPenDragBlockBottom}</li>
+     *     <li>Other flags: {@link #mIsPenPressed}, {@link #mIsFirstPenMoveEvent}</li>
+     * </ul>
+     *
+     * <h3>Notes / limitations</h3>
+     * <ul>
+     *     <li>This method only establishes the drag geometry and hover-scroll behavior. The actual
+     *     "which positions are selected" policy (range, grid rectangle, pixel intersection, etc.)
+     *     is implemented in the selection logic that follows the rectangle computation.</li>
+     *     <li>If a view cannot be found under the pointer (or near it), the method logs and returns
+     *     without updating selection.</li>
+     * </ul>
+     *
+     * @param x Current pointer X (RecyclerView local coordinates).
+     * @param y Current pointer Y (RecyclerView local coordinates).
+     * @param contentTop Top bound of the scrollable content region (local coordinates).
+     * @param contentBottom Bottom bound of the scrollable content region (local coordinates).
+     * @param needToScroll Whether hover auto-scroll should be considered for this move event.
+     */
     private void multiSelection(int x, int y, int contentTop, int contentBottom,
             boolean needToScroll) {
         if (mIsNeedPenSelection) {
@@ -17152,6 +17304,13 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         }
     }
 
+    /**
+     *  1. Invokes SeslOnMultiSelectedListener.onMultiSelectStop callback
+     * if mIsPenPressed is true.
+     * <p> <p>
+     *  2. Resets pen drag points and states including setting
+     * mIsPenPressed to false.
+     */
     private void multiSelectionEnd(int x, int y) {
         if (mIsPenPressed && mOnMultiSelectedListener != null) {
             mOnMultiSelectedListener.onMultiSelectStop(x, y);
@@ -17196,39 +17355,79 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
      */
     @Nullable
     public View seslFindNearChildViewUnder(float x, float y) {
-        int childCount = mChildHelper.getChildCount();
-        int xBound = Math.round(x);
-        int yBound = Math.round(y);
+        final int touchX = Math.round(x);
+        final int touchY = Math.round(y);
 
-        int nearestIndex = -1;
-        int minDistanceX = Integer.MAX_VALUE;
-        int minDistanceY = Integer.MAX_VALUE;
+        final int lastIndex = mChildHelper.getChildCount() - 1;
+        final boolean isStaggered = mLayout instanceof StaggeredGridLayoutManager;
 
-        for (int i = childCount - 1; i >= 0; i--) {
+        // ============================================================
+        // Pass 1: Find the row (Y-center) closest to touchY
+        // ============================================================
+        int closestRowCenterY = touchY;
+        int previousRowCenterY = Integer.MIN_VALUE;
+        int minRowDistance = Integer.MAX_VALUE;
+
+        for (int i = lastIndex; i >= 0; i--) {
             View child = getChildAt(i);
+            if (child == null) continue;
 
-            if (child != null) {
-                int centerY = (child.getTop() + child.getBottom()) / 2;
-                int distanceY = Math.abs(yBound - centerY);
+            int rowCenterY = (child.getTop() + child.getBottom()) >> 1;
+            if (rowCenterY == previousRowCenterY) continue;
 
-                if (distanceY < minDistanceY) {
-                    int distanceX = Math.abs(xBound - child.getLeft());
-                    if (distanceX < minDistanceX) {
-                        nearestIndex = i;
-                        minDistanceX = distanceX;
-                        minDistanceY = distanceY;
-                    }
+            int distance = Math.abs(touchY - rowCenterY);
+            if (distance < minRowDistance) {
+                minRowDistance = distance;
+                closestRowCenterY = rowCenterY;
+            } else if (!isStaggered) {
+                // Children are ordered vertically; distance will only increase
+                break;
+            }
+
+            previousRowCenterY = rowCenterY;
+        }
+
+        // ============================================================
+        // Pass 2: Within that row, find nearest child horizontally
+        // ============================================================
+        int bestLeftIndex = -1;
+        int bestRightIndex = -1;
+        int minLeftDistance = Integer.MAX_VALUE;
+        int minRightDistance = Integer.MAX_VALUE;
+
+        for (int i = lastIndex; i >= 0; i--) {
+            View child = getChildAt(i);
+            if (child == null) continue;
+
+            int top = child.getTop();
+            int bottom = child.getBottom();
+
+            if (closestRowCenterY >= top && closestRowCenterY <= bottom) {
+                int leftDistance = Math.abs(touchX - child.getLeft());
+                int rightDistance = Math.abs(touchX - child.getRight());
+
+                if (leftDistance <= minLeftDistance) {
+                    minLeftDistance = leftDistance;
+                    bestLeftIndex = i;
                 }
+
+                if (rightDistance <= minRightDistance) {
+                    minRightDistance = rightDistance;
+                    bestRightIndex = i;
+                }
+            }
+
+            // Once we've passed the row vertically, decide and return
+            if (closestRowCenterY > bottom || i == 0) {
+                return (minLeftDistance < minRightDistance)
+                        ? mChildHelper.getChildAt(bestLeftIndex)
+                        : mChildHelper.getChildAt(bestRightIndex);
             }
         }
 
-        if (nearestIndex < 0) {
-            Log.e("SeslRecyclerView",
-                    "findNearChildViewUnder didn't find valid child view! " + x + ", " + y);
-            return null;
-        }
-
-        return mChildHelper.getChildAt(nearestIndex);
+        Log.e(TAG,
+                "seslFindNearChildViewUnder: no valid child found (x=" + x + ", y=" + y + ")");
+        return null;
     }
 
     @Override
@@ -17335,9 +17534,11 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
     }
 
     /**
-     * Sets whether pen selection is enabled. True by default.
+     * Sets whether to enable or disable flag for block selection
+     * using a pen or Ctrl key + mouse input.
+     * True by default.
      *
-     * @param enabled {@code true} to enable pen selection, {@code false} otherwise.
+     * @param enabled {@code true} to enable block selection, {@code false} otherwise.
      */
     public void seslSetPenSelectionEnabled(boolean enabled) {
         mIsPenSelectionEnabled = enabled;
@@ -17380,7 +17581,13 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         SeslViewReflector.semSetScrollBarBottomPadding(this, mScrollbarBottomPadding);
     }
 
-
+    /**
+     * Sets the listener that will be called when the user starts a multi-selection by
+     * Ctrl key or S-Pen button.
+     *
+     * @param listener The {@link SeslOnMultiSelectedListener} instance to set.
+     * @see #seslGetOnMultiSelectedListener
+     */
     public void seslSetOnMultiSelectedListener(@Nullable SeslOnMultiSelectedListener listener) {
         mOnMultiSelectedListener = listener;
     }
