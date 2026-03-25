@@ -353,6 +353,7 @@ class FontProvider {
                 String[] selectionArgs,
                 String sortOrder,
                 CancellationSignal cancellationSignal);
+
         void close();
 
         static ContentQueryWrapper make(Context context, Uri uri) {
@@ -366,6 +367,7 @@ class FontProvider {
 
     private static class ContentQueryWrapperApi16Impl implements ContentQueryWrapper {
         private final ContentProviderClient mClient;
+
         ContentQueryWrapperApi16Impl(Context context, Uri uri) {
             mClient = context.getContentResolver().acquireUnstableContentProviderClient(uri);
         }
@@ -396,6 +398,7 @@ class FontProvider {
     @RequiresApi(24)
     private static class ContentQueryWrapperApi24Impl implements ContentQueryWrapper {
         private final ContentProviderClient mClient;
+
         ContentQueryWrapperApi24Impl(Context context, Uri uri) {
             mClient = context.getContentResolver().acquireUnstableContentProviderClient(uri);
         }
