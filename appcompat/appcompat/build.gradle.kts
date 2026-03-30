@@ -45,10 +45,6 @@ android {
         noCompress += "ttf"
     }
 
-    buildTypes.configureEach {
-        consumerProguardFiles("proguard-rules.pro")
-    }
-
     namespace = "androidx.appcompat"
 }
 
