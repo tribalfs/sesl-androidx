@@ -15,10 +15,10 @@ dependencies {
     api(libs.androidx.annotation)
     api(libs.androidx.collection)
     api(libs.androidx.loader)
-    api(libs.androidx.activity)
+    api(libs.androidx.activity.ktx)
     api(libs.androidx.lifecycle.runtime)
     api(libs.androidx.lifecycle.livedata.core)
-    api(libs.androidx.lifecycle.viewmodel)
+    api(libs.androidx.lifecycle.viewmodel.ktx)
     api(libs.androidx.lifecycle.viewmodel.savedstate)
     implementation(libs.androidx.profileinstaller)
     implementation(libs.androidx.tracing)
@@ -30,12 +30,6 @@ dependencies {
     api(libs.sesl.androidx.viewpager)
 
     lintPublish(project(":fragment-lint"))
-
-    constraints {
-        implementation(libs.androidx.fragment.ktx) {
-            version { require("1.8.8") }
-        }
-    }
 }
 
 extra.set(
