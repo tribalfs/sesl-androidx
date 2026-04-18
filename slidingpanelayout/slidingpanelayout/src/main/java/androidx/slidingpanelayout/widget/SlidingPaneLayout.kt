@@ -3063,10 +3063,8 @@ open class SlidingPaneLayout @JvmOverloads constructor(
     }
 
 
-    private inline val resizeableSlideableView
-        get() = (slideableView as? TouchBlocker)?.getChildAt(
-            0
-        ) ?: slideableView
+    private inline val resizeableSlideableView get() =
+        (slideableView ?: getChildAt(1))?.let { (it as? TouchBlocker)?.getChildAt(0) ?: it }
 
     open fun resizeSlideableView(offset: Float) {
         val sv = resizeableSlideableView
