@@ -293,7 +293,6 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
             vto.removeOnPreDrawListener(mOnPreDrawListener);
         }
         if (mNestedScrollingTarget != null) {
-            mLastNestedScrollingChild = new WeakReference<>(mNestedScrollingTarget); //sesl
             onStopNestedScroll(mNestedScrollingTarget);
         }
         mIsAttachedToWindow = false;
