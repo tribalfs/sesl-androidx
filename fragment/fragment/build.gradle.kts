@@ -21,6 +21,7 @@ dependencies {
     api(libs.androidx.lifecycle.viewmodel)
     api(libs.androidx.lifecycle.viewmodel.savedstate)
     implementation(libs.androidx.profileinstaller)
+    implementation(libs.androidx.tracing)
     api(libs.androidx.savedstate)
     api(libs.androidx.annotation.experimental)
     api(libs.kotlinStdlib)
