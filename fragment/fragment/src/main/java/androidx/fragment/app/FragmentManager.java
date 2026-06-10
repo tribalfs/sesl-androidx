@@ -3247,6 +3247,9 @@ public abstract class FragmentManager implements FragmentResultOwner {
     }
 
     void dispatchPause() {
+        if (mTransitioningOp != null) {
+            cancelBackStackTransition();
+        }
         dispatchStateChange(Fragment.STARTED);
     }
 
