@@ -21,6 +21,7 @@ import static android.view.View.VISIBLE;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static android.view.Window.FEATURE_OPTIONS_PANEL;
+
 import static androidx.annotation.RestrictTo.Scope.LIBRARY;
 import static androidx.appcompat.app.LocaleOverlayHelper.combineLocalesIfOverlayExists;
 
@@ -220,7 +221,6 @@ class AppCompatDelegateImpl extends AppCompatDelegate
     private int mThemeResId;
     private int mActivityHandlesConfigFlags;
     private boolean mActivityHandlesConfigFlagsChecked;
-
     private AutoNightModeManager mAutoTimeNightModeManager;
     private AutoNightModeManager mAutoBatteryNightModeManager;
 
@@ -377,7 +377,7 @@ class AppCompatDelegateImpl extends AppCompatDelegate
                     baseContext, modeToApply, localesToApply, null, false);
             if (DEBUG) {
                 Log.d(TAG, String.format("Attempting to apply config to base context: %s",
-                        config));
+                        config.toString()));
             }
 
             try {
@@ -396,7 +396,7 @@ class AppCompatDelegateImpl extends AppCompatDelegate
                     baseContext, modeToApply, localesToApply, null, false);
             if (DEBUG) {
                 Log.d(TAG, String.format("Attempting to apply config to base context: %s",
-                        config));
+                        config.toString()));
             }
 
             try {
@@ -447,11 +447,11 @@ class AppCompatDelegateImpl extends AppCompatDelegate
             }
         }
 
-        final Configuration config =  createOverrideAppConfiguration(
+        final Configuration config = createOverrideAppConfiguration(
                 baseContext, modeToApply, localesToApply, configOverlay, true);
         if (DEBUG) {
             Log.d(TAG, String.format("Applying night mode using ContextThemeWrapper and "
-                    + "applyOverrideConfiguration(). Config: %s", config));
+                    + "applyOverrideConfiguration(). Config: %s", config.toString()));
         }
 
         // Next, we'll wrap the base context to ensure any method overrides or themes are left
@@ -581,6 +581,7 @@ class AppCompatDelegateImpl extends AppCompatDelegate
         if (ab != null) {
             ab.onDestroy();
         }
+        mActionBar = null;
 
         if (toolbar != null) {
             final ToolbarActionBar tbab = new ToolbarActionBar(toolbar, getTitle(),
@@ -666,7 +667,6 @@ class AppCompatDelegateImpl extends AppCompatDelegate
                 /* isLocalesApplicationRequired */ false);
     }
 
-
     @Override
     public void onStart() {
         // This will apply day/night if the time has changed, it will also call through to
@@ -688,9 +688,8 @@ class AppCompatDelegateImpl extends AppCompatDelegate
         if (ab != null) {
             ab.setShowHideAnimationEnabled(false);
         }
-        closeAllPanels();
+        closeAllPanels();//sesl
     }
-
 
     @Override
     public void onPostResume() {
@@ -700,13 +699,14 @@ class AppCompatDelegateImpl extends AppCompatDelegate
         }
     }
 
-
     @Override
     public void setContentView(View v) {
         ensureSubDecor();
         ViewGroup contentParent = mSubDecor.findViewById(android.R.id.content);
-        contentParent.removeAllViews();
-        contentParent.addView(v);
+        if (contentParent != null) {
+            contentParent.removeAllViews();
+            contentParent.addView(v);
+        }
         mAppCompatWindowCallback.bypassOnContentChanged(mWindow.getCallback());
     }
 
@@ -714,8 +714,10 @@ class AppCompatDelegateImpl extends AppCompatDelegate
     public void setContentView(int resId) {
         ensureSubDecor();
         ViewGroup contentParent = mSubDecor.findViewById(android.R.id.content);
-        contentParent.removeAllViews();
-        LayoutInflater.from(mContext).inflate(resId, contentParent);
+        if (contentParent != null) {
+            contentParent.removeAllViews();
+            LayoutInflater.from(mContext).inflate(resId, contentParent);
+        }
         mAppCompatWindowCallback.bypassOnContentChanged(mWindow.getCallback());
     }
 
@@ -723,8 +725,10 @@ class AppCompatDelegateImpl extends AppCompatDelegate
     public void setContentView(View v, ViewGroup.LayoutParams lp) {
         ensureSubDecor();
         ViewGroup contentParent = mSubDecor.findViewById(android.R.id.content);
-        contentParent.removeAllViews();
-        contentParent.addView(v, lp);
+        if (contentParent != null) {
+            contentParent.removeAllViews();
+            contentParent.addView(v, lp);
+        }
         mAppCompatWindowCallback.bypassOnContentChanged(mWindow.getCallback());
     }
 
@@ -732,10 +736,11 @@ class AppCompatDelegateImpl extends AppCompatDelegate
     public void addContentView(View v, ViewGroup.LayoutParams lp) {
         ensureSubDecor();
         ViewGroup contentParent = mSubDecor.findViewById(android.R.id.content);
-        contentParent.addView(v, lp);
+        if (contentParent != null) {
+            contentParent.addView(v, lp);
+        }
         mAppCompatWindowCallback.bypassOnContentChanged(mWindow.getCallback());
     }
-
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -779,7 +784,6 @@ class AppCompatDelegateImpl extends AppCompatDelegate
             mAutoBatteryNightModeManager.cleanup();
         }
     }
-
 
     @Override
     public void setTheme(@StyleRes int themeResId) {
@@ -828,7 +832,6 @@ class AppCompatDelegateImpl extends AppCompatDelegate
             setOnBackInvokedDispatcher(null);
         }
     }
-
 
     private void ensureSubDecor() {
         if (!mSubDecorInstalled) {
@@ -897,6 +900,7 @@ class AppCompatDelegateImpl extends AppCompatDelegate
         }
         mIsFloating = a.getBoolean(R.styleable.AppCompatTheme_android_windowIsFloating, false);
 
+        //sesl
         if (a.hasValue(R.styleable.AppCompatTheme_ignoreRemoveSystemTopInset)) {
             mIsIgnoreRemoveSystemTopInset = a.getBoolean(R.styleable.AppCompatTheme_ignoreRemoveSystemTopInset,
                     false);
@@ -1019,7 +1023,6 @@ class AppCompatDelegateImpl extends AppCompatDelegate
             // Change our content FrameLayout to use the android.R.id.content id.
             // Useful for fragments.
             windowContentView.setId(View.NO_ID);
-            contentView.setId(android.R.id.content);
 
             // The decorContent may have a foreground drawable set (windowContentOverlay).
             // Remove this as we handle it ourselves
@@ -1028,18 +1031,24 @@ class AppCompatDelegateImpl extends AppCompatDelegate
             }
         }
 
+        if (contentView != null) {
+            contentView.setId(android.R.id.content);
+        }
+
         // Now set the Window's content view with the decor
         mWindow.setContentView(subDecor);
 
-        contentView.setAttachListener(new ContentFrameLayout.OnAttachListener() {
-            @Override
-            public void onAttachedFromWindow() {}
+        if (contentView != null) {
+            contentView.setAttachListener(new ContentFrameLayout.OnAttachListener() {
+                @Override
+                public void onAttachedFromWindow() {}
 
-            @Override
-            public void onDetachedFromWindow() {
-                dismissPopups();
-            }
-        });
+                @Override
+                public void onDetachedFromWindow() {
+                    dismissPopups();
+                }
+            });
+        }
 
         return subDecor;
     }
@@ -1048,6 +1057,10 @@ class AppCompatDelegateImpl extends AppCompatDelegate
 
     private void applyFixedSizeWindow() {
         ContentFrameLayout cfl = (ContentFrameLayout) mSubDecor.findViewById(android.R.id.content);
+
+        if (cfl == null) {
+            return;
+        }
 
         // This is a bit weird. In the framework, the window sizing attributes control
         // the decor view's size, meaning that any padding is inset for the min/max widths below.
@@ -1260,7 +1273,6 @@ class AppCompatDelegateImpl extends AppCompatDelegate
 
         return mActionMode;
     }
-
 
     @Override
     public void invalidateOptionsMenu() {
@@ -1492,7 +1504,6 @@ class AppCompatDelegateImpl extends AppCompatDelegate
         return false;
     }
 
-
     /**
      * Handles back press, returning {@code true} if the press was handled.
      * <p>
@@ -1535,7 +1546,6 @@ class AppCompatDelegateImpl extends AppCompatDelegate
         // Let the call through...
         return false;
     }
-
 
     boolean onKeyShortcut(int keyCode, KeyEvent ev) {
         // Let the Action Bar have a chance at handling the shortcut
@@ -1647,7 +1657,7 @@ class AppCompatDelegateImpl extends AppCompatDelegate
                             mContext.getClassLoader().loadClass(viewInflaterClassName);
                     mAppCompatViewInflater =
                             (AppCompatViewInflater) viewInflaterClass.getDeclaredConstructor()
-                            .newInstance();
+                                    .newInstance();
                 } catch (Throwable t) {
                     Log.i(TAG, "Failed to instantiate custom view inflater "
                             + viewInflaterClassName + ". Falling back to default.", t);
@@ -1815,7 +1825,6 @@ class AppCompatDelegateImpl extends AppCompatDelegate
         }
     }
 
-
     private boolean initializePanelDecor(PanelFeatureState st) {
         st.setStyle(getActionBarThemedContext());
         st.decorView = new ListMenuDecorView(st.listPresenterContext);
@@ -1826,7 +1835,7 @@ class AppCompatDelegateImpl extends AppCompatDelegate
     private void reopenMenu(boolean toggleMenuMode) {
         if (mDecorContentParent != null && mDecorContentParent.canShowOverflowMenu()
                 && (!ViewConfiguration.get(mContext).hasPermanentMenuKey()
-                || mDecorContentParent.isOverflowMenuShowPending())) {
+                        || mDecorContentParent.isOverflowMenuShowPending())) {
 
             final Window.Callback cb = getWindowCallback();
 
@@ -2184,7 +2193,6 @@ class AppCompatDelegateImpl extends AppCompatDelegate
             mAppCompatWindowCallback.bypassOnPanelClosed(mWindow.getCallback(), featureId, menu);
         }
     }
-
 
     PanelFeatureState findMenuPanel(Menu menu) {
         final PanelFeatureState[] panels = mPanels;
@@ -2731,7 +2739,7 @@ class AppCompatDelegateImpl extends AppCompatDelegate
         }
         if (newLocales != null && !currentLocales.equals(newLocales)) {
             configChanges |= ActivityInfo.CONFIG_LOCALE;
-                configChanges |= ActivityInfo.CONFIG_LAYOUT_DIRECTION;
+            configChanges |= ActivityInfo.CONFIG_LAYOUT_DIRECTION;
         }
 
         if (DEBUG) {
@@ -2859,7 +2867,6 @@ class AppCompatDelegateImpl extends AppCompatDelegate
             updateActivityConfiguration(conf);
         }
     }
-
 
     private void updateActivityConfiguration(Configuration conf) {
         final Activity activity = (Activity) mHost;
@@ -3390,7 +3397,8 @@ class AppCompatDelegateImpl extends AppCompatDelegate
                 if (created != null) {
                     return created;
                 }
-            }return super.onCreatePanelView(featureId);
+            }
+            return super.onCreatePanelView(featureId);
         }
 
         @Override
@@ -3484,7 +3492,7 @@ class AppCompatDelegateImpl extends AppCompatDelegate
 
         @Override
         public android.view.ActionMode onWindowStartingActionMode(
-                android.view.ActionMode.Callback callback, int type) {
+            android.view.ActionMode.Callback callback, int type) {
             if (isHandleNativeActionModesEnabled()) {
                 switch (type) {
                     case android.view.ActionMode.TYPE_PRIMARY:
@@ -3499,7 +3507,7 @@ class AppCompatDelegateImpl extends AppCompatDelegate
         @Override
         @RequiresApi(24)
         public void onProvideKeyboardShortcuts(
-                List<KeyboardShortcutGroup> data, Menu menu, int deviceId) {
+            List<KeyboardShortcutGroup> data, Menu menu, int deviceId) {
             final PanelFeatureState panel = getPanelState(Window.FEATURE_OPTIONS_PANEL, true);
             if (panel != null && panel.menu != null) {
                 // The menu provided is one created by PhoneWindow which we don't actually use.
@@ -3562,9 +3570,7 @@ class AppCompatDelegateImpl extends AppCompatDelegate
                 mOnPanelClosedBypassEnabled = false;
             }
         }
-
     }
-
 
     /**
      */
