@@ -1,15 +1,16 @@
 plugins {
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.mavenPublish)
     alias(libs.plugins.kotlinParcelize)
 }
 
 android {
     namespace = "androidx.picker"
 
-    sourceSets.named("main") {
-        resources.srcDirs("build/javaResources")
-        res.srcDirs("src/main/res-public")
+    sourceSets {
+        named("main") {
+            resources.directories.add("build/javaResources")
+            res.directories.add("src/main/res-public")
+        }
     }
 }
 

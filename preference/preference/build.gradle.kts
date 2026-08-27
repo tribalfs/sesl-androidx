@@ -1,7 +1,5 @@
 plugins {
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.mavenPublish)
-    alias(libs.plugins.kotlinAndroid)
 }
 
 dependencies {
@@ -19,8 +17,11 @@ dependencies {
 }
 
 android {
-    sourceSets.named("main") {
-        res.setSrcDirs(listOf("res", "res-public"))
+    sourceSets {
+        named("main") {
+            res.directories.clear()
+            res.directories.addAll(listOf("res", "res-public"))
+        }
     }
 
     defaultConfig.vectorDrawables.useSupportLibrary = true

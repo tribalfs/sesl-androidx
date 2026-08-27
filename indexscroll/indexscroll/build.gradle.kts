@@ -1,13 +1,14 @@
 plugins {
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.mavenPublish)
 }
 
 android {
     namespace = "androidx.indexscroll"
 
-    sourceSets.named("main") {
-        resources.srcDir("build/javaResources")
+    sourceSets {
+        named("main") {
+            resources.directories.add("build/javaResources")
+        }
     }
 }
 

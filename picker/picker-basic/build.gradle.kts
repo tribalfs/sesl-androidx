@@ -1,14 +1,15 @@
 plugins {
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.mavenPublish)
 }
 
 android {
     namespace = "androidx.picker"
 
-    sourceSets.named("main") {
-        resources.srcDir("build/javaResources")
-        res.srcDirs("src/main/res", "src/main/res-public")
+    sourceSets {
+        named("main") {
+            resources.directories.add("build/javaResources")
+            res.directories.addAll(listOf("src/main/res", "src/main/res-public"))
+        }
     }
 }
 

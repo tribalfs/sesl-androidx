@@ -1,7 +1,5 @@
 plugins {
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.mavenPublish)
-    alias(libs.plugins.kotlinAndroid)
 }
 
 dependencies {
@@ -19,8 +17,10 @@ dependencies {
 }
 
 android {
-    sourceSets.named("main") {
-        res.srcDirs("res", "res-public")
+    sourceSets {
+        named("main") {
+            res.directories.addAll(listOf("res", "res-public"))
+        }
     }
 
     buildTypes.configureEach {

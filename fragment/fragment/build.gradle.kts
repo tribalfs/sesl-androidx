@@ -1,8 +1,6 @@
 plugins {
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.kotlinAndroid)
-    alias(libs.plugins.mavenPublish)
-    alias(libs.plugins.kotlinKapt)
+    id("com.android.legacy-kapt")
 }
 
 android {

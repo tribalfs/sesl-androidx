@@ -5,7 +5,7 @@ on:
     branches:
       - sesl-androidx-main
     paths:
-      - 'manifest.gradle.kts'
+      - 'buildSrc/src/main/kotlin/SeslManifest.kt'
   workflow_dispatch:
 jobs:
   check-and-publish:
@@ -34,8 +34,8 @@ jobs:
               sed -E 's/^[[:space:]]*"([^"]+)"[[:space:]]+to[[:space:]]+listOf\("([^"]+)",[[:space:]]*"([^"]+)",[[:space:]]*"([^"]+)",.*/\1|\2|\3|\4/'
           }
 
-          OLD_CONTENT=$(git show "$PREV_COMMIT:manifest.gradle.kts" 2>/dev/null || echo "")
-          NEW_CONTENT=$(cat manifest.gradle.kts)
+          OLD_CONTENT=$(git show "$PREV_COMMIT:buildSrc/src/main/kotlin/SeslManifest.kt" 2>/dev/null || echo "")
+          NEW_CONTENT=$(cat buildSrc/src/main/kotlin/SeslManifest.kt)
 
           OLD_VERSIONS=$(extract_versions "$OLD_CONTENT")
           NEW_VERSIONS=$(extract_versions "$NEW_CONTENT")

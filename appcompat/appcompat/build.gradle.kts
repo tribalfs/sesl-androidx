@@ -1,7 +1,5 @@
 plugins {
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.kotlinAndroid)
-    alias(libs.plugins.mavenPublish)
 }
 
 dependencies {
@@ -31,14 +29,15 @@ dependencies {
 android {
     defaultConfig {
         // Disables the build tools' automatic vector -> PNG generation
-        resourceConfigurations.clear()
         vectorDrawables {
             useSupportLibrary = true
         }
     }
 
-    sourceSets.named("main") {
-        res.srcDirs("src/main/res", "src/main/res-public")
+    sourceSets {
+        named("main") {
+            res.directories.addAll(listOf("src/main/res", "src/main/res-public"))
+        }
     }
 
     androidResources {
