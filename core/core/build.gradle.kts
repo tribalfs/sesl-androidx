@@ -25,10 +25,6 @@ android {
         noCompress += "ttf"
     }
 
-    buildTypes.all {
-        consumerProguardFiles("proguard-rules.pro")
-    }
-
     defaultConfig.vectorDrawables.useSupportLibrary = true
 
     // AccessibilityNodeInfo.Selection / SelectionPosition became public in SDK 37.1
