@@ -31,11 +31,14 @@ android {
     when (compileSdk) {
         35 -> buildToolsVersion = "35.0.1"
         36 -> buildToolsVersion = "36.0.0"
-        37 -> buildToolsVersion = "37.0.0"
+        37 -> {
+            buildToolsVersion = "37.0.0"
+            compileSdkMinor = 1
+        }
     }
 
     compileOptions {
-        if (project.name in listOf("core", "recyclerview")) {
+        if (project.name in listOf("recyclerview")) {
             sourceCompatibility = JavaVersion.VERSION_1_8
             targetCompatibility = JavaVersion.VERSION_1_8
         } else {
@@ -58,7 +61,7 @@ android {
 
 tasks.withType<KotlinCompile>().configureEach {
     compilerOptions {
-        if (project.name in listOf("core", "recyclerview")) {
+        if (project.name in listOf("recyclerview")) {
             jvmTarget.set(JvmTarget.JVM_1_8)
         }
     }

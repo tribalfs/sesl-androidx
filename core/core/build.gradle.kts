@@ -31,6 +31,10 @@ android {
 
     defaultConfig.vectorDrawables.useSupportLibrary = true
 
+    // AccessibilityNodeInfo.Selection / SelectionPosition became public in SDK 37.1
+    @Suppress("UnstableApiUsage")
+    compileSdkMinor = 1
+
     namespace = "androidx.core"
 
 }
