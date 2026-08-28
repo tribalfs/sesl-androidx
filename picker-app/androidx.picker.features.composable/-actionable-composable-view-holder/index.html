@@ -1,42 +1,39 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
     <title>ActionableComposableViewHolder</title>
-<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../";</script>
-    <script>document.documentElement.classList.replace("no-js","js");</script>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
     <script>const storage = localStorage.getItem("dokka-dark-mode")
-    if (storage == null) {
+      if (storage == null) {
         const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
         if (osDarkSchemePreferred === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    } else {
+      } else {
         const savedDarkMode = JSON.parse(storage)
-        if(savedDarkMode === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    }
+      }
     </script>
-<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
 <script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
 <link href="../../../styles/style.css" rel="Stylesheet">
 <link href="../../../styles/main.css" rel="Stylesheet">
 <link href="../../../styles/prism.css" rel="Stylesheet">
 <link href="../../../styles/logo-styles.css" rel="Stylesheet">
-<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
 <link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
-<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/safe-local-storage_blocking.js"></script>
 <script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
 <script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
 <script type="text/javascript" src="../../../scripts/main.js" defer></script>
 <script type="text/javascript" src="../../../scripts/prism.js" async></script>
-<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script>
-<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script></head>
 <body>
-    <div class="root">
-    <nav class="navigation theme-dark" id="navigation-wrapper">
-<a class="library-name--link" href="../../../index.html">
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../../index.html" tabindex="1">
                     sesl.androidx
             </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
         </button>
@@ -44,74 +41,76 @@
         <div class="library-version" id="library-version">
         </div>
         <div class="navigation-controls">
-        <div class="filter-section filter-section_loading" id="filter-section">
-                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":picker-app/main">main</button>
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":picker-app/release">release</button>
             <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
                 <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
-                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
-                    <div class="dropdown--header"><span>Platform filter</span>
-                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
                             <i class="ui-kit-icon ui-kit-icon_cross"></i>
                         </button>
                     </div>
                         <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
                             <label class="checkbox">
-                                <input type="checkbox" class="checkbox--input" id=":picker-app/main" data-filter=":picker-app/main">
+                                <input type="checkbox" class="checkbox--input" id=":picker-app/release" data-filter=":picker-app/release">
                                 <span class="checkbox--icon"></span>
-                                main
+                                release
                             </label>
                         </li>
                 </ul>
                 <div class="dropdown--overlay"></div>
             </div>
-        </div>
+        </ul>
             <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
             </button>
             <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
                 API
             </div>
         </div>
-    </nav>
-        <div id="container">
-            <div class="sidebar" id="leftColumn">
-                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
-                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox">
-                        <div class="dropdown--header">
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
                             <span>
                                     sesl.androidx
                             </span>
-                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
-                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
-                            </button>
-                        </div>
-                        <div class="sidebar--inner" id="sideMenu"></div>
-                    </ul>
-                    <div class="dropdown--overlay"></div>
-                </div>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
             </div>
-            <div id="main">
-<div class="main-content" data-page-type="classlike" id="content" pageids="picker-app::androidx.picker.features.composable/ActionableComposableViewHolder///PointingToDeclaration//1861326624">
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="picker-app::androidx.picker.features.composable/ActionableComposableViewHolder///PointingToDeclaration//-1071228138">
   <div class="breadcrumbs"><a href="../../index.html">picker-app</a><span class="delimiter">/</span><a href="../index.html">androidx.picker.features.composable</a><span class="delimiter">/</span><span class="current">ActionableComposableViewHolder</span></div>
   <div class="cover ">
     <h1 class="cover"><span>Actionable</span><wbr><span>Composable</span><wbr><span>View</span><wbr><span><span>Holder</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-app/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="token punctuation">[</span><span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.LIBRARY.html">RestrictTo.Scope.LIBRARY</a></span><wbr><span class="token punctuation">]</span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">abstract </span><span class="token keyword">class </span><a href="index.html">ActionableComposableViewHolder</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">frameView<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a></span></span><span class="token punctuation">)</span> : <a href="../-composable-view-holder/index.html">ComposableViewHolder</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/tribalfs/sesl-androidx/blob/sesl-androidx-main/picker/picker-app/src/main/java/androidx/picker/features/composable/ActionableComposableViewHolder.kt#L35">source</a>)</span></span></div><p class="paragraph">Abstract extension of <a href="../-composable-view-holder/index.html">ComposableViewHolder</a> designed to be actionable, meaning it can trigger an action when clicked. The action to be performed is defined by the <a href="do-action.html">doAction</a> supplier. Subclasses must implement the <a href="bind-data.html">bindData</a> method to bind data to the Composable content.</p><h4 class="">Parameters</h4><div class="table"><div class="table-row" data-filterable-current=":picker-app/main" data-filterable-set=":picker-app/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>frame</span><wbr><span><span>View</span></span></u></div></span></div><div><div class="title"><p class="paragraph">The root view of the ViewHolder.</p></div></div></div></div></div><h4 class="">Inheritors</h4><div class="table"><div class="table-row" data-filterable-current=":picker-app/main" data-filterable-set=":picker-app/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../../androidx.picker.features.composable.left/-composable-check-box-view-holder/index.html">ComposableCheckBoxViewHolder</a></div></span></div><div></div></div></div><div class="table-row" data-filterable-current=":picker-app/main" data-filterable-set=":picker-app/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../../androidx.picker.features.composable.left/-composable-radio-button-view-holder/index.html">ComposableRadioButtonViewHolder</a></div></span></div><div></div></div></div><div class="table-row" data-filterable-current=":picker-app/main" data-filterable-set=":picker-app/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../../androidx.picker.features.composable.widget/-composable-action-view-holder/index.html">ComposableActionViewHolder</a></div></span></div><div></div></div></div><div class="table-row" data-filterable-current=":picker-app/main" data-filterable-set=":picker-app/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../../androidx.picker.features.composable.widget/-composable-all-app-switch-view-holder/index.html">ComposableAllAppSwitchViewHolder</a></div></span></div><div></div></div></div><div class="table-row" data-filterable-current=":picker-app/main" data-filterable-set=":picker-app/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../../androidx.picker.features.composable.widget/-composable-expander-view-holder/index.html">ComposableExpanderViewHolder</a></div></span></div><div></div></div></div><div class="table-row" data-filterable-current=":picker-app/main" data-filterable-set=":picker-app/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../../androidx.picker.features.composable.widget/-composable-switch-view-holder/index.html">ComposableSwitchViewHolder</a></div></span></div><div></div></div></div></div></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-app/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="token punctuation">[</span><span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY">RestrictTo.Scope.LIBRARY</a></span><wbr><span class="token punctuation">]</span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">abstract </span><span class="token keyword">class </span><a href="index.html">ActionableComposableViewHolder</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">frameView<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a></span></span><span class="token punctuation">)</span> : <a href="../-composable-view-holder/index.html">ComposableViewHolder</a></div><p class="paragraph">Abstract extension of <a href="../-composable-view-holder/index.html">ComposableViewHolder</a> designed to be actionable, meaning it can trigger an action when clicked. The action to be performed is defined by the <a href="do-action.html">doAction</a> supplier. Subclasses must implement the <a href="bind-data.html">bindData</a> method to bind data to the Composable content.</p><h4 class="tableheader">Parameters</h4><div class="table"><div class="table-row table-row_content" data-filterable-current=":picker-app/release" data-filterable-set=":picker-app/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>frame</span><wbr><span><span>View</span></span></u></div></span></div><div><div class="title"><p class="paragraph">The root view of the ViewHolder.</p></div></div></div></div></div><h4 class="tableheader">Inheritors</h4><div class="table"><div class="table-row table-row_content" data-filterable-current=":picker-app/release" data-filterable-set=":picker-app/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../../androidx.picker.features.composable.left/-composable-check-box-view-holder/index.html">ComposableCheckBoxViewHolder</a></div></span></div><div></div></div></div><div class="table-row table-row_content" data-filterable-current=":picker-app/release" data-filterable-set=":picker-app/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../../androidx.picker.features.composable.left/-composable-radio-button-view-holder/index.html">ComposableRadioButtonViewHolder</a></div></span></div><div></div></div></div><div class="table-row table-row_content" data-filterable-current=":picker-app/release" data-filterable-set=":picker-app/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../../androidx.picker.features.composable.widget/-composable-action-view-holder/index.html">ComposableActionViewHolder</a></div></span></div><div></div></div></div><div class="table-row table-row_content" data-filterable-current=":picker-app/release" data-filterable-set=":picker-app/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../../androidx.picker.features.composable.widget/-composable-all-app-switch-view-holder/index.html">ComposableAllAppSwitchViewHolder</a></div></span></div><div></div></div></div><div class="table-row table-row_content" data-filterable-current=":picker-app/release" data-filterable-set=":picker-app/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../../androidx.picker.features.composable.widget/-composable-expander-view-holder/index.html">ComposableExpanderViewHolder</a></div></span></div><div></div></div></div><div class="table-row table-row_content" data-filterable-current=":picker-app/release" data-filterable-set=":picker-app/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../../androidx.picker.features.composable.widget/-composable-switch-view-holder/index.html">ComposableSwitchViewHolder</a></div></span></div><div></div></div></div></div></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
     <div class="tabs-section-body">
       <div data-togglable="CONSTRUCTOR">
-        <h2 class="">Constructors</h2>
-        <div class="table"><a data-name="840673753%2FConstructors%2F1861326624" anchor-label="ActionableComposableViewHolder" id="840673753%2FConstructors%2F1861326624" data-filterable-set=":picker-app/main"></a>
-          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":picker-app/main" data-filterable-set=":picker-app/main">
+        <h2 class="tableheader">Constructors</h2>
+        <div class="table"><a data-name="840673753%2FConstructors%2F-1071228138" anchor-label="ActionableComposableViewHolder" id="840673753%2FConstructors%2F-1071228138" data-filterable-set=":picker-app/release"></a>
+          <div class="table-row table-row_content" data-togglable="CONSTRUCTOR" data-filterable-current=":picker-app/release" data-filterable-set=":picker-app/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-actionable-composable-view-holder.html"><span>Actionable</span><wbr><span>Composable</span><wbr><span>View</span><wbr><span><span>Holder</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="840673753%2FConstructors%2F1861326624"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="840673753%2FConstructors%2F-1071228138"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-app/main"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">frameView<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-app/release"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">frameView<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
@@ -119,18 +118,18 @@
         </div>
       </div>
       <div data-togglable="PROPERTY">
-        <h2 class="">Properties</h2>
-        <div class="table"><a data-name="489196103%2FProperties%2F1861326624" anchor-label="doAction" id="489196103%2FProperties%2F1861326624" data-filterable-set=":picker-app/main"></a>
-          <div class="table-row" data-filterable-current=":picker-app/main" data-filterable-set=":picker-app/main">
+        <h2 class="tableheader">Properties</h2>
+        <div class="table"><a data-name="489196103%2FProperties%2F-1071228138" anchor-label="doAction" id="489196103%2FProperties%2F-1071228138" data-filterable-set=":picker-app/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":picker-app/release" data-filterable-set=":picker-app/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="do-action.html"><span>do</span><wbr><span><span>Action</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="489196103%2FProperties%2F1861326624"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="489196103%2FProperties%2F-1071228138"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-app/main"><div class="symbol monospace"><span class="token keyword">var </span><a href="do-action.html">doAction</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/core/util/Supplier.html">Supplier</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator">&gt;</span><span class="token operator">?</span></div><div class="brief "><p class="paragraph">A <a href="https://developer.android.com/reference/kotlin/androidx/core/util/Supplier.html">Supplier</a> that defines the action to be performed by this <a href="../-composable-view-holder/index.html">ComposableViewHolder</a>.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-app/release"><div class="symbol monospace"><span class="token keyword">var </span><a href="do-action.html">doAction</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/core/util/Supplier.html">Supplier</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator">&gt;</span><span class="token operator">?</span></div><div class="brief "><p class="paragraph">A <a href="https://developer.android.com/reference/kotlin/androidx/core/util/Supplier.html">Supplier</a> that defines the action to be performed by this <a href="../-composable-view-holder/index.html">ComposableViewHolder</a>.</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -138,48 +137,48 @@
         </div>
       </div>
       <div data-togglable="FUNCTION">
-        <h2 class="">Functions</h2>
-        <div class="table"><a data-name="1885944627%2FFunctions%2F1861326624" anchor-label="bindData" id="1885944627%2FFunctions%2F1861326624" data-filterable-set=":picker-app/main"></a>
-          <div class="table-row" data-filterable-current=":picker-app/main" data-filterable-set=":picker-app/main">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="1885944627%2FFunctions%2F-1071228138" anchor-label="bindData" id="1885944627%2FFunctions%2F-1071228138" data-filterable-set=":picker-app/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":picker-app/release" data-filterable-set=":picker-app/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="bind-data.html"><span>bind</span><wbr><span><span>Data</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1885944627%2FFunctions%2F1861326624"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1885944627%2FFunctions%2F-1071228138"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-app/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="bind-data.html"><span class="token function">bindData</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">viewData<span class="token operator">: </span><a href="../../androidx.picker.model.viewdata/-view-data/index.html">ViewData</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-app/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="bind-data.html"><span class="token function">bindData</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">viewData<span class="token operator">: </span><a href="../../androidx.picker.model.viewdata/-view-data/index.html">ViewData</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1892091815%2FFunctions%2F1861326624" anchor-label="onBind" id="1892091815%2FFunctions%2F1861326624" data-filterable-set=":picker-app/main"></a>
-          <div class="table-row" data-filterable-current=":picker-app/main" data-filterable-set=":picker-app/main">
+<a data-name="1892091815%2FFunctions%2F-1071228138" anchor-label="onBind" id="1892091815%2FFunctions%2F-1071228138" data-filterable-set=":picker-app/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":picker-app/release" data-filterable-set=":picker-app/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-bind.html"><span>on</span><wbr><span><span>Bind</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1892091815%2FFunctions%2F1861326624"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1892091815%2FFunctions%2F-1071228138"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-app/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/CallSuper.html"><span class="token annotation builtin">CallSuper</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="token punctuation">[</span><span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.LIBRARY.html">RestrictTo.Scope.LIBRARY</a></span><wbr><span class="token punctuation">]</span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="on-bind.html"><span class="token function">onBind</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">itemView<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Binds click events on the parent <a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.ViewHolder.html">ViewHolder</a>'s view to this <a href="index.html">ActionableComposableViewHolder</a>'s <a href="do-action.html">doAction</a> if the parent view doesn't handle click events itself.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-app/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/CallSuper.html"><span class="token annotation builtin">CallSuper</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="token punctuation">[</span><span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY">RestrictTo.Scope.LIBRARY</a></span><wbr><span class="token punctuation">]</span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="on-bind.html"><span class="token function">onBind</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">itemView<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Binds click events on the parent <a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.ViewHolder.html">ViewHolder</a>'s view to this <a href="index.html">ActionableComposableViewHolder</a>'s <a href="do-action.html">doAction</a> if the parent view doesn't handle click events itself.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-276028896%2FFunctions%2F1861326624" anchor-label="onViewRecycled" id="-276028896%2FFunctions%2F1861326624" data-filterable-set=":picker-app/main"></a>
-          <div class="table-row" data-filterable-current=":picker-app/main" data-filterable-set=":picker-app/main">
+<a data-name="-276028896%2FFunctions%2F-1071228138" anchor-label="onViewRecycled" id="-276028896%2FFunctions%2F-1071228138" data-filterable-set=":picker-app/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":picker-app/release" data-filterable-set=":picker-app/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-view-recycled.html"><span>on</span><wbr><span>View</span><wbr><span><span>Recycled</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-276028896%2FFunctions%2F1861326624"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-276028896%2FFunctions%2F-1071228138"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-app/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/CallSuper.html"><span class="token annotation builtin">CallSuper</span></a></div></div><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="on-view-recycled.html"><span class="token function">onViewRecycled</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">itemView<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Cleans up any resources when the view is recycled. It removes the click listener from the itemView and sets the <a href="do-action.html">doAction</a> to null.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-app/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/CallSuper.html"><span class="token annotation builtin">CallSuper</span></a></div></div><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="on-view-recycled.html"><span class="token function">onViewRecycled</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">itemView<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Cleans up any resources when the view is recycled. It removes the click listener from the itemView and sets the <a href="do-action.html">doAction</a> to null.</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -190,17 +189,21 @@
   </div>
 </div>
     <div class="footer">
-        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
-        <span>© 2026 Copyright</span>
-        <span class="pull-right">
-            <span>Generated by </span>
-            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
-                <span>dokka</span>
-            </a>
-        </span>
-    </div>
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
             </div>
         </div>
     </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

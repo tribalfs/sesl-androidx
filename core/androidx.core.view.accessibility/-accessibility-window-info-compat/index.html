@@ -1,42 +1,39 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
     <title>AccessibilityWindowInfoCompat</title>
-<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../";</script>
-    <script>document.documentElement.classList.replace("no-js","js");</script>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
     <script>const storage = localStorage.getItem("dokka-dark-mode")
-    if (storage == null) {
+      if (storage == null) {
         const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
         if (osDarkSchemePreferred === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    } else {
+      } else {
         const savedDarkMode = JSON.parse(storage)
-        if(savedDarkMode === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    }
+      }
     </script>
-<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
 <script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
 <link href="../../../styles/style.css" rel="Stylesheet">
 <link href="../../../styles/main.css" rel="Stylesheet">
 <link href="../../../styles/prism.css" rel="Stylesheet">
 <link href="../../../styles/logo-styles.css" rel="Stylesheet">
-<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
 <link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
-<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/safe-local-storage_blocking.js"></script>
 <script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
 <script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
 <script type="text/javascript" src="../../../scripts/main.js" defer></script>
 <script type="text/javascript" src="../../../scripts/prism.js" async></script>
-<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script>
-<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script></head>
 <body>
-    <div class="root">
-    <nav class="navigation theme-dark" id="navigation-wrapper">
-<a class="library-name--link" href="../../../index.html">
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../../index.html" tabindex="1">
                     sesl.androidx
             </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
         </button>
@@ -44,74 +41,76 @@
         <div class="library-version" id="library-version">
         </div>
         <div class="navigation-controls">
-        <div class="filter-section filter-section_loading" id="filter-section">
-                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":core/main">main</button>
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":core/release">release</button>
             <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
                 <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
-                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
-                    <div class="dropdown--header"><span>Platform filter</span>
-                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
                             <i class="ui-kit-icon ui-kit-icon_cross"></i>
                         </button>
                     </div>
                         <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
                             <label class="checkbox">
-                                <input type="checkbox" class="checkbox--input" id=":core/main" data-filter=":core/main">
+                                <input type="checkbox" class="checkbox--input" id=":core/release" data-filter=":core/release">
                                 <span class="checkbox--icon"></span>
-                                main
+                                release
                             </label>
                         </li>
                 </ul>
                 <div class="dropdown--overlay"></div>
             </div>
-        </div>
+        </ul>
             <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
             </button>
             <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
                 API
             </div>
         </div>
-    </nav>
-        <div id="container">
-            <div class="sidebar" id="leftColumn">
-                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
-                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox">
-                        <div class="dropdown--header">
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
                             <span>
                                     sesl.androidx
                             </span>
-                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
-                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
-                            </button>
-                        </div>
-                        <div class="sidebar--inner" id="sideMenu"></div>
-                    </ul>
-                    <div class="dropdown--overlay"></div>
-                </div>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
             </div>
-            <div id="main">
-<div class="main-content" data-page-type="classlike" id="content" pageids="core::androidx.core.view.accessibility/AccessibilityWindowInfoCompat///PointingToDeclaration//-108886845">
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="core::androidx.core.view.accessibility/AccessibilityWindowInfoCompat///PointingToDeclaration//-232177031">
   <div class="breadcrumbs"><a href="../../index.html">core</a><span class="delimiter">/</span><a href="../index.html">androidx.core.view.accessibility</a><span class="delimiter">/</span><span class="current">AccessibilityWindowInfoCompat</span></div>
   <div class="cover ">
     <h1 class="cover"><span>Accessibility</span><wbr><span>Window</span><wbr><span>Info</span><wbr><span><span>Compat</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="index.html">AccessibilityWindowInfoCompat</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/tribalfs/sesl-androidx/blob/sesl-androidx-main/core/core/src/main/java/androidx/core/view/accessibility/AccessibilityWindowInfoCompat.java#L39">source</a>)</span></span></div><p class="paragraph">Helper for accessing <a href="https://developer.android.com/reference/kotlin/android/view/accessibility/AccessibilityWindowInfo.html">android.view.accessibility.AccessibilityWindowInfo</a>.</p></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="index.html">AccessibilityWindowInfoCompat</a></div><p class="paragraph">Helper for accessing <a href="https://developer.android.com/reference/kotlin/android/view/accessibility/AccessibilityWindowInfo.html">android.view.accessibility.AccessibilityWindowInfo</a>.</p></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
     <div class="tabs-section-body">
       <div data-togglable="CONSTRUCTOR">
-        <h2 class="">Constructors</h2>
-        <div class="table"><a data-name="1723706608%2FConstructors%2F-108886845" anchor-label="AccessibilityWindowInfoCompat" id="1723706608%2FConstructors%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":core/main" data-filterable-set=":core/main">
+        <h2 class="tableheader">Constructors</h2>
+        <div class="table"><a data-name="1723706608%2FConstructors%2F-232177031" anchor-label="AccessibilityWindowInfoCompat" id="1723706608%2FConstructors%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-togglable="CONSTRUCTOR" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-accessibility-window-info-compat.html"><span>Accessibility</span><wbr><span>Window</span><wbr><span>Info</span><wbr><span><span>Compat</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1723706608%2FConstructors%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1723706608%2FConstructors%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief ">Creates a new AccessibilityWindowInfoCompat.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief ">Creates a new AccessibilityWindowInfoCompat.</div></div></div>
                 </div>
               </div>
             </div>
@@ -119,93 +118,93 @@
         </div>
       </div>
       <div data-togglable="PROPERTY">
-        <h2 class="">Properties</h2>
-        <div class="table"><a data-name="304229666%2FProperties%2F-108886845" anchor-label="TYPE_ACCESSIBILITY_OVERLAY" id="304229666%2FProperties%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+        <h2 class="tableheader">Properties</h2>
+        <div class="table"><a data-name="304229666%2FProperties%2F-232177031" anchor-label="TYPE_ACCESSIBILITY_OVERLAY" id="304229666%2FProperties%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-t-y-p-e_-a-c-c-e-s-s-i-b-i-l-i-t-y_-o-v-e-r-l-a-y.html"><span>TYPE_</span><wbr><span>ACCESSIBILITY_</span><wbr><span>OVERLAY</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="304229666%2FProperties%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="304229666%2FProperties%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-t-y-p-e_-a-c-c-e-s-s-i-b-i-l-i-t-y_-o-v-e-r-l-a-y.html">TYPE_ACCESSIBILITY_OVERLAY</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">4</span></div><div class="brief ">Window type: Windows that are overlaid only by an  for interception of user interactions without changing the windows an accessibility service can introspect.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-t-y-p-e_-a-c-c-e-s-s-i-b-i-l-i-t-y_-o-v-e-r-l-a-y.html">TYPE_ACCESSIBILITY_OVERLAY</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">4</span></div><div class="brief ">Window type: Windows that are overlaid only by an <a href="https://developer.android.com/reference/kotlin/android/accessibilityservice/AccessibilityService.html">android.accessibilityservice.AccessibilityService</a> for interception of user interactions without changing the windows an accessibility service can introspect.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="854292529%2FProperties%2F-108886845" anchor-label="TYPE_APPLICATION" id="854292529%2FProperties%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="854292529%2FProperties%2F-232177031" anchor-label="TYPE_APPLICATION" id="854292529%2FProperties%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-t-y-p-e_-a-p-p-l-i-c-a-t-i-o-n.html"><span>TYPE_</span><wbr><span><span>APPLICATION</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="854292529%2FProperties%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="854292529%2FProperties%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-t-y-p-e_-a-p-p-l-i-c-a-t-i-o-n.html">TYPE_APPLICATION</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">1</span></div><div class="brief ">Window type: This is an application window.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-t-y-p-e_-a-p-p-l-i-c-a-t-i-o-n.html">TYPE_APPLICATION</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">1</span></div><div class="brief ">Window type: This is an application window.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1271491005%2FProperties%2F-108886845" anchor-label="TYPE_INPUT_METHOD" id="-1271491005%2FProperties%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-1271491005%2FProperties%2F-232177031" anchor-label="TYPE_INPUT_METHOD" id="-1271491005%2FProperties%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-t-y-p-e_-i-n-p-u-t_-m-e-t-h-o-d.html"><span>TYPE_</span><wbr><span>INPUT_</span><wbr><span>METHOD</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1271491005%2FProperties%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1271491005%2FProperties%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-t-y-p-e_-i-n-p-u-t_-m-e-t-h-o-d.html">TYPE_INPUT_METHOD</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">2</span></div><div class="brief ">Window type: This is an input method window.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-t-y-p-e_-i-n-p-u-t_-m-e-t-h-o-d.html">TYPE_INPUT_METHOD</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">2</span></div><div class="brief ">Window type: This is an input method window.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-193653299%2FProperties%2F-108886845" anchor-label="TYPE_MAGNIFICATION_OVERLAY" id="-193653299%2FProperties%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-193653299%2FProperties%2F-232177031" anchor-label="TYPE_MAGNIFICATION_OVERLAY" id="-193653299%2FProperties%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-t-y-p-e_-m-a-g-n-i-f-i-c-a-t-i-o-n_-o-v-e-r-l-a-y.html"><span>TYPE_</span><wbr><span>MAGNIFICATION_</span><wbr><span>OVERLAY</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-193653299%2FProperties%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-193653299%2FProperties%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-t-y-p-e_-m-a-g-n-i-f-i-c-a-t-i-o-n_-o-v-e-r-l-a-y.html">TYPE_MAGNIFICATION_OVERLAY</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">6</span></div><div class="brief ">Window type: A system window used to show the UI for the interaction with window-based magnification, which includes the magnified content and the option menu.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-t-y-p-e_-m-a-g-n-i-f-i-c-a-t-i-o-n_-o-v-e-r-l-a-y.html">TYPE_MAGNIFICATION_OVERLAY</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">6</span></div><div class="brief ">Window type: A system window used to show the UI for the interaction with window-based magnification, which includes the magnified content and the option menu.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="225644782%2FProperties%2F-108886845" anchor-label="TYPE_SPLIT_SCREEN_DIVIDER" id="225644782%2FProperties%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="225644782%2FProperties%2F-232177031" anchor-label="TYPE_SPLIT_SCREEN_DIVIDER" id="225644782%2FProperties%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-t-y-p-e_-s-p-l-i-t_-s-c-r-e-e-n_-d-i-v-i-d-e-r.html"><span>TYPE_</span><wbr><span>SPLIT_</span><wbr><span>SCREEN_</span><wbr><span>DIVIDER</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="225644782%2FProperties%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="225644782%2FProperties%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-t-y-p-e_-s-p-l-i-t_-s-c-r-e-e-n_-d-i-v-i-d-e-r.html">TYPE_SPLIT_SCREEN_DIVIDER</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">5</span></div><div class="brief ">Window type: A system window used to divide the screen in split-screen mode.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-t-y-p-e_-s-p-l-i-t_-s-c-r-e-e-n_-d-i-v-i-d-e-r.html">TYPE_SPLIT_SCREEN_DIVIDER</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">5</span></div><div class="brief ">Window type: A system window used to divide the screen in split-screen mode.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="2021413450%2FProperties%2F-108886845" anchor-label="TYPE_SYSTEM" id="2021413450%2FProperties%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="2021413450%2FProperties%2F-232177031" anchor-label="TYPE_SYSTEM" id="2021413450%2FProperties%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-t-y-p-e_-s-y-s-t-e-m.html"><span>TYPE_</span><wbr><span>SYSTEM</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2021413450%2FProperties%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2021413450%2FProperties%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-t-y-p-e_-s-y-s-t-e-m.html">TYPE_SYSTEM</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">3</span></div><div class="brief ">Window type: This is an system window.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-t-y-p-e_-s-y-s-t-e-m.html">TYPE_SYSTEM</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">3</span></div><div class="brief ">Window type: This is an system window.</div></div></div>
                 </div>
               </div>
             </div>
@@ -213,363 +212,363 @@
         </div>
       </div>
       <div data-togglable="FUNCTION">
-        <h2 class="">Functions</h2>
-        <div class="table"><a data-name="-1775265174%2FFunctions%2F-108886845" anchor-label="equals" id="-1775265174%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="-1775265174%2FFunctions%2F-232177031" anchor-label="equals" id="-1775265174%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="equals.html"><span><span>equals</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1775265174%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1775265174%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="equals.html"><span class="token function">equals</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">obj<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="equals.html"><span class="token function">equals</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">obj<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="735274899%2FFunctions%2F-108886845" anchor-label="getAnchor" id="735274899%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="735274899%2FFunctions%2F-232177031" anchor-label="getAnchor" id="735274899%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-anchor.html"><span>get</span><wbr><span><span>Anchor</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="735274899%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="735274899%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-anchor.html"><span class="token function">getAnchor</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="../-accessibility-node-info-compat/index.html">AccessibilityNodeInfoCompat</a></div><div class="brief ">Gets the node that anchors this window to another.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-anchor.html"><span class="token function">getAnchor</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="../-accessibility-node-info-compat/index.html">AccessibilityNodeInfoCompat</a></div><div class="brief ">Gets the node that anchors this window to another.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1359052584%2FFunctions%2F-108886845" anchor-label="getBoundsInScreen" id="-1359052584%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-1359052584%2FFunctions%2F-232177031" anchor-label="getBoundsInScreen" id="-1359052584%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-bounds-in-screen.html"><span>get</span><wbr><span>Bounds</span><wbr><span>In</span><wbr><span><span>Screen</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1359052584%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1359052584%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-bounds-in-screen.html"><span class="token function">getBoundsInScreen</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>outBounds<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/graphics/Rect.html">Rect</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Gets the bounds of this window in the screen.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-bounds-in-screen.html"><span class="token function">getBoundsInScreen</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>outBounds<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/graphics/Rect.html">Rect</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Gets the bounds of this window in the screen.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-165876387%2FFunctions%2F-108886845" anchor-label="getChild" id="-165876387%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-165876387%2FFunctions%2F-232177031" anchor-label="getChild" id="-165876387%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-child.html"><span>get</span><wbr><span><span>Child</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-165876387%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-165876387%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-child.html"><span class="token function">getChild</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">index<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="index.html">AccessibilityWindowInfoCompat</a></div><div class="brief ">Gets the child window at a given index.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-child.html"><span class="token function">getChild</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">index<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="index.html">AccessibilityWindowInfoCompat</a></div><div class="brief ">Gets the child window at a given index.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1535839541%2FFunctions%2F-108886845" anchor-label="getChildCount" id="1535839541%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="1535839541%2FFunctions%2F-232177031" anchor-label="getChildCount" id="1535839541%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-child-count.html"><span>get</span><wbr><span>Child</span><wbr><span><span>Count</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1535839541%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1535839541%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-child-count.html"><span class="token function">getChildCount</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Gets the number of child windows.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-child-count.html"><span class="token function">getChildCount</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Gets the number of child windows.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-84954091%2FFunctions%2F-108886845" anchor-label="getDisplayId" id="-84954091%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-84954091%2FFunctions%2F-232177031" anchor-label="getDisplayId" id="-84954091%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-display-id.html"><span>get</span><wbr><span>Display</span><wbr><span><span>Id</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-84954091%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-84954091%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-display-id.html"><span class="token function">getDisplayId</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Returns the ID of the display this window is on, for use with <a href="https://developer.android.com/reference/kotlin/android/hardware/display/DisplayManager.html#getdisplay">getDisplay</a>.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-display-id.html"><span class="token function">getDisplayId</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Returns the ID of the display this window is on, for use with <a href="https://developer.android.com/reference/kotlin/android/hardware/display/DisplayManager.html#getDisplay(int)">getDisplay</a>.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1350019437%2FFunctions%2F-108886845" anchor-label="getId" id="1350019437%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="1350019437%2FFunctions%2F-232177031" anchor-label="getId" id="1350019437%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-id.html"><span>get</span><wbr><span><span>Id</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1350019437%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1350019437%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-id.html"><span class="token function">getId</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Gets the unique window id.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-id.html"><span class="token function">getId</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Gets the unique window id.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="980611393%2FFunctions%2F-108886845" anchor-label="getLayer" id="980611393%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="980611393%2FFunctions%2F-232177031" anchor-label="getLayer" id="980611393%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-layer.html"><span>get</span><wbr><span><span>Layer</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="980611393%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="980611393%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-layer.html"><span class="token function">getLayer</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Gets the layer which determines the Z-order of the window.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-layer.html"><span class="token function">getLayer</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Gets the layer which determines the Z-order of the window.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1104148231%2FFunctions%2F-108886845" anchor-label="getLocales" id="-1104148231%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-1104148231%2FFunctions%2F-232177031" anchor-label="getLocales" id="-1104148231%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-locales.html"><span>get</span><wbr><span><span>Locales</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1104148231%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1104148231%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-locales.html"><span class="token function">getLocales</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="../../androidx.core.os/[main]-locale-list-compat/index.html">LocaleListCompat</a></div><div class="brief ">Returns the <a href="https://developer.android.com/reference/kotlin/android/os/LocaleList.html">android.os.LocaleList</a> of the window.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-locales.html"><span class="token function">getLocales</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="../../androidx.core.os/-locale-list-compat/index.html">LocaleListCompat</a></div><div class="brief ">Returns the <a href="https://developer.android.com/reference/kotlin/android/os/LocaleList.html">android.os.LocaleList</a> of the window.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1068544194%2FFunctions%2F-108886845" anchor-label="getParent" id="-1068544194%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-1068544194%2FFunctions%2F-232177031" anchor-label="getParent" id="-1068544194%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-parent.html"><span>get</span><wbr><span><span>Parent</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1068544194%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1068544194%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-parent.html"><span class="token function">getParent</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="index.html">AccessibilityWindowInfoCompat</a></div><div class="brief ">Gets the parent window if such.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-parent.html"><span class="token function">getParent</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="index.html">AccessibilityWindowInfoCompat</a></div><div class="brief ">Gets the parent window if such.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="513952327%2FFunctions%2F-108886845" anchor-label="getRegionInScreen" id="513952327%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="513952327%2FFunctions%2F-232177031" anchor-label="getRegionInScreen" id="513952327%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-region-in-screen.html"><span>get</span><wbr><span>Region</span><wbr><span>In</span><wbr><span><span>Screen</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="513952327%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="513952327%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-region-in-screen.html"><span class="token function">getRegionInScreen</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>outRegion<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/graphics/Region.html">Region</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Gets the touchable region of this window in the screen.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-region-in-screen.html"><span class="token function">getRegionInScreen</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>outRegion<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/graphics/Region.html">Region</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Gets the touchable region of this window in the screen.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="2118127783%2FFunctions%2F-108886845" anchor-label="getRoot" id="2118127783%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="2118127783%2FFunctions%2F-232177031" anchor-label="getRoot" id="2118127783%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-root.html"><span>get</span><wbr><span><span>Root</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2118127783%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2118127783%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-root.html"><span class="token function">getRoot</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="../-accessibility-node-info-compat/index.html">AccessibilityNodeInfoCompat</a></div><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-root.html"><span class="token function">getRoot</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">prefetchingStrategy<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="../-accessibility-node-info-compat/index.html">AccessibilityNodeInfoCompat</a></div><div class="brief ">Gets the root node in the window's hierarchy.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-root.html"><span class="token function">getRoot</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="../-accessibility-node-info-compat/index.html">AccessibilityNodeInfoCompat</a></div><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-root.html"><span class="token function">getRoot</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">prefetchingStrategy<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="../-accessibility-node-info-compat/index.html">AccessibilityNodeInfoCompat</a></div><div class="brief ">Gets the root node in the window's hierarchy.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1332775450%2FFunctions%2F-108886845" anchor-label="getTitle" id="1332775450%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="1332775450%2FFunctions%2F-232177031" anchor-label="getTitle" id="1332775450%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-title.html"><span>get</span><wbr><span><span>Title</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1332775450%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1332775450%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-title.html"><span class="token function">getTitle</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/java/lang/CharSequence.html">CharSequence</a></div><div class="brief ">Gets the title of the window.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-title.html"><span class="token function">getTitle</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/java/lang/CharSequence.html">CharSequence</a></div><div class="brief ">Gets the title of the window.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1757596608%2FFunctions%2F-108886845" anchor-label="getTransitionTimeMillis" id="1757596608%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="1757596608%2FFunctions%2F-232177031" anchor-label="getTransitionTimeMillis" id="1757596608%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-transition-time-millis.html"><span>get</span><wbr><span>Transition</span><wbr><span>Time</span><wbr><span><span>Millis</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1757596608%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1757596608%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-transition-time-millis.html"><span class="token function">getTransitionTimeMillis</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></div><div class="brief ">Returns the <a href="https://developer.android.com/reference/kotlin/android/os/SystemClock.html#uptimemillis">uptimeMillis</a> at which the last transition happens.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-transition-time-millis.html"><span class="token function">getTransitionTimeMillis</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></div><div class="brief ">Returns the <a href="https://developer.android.com/reference/kotlin/android/os/SystemClock.html#uptimeMillis()">uptimeMillis</a> at which the last transition happens.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="2119600494%2FFunctions%2F-108886845" anchor-label="getType" id="2119600494%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="2119600494%2FFunctions%2F-232177031" anchor-label="getType" id="2119600494%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-type.html"><span>get</span><wbr><span><span>Type</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2119600494%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2119600494%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-type.html"><span class="token function">getType</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Gets the type of the window.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-type.html"><span class="token function">getType</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Gets the type of the window.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="77746369%2FFunctions%2F-108886845" anchor-label="hashCode" id="77746369%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="77746369%2FFunctions%2F-232177031" anchor-label="hashCode" id="77746369%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="hash-code.html"><span>hash</span><wbr><span><span>Code</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="77746369%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="77746369%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="hash-code.html"><span class="token function">hashCode</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="hash-code.html"><span class="token function">hashCode</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="108364553%2FFunctions%2F-108886845" anchor-label="isAccessibilityFocused" id="108364553%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="108364553%2FFunctions%2F-232177031" anchor-label="isAccessibilityFocused" id="108364553%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="is-accessibility-focused.html"><span>is</span><wbr><span>Accessibility</span><wbr><span><span>Focused</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="108364553%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="108364553%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-accessibility-focused.html"><span class="token function">isAccessibilityFocused</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Gets if this window has accessibility focus.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-accessibility-focused.html"><span class="token function">isAccessibilityFocused</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Gets if this window has accessibility focus.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1210044844%2FFunctions%2F-108886845" anchor-label="isActive" id="1210044844%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="1210044844%2FFunctions%2F-232177031" anchor-label="isActive" id="1210044844%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="is-active.html"><span>is</span><wbr><span><span>Active</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1210044844%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1210044844%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-active.html"><span class="token function">isActive</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Gets if this window is active.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-active.html"><span class="token function">isActive</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Gets if this window is active.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1289189231%2FFunctions%2F-108886845" anchor-label="isFocused" id="-1289189231%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-1289189231%2FFunctions%2F-232177031" anchor-label="isFocused" id="-1289189231%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="is-focused.html"><span>is</span><wbr><span><span>Focused</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1289189231%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1289189231%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-focused.html"><span class="token function">isFocused</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Gets if this window has input focus.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-focused.html"><span class="token function">isFocused</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Gets if this window has input focus.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1218933873%2FFunctions%2F-108886845" anchor-label="isInPictureInPictureMode" id="-1218933873%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-1218933873%2FFunctions%2F-232177031" anchor-label="isInPictureInPictureMode" id="-1218933873%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="is-in-picture-in-picture-mode.html"><span>is</span><wbr><span>In</span><wbr><span>Picture</span><wbr><span>In</span><wbr><span>Picture</span><wbr><span><span>Mode</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1218933873%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1218933873%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-in-picture-in-picture-mode.html"><span class="token function">isInPictureInPictureMode</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Check if the window is in picture-in-picture mode.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-in-picture-in-picture-mode.html"><span class="token function">isInPictureInPictureMode</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Check if the window is in picture-in-picture mode.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1957970605%2FFunctions%2F-108886845" anchor-label="obtain" id="-1957970605%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-1957970605%2FFunctions%2F-232177031" anchor-label="obtain" id="-1957970605%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="obtain.html"><span><span>obtain</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1957970605%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1957970605%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="obtain.html"><span class="token function">obtain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="index.html">AccessibilityWindowInfoCompat</a></div><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="obtain.html"><span class="token function">obtain</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span>info<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="index.html">AccessibilityWindowInfoCompat</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="index.html">AccessibilityWindowInfoCompat</a></div><div class="brief ">Returns a cached instance if such is available or a new one is created.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="obtain.html"><span class="token function">obtain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="index.html">AccessibilityWindowInfoCompat</a></div><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="obtain.html"><span class="token function">obtain</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span>info<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="index.html">AccessibilityWindowInfoCompat</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="index.html">AccessibilityWindowInfoCompat</a></div><div class="brief ">Returns a cached instance if such is available or a new one is created.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1371339797%2FFunctions%2F-108886845" anchor-label="recycle" id="-1371339797%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-1371339797%2FFunctions%2F-232177031" anchor-label="recycle" id="-1371339797%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="recycle.html"><span><span>recycle</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1371339797%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1371339797%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="recycle.html"><span class="token function"><strike>recycle</strike></span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief ">Return an instance back to be reused.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="recycle.html"><span class="token function"><strike>recycle</strike></span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief ">Return an instance back to be reused.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-100419696%2FFunctions%2F-108886845" anchor-label="toString" id="-100419696%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-100419696%2FFunctions%2F-232177031" anchor-label="toString" id="-100419696%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="to-string.html"><span>to</span><wbr><span><span>String</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-100419696%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-100419696%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="to-string.html"><span class="token function">toString</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="to-string.html"><span class="token function">toString</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1567598791%2FFunctions%2F-108886845" anchor-label="unwrap" id="-1567598791%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-1567598791%2FFunctions%2F-232177031" anchor-label="unwrap" id="-1567598791%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="unwrap.html"><span><span>unwrap</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1567598791%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1567598791%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="unwrap.html"><span class="token function">unwrap</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/view/accessibility/AccessibilityWindowInfo.html">AccessibilityWindowInfo</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="unwrap.html"><span class="token function">unwrap</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/view/accessibility/AccessibilityWindowInfo.html">AccessibilityWindowInfo</a></div></div></div>
                 </div>
               </div>
             </div>
@@ -580,17 +579,21 @@
   </div>
 </div>
     <div class="footer">
-        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
-        <span>© 2026 Copyright</span>
-        <span class="pull-right">
-            <span>Generated by </span>
-            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
-                <span>dokka</span>
-            </a>
-        </span>
-    </div>
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
             </div>
         </div>
     </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

@@ -1,42 +1,39 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
     <title>EdgeEffectCompat</title>
-<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../";</script>
-    <script>document.documentElement.classList.replace("no-js","js");</script>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
     <script>const storage = localStorage.getItem("dokka-dark-mode")
-    if (storage == null) {
+      if (storage == null) {
         const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
         if (osDarkSchemePreferred === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    } else {
+      } else {
         const savedDarkMode = JSON.parse(storage)
-        if(savedDarkMode === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    }
+      }
     </script>
-<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
 <script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
 <link href="../../../styles/style.css" rel="Stylesheet">
 <link href="../../../styles/main.css" rel="Stylesheet">
 <link href="../../../styles/prism.css" rel="Stylesheet">
 <link href="../../../styles/logo-styles.css" rel="Stylesheet">
-<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
 <link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
-<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/safe-local-storage_blocking.js"></script>
 <script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
 <script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
 <script type="text/javascript" src="../../../scripts/main.js" defer></script>
 <script type="text/javascript" src="../../../scripts/prism.js" async></script>
-<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script>
-<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script></head>
 <body>
-    <div class="root">
-    <nav class="navigation theme-dark" id="navigation-wrapper">
-<a class="library-name--link" href="../../../index.html">
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../../index.html" tabindex="1">
                     sesl.androidx
             </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
         </button>
@@ -44,74 +41,76 @@
         <div class="library-version" id="library-version">
         </div>
         <div class="navigation-controls">
-        <div class="filter-section filter-section_loading" id="filter-section">
-                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":core/main">main</button>
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":core/release">release</button>
             <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
                 <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
-                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
-                    <div class="dropdown--header"><span>Platform filter</span>
-                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
                             <i class="ui-kit-icon ui-kit-icon_cross"></i>
                         </button>
                     </div>
                         <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
                             <label class="checkbox">
-                                <input type="checkbox" class="checkbox--input" id=":core/main" data-filter=":core/main">
+                                <input type="checkbox" class="checkbox--input" id=":core/release" data-filter=":core/release">
                                 <span class="checkbox--icon"></span>
-                                main
+                                release
                             </label>
                         </li>
                 </ul>
                 <div class="dropdown--overlay"></div>
             </div>
-        </div>
+        </ul>
             <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
             </button>
             <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
                 API
             </div>
         </div>
-    </nav>
-        <div id="container">
-            <div class="sidebar" id="leftColumn">
-                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
-                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox">
-                        <div class="dropdown--header">
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
                             <span>
                                     sesl.androidx
                             </span>
-                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
-                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
-                            </button>
-                        </div>
-                        <div class="sidebar--inner" id="sideMenu"></div>
-                    </ul>
-                    <div class="dropdown--overlay"></div>
-                </div>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
             </div>
-            <div id="main">
-<div class="main-content" data-page-type="classlike" id="content" pageids="core::androidx.core.widget/EdgeEffectCompat///PointingToDeclaration//-108886845">
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="core::androidx.core.widget/EdgeEffectCompat///PointingToDeclaration//-232177031">
   <div class="breadcrumbs"><a href="../../index.html">core</a><span class="delimiter">/</span><a href="../index.html">androidx.core.widget</a><span class="delimiter">/</span><span class="current">EdgeEffectCompat</span></div>
   <div class="cover ">
     <h1 class="cover"><span>Edge</span><wbr><span>Effect</span><wbr><span><span>Compat</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">EdgeEffectCompat</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/tribalfs/sesl-androidx/blob/sesl-androidx-main/core/core/src/main/java/androidx/core/widget/EdgeEffectCompat.java#L44">source</a>)</span></span></div><p class="paragraph"><strong>SESL Variant</strong> Helper for accessing <a href="https://developer.android.com/reference/kotlin/android/widget/EdgeEffect.html">EdgeEffect</a>. This class is used to access <a href="https://developer.android.com/reference/kotlin/android/widget/EdgeEffect.html">EdgeEffect</a> on platform versions that support it. When running on older platforms it will result in no-ops. It should be used by views that wish to use the standard Android visual effects at the edges of scrolling containers.</p></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">EdgeEffectCompat</a></div><p class="paragraph"><strong>SESL Variant</strong> Helper for accessing <a href="https://developer.android.com/reference/kotlin/android/widget/EdgeEffect.html">EdgeEffect</a>. This class is used to access <a href="https://developer.android.com/reference/kotlin/android/widget/EdgeEffect.html">EdgeEffect</a> on platform versions that support it. When running on older platforms it will result in no-ops. It should be used by views that wish to use the standard Android visual effects at the edges of scrolling containers.</p></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
     <div class="tabs-section-body">
       <div data-togglable="CONSTRUCTOR">
-        <h2 class="">Constructors</h2>
-        <div class="table"><a data-name="-2086344648%2FConstructors%2F-108886845" anchor-label="EdgeEffectCompat" id="-2086344648%2FConstructors%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":core/main" data-filterable-set=":core/main">
+        <h2 class="tableheader">Constructors</h2>
+        <div class="table"><a data-name="-2086344648%2FConstructors%2F-232177031" anchor-label="EdgeEffectCompat" id="-2086344648%2FConstructors%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-togglable="CONSTRUCTOR" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-edge-effect-compat.html"><span>Edge</span><wbr><span>Effect</span><wbr><span><span>Compat</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2086344648%2FConstructors%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2086344648%2FConstructors%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Construct a new EdgeEffect themed using the given context.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Construct a new EdgeEffect themed using the given context.</div></div></div>
                 </div>
               </div>
             </div>
@@ -119,153 +118,153 @@
         </div>
       </div>
       <div data-togglable="FUNCTION">
-        <h2 class="">Functions</h2>
-        <div class="table"><a data-name="1808434644%2FFunctions%2F-108886845" anchor-label="create" id="1808434644%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="1808434644%2FFunctions%2F-232177031" anchor-label="create" id="1808434644%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="create.html"><span><span>create</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1808434644%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1808434644%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="create.html"><span class="token function">create</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>context<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span>attrs<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/widget/EdgeEffect.html">EdgeEffect</a></div><div class="brief ">Constructs and returns a new EdgeEffect themed using the given context, allowing support for the view attributes.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="create.html"><span class="token function">create</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>context<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span>attrs<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/widget/EdgeEffect.html">EdgeEffect</a></div><div class="brief ">Constructs and returns a new EdgeEffect themed using the given context, allowing support for the view attributes.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1723131573%2FFunctions%2F-108886845" anchor-label="draw" id="-1723131573%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-1723131573%2FFunctions%2F-232177031" anchor-label="draw" id="-1723131573%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="draw.html"><span><span>draw</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1723131573%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1723131573%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="draw.html"><span class="token function"><strike>draw</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">canvas<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/graphics/Canvas.html">Canvas</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Draw into the provided canvas.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="draw.html"><span class="token function"><strike>draw</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">canvas<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/graphics/Canvas.html">Canvas</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Draw into the provided canvas.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1240594028%2FFunctions%2F-108886845" anchor-label="finish" id="1240594028%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="1240594028%2FFunctions%2F-232177031" anchor-label="finish" id="1240594028%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="finish.html"><span><span>finish</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1240594028%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1240594028%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="finish.html"><span class="token function"><strike>finish</strike></span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief ">Immediately finish the current animation.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="finish.html"><span class="token function"><strike>finish</strike></span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief ">Immediately finish the current animation.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1916758233%2FFunctions%2F-108886845" anchor-label="getDistance" id="1916758233%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="1916758233%2FFunctions%2F-232177031" anchor-label="getDistance" id="1916758233%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-distance.html"><span>get</span><wbr><span><span>Distance</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1916758233%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1916758233%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-distance.html"><span class="token function">getDistance</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>edgeEffect<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/widget/EdgeEffect.html">EdgeEffect</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></div><div class="brief ">Returns the pull distance needed to be released to remove the showing effect.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-distance.html"><span class="token function">getDistance</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>edgeEffect<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/widget/EdgeEffect.html">EdgeEffect</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></div><div class="brief ">Returns the pull distance needed to be released to remove the showing effect.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="2046626403%2FFunctions%2F-108886845" anchor-label="isFinished" id="2046626403%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="2046626403%2FFunctions%2F-232177031" anchor-label="isFinished" id="2046626403%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="is-finished.html"><span>is</span><wbr><span><span>Finished</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2046626403%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2046626403%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-finished.html"><span class="token function"><strike>isFinished</strike></span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Reports if this EdgeEffectCompat's animation is finished.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-finished.html"><span class="token function"><strike>isFinished</strike></span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Reports if this EdgeEffectCompat's animation is finished.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1036715872%2FFunctions%2F-108886845" anchor-label="onAbsorb" id="1036715872%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="1036715872%2FFunctions%2F-232177031" anchor-label="onAbsorb" id="1036715872%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-absorb.html"><span>on</span><wbr><span><span>Absorb</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1036715872%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1036715872%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-absorb.html"><span class="token function"><strike>onAbsorb</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">velocity<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Call when the effect absorbs an impact at the given velocity.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-absorb.html"><span class="token function"><strike>onAbsorb</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">velocity<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Call when the effect absorbs an impact at the given velocity.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1528657729%2FFunctions%2F-108886845" anchor-label="onPull" id="1528657729%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="1528657729%2FFunctions%2F-232177031" anchor-label="onPull" id="1528657729%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-pull.html"><span>on</span><wbr><span><span>Pull</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1528657729%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1528657729%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-pull.html"><span class="token function"><strike>onPull</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">deltaDistance<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-pull.html"><span class="token function"><strike>onPull</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">deltaDistance<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a><span class="token punctuation">, </span></span><span class="parameter ">displacement<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-pull.html"><span class="token function">onPull</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>edgeEffect<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/widget/EdgeEffect.html">EdgeEffect</a><span class="token punctuation">, </span></span><span class="parameter ">deltaDistance<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a><span class="token punctuation">, </span></span><span class="parameter ">displacement<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span></div><div class="brief ">A view should call this when content is pulled away from an edge by the user.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-pull.html"><span class="token function"><strike>onPull</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">deltaDistance<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-pull.html"><span class="token function"><strike>onPull</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">deltaDistance<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a><span class="token punctuation">, </span></span><span class="parameter ">displacement<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-pull.html"><span class="token function">onPull</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>edgeEffect<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/widget/EdgeEffect.html">EdgeEffect</a><span class="token punctuation">, </span></span><span class="parameter ">deltaDistance<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a><span class="token punctuation">, </span></span><span class="parameter ">displacement<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span></div><div class="brief ">A view should call this when content is pulled away from an edge by the user.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-472765423%2FFunctions%2F-108886845" anchor-label="onPullDistance" id="-472765423%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-472765423%2FFunctions%2F-232177031" anchor-label="onPullDistance" id="-472765423%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-pull-distance.html"><span>on</span><wbr><span>Pull</span><wbr><span><span>Distance</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-472765423%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-472765423%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-pull-distance.html"><span class="token function">onPullDistance</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>edgeEffect<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/widget/EdgeEffect.html">EdgeEffect</a><span class="token punctuation">, </span></span><span class="parameter ">deltaDistance<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a><span class="token punctuation">, </span></span><span class="parameter ">displacement<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></div><div class="brief ">A view should call this when content is pulled away from an edge by the user.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-pull-distance.html"><span class="token function">onPullDistance</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>edgeEffect<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/widget/EdgeEffect.html">EdgeEffect</a><span class="token punctuation">, </span></span><span class="parameter ">deltaDistance<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a><span class="token punctuation">, </span></span><span class="parameter ">displacement<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></div><div class="brief ">A view should call this when content is pulled away from an edge by the user.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="204591219%2FFunctions%2F-108886845" anchor-label="onRelease" id="204591219%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="204591219%2FFunctions%2F-232177031" anchor-label="onRelease" id="204591219%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-release.html"><span>on</span><wbr><span><span>Release</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="204591219%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="204591219%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-release.html"><span class="token function"><strike>onRelease</strike></span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Call when the object is released after being pulled.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-release.html"><span class="token function"><strike>onRelease</strike></span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Call when the object is released after being pulled.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-879617905%2FFunctions%2F-108886845" anchor-label="setSize" id="-879617905%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-879617905%2FFunctions%2F-232177031" anchor-label="setSize" id="-879617905%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-size.html"><span>set</span><wbr><span><span>Size</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-879617905%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-879617905%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-size.html"><span class="token function"><strike>setSize</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">width<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">height<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Set the size of this edge effect in pixels.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-size.html"><span class="token function"><strike>setSize</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">width<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">height<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Set the size of this edge effect in pixels.</div></div></div>
                 </div>
               </div>
             </div>
@@ -276,17 +275,21 @@
   </div>
 </div>
     <div class="footer">
-        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
-        <span>© 2026 Copyright</span>
-        <span class="pull-right">
-            <span>Generated by </span>
-            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
-                <span>dokka</span>
-            </a>
-        </span>
-    </div>
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
             </div>
         </div>
     </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

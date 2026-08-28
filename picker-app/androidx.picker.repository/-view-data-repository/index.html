@@ -1,42 +1,39 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
     <title>ViewDataRepository</title>
-<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../";</script>
-    <script>document.documentElement.classList.replace("no-js","js");</script>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
     <script>const storage = localStorage.getItem("dokka-dark-mode")
-    if (storage == null) {
+      if (storage == null) {
         const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
         if (osDarkSchemePreferred === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    } else {
+      } else {
         const savedDarkMode = JSON.parse(storage)
-        if(savedDarkMode === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    }
+      }
     </script>
-<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
 <script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
 <link href="../../../styles/style.css" rel="Stylesheet">
 <link href="../../../styles/main.css" rel="Stylesheet">
 <link href="../../../styles/prism.css" rel="Stylesheet">
 <link href="../../../styles/logo-styles.css" rel="Stylesheet">
-<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
 <link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
-<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/safe-local-storage_blocking.js"></script>
 <script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
 <script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
 <script type="text/javascript" src="../../../scripts/main.js" defer></script>
 <script type="text/javascript" src="../../../scripts/prism.js" async></script>
-<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script>
-<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script></head>
 <body>
-    <div class="root">
-    <nav class="navigation theme-dark" id="navigation-wrapper">
-<a class="library-name--link" href="../../../index.html">
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../../index.html" tabindex="1">
                     sesl.androidx
             </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
         </button>
@@ -44,74 +41,76 @@
         <div class="library-version" id="library-version">
         </div>
         <div class="navigation-controls">
-        <div class="filter-section filter-section_loading" id="filter-section">
-                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":picker-app/main">main</button>
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":picker-app/release">release</button>
             <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
                 <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
-                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
-                    <div class="dropdown--header"><span>Platform filter</span>
-                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
                             <i class="ui-kit-icon ui-kit-icon_cross"></i>
                         </button>
                     </div>
                         <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
                             <label class="checkbox">
-                                <input type="checkbox" class="checkbox--input" id=":picker-app/main" data-filter=":picker-app/main">
+                                <input type="checkbox" class="checkbox--input" id=":picker-app/release" data-filter=":picker-app/release">
                                 <span class="checkbox--icon"></span>
-                                main
+                                release
                             </label>
                         </li>
                 </ul>
                 <div class="dropdown--overlay"></div>
             </div>
-        </div>
+        </ul>
             <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
             </button>
             <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
                 API
             </div>
         </div>
-    </nav>
-        <div id="container">
-            <div class="sidebar" id="leftColumn">
-                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
-                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox">
-                        <div class="dropdown--header">
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
                             <span>
                                     sesl.androidx
                             </span>
-                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
-                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
-                            </button>
-                        </div>
-                        <div class="sidebar--inner" id="sideMenu"></div>
-                    </ul>
-                    <div class="dropdown--overlay"></div>
-                </div>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
             </div>
-            <div id="main">
-<div class="main-content" data-page-type="classlike" id="content" pageids="picker-app::androidx.picker.repository/ViewDataRepository///PointingToDeclaration//1861326624">
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="picker-app::androidx.picker.repository/ViewDataRepository///PointingToDeclaration//-1071228138">
   <div class="breadcrumbs"><a href="../../index.html">picker-app</a><span class="delimiter">/</span><a href="../index.html">androidx.picker.repository</a><span class="delimiter">/</span><span class="current">ViewDataRepository</span></div>
   <div class="cover ">
     <h1 class="cover"><span>View</span><wbr><span>Data</span><wbr><span><span>Repository</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-app/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">ViewDataRepository</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">dataLoader<span class="token operator">: </span><a href="../../androidx.picker.loader/-data-loader/index.html">DataLoader</a><span class="token punctuation">, </span></span><span class="parameter ">selectStateLoader<span class="token operator">: </span><a href="../../androidx.picker.loader.select/-select-state-loader/index.html">SelectStateLoader</a></span></span><span class="token punctuation">)</span><span class="clearfix"><span class="floating-right">(<a href="https://github.com/tribalfs/sesl-androidx/blob/sesl-androidx-main/picker/picker-app/src/main/java/androidx/picker/repository/ViewDataRepository.kt#L29">source</a>)</span></span></div><p class="paragraph">Repository for creating view data models.</p><p class="paragraph">This class is responsible for transforming raw data into view-specific data models that can be used by the UI layer. It utilizes a <a href="../../androidx.picker.loader/-data-loader/index.html">DataLoader</a> to fetch application information and icons, and a <a href="../../androidx.picker.loader.select/-select-state-loader/index.html">SelectStateLoader</a> to manage the selection state of items.</p><h4 class="">Parameters</h4><div class="table"><div class="table-row" data-filterable-current=":picker-app/main" data-filterable-set=":picker-app/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>data</span><wbr><span><span>Loader</span></span></u></div></span></div><div><div class="title"><p class="paragraph">The loader for accessing application data and icons.</p></div></div></div></div><div class="table-row" data-filterable-current=":picker-app/main" data-filterable-set=":picker-app/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>select</span><wbr><span>State</span><wbr><span><span>Loader</span></span></u></div></span></div><div><div class="title"><p class="paragraph">The loader for managing the selection state of items.</p></div></div></div></div></div></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-app/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">ViewDataRepository</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">dataLoader<span class="token operator">: </span><a href="../../androidx.picker.loader/-data-loader/index.html">DataLoader</a><span class="token punctuation">, </span></span><span class="parameter ">selectStateLoader<span class="token operator">: </span><a href="../../androidx.picker.loader.select/-select-state-loader/index.html">SelectStateLoader</a></span></span><span class="token punctuation">)</span></div><p class="paragraph">Repository for creating view data models.</p><p class="paragraph">This class is responsible for transforming raw data into view-specific data models that can be used by the UI layer. It utilizes a <a href="../../androidx.picker.loader/-data-loader/index.html">DataLoader</a> to fetch application information and icons, and a <a href="../../androidx.picker.loader.select/-select-state-loader/index.html">SelectStateLoader</a> to manage the selection state of items.</p><h4 class="tableheader">Parameters</h4><div class="table"><div class="table-row table-row_content" data-filterable-current=":picker-app/release" data-filterable-set=":picker-app/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>data</span><wbr><span><span>Loader</span></span></u></div></span></div><div><div class="title"><p class="paragraph">The loader for accessing application data and icons.</p></div></div></div></div><div class="table-row table-row_content" data-filterable-current=":picker-app/release" data-filterable-set=":picker-app/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>select</span><wbr><span>State</span><wbr><span><span>Loader</span></span></u></div></span></div><div><div class="title"><p class="paragraph">The loader for managing the selection state of items.</p></div></div></div></div></div></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
     <div class="tabs-section-body">
       <div data-togglable="CONSTRUCTOR">
-        <h2 class="">Constructors</h2>
-        <div class="table"><a data-name="336815738%2FConstructors%2F1861326624" anchor-label="ViewDataRepository" id="336815738%2FConstructors%2F1861326624" data-filterable-set=":picker-app/main"></a>
-          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":picker-app/main" data-filterable-set=":picker-app/main">
+        <h2 class="tableheader">Constructors</h2>
+        <div class="table"><a data-name="336815738%2FConstructors%2F-1071228138" anchor-label="ViewDataRepository" id="336815738%2FConstructors%2F-1071228138" data-filterable-set=":picker-app/release"></a>
+          <div class="table-row table-row_content" data-togglable="CONSTRUCTOR" data-filterable-current=":picker-app/release" data-filterable-set=":picker-app/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-view-data-repository.html"><span>View</span><wbr><span>Data</span><wbr><span><span>Repository</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="336815738%2FConstructors%2F1861326624"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="336815738%2FConstructors%2F-1071228138"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-app/main"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">dataLoader<span class="token operator">: </span><a href="../../androidx.picker.loader/-data-loader/index.html">DataLoader</a><span class="token punctuation">, </span></span><span class="parameter ">selectStateLoader<span class="token operator">: </span><a href="../../androidx.picker.loader.select/-select-state-loader/index.html">SelectStateLoader</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-app/release"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">dataLoader<span class="token operator">: </span><a href="../../androidx.picker.loader/-data-loader/index.html">DataLoader</a><span class="token punctuation">, </span></span><span class="parameter ">selectStateLoader<span class="token operator">: </span><a href="../../androidx.picker.loader.select/-select-state-loader/index.html">SelectStateLoader</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
@@ -119,78 +118,78 @@
         </div>
       </div>
       <div data-togglable="FUNCTION">
-        <h2 class="">Functions</h2>
-        <div class="table"><a data-name="1691244658%2FFunctions%2F1861326624" anchor-label="clearData" id="1691244658%2FFunctions%2F1861326624" data-filterable-set=":picker-app/main"></a>
-          <div class="table-row" data-filterable-current=":picker-app/main" data-filterable-set=":picker-app/main">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="1691244658%2FFunctions%2F-1071228138" anchor-label="clearData" id="1691244658%2FFunctions%2F-1071228138" data-filterable-set=":picker-app/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":picker-app/release" data-filterable-set=":picker-app/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="clear-data.html"><span>clear</span><wbr><span><span>Data</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1691244658%2FFunctions%2F1861326624"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1691244658%2FFunctions%2F-1071228138"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-app/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="clear-data.html"><span class="token function">clearData</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Clears all data related to the select state. This function calls the <code class="lang-kotlin">clearData</code> method of the <code class="lang-kotlin">selectStateLoader</code> to remove any stored selection information.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-app/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="clear-data.html"><span class="token function">clearData</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Clears all data related to the select state. This function calls the <code class="lang-kotlin">clearData</code> method of the <code class="lang-kotlin">selectStateLoader</code> to remove any stored selection information.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="746985336%2FFunctions%2F1861326624" anchor-label="createAllAppsViewData" id="746985336%2FFunctions%2F1861326624" data-filterable-set=":picker-app/main"></a>
-          <div class="table-row" data-filterable-current=":picker-app/main" data-filterable-set=":picker-app/main">
+<a data-name="746985336%2FFunctions%2F-1071228138" anchor-label="createAllAppsViewData" id="746985336%2FFunctions%2F-1071228138" data-filterable-set=":picker-app/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":picker-app/release" data-filterable-set=":picker-app/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="create-all-apps-view-data.html"><span>create</span><wbr><span>All</span><wbr><span>Apps</span><wbr><span>View</span><wbr><span><span>Data</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="746985336%2FFunctions%2F1861326624"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="746985336%2FFunctions%2F-1071228138"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-app/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="create-all-apps-view-data.html"><span class="token function">createAllAppsViewData</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">appInfoViewDataList<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../androidx.picker.model.viewdata/-app-info-view-data/index.html">AppInfoViewData</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../androidx.picker.model.viewdata/-all-apps-view-data/index.html">AllAppsViewData</a></div><div class="brief "><p class="paragraph">Creates an <a href="../../androidx.picker.model.viewdata/-all-apps-view-data/index.html">AllAppsViewData</a> object based on a list of <a href="../../androidx.picker.model.viewdata/-app-info-view-data/index.html">AppInfoViewData</a> objects.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-app/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="create-all-apps-view-data.html"><span class="token function">createAllAppsViewData</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">appInfoViewDataList<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../androidx.picker.model.viewdata/-app-info-view-data/index.html">AppInfoViewData</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../androidx.picker.model.viewdata/-all-apps-view-data/index.html">AllAppsViewData</a></div><div class="brief "><p class="paragraph">Creates an <a href="../../androidx.picker.model.viewdata/-all-apps-view-data/index.html">AllAppsViewData</a> object based on a list of <a href="../../androidx.picker.model.viewdata/-app-info-view-data/index.html">AppInfoViewData</a> objects.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1837576990%2FFunctions%2F1861326624" anchor-label="createAppInfoViewData" id="-1837576990%2FFunctions%2F1861326624" data-filterable-set=":picker-app/main"></a>
-          <div class="table-row" data-filterable-current=":picker-app/main" data-filterable-set=":picker-app/main">
+<a data-name="-1837576990%2FFunctions%2F-1071228138" anchor-label="createAppInfoViewData" id="-1837576990%2FFunctions%2F-1071228138" data-filterable-set=":picker-app/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":picker-app/release" data-filterable-set=":picker-app/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="create-app-info-view-data.html"><span>create</span><wbr><span>App</span><wbr><span>Info</span><wbr><span>View</span><wbr><span><span>Data</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1837576990%2FFunctions%2F1861326624"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1837576990%2FFunctions%2F-1071228138"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-app/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="create-app-info-view-data.html"><span class="token function">createAppInfoViewData</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">appInfoData<span class="token operator">: </span><a href="../../androidx.picker.model/-app-info-data/index.html">AppInfoData</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../androidx.picker.model.viewdata/-app-info-view-data/index.html">AppInfoViewData</a></div><div class="brief "><p class="paragraph">Creates an <a href="../../androidx.picker.model.viewdata/-app-info-view-data/index.html">AppInfoViewData</a> object from an <a href="../../androidx.picker.model/-app-info-data/index.html">AppInfoData</a> object.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-app/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="create-app-info-view-data.html"><span class="token function">createAppInfoViewData</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">appInfoData<span class="token operator">: </span><a href="../../androidx.picker.model/-app-info-data/index.html">AppInfoData</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../androidx.picker.model.viewdata/-app-info-view-data/index.html">AppInfoViewData</a></div><div class="brief "><p class="paragraph">Creates an <a href="../../androidx.picker.model.viewdata/-app-info-view-data/index.html">AppInfoViewData</a> object from an <a href="../../androidx.picker.model/-app-info-data/index.html">AppInfoData</a> object.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1598164948%2FFunctions%2F1861326624" anchor-label="createCategoryViewData" id="-1598164948%2FFunctions%2F1861326624" data-filterable-set=":picker-app/main"></a>
-          <div class="table-row" data-filterable-current=":picker-app/main" data-filterable-set=":picker-app/main">
+<a data-name="-1598164948%2FFunctions%2F-1071228138" anchor-label="createCategoryViewData" id="-1598164948%2FFunctions%2F-1071228138" data-filterable-set=":picker-app/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":picker-app/release" data-filterable-set=":picker-app/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="create-category-view-data.html"><span>create</span><wbr><span>Category</span><wbr><span>View</span><wbr><span><span>Data</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1598164948%2FFunctions%2F1861326624"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1598164948%2FFunctions%2F-1071228138"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-app/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="create-category-view-data.html"><span class="token function">createCategoryViewData</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">appData<span class="token operator">: </span><a href="../../androidx.picker.model.appdata/-category-app-data/index.html">CategoryAppData</a><span class="token punctuation">, </span></span><span class="parameter ">viewDataList<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../androidx.picker.model.viewdata/-app-info-view-data/index.html">AppInfoViewData</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../androidx.picker.model.viewdata/-category-view-data/index.html">CategoryViewData</a></div><div class="brief "><p class="paragraph">Creates a <a href="../../androidx.picker.model.viewdata/-category-view-data/index.html">CategoryViewData</a> object.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-app/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="create-category-view-data.html"><span class="token function">createCategoryViewData</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">appData<span class="token operator">: </span><a href="../../androidx.picker.model.appdata/-category-app-data/index.html">CategoryAppData</a><span class="token punctuation">, </span></span><span class="parameter ">viewDataList<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../androidx.picker.model.viewdata/-app-info-view-data/index.html">AppInfoViewData</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../androidx.picker.model.viewdata/-category-view-data/index.html">CategoryViewData</a></div><div class="brief "><p class="paragraph">Creates a <a href="../../androidx.picker.model.viewdata/-category-view-data/index.html">CategoryViewData</a> object.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="339483166%2FFunctions%2F1861326624" anchor-label="createGroupTitleViewData" id="339483166%2FFunctions%2F1861326624" data-filterable-set=":picker-app/main"></a>
-          <div class="table-row" data-filterable-current=":picker-app/main" data-filterable-set=":picker-app/main">
+<a data-name="339483166%2FFunctions%2F-1071228138" anchor-label="createGroupTitleViewData" id="339483166%2FFunctions%2F-1071228138" data-filterable-set=":picker-app/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":picker-app/release" data-filterable-set=":picker-app/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="create-group-title-view-data.html"><span>create</span><wbr><span>Group</span><wbr><span>Title</span><wbr><span>View</span><wbr><span><span>Data</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="339483166%2FFunctions%2F1861326624"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="339483166%2FFunctions%2F-1071228138"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-app/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="create-group-title-view-data.html"><span class="token function">createGroupTitleViewData</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">groupAppData<span class="token operator">: </span><a href="../../androidx.picker.model.appdata/-group-app-data/index.html">GroupAppData</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../androidx.picker.model.viewdata/-group-title-view-data/index.html">GroupTitleViewData</a></div><div class="brief "><p class="paragraph">Creates a <a href="../../androidx.picker.model.viewdata/-group-title-view-data/index.html">GroupTitleViewData</a> object from a <a href="../../androidx.picker.model.appdata/-group-app-data/index.html">GroupAppData</a> object.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-app/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="create-group-title-view-data.html"><span class="token function">createGroupTitleViewData</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">groupAppData<span class="token operator">: </span><a href="../../androidx.picker.model.appdata/-group-app-data/index.html">GroupAppData</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../androidx.picker.model.viewdata/-group-title-view-data/index.html">GroupTitleViewData</a></div><div class="brief "><p class="paragraph">Creates a <a href="../../androidx.picker.model.viewdata/-group-title-view-data/index.html">GroupTitleViewData</a> object from a <a href="../../androidx.picker.model.appdata/-group-app-data/index.html">GroupAppData</a> object.</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -201,17 +200,21 @@
   </div>
 </div>
     <div class="footer">
-        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
-        <span>© 2026 Copyright</span>
-        <span class="pull-right">
-            <span>Generated by </span>
-            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
-                <span>dokka</span>
-            </a>
-        </span>
-    </div>
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
             </div>
         </div>
     </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

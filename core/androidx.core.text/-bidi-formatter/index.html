@@ -1,42 +1,39 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
     <title>BidiFormatter</title>
-<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../";</script>
-    <script>document.documentElement.classList.replace("no-js","js");</script>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
     <script>const storage = localStorage.getItem("dokka-dark-mode")
-    if (storage == null) {
+      if (storage == null) {
         const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
         if (osDarkSchemePreferred === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    } else {
+      } else {
         const savedDarkMode = JSON.parse(storage)
-        if(savedDarkMode === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    }
+      }
     </script>
-<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
 <script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
 <link href="../../../styles/style.css" rel="Stylesheet">
 <link href="../../../styles/main.css" rel="Stylesheet">
 <link href="../../../styles/prism.css" rel="Stylesheet">
 <link href="../../../styles/logo-styles.css" rel="Stylesheet">
-<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
 <link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
-<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/safe-local-storage_blocking.js"></script>
 <script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
 <script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
 <script type="text/javascript" src="../../../scripts/main.js" defer></script>
 <script type="text/javascript" src="../../../scripts/prism.js" async></script>
-<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script>
-<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script></head>
 <body>
-    <div class="root">
-    <nav class="navigation theme-dark" id="navigation-wrapper">
-<a class="library-name--link" href="../../../index.html">
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../../index.html" tabindex="1">
                     sesl.androidx
             </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
         </button>
@@ -44,74 +41,76 @@
         <div class="library-version" id="library-version">
         </div>
         <div class="navigation-controls">
-        <div class="filter-section filter-section_loading" id="filter-section">
-                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":core/main">main</button>
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":core/release">release</button>
             <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
                 <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
-                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
-                    <div class="dropdown--header"><span>Platform filter</span>
-                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
                             <i class="ui-kit-icon ui-kit-icon_cross"></i>
                         </button>
                     </div>
                         <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
                             <label class="checkbox">
-                                <input type="checkbox" class="checkbox--input" id=":core/main" data-filter=":core/main">
+                                <input type="checkbox" class="checkbox--input" id=":core/release" data-filter=":core/release">
                                 <span class="checkbox--icon"></span>
-                                main
+                                release
                             </label>
                         </li>
                 </ul>
                 <div class="dropdown--overlay"></div>
             </div>
-        </div>
+        </ul>
             <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
             </button>
             <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
                 API
             </div>
         </div>
-    </nav>
-        <div id="container">
-            <div class="sidebar" id="leftColumn">
-                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
-                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox">
-                        <div class="dropdown--header">
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
                             <span>
                                     sesl.androidx
                             </span>
-                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
-                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
-                            </button>
-                        </div>
-                        <div class="sidebar--inner" id="sideMenu"></div>
-                    </ul>
-                    <div class="dropdown--overlay"></div>
-                </div>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
             </div>
-            <div id="main">
-<div class="main-content" data-page-type="classlike" id="content" pageids="core::androidx.core.text/BidiFormatter///PointingToDeclaration//-108886845">
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="core::androidx.core.text/BidiFormatter///PointingToDeclaration//-232177031">
   <div class="breadcrumbs"><a href="../../index.html">core</a><span class="delimiter">/</span><a href="../index.html">androidx.core.text</a><span class="delimiter">/</span><span class="current">BidiFormatter</span></div>
   <div class="cover ">
     <h1 class="cover"><span>Bidi</span><wbr><span><span>Formatter</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">BidiFormatter</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/tribalfs/sesl-androidx/blob/sesl-androidx-main/core/core/src/main/java/androidx/core/text/BidiFormatter.java#L79">source</a>)</span></span></div><p class="paragraph">Utility class for formatting text for display in a potentially opposite-directionality context without garbling. The directionality of the context is set at formatter creation and the directionality of the text can be either estimated or passed in when known. Provides the following functionality: </p><p class="paragraph"> 1. Bidi Wrapping When text in one language is mixed into a document in another, opposite-directionality language, e.g. when an English business name is embedded in a Hebrew web page, both the inserted string and the text surrounding it may be displayed incorrectly unless the inserted string is explicitly separated from the surrounding text in a "wrapper" that: </p><p class="paragraph"> - Declares its directionality so that the string is displayed correctly. This can be done in Unicode bidi formatting codes by unicodeWrap and similar methods. </p><p class="paragraph"> - Isolates the string's directionality, so it does not unduly affect the surrounding content. Currently, this can only be done using invisible Unicode characters of the same direction as the context (LRM or RLM) in addition to the directionality declaration above, thus "resetting" the directionality to that of the context. The "reset" may need to be done at both ends of the string. Without "reset" after the string, the string will "stick" to a number or logically separate opposite-direction text that happens to follow it in-line (even if separated by neutral content like spaces and punctuation). Without "reset" before the string, the same can happen there, but only with more opposite-direction text, not a number. One approach is to "reset" the direction only after each string, on the theory that if the preceding opposite- direction text is itself bidi-wrapped, the "reset" after it will prevent the sticking. (Doing the "reset" only before each string definitely does not work because we do not want to require bidi-wrapping numbers, and a bidi-wrapped opposite-direction string could be followed by a number.) Still, the safest policy is to do the "reset" on both ends of each string, since RTL message translations often contain untranslated Latin-script brand names and technical terms, and one of these can be followed by a bidi-wrapped inserted value. On the other hand, when one has such a message, it is best to do the "reset" manually in the message translation itself, since the message's opposite-direction text could be followed by an inserted number, which we would not bidi-wrap anyway. Thus, "reset" only after the string is the current default. In an alternative to "reset", recent additions to the HTML, CSS, and Unicode standards allow the isolation to be part of the directionality declaration. This form of isolation is better than "reset" because it takes less space, does not require knowing the context directionality, has a gentler effect than "reset", and protects both ends of the string. However, we do not yet allow using it because required platforms do not yet support it. </p><p class="paragraph"> Providing these wrapping services is the basic purpose of the bidi formatter. </p><p class="paragraph"> 2. Directionality estimation How does one know whether a string about to be inserted into surrounding text has the same directionality? Well, in many cases, one knows that this must be the case when writing the code doing the insertion, e.g. when a localized message is inserted into a localized page. In such cases there is no need to involve the bidi formatter at all. In some other cases, it need not be the same as the context, but is either constant (e.g. urls are always LTR) or otherwise known. In the remaining cases, e.g. when the string is user-entered or comes from a database, the language of the string (and thus its directionality) is not known a priori, and must be estimated at run-time. The bidi formatter can do this automatically using the default first-strong estimation algorithm. It can also be configured to use a custom directionality estimation object.</p></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">BidiFormatter</a></div><p class="paragraph">Utility class for formatting text for display in a potentially opposite-directionality context without garbling. The directionality of the context is set at formatter creation and the directionality of the text can be either estimated or passed in when known. Provides the following functionality: </p><p class="paragraph"> 1. Bidi Wrapping When text in one language is mixed into a document in another, opposite-directionality language, e.g. when an English business name is embedded in a Hebrew web page, both the inserted string and the text surrounding it may be displayed incorrectly unless the inserted string is explicitly separated from the surrounding text in a "wrapper" that: </p><p class="paragraph"> - Declares its directionality so that the string is displayed correctly. This can be done in Unicode bidi formatting codes by unicodeWrap and similar methods. </p><p class="paragraph"> - Isolates the string's directionality, so it does not unduly affect the surrounding content. Currently, this can only be done using invisible Unicode characters of the same direction as the context (LRM or RLM) in addition to the directionality declaration above, thus "resetting" the directionality to that of the context. The "reset" may need to be done at both ends of the string. Without "reset" after the string, the string will "stick" to a number or logically separate opposite-direction text that happens to follow it in-line (even if separated by neutral content like spaces and punctuation). Without "reset" before the string, the same can happen there, but only with more opposite-direction text, not a number. One approach is to "reset" the direction only after each string, on the theory that if the preceding opposite- direction text is itself bidi-wrapped, the "reset" after it will prevent the sticking. (Doing the "reset" only before each string definitely does not work because we do not want to require bidi-wrapping numbers, and a bidi-wrapped opposite-direction string could be followed by a number.) Still, the safest policy is to do the "reset" on both ends of each string, since RTL message translations often contain untranslated Latin-script brand names and technical terms, and one of these can be followed by a bidi-wrapped inserted value. On the other hand, when one has such a message, it is best to do the "reset" manually in the message translation itself, since the message's opposite-direction text could be followed by an inserted number, which we would not bidi-wrap anyway. Thus, "reset" only after the string is the current default. In an alternative to "reset", recent additions to the HTML, CSS, and Unicode standards allow the isolation to be part of the directionality declaration. This form of isolation is better than "reset" because it takes less space, does not require knowing the context directionality, has a gentler effect than "reset", and protects both ends of the string. However, we do not yet allow using it because required platforms do not yet support it. </p><p class="paragraph"> Providing these wrapping services is the basic purpose of the bidi formatter. </p><p class="paragraph"> 2. Directionality estimation How does one know whether a string about to be inserted into surrounding text has the same directionality? Well, in many cases, one knows that this must be the case when writing the code doing the insertion, e.g. when a localized message is inserted into a localized page. In such cases there is no need to involve the bidi formatter at all. In some other cases, it need not be the same as the context, but is either constant (e.g. urls are always LTR) or otherwise known. In the remaining cases, e.g. when the string is user-entered or comes from a database, the language of the string (and thus its directionality) is not known a priori, and must be estimated at run-time. The bidi formatter can do this automatically using the default first-strong estimation algorithm. It can also be configured to use a custom directionality estimation object.</p></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
     <div class="tabs-section-body">
       <div data-togglable="TYPE">
-        <h2 class="">Types</h2>
-        <div class="table"><a data-name="-1058117954%2FClasslikes%2F-108886845" anchor-label="Builder" id="-1058117954%2FClasslikes%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+        <h2 class="tableheader">Types</h2>
+        <div class="table"><a data-name="-1058117954%2FClasslikes%2F-232177031" anchor-label="Builder" id="-1058117954%2FClasslikes%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-builder/index.html"><span><span>Builder</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1058117954%2FClasslikes%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1058117954%2FClasslikes%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-builder/index.html">Builder</a></div><div class="brief ">A class for building a BidiFormatter with non-default options.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-builder/index.html">Builder</a></div><div class="brief ">A class for building a BidiFormatter with non-default options.</div></div></div>
                 </div>
               </div>
             </div>
@@ -119,78 +118,78 @@
         </div>
       </div>
       <div data-togglable="FUNCTION">
-        <h2 class="">Functions</h2>
-        <div class="table"><a data-name="-1250266817%2FFunctions%2F-108886845" anchor-label="getInstance" id="-1250266817%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="-1250266817%2FFunctions%2F-232177031" anchor-label="getInstance" id="-1250266817%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-instance.html"><span>get</span><wbr><span><span>Instance</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1250266817%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1250266817%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-instance.html"><span class="token function">getInstance</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">BidiFormatter</a></div><div class="brief ">Factory for creating an instance of BidiFormatter for the default locale directionality.</div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-instance.html"><span class="token function">getInstance</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">rtlContext<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">BidiFormatter</a></div><div class="brief ">Factory for creating an instance of BidiFormatter given the context directionality.</div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-instance.html"><span class="token function">getInstance</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">locale<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/Locale.html">Locale</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">BidiFormatter</a></div><div class="brief ">Factory for creating an instance of BidiFormatter given the context locale.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-instance.html"><span class="token function">getInstance</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">BidiFormatter</a></div><div class="brief ">Factory for creating an instance of BidiFormatter for the default locale directionality.</div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-instance.html"><span class="token function">getInstance</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">rtlContext<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">BidiFormatter</a></div><div class="brief ">Factory for creating an instance of BidiFormatter given the context directionality.</div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-instance.html"><span class="token function">getInstance</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">locale<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/Locale.html">Locale</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">BidiFormatter</a></div><div class="brief ">Factory for creating an instance of BidiFormatter given the context locale.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="469531667%2FFunctions%2F-108886845" anchor-label="getStereoReset" id="469531667%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="469531667%2FFunctions%2F-232177031" anchor-label="getStereoReset" id="469531667%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-stereo-reset.html"><span>get</span><wbr><span>Stereo</span><wbr><span><span>Reset</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="469531667%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="469531667%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-stereo-reset.html"><span class="token function">getStereoReset</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-stereo-reset.html"><span class="token function">getStereoReset</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1061034478%2FFunctions%2F-108886845" anchor-label="isRtl" id="-1061034478%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-1061034478%2FFunctions%2F-232177031" anchor-label="isRtl" id="-1061034478%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="is-rtl.html"><span>is</span><wbr><span><span>Rtl</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1061034478%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1061034478%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-rtl.html"><span class="token function">isRtl</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">str<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/CharSequence.html">CharSequence</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Operates like <a href="is-rtl.html">isRtl</a>, but takes a CharSequence instead of a string.</div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-rtl.html"><span class="token function">isRtl</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">str<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Estimates the directionality of a string using the default text direction heuristic.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-rtl.html"><span class="token function">isRtl</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">str<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/CharSequence.html">CharSequence</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Operates like <a href="is-rtl.html">isRtl</a>, but takes a CharSequence instead of a string.</div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-rtl.html"><span class="token function">isRtl</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">str<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Estimates the directionality of a string using the default text direction heuristic.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1230303205%2FFunctions%2F-108886845" anchor-label="isRtlContext" id="1230303205%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="1230303205%2FFunctions%2F-232177031" anchor-label="isRtlContext" id="1230303205%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="is-rtl-context.html"><span>is</span><wbr><span>Rtl</span><wbr><span><span>Context</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1230303205%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1230303205%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-rtl-context.html"><span class="token function">isRtlContext</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-rtl-context.html"><span class="token function">isRtlContext</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1019349216%2FFunctions%2F-108886845" anchor-label="unicodeWrap" id="-1019349216%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-1019349216%2FFunctions%2F-232177031" anchor-label="unicodeWrap" id="-1019349216%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="unicode-wrap.html"><span>unicode</span><wbr><span><span>Wrap</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1019349216%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1019349216%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="unicode-wrap.html"><span class="token function">unicodeWrap</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">str<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/CharSequence.html">CharSequence</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/CharSequence.html">CharSequence</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="unicode-wrap.html"><span class="token function">unicodeWrap</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">str<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a></div><div class="brief ">Operates like <a href="unicode-wrap.html">unicodeWrap</a>, but uses the formatter's default direction estimation algorithm and assumes <code class="lang-kotlin">isolate</code> is true.</div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="unicode-wrap.html"><span class="token function">unicodeWrap</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">str<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/CharSequence.html">CharSequence</a><span class="token punctuation">, </span></span><span class="parameter ">heuristic<span class="token operator">: </span><a href="../-text-direction-heuristic-compat/index.html">TextDirectionHeuristicCompat</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/CharSequence.html">CharSequence</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="unicode-wrap.html"><span class="token function">unicodeWrap</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">str<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">heuristic<span class="token operator">: </span><a href="../-text-direction-heuristic-compat/index.html">TextDirectionHeuristicCompat</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a></div><div class="brief ">Operates like <a href="unicode-wrap.html">unicodeWrap</a>, but assumes <code class="lang-kotlin">isolate</code> is true.</div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="unicode-wrap.html"><span class="token function">unicodeWrap</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">str<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/CharSequence.html">CharSequence</a><span class="token punctuation">, </span></span><span class="parameter ">isolate<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/CharSequence.html">CharSequence</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="unicode-wrap.html"><span class="token function">unicodeWrap</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">str<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">isolate<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a></div><div class="brief ">Operates like <a href="unicode-wrap.html">unicodeWrap</a>, but uses the formatter's default direction estimation algorithm.</div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="unicode-wrap.html"><span class="token function">unicodeWrap</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">str<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/CharSequence.html">CharSequence</a><span class="token punctuation">, </span></span><span class="parameter ">heuristic<span class="token operator">: </span><a href="../-text-direction-heuristic-compat/index.html">TextDirectionHeuristicCompat</a><span class="token punctuation">, </span></span><span class="parameter ">isolate<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/CharSequence.html">CharSequence</a></div><div class="brief ">Operates like <a href="unicode-wrap.html">unicodeWrap</a>, but takes a CharSequence instead of a string</div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="unicode-wrap.html"><span class="token function">unicodeWrap</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">str<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">heuristic<span class="token operator">: </span><a href="../-text-direction-heuristic-compat/index.html">TextDirectionHeuristicCompat</a><span class="token punctuation">, </span></span><span class="parameter ">isolate<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a></div><div class="brief ">Formats a string of given directionality for use in plain-text output of the context directionality, so an opposite-directionality string is neither garbled nor garbles its surroundings.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="unicode-wrap.html"><span class="token function">unicodeWrap</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">str<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/CharSequence.html">CharSequence</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/CharSequence.html">CharSequence</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="unicode-wrap.html"><span class="token function">unicodeWrap</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">str<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a></div><div class="brief ">Operates like <a href="unicode-wrap.html">unicodeWrap</a>, but uses the formatter's default direction estimation algorithm and assumes <code class="lang-java">isolate</code> is true.</div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="unicode-wrap.html"><span class="token function">unicodeWrap</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">str<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/CharSequence.html">CharSequence</a><span class="token punctuation">, </span></span><span class="parameter ">heuristic<span class="token operator">: </span><a href="../-text-direction-heuristic-compat/index.html">TextDirectionHeuristicCompat</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/CharSequence.html">CharSequence</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="unicode-wrap.html"><span class="token function">unicodeWrap</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">str<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">heuristic<span class="token operator">: </span><a href="../-text-direction-heuristic-compat/index.html">TextDirectionHeuristicCompat</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a></div><div class="brief ">Operates like <a href="unicode-wrap.html">unicodeWrap</a>, but assumes <code class="lang-java">isolate</code> is true.</div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="unicode-wrap.html"><span class="token function">unicodeWrap</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">str<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/CharSequence.html">CharSequence</a><span class="token punctuation">, </span></span><span class="parameter ">isolate<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/CharSequence.html">CharSequence</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="unicode-wrap.html"><span class="token function">unicodeWrap</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">str<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">isolate<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a></div><div class="brief ">Operates like <a href="unicode-wrap.html">unicodeWrap</a>, but uses the formatter's default direction estimation algorithm.</div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="unicode-wrap.html"><span class="token function">unicodeWrap</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">str<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/CharSequence.html">CharSequence</a><span class="token punctuation">, </span></span><span class="parameter ">heuristic<span class="token operator">: </span><a href="../-text-direction-heuristic-compat/index.html">TextDirectionHeuristicCompat</a><span class="token punctuation">, </span></span><span class="parameter ">isolate<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/CharSequence.html">CharSequence</a></div><div class="brief ">Operates like <a href="unicode-wrap.html">unicodeWrap</a>, but takes a CharSequence instead of a string</div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="unicode-wrap.html"><span class="token function">unicodeWrap</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">str<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">heuristic<span class="token operator">: </span><a href="../-text-direction-heuristic-compat/index.html">TextDirectionHeuristicCompat</a><span class="token punctuation">, </span></span><span class="parameter ">isolate<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a></div><div class="brief ">Formats a string of given directionality for use in plain-text output of the context directionality, so an opposite-directionality string is neither garbled nor garbles its surroundings.</div></div></div>
                 </div>
               </div>
             </div>
@@ -201,17 +200,21 @@
   </div>
 </div>
     <div class="footer">
-        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
-        <span>© 2026 Copyright</span>
-        <span class="pull-right">
-            <span>Generated by </span>
-            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
-                <span>dokka</span>
-            </a>
-        </span>
-    </div>
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
             </div>
         </div>
     </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

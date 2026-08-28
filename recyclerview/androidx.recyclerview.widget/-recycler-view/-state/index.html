@@ -1,42 +1,39 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
     <title>State</title>
-<link href="../../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../../";</script>
-    <script>document.documentElement.classList.replace("no-js","js");</script>
+<link href="../../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
     <script>const storage = localStorage.getItem("dokka-dark-mode")
-    if (storage == null) {
+      if (storage == null) {
         const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
         if (osDarkSchemePreferred === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    } else {
+      } else {
         const savedDarkMode = JSON.parse(storage)
-        if(savedDarkMode === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    }
+      }
     </script>
-<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
 <script type="text/javascript" src="../../../../scripts/sourceset_dependencies.js" async></script>
 <link href="../../../../styles/style.css" rel="Stylesheet">
 <link href="../../../../styles/main.css" rel="Stylesheet">
 <link href="../../../../styles/prism.css" rel="Stylesheet">
 <link href="../../../../styles/logo-styles.css" rel="Stylesheet">
-<link href="../../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
 <link href="../../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
-<script type="text/javascript" src="../../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../../scripts/safe-local-storage_blocking.js"></script>
 <script type="text/javascript" src="../../../../scripts/navigation-loader.js" async></script>
 <script type="text/javascript" src="../../../../scripts/platform-content-handler.js" async></script>
 <script type="text/javascript" src="../../../../scripts/main.js" defer></script>
 <script type="text/javascript" src="../../../../scripts/prism.js" async></script>
-<script type="text/javascript" src="../../../../ui-kit/ui-kit.min.js" defer></script>
-<script type="text/javascript" src="../../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<script type="text/javascript" src="../../../../ui-kit/ui-kit.min.js" defer></script></head>
 <body>
-    <div class="root">
-    <nav class="navigation theme-dark" id="navigation-wrapper">
-<a class="library-name--link" href="../../../../index.html">
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../../../index.html" tabindex="1">
                     sesl.androidx
             </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
         </button>
@@ -44,74 +41,76 @@
         <div class="library-version" id="library-version">
         </div>
         <div class="navigation-controls">
-        <div class="filter-section filter-section_loading" id="filter-section">
-                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":recyclerview/main">main</button>
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":recyclerview/release">release</button>
             <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
                 <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
-                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
-                    <div class="dropdown--header"><span>Platform filter</span>
-                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
                             <i class="ui-kit-icon ui-kit-icon_cross"></i>
                         </button>
                     </div>
                         <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
                             <label class="checkbox">
-                                <input type="checkbox" class="checkbox--input" id=":recyclerview/main" data-filter=":recyclerview/main">
+                                <input type="checkbox" class="checkbox--input" id=":recyclerview/release" data-filter=":recyclerview/release">
                                 <span class="checkbox--icon"></span>
-                                main
+                                release
                             </label>
                         </li>
                 </ul>
                 <div class="dropdown--overlay"></div>
             </div>
-        </div>
+        </ul>
             <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
             </button>
             <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
                 API
             </div>
         </div>
-    </nav>
-        <div id="container">
-            <div class="sidebar" id="leftColumn">
-                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
-                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox">
-                        <div class="dropdown--header">
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
                             <span>
                                     sesl.androidx
                             </span>
-                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
-                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
-                            </button>
-                        </div>
-                        <div class="sidebar--inner" id="sideMenu"></div>
-                    </ul>
-                    <div class="dropdown--overlay"></div>
-                </div>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
             </div>
-            <div id="main">
-<div class="main-content" data-page-type="classlike" id="content" pageids="recyclerview::androidx.recyclerview.widget/RecyclerView.State///PointingToDeclaration//755181214">
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="recyclerview::androidx.recyclerview.widget/RecyclerView.State///PointingToDeclaration//-1847471084">
   <div class="breadcrumbs"><a href="../../../index.html">recyclerview</a><span class="delimiter">/</span><a href="../../index.html">androidx.recyclerview.widget</a><span class="delimiter">/</span><a href="../index.html">RecyclerView</a><span class="delimiter">/</span><span class="current">State</span></div>
   <div class="cover ">
     <h1 class="cover"><span><span>State</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="index.html">State</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/tribalfs/sesl-androidx/blob/sesl-androidx-main/recyclerview/recyclerview/src/main/java/androidx/recyclerview/widget/RecyclerView.java#L14606">source</a>)</span></span></div><p class="paragraph">Contains useful information about the current RecyclerView state like target scroll position or view focus. State object can also keep arbitrary data, identified by resource ids.</p><p class="paragraph">Often times, RecyclerView components will need to pass information between each other. To provide a well defined data bus between components, RecyclerView passes the same State object to component callbacks and these components can use it to exchange data.</p><p class="paragraph">If you implement custom components, you can use State's put/get/remove methods to pass data between your components without needing to manage their lifecycles.</p></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="index.html">State</a></div><p class="paragraph">Contains useful information about the current RecyclerView state like target scroll position or view focus. State object can also keep arbitrary data, identified by resource ids.</p><p class="paragraph">Often times, RecyclerView components will need to pass information between each other. To provide a well defined data bus between components, RecyclerView passes the same State object to component callbacks and these components can use it to exchange data.</p><p class="paragraph">If you implement custom components, you can use State's put/get/remove methods to pass data between your components without needing to manage their lifecycles.</p></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
     <div class="tabs-section-body">
       <div data-togglable="CONSTRUCTOR">
-        <h2 class="">Constructors</h2>
-        <div class="table"><a data-name="-255038514%2FConstructors%2F755181214" anchor-label="State" id="-255038514%2FConstructors%2F755181214" data-filterable-set=":recyclerview/main"></a>
-          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":recyclerview/main" data-filterable-set=":recyclerview/main">
+        <h2 class="tableheader">Constructors</h2>
+        <div class="table"><a data-name="-255038514%2FConstructors%2F-1847471084" anchor-label="State" id="-255038514%2FConstructors%2F-1847471084" data-filterable-set=":recyclerview/release"></a>
+          <div class="table-row table-row_content" data-togglable="CONSTRUCTOR" data-filterable-current=":recyclerview/release" data-filterable-set=":recyclerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-state.html"><span><span>State</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-255038514%2FConstructors%2F755181214"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-255038514%2FConstructors%2F-1847471084"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview/main"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview/release"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
@@ -119,213 +118,213 @@
         </div>
       </div>
       <div data-togglable="FUNCTION">
-        <h2 class="">Functions</h2>
-        <div class="table"><a data-name="1593791383%2FFunctions%2F755181214" anchor-label="didStructureChange" id="1593791383%2FFunctions%2F755181214" data-filterable-set=":recyclerview/main"></a>
-          <div class="table-row" data-filterable-current=":recyclerview/main" data-filterable-set=":recyclerview/main">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="1593791383%2FFunctions%2F-1847471084" anchor-label="didStructureChange" id="1593791383%2FFunctions%2F-1847471084" data-filterable-set=":recyclerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":recyclerview/release" data-filterable-set=":recyclerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="did-structure-change.html"><span>did</span><wbr><span>Structure</span><wbr><span><span>Change</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1593791383%2FFunctions%2F755181214"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1593791383%2FFunctions%2F-1847471084"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="did-structure-change.html"><span class="token function">didStructureChange</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="did-structure-change.html"><span class="token function">didStructureChange</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1312662710%2FFunctions%2F755181214" anchor-label="get" id="-1312662710%2FFunctions%2F755181214" data-filterable-set=":recyclerview/main"></a>
-          <div class="table-row" data-filterable-current=":recyclerview/main" data-filterable-set=":recyclerview/main">
+<a data-name="-1312662710%2FFunctions%2F-1847471084" anchor-label="get" id="-1312662710%2FFunctions%2F-1847471084" data-filterable-set=":recyclerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":recyclerview/release" data-filterable-set=":recyclerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get.html"><span><span>get</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1312662710%2FFunctions%2F755181214"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1312662710%2FFunctions%2F-1847471084"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="get.html">T</a><span class="token operator">&gt; </span><a href="get.html"><span class="token function">get</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">resourceId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="get.html">T</a></div><div class="brief ">Gets the Object mapped from the specified id, or <code class="lang-kotlin">null</code> if no such data exists.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="get.html">T</a><span class="token operator">&gt; </span><a href="get.html"><span class="token function">get</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">resourceId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="get.html">T</a></div><div class="brief ">Gets the Object mapped from the specified id, or <code class="lang-java">null</code> if no such data exists.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1610943957%2FFunctions%2F755181214" anchor-label="getItemCount" id="1610943957%2FFunctions%2F755181214" data-filterable-set=":recyclerview/main"></a>
-          <div class="table-row" data-filterable-current=":recyclerview/main" data-filterable-set=":recyclerview/main">
+<a data-name="1610943957%2FFunctions%2F-1847471084" anchor-label="getItemCount" id="1610943957%2FFunctions%2F-1847471084" data-filterable-set=":recyclerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":recyclerview/release" data-filterable-set=":recyclerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-item-count.html"><span>get</span><wbr><span>Item</span><wbr><span><span>Count</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1610943957%2FFunctions%2F755181214"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1610943957%2FFunctions%2F-1847471084"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-item-count.html"><span class="token function">getItemCount</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Returns the total number of items that can be laid out.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-item-count.html"><span class="token function">getItemCount</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Returns the total number of items that can be laid out.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-816292598%2FFunctions%2F755181214" anchor-label="getRemainingScrollHorizontal" id="-816292598%2FFunctions%2F755181214" data-filterable-set=":recyclerview/main"></a>
-          <div class="table-row" data-filterable-current=":recyclerview/main" data-filterable-set=":recyclerview/main">
+<a data-name="-816292598%2FFunctions%2F-1847471084" anchor-label="getRemainingScrollHorizontal" id="-816292598%2FFunctions%2F-1847471084" data-filterable-set=":recyclerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":recyclerview/release" data-filterable-set=":recyclerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-remaining-scroll-horizontal.html"><span>get</span><wbr><span>Remaining</span><wbr><span>Scroll</span><wbr><span><span>Horizontal</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-816292598%2FFunctions%2F755181214"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-816292598%2FFunctions%2F-1847471084"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-remaining-scroll-horizontal.html"><span class="token function">getRemainingScrollHorizontal</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Returns remaining horizontal scroll distance of an ongoing scroll animation(fling/ smoothScrollTo/SmoothScroller) in pixels.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-remaining-scroll-horizontal.html"><span class="token function">getRemainingScrollHorizontal</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Returns remaining horizontal scroll distance of an ongoing scroll animation(fling/ smoothScrollTo/SmoothScroller) in pixels.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="524094008%2FFunctions%2F755181214" anchor-label="getRemainingScrollVertical" id="524094008%2FFunctions%2F755181214" data-filterable-set=":recyclerview/main"></a>
-          <div class="table-row" data-filterable-current=":recyclerview/main" data-filterable-set=":recyclerview/main">
+<a data-name="524094008%2FFunctions%2F-1847471084" anchor-label="getRemainingScrollVertical" id="524094008%2FFunctions%2F-1847471084" data-filterable-set=":recyclerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":recyclerview/release" data-filterable-set=":recyclerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-remaining-scroll-vertical.html"><span>get</span><wbr><span>Remaining</span><wbr><span>Scroll</span><wbr><span><span>Vertical</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="524094008%2FFunctions%2F755181214"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="524094008%2FFunctions%2F-1847471084"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-remaining-scroll-vertical.html"><span class="token function">getRemainingScrollVertical</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Returns remaining vertical scroll distance of an ongoing scroll animation(fling/ smoothScrollTo/SmoothScroller) in pixels.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-remaining-scroll-vertical.html"><span class="token function">getRemainingScrollVertical</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Returns remaining vertical scroll distance of an ongoing scroll animation(fling/ smoothScrollTo/SmoothScroller) in pixels.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1102249534%2FFunctions%2F755181214" anchor-label="getTargetScrollPosition" id="-1102249534%2FFunctions%2F755181214" data-filterable-set=":recyclerview/main"></a>
-          <div class="table-row" data-filterable-current=":recyclerview/main" data-filterable-set=":recyclerview/main">
+<a data-name="-1102249534%2FFunctions%2F-1847471084" anchor-label="getTargetScrollPosition" id="-1102249534%2FFunctions%2F-1847471084" data-filterable-set=":recyclerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":recyclerview/release" data-filterable-set=":recyclerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-target-scroll-position.html"><span>get</span><wbr><span>Target</span><wbr><span>Scroll</span><wbr><span><span>Position</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1102249534%2FFunctions%2F755181214"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1102249534%2FFunctions%2F-1847471084"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-target-scroll-position.html"><span class="token function">getTargetScrollPosition</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">If scroll is triggered to make a certain item visible, this value will return the adapter index of that item.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-target-scroll-position.html"><span class="token function">getTargetScrollPosition</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">If scroll is triggered to make a certain item visible, this value will return the adapter index of that item.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1756855550%2FFunctions%2F755181214" anchor-label="hasTargetScrollPosition" id="1756855550%2FFunctions%2F755181214" data-filterable-set=":recyclerview/main"></a>
-          <div class="table-row" data-filterable-current=":recyclerview/main" data-filterable-set=":recyclerview/main">
+<a data-name="1756855550%2FFunctions%2F-1847471084" anchor-label="hasTargetScrollPosition" id="1756855550%2FFunctions%2F-1847471084" data-filterable-set=":recyclerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":recyclerview/release" data-filterable-set=":recyclerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="has-target-scroll-position.html"><span>has</span><wbr><span>Target</span><wbr><span>Scroll</span><wbr><span><span>Position</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1756855550%2FFunctions%2F755181214"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1756855550%2FFunctions%2F-1847471084"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="has-target-scroll-position.html"><span class="token function">hasTargetScrollPosition</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Returns if current scroll has a target position.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="has-target-scroll-position.html"><span class="token function">hasTargetScrollPosition</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Returns if current scroll has a target position.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-651694546%2FFunctions%2F755181214" anchor-label="isMeasuring" id="-651694546%2FFunctions%2F755181214" data-filterable-set=":recyclerview/main"></a>
-          <div class="table-row" data-filterable-current=":recyclerview/main" data-filterable-set=":recyclerview/main">
+<a data-name="-651694546%2FFunctions%2F-1847471084" anchor-label="isMeasuring" id="-651694546%2FFunctions%2F-1847471084" data-filterable-set=":recyclerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":recyclerview/release" data-filterable-set=":recyclerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="is-measuring.html"><span>is</span><wbr><span><span>Measuring</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-651694546%2FFunctions%2F755181214"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-651694546%2FFunctions%2F-1847471084"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-measuring.html"><span class="token function">isMeasuring</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Returns true if the RecyclerView is currently measuring the layout.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-measuring.html"><span class="token function">isMeasuring</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Returns true if the RecyclerView is currently measuring the layout.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1201599836%2FFunctions%2F755181214" anchor-label="isPreLayout" id="1201599836%2FFunctions%2F755181214" data-filterable-set=":recyclerview/main"></a>
-          <div class="table-row" data-filterable-current=":recyclerview/main" data-filterable-set=":recyclerview/main">
+<a data-name="1201599836%2FFunctions%2F-1847471084" anchor-label="isPreLayout" id="1201599836%2FFunctions%2F-1847471084" data-filterable-set=":recyclerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":recyclerview/release" data-filterable-set=":recyclerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="is-pre-layout.html"><span>is</span><wbr><span>Pre</span><wbr><span><span>Layout</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1201599836%2FFunctions%2F755181214"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1201599836%2FFunctions%2F-1847471084"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-pre-layout.html"><span class="token function">isPreLayout</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Returns true if the <a href="../index.html">RecyclerView</a> is in the pre-layout step where it is having its <a href="../-layout-manager/index.html">LayoutManager</a> layout items where they will be at the beginning of a set of predictive item animations.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-pre-layout.html"><span class="token function">isPreLayout</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Returns true if the <a href="../index.html">RecyclerView</a> is in the pre-layout step where it is having its <a href="../-layout-manager/index.html">LayoutManager</a> layout items where they will be at the beginning of a set of predictive item animations.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1095680617%2FFunctions%2F755181214" anchor-label="put" id="1095680617%2FFunctions%2F755181214" data-filterable-set=":recyclerview/main"></a>
-          <div class="table-row" data-filterable-current=":recyclerview/main" data-filterable-set=":recyclerview/main">
+<a data-name="1095680617%2FFunctions%2F-1847471084" anchor-label="put" id="1095680617%2FFunctions%2F-1847471084" data-filterable-set=":recyclerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":recyclerview/release" data-filterable-set=":recyclerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="put.html"><span><span>put</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1095680617%2FFunctions%2F755181214"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1095680617%2FFunctions%2F-1847471084"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="put.html"><span class="token function">put</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">resourceId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">data<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Adds a mapping from the specified id to the specified value, replacing the previous mapping from the specified key if there was one.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="put.html"><span class="token function">put</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">resourceId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">data<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Adds a mapping from the specified id to the specified value, replacing the previous mapping from the specified key if there was one.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-973456132%2FFunctions%2F755181214" anchor-label="remove" id="-973456132%2FFunctions%2F755181214" data-filterable-set=":recyclerview/main"></a>
-          <div class="table-row" data-filterable-current=":recyclerview/main" data-filterable-set=":recyclerview/main">
+<a data-name="-973456132%2FFunctions%2F-1847471084" anchor-label="remove" id="-973456132%2FFunctions%2F-1847471084" data-filterable-set=":recyclerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":recyclerview/release" data-filterable-set=":recyclerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="remove.html"><span><span>remove</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-973456132%2FFunctions%2F755181214"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-973456132%2FFunctions%2F-1847471084"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="remove.html"><span class="token function">remove</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">resourceId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Removes the mapping from the specified id, if there was any.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="remove.html"><span class="token function">remove</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">resourceId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Removes the mapping from the specified id, if there was any.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="42525743%2FFunctions%2F755181214" anchor-label="toString" id="42525743%2FFunctions%2F755181214" data-filterable-set=":recyclerview/main"></a>
-          <div class="table-row" data-filterable-current=":recyclerview/main" data-filterable-set=":recyclerview/main">
+<a data-name="42525743%2FFunctions%2F-1847471084" anchor-label="toString" id="42525743%2FFunctions%2F-1847471084" data-filterable-set=":recyclerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":recyclerview/release" data-filterable-set=":recyclerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="to-string.html"><span>to</span><wbr><span><span>String</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="42525743%2FFunctions%2F755181214"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="42525743%2FFunctions%2F-1847471084"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="to-string.html"><span class="token function">toString</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="to-string.html"><span class="token function">toString</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-13042600%2FFunctions%2F755181214" anchor-label="willRunPredictiveAnimations" id="-13042600%2FFunctions%2F755181214" data-filterable-set=":recyclerview/main"></a>
-          <div class="table-row" data-filterable-current=":recyclerview/main" data-filterable-set=":recyclerview/main">
+<a data-name="-13042600%2FFunctions%2F-1847471084" anchor-label="willRunPredictiveAnimations" id="-13042600%2FFunctions%2F-1847471084" data-filterable-set=":recyclerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":recyclerview/release" data-filterable-set=":recyclerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="will-run-predictive-animations.html"><span>will</span><wbr><span>Run</span><wbr><span>Predictive</span><wbr><span><span>Animations</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-13042600%2FFunctions%2F755181214"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-13042600%2FFunctions%2F-1847471084"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="will-run-predictive-animations.html"><span class="token function">willRunPredictiveAnimations</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Returns whether RecyclerView will run predictive animations in this layout pass or not.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="will-run-predictive-animations.html"><span class="token function">willRunPredictiveAnimations</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Returns whether RecyclerView will run predictive animations in this layout pass or not.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1070200923%2FFunctions%2F755181214" anchor-label="willRunSimpleAnimations" id="-1070200923%2FFunctions%2F755181214" data-filterable-set=":recyclerview/main"></a>
-          <div class="table-row" data-filterable-current=":recyclerview/main" data-filterable-set=":recyclerview/main">
+<a data-name="-1070200923%2FFunctions%2F-1847471084" anchor-label="willRunSimpleAnimations" id="-1070200923%2FFunctions%2F-1847471084" data-filterable-set=":recyclerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":recyclerview/release" data-filterable-set=":recyclerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="will-run-simple-animations.html"><span>will</span><wbr><span>Run</span><wbr><span>Simple</span><wbr><span><span>Animations</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1070200923%2FFunctions%2F755181214"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1070200923%2FFunctions%2F-1847471084"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="will-run-simple-animations.html"><span class="token function">willRunSimpleAnimations</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Returns whether RecyclerView will run simple animations in this layout pass or not.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recyclerview/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="will-run-simple-animations.html"><span class="token function">willRunSimpleAnimations</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Returns whether RecyclerView will run simple animations in this layout pass or not.</div></div></div>
                 </div>
               </div>
             </div>
@@ -336,17 +335,21 @@
   </div>
 </div>
     <div class="footer">
-        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
-        <span>© 2026 Copyright</span>
-        <span class="pull-right">
-            <span>Generated by </span>
-            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
-                <span>dokka</span>
-            </a>
-        </span>
-    </div>
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
             </div>
         </div>
     </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

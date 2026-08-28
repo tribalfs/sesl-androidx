@@ -1,42 +1,39 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
     <title>CollectionInfoCompat</title>
-<link href="../../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../../";</script>
-    <script>document.documentElement.classList.replace("no-js","js");</script>
+<link href="../../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
     <script>const storage = localStorage.getItem("dokka-dark-mode")
-    if (storage == null) {
+      if (storage == null) {
         const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
         if (osDarkSchemePreferred === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    } else {
+      } else {
         const savedDarkMode = JSON.parse(storage)
-        if(savedDarkMode === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    }
+      }
     </script>
-<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
 <script type="text/javascript" src="../../../../scripts/sourceset_dependencies.js" async></script>
 <link href="../../../../styles/style.css" rel="Stylesheet">
 <link href="../../../../styles/main.css" rel="Stylesheet">
 <link href="../../../../styles/prism.css" rel="Stylesheet">
 <link href="../../../../styles/logo-styles.css" rel="Stylesheet">
-<link href="../../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
 <link href="../../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
-<script type="text/javascript" src="../../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../../scripts/safe-local-storage_blocking.js"></script>
 <script type="text/javascript" src="../../../../scripts/navigation-loader.js" async></script>
 <script type="text/javascript" src="../../../../scripts/platform-content-handler.js" async></script>
 <script type="text/javascript" src="../../../../scripts/main.js" defer></script>
 <script type="text/javascript" src="../../../../scripts/prism.js" async></script>
-<script type="text/javascript" src="../../../../ui-kit/ui-kit.min.js" defer></script>
-<script type="text/javascript" src="../../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<script type="text/javascript" src="../../../../ui-kit/ui-kit.min.js" defer></script></head>
 <body>
-    <div class="root">
-    <nav class="navigation theme-dark" id="navigation-wrapper">
-<a class="library-name--link" href="../../../../index.html">
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../../../index.html" tabindex="1">
                     sesl.androidx
             </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
         </button>
@@ -44,74 +41,76 @@
         <div class="library-version" id="library-version">
         </div>
         <div class="navigation-controls">
-        <div class="filter-section filter-section_loading" id="filter-section">
-                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":core/main">main</button>
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":core/release">release</button>
             <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
                 <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
-                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
-                    <div class="dropdown--header"><span>Platform filter</span>
-                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
                             <i class="ui-kit-icon ui-kit-icon_cross"></i>
                         </button>
                     </div>
                         <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
                             <label class="checkbox">
-                                <input type="checkbox" class="checkbox--input" id=":core/main" data-filter=":core/main">
+                                <input type="checkbox" class="checkbox--input" id=":core/release" data-filter=":core/release">
                                 <span class="checkbox--icon"></span>
-                                main
+                                release
                             </label>
                         </li>
                 </ul>
                 <div class="dropdown--overlay"></div>
             </div>
-        </div>
+        </ul>
             <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
             </button>
             <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
                 API
             </div>
         </div>
-    </nav>
-        <div id="container">
-            <div class="sidebar" id="leftColumn">
-                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
-                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox">
-                        <div class="dropdown--header">
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
                             <span>
                                     sesl.androidx
                             </span>
-                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
-                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
-                            </button>
-                        </div>
-                        <div class="sidebar--inner" id="sideMenu"></div>
-                    </ul>
-                    <div class="dropdown--overlay"></div>
-                </div>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
             </div>
-            <div id="main">
-<div class="main-content" data-page-type="classlike" id="content" pageids="core::androidx.core.view.accessibility/AccessibilityNodeInfoCompat.CollectionInfoCompat///PointingToDeclaration//-108886845">
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="core::androidx.core.view.accessibility/AccessibilityNodeInfoCompat.CollectionInfoCompat///PointingToDeclaration//-232177031">
   <div class="breadcrumbs"><a href="../../../index.html">core</a><span class="delimiter">/</span><a href="../../index.html">androidx.core.view.accessibility</a><span class="delimiter">/</span><a href="../index.html">AccessibilityNodeInfoCompat</a><span class="delimiter">/</span><span class="current">CollectionInfoCompat</span></div>
   <div class="cover ">
     <h1 class="cover"><span>Collection</span><wbr><span>Info</span><wbr><span><span>Compat</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="index.html">CollectionInfoCompat</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/tribalfs/sesl-androidx/blob/sesl-androidx-main/core/core/src/main/java/androidx/core/view/accessibility/AccessibilityNodeInfoCompat.java#L949">source</a>)</span></span></div><p class="paragraph">Class with information if a node is a collection. </p><p class="paragraph"> A collection of items has rows and columns and may be marked as hierarchical. </p><p class="paragraph"> For example, a list where the items are placed in a vertical layout is a collection with one column and as many rows as the list items. This collection has 3 rows and 1 column and should not be marked as hierarchical since items do not exist at different levels/ranks and there are no nested collections. </p><ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul><p class="paragraph"> A table is a collection with several rows and several columns. This collection has 2 rows and 3 columns and is not marked as hierarchical: </p><table><thead></thead><tbody><tr><td>Item 1</td><td>Item 2</td><td>Item 3</td></tr><tr><td>Item 4</td><td>Item 5</td><td>Item 6</td></tr></tbody></table><p class="paragraph"> Nested collections could be marked as hierarchical. To add outer and inner collections to the same hierarchy, mark them both as hierarchical. </p><p class="paragraph"> For example, if you have a collection with two lists - this collection has an outer list with 3 rows and 1 column and an inner list within "Item 2" with 2 rows and 1 - you can mark both the outer list and the inner list as hierarchical to make them part of the same hierarchy. If a collection does not have any ancestor or descendant hierarchical collections, it does not need to be marked as hierarchical. </p><ul><li>Item 1</li><li> Item 2 <ul><li>Item 2A</li><li>Item 2B</li></ul></li><li>Item 3</li></ul><p class="paragraph"> To be a valid list, a collection has 1 row and any number of columns or 1 column and any number of rows. </p></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="index.html">CollectionInfoCompat</a></div><p class="paragraph">Class with information if a node is a collection. </p><p class="paragraph"> A collection of items has rows and columns and may be marked as hierarchical. </p><p class="paragraph"> For example, a list where the items are placed in a vertical layout is a collection with one column and as many rows as the list items. This collection has 3 rows and 1 column and should not be marked as hierarchical since items do not exist at different levels/ranks and there are no nested collections. </p><ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul><p class="paragraph"> A table is a collection with several rows and several columns. This collection has 2 rows and 3 columns and is not marked as hierarchical: </p><div class="table--container"><table><thead></thead><tbody><tr><td>Item 1</td><td>Item 2</td><td>Item 3</td></tr><tr><td>Item 4</td><td>Item 5</td><td>Item 6</td></tr></tbody></table></div><p class="paragraph"> Nested collections could be marked as hierarchical. To add outer and inner collections to the same hierarchy, mark them both as hierarchical. </p><p class="paragraph"> For example, if you have a collection with two lists - this collection has an outer list with 3 rows and 1 column and an inner list within "Item 2" with 2 rows and 1 - you can mark both the outer list and the inner list as hierarchical to make them part of the same hierarchy. If a collection does not have any ancestor or descendant hierarchical collections, it does not need to be marked as hierarchical. </p><ul><li>Item 1</li><li> Item 2 <ul><li>Item 2A</li><li>Item 2B</li></ul></li><li>Item 3</li></ul><p class="paragraph"> To be a valid list, a collection has 1 row and any number of columns or 1 column and any number of rows. </p></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
     <div class="tabs-section-body">
       <div data-togglable="TYPE">
-        <h2 class="">Types</h2>
-        <div class="table"><a data-name="-1716232184%2FClasslikes%2F-108886845" anchor-label="Builder" id="-1716232184%2FClasslikes%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+        <h2 class="tableheader">Types</h2>
+        <div class="table"><a data-name="-1716232184%2FClasslikes%2F-232177031" anchor-label="Builder" id="-1716232184%2FClasslikes%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-builder/index.html"><span><span>Builder</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1716232184%2FClasslikes%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1716232184%2FClasslikes%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-builder/index.html">Builder</a></div><div class="brief ">Class for building <a href="index.html">CollectionInfoCompat</a> objects.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-builder/index.html">Builder</a></div><div class="brief ">Class for building <a href="index.html">CollectionInfoCompat</a> objects.</div></div></div>
                 </div>
               </div>
             </div>
@@ -119,63 +118,63 @@
         </div>
       </div>
       <div data-togglable="PROPERTY">
-        <h2 class="">Properties</h2>
-        <div class="table"><a data-name="-1793604297%2FProperties%2F-108886845" anchor-label="SELECTION_MODE_MULTIPLE" id="-1793604297%2FProperties%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+        <h2 class="tableheader">Properties</h2>
+        <div class="table"><a data-name="-1793604297%2FProperties%2F-232177031" anchor-label="SELECTION_MODE_MULTIPLE" id="-1793604297%2FProperties%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-s-e-l-e-c-t-i-o-n_-m-o-d-e_-m-u-l-t-i-p-l-e.html"><span>SELECTION_</span><wbr><span>MODE_</span><wbr><span>MULTIPLE</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1793604297%2FProperties%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1793604297%2FProperties%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-s-e-l-e-c-t-i-o-n_-m-o-d-e_-m-u-l-t-i-p-l-e.html">SELECTION_MODE_MULTIPLE</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">2</span></div><div class="brief ">Selection mode where multiple items may be selected.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-s-e-l-e-c-t-i-o-n_-m-o-d-e_-m-u-l-t-i-p-l-e.html">SELECTION_MODE_MULTIPLE</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">2</span></div><div class="brief ">Selection mode where multiple items may be selected.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1146103311%2FProperties%2F-108886845" anchor-label="SELECTION_MODE_NONE" id="1146103311%2FProperties%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="1146103311%2FProperties%2F-232177031" anchor-label="SELECTION_MODE_NONE" id="1146103311%2FProperties%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-s-e-l-e-c-t-i-o-n_-m-o-d-e_-n-o-n-e.html"><span>SELECTION_</span><wbr><span>MODE_</span><wbr><span>NONE</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1146103311%2FProperties%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1146103311%2FProperties%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-s-e-l-e-c-t-i-o-n_-m-o-d-e_-n-o-n-e.html">SELECTION_MODE_NONE</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span></div><div class="brief ">Selection mode where items are not selectable.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-s-e-l-e-c-t-i-o-n_-m-o-d-e_-n-o-n-e.html">SELECTION_MODE_NONE</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span></div><div class="brief ">Selection mode where items are not selectable.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1375677567%2FProperties%2F-108886845" anchor-label="SELECTION_MODE_SINGLE" id="1375677567%2FProperties%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="1375677567%2FProperties%2F-232177031" anchor-label="SELECTION_MODE_SINGLE" id="1375677567%2FProperties%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-s-e-l-e-c-t-i-o-n_-m-o-d-e_-s-i-n-g-l-e.html"><span>SELECTION_</span><wbr><span>MODE_</span><wbr><span>SINGLE</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1375677567%2FProperties%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1375677567%2FProperties%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-s-e-l-e-c-t-i-o-n_-m-o-d-e_-s-i-n-g-l-e.html">SELECTION_MODE_SINGLE</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">1</span></div><div class="brief ">Selection mode where a single item may be selected.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-s-e-l-e-c-t-i-o-n_-m-o-d-e_-s-i-n-g-l-e.html">SELECTION_MODE_SINGLE</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">1</span></div><div class="brief ">Selection mode where a single item may be selected.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1600320704%2FProperties%2F-108886845" anchor-label="UNDEFINED" id="1600320704%2FProperties%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="1600320704%2FProperties%2F-232177031" anchor-label="UNDEFINED" id="1600320704%2FProperties%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-u-n-d-e-f-i-n-e-d.html"><span><span>UNDEFINED</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1600320704%2FProperties%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1600320704%2FProperties%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-u-n-d-e-f-i-n-e-d.html">UNDEFINED</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">-1</span></div><div class="brief ">Constant to denote a missing collection count.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-u-n-d-e-f-i-n-e-d.html">UNDEFINED</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">-1</span></div><div class="brief ">Constant to denote a missing collection count.</div></div></div>
                 </div>
               </div>
             </div>
@@ -183,108 +182,108 @@
         </div>
       </div>
       <div data-togglable="FUNCTION">
-        <h2 class="">Functions</h2>
-        <div class="table"><a data-name="1537172135%2FFunctions%2F-108886845" anchor-label="getColumnCount" id="1537172135%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="1537172135%2FFunctions%2F-232177031" anchor-label="getColumnCount" id="1537172135%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-column-count.html"><span>get</span><wbr><span>Column</span><wbr><span><span>Count</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1537172135%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1537172135%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-column-count.html"><span class="token function">getColumnCount</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Gets the number of columns.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-column-count.html"><span class="token function">getColumnCount</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Gets the number of columns.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1500469157%2FFunctions%2F-108886845" anchor-label="getImportantForAccessibilityItemCount" id="1500469157%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="1500469157%2FFunctions%2F-232177031" anchor-label="getImportantForAccessibilityItemCount" id="1500469157%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-important-for-accessibility-item-count.html"><span>get</span><wbr><span>Important</span><wbr><span>For</span><wbr><span>Accessibility</span><wbr><span>Item</span><wbr><span><span>Count</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1500469157%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1500469157%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-important-for-accessibility-item-count.html"><span class="token function">getImportantForAccessibilityItemCount</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Gets the number of items in the collection considered important for accessibility.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-important-for-accessibility-item-count.html"><span class="token function">getImportantForAccessibilityItemCount</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Gets the number of items in the collection considered important for accessibility.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="704794212%2FFunctions%2F-108886845" anchor-label="getItemCount" id="704794212%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="704794212%2FFunctions%2F-232177031" anchor-label="getItemCount" id="704794212%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-item-count.html"><span>get</span><wbr><span>Item</span><wbr><span><span>Count</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="704794212%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="704794212%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-item-count.html"><span class="token function">getItemCount</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Gets the number of items in the collection.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-item-count.html"><span class="token function">getItemCount</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Gets the number of items in the collection.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1312218309%2FFunctions%2F-108886845" anchor-label="getRowCount" id="1312218309%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="1312218309%2FFunctions%2F-232177031" anchor-label="getRowCount" id="1312218309%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-row-count.html"><span>get</span><wbr><span>Row</span><wbr><span><span>Count</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1312218309%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1312218309%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-row-count.html"><span class="token function">getRowCount</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Gets the number of rows.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-row-count.html"><span class="token function">getRowCount</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Gets the number of rows.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-989650767%2FFunctions%2F-108886845" anchor-label="getSelectionMode" id="-989650767%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-989650767%2FFunctions%2F-232177031" anchor-label="getSelectionMode" id="-989650767%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-selection-mode.html"><span>get</span><wbr><span>Selection</span><wbr><span><span>Mode</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-989650767%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-989650767%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-selection-mode.html"><span class="token function">getSelectionMode</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Gets the collection's selection mode.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-selection-mode.html"><span class="token function">getSelectionMode</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Gets the collection's selection mode.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1282969353%2FFunctions%2F-108886845" anchor-label="isHierarchical" id="-1282969353%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-1282969353%2FFunctions%2F-232177031" anchor-label="isHierarchical" id="-1282969353%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="is-hierarchical.html"><span>is</span><wbr><span><span>Hierarchical</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1282969353%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1282969353%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-hierarchical.html"><span class="token function">isHierarchical</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Gets if the collection is a hierarchically ordered.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-hierarchical.html"><span class="token function">isHierarchical</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Gets if the collection is a hierarchically ordered.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="932153154%2FFunctions%2F-108886845" anchor-label="obtain" id="932153154%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="932153154%2FFunctions%2F-232177031" anchor-label="obtain" id="932153154%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="obtain.html"><span><span>obtain</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="932153154%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="932153154%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="obtain.html"><span class="token function">obtain</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">rowCount<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">columnCount<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">hierarchical<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.CollectionInfoCompat</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="obtain.html"><span class="token function">obtain</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">rowCount<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">columnCount<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">hierarchical<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter ">selectionMode<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.CollectionInfoCompat</a></div><div class="brief ">Returns a cached instance if such is available otherwise a new one.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="obtain.html"><span class="token function">obtain</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">rowCount<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">columnCount<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">hierarchical<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.CollectionInfoCompat</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="obtain.html"><span class="token function">obtain</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">rowCount<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">columnCount<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">hierarchical<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter ">selectionMode<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">AccessibilityNodeInfoCompat.CollectionInfoCompat</a></div><div class="brief ">Returns a cached instance if such is available otherwise a new one.</div></div></div>
                 </div>
               </div>
             </div>
@@ -295,17 +294,21 @@
   </div>
 </div>
     <div class="footer">
-        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
-        <span>© 2026 Copyright</span>
-        <span class="pull-right">
-            <span>Generated by </span>
-            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
-                <span>dokka</span>
-            </a>
-        </span>
-    </div>
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
             </div>
         </div>
     </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

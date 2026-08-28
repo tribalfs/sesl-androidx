@@ -1,42 +1,39 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
     <title>AppPickerView</title>
-<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../";</script>
-    <script>document.documentElement.classList.replace("no-js","js");</script>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
     <script>const storage = localStorage.getItem("dokka-dark-mode")
-    if (storage == null) {
+      if (storage == null) {
         const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
         if (osDarkSchemePreferred === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    } else {
+      } else {
         const savedDarkMode = JSON.parse(storage)
-        if(savedDarkMode === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    }
+      }
     </script>
-<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
 <script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
 <link href="../../../styles/style.css" rel="Stylesheet">
 <link href="../../../styles/main.css" rel="Stylesheet">
 <link href="../../../styles/prism.css" rel="Stylesheet">
 <link href="../../../styles/logo-styles.css" rel="Stylesheet">
-<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
 <link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
-<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/safe-local-storage_blocking.js"></script>
 <script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
 <script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
 <script type="text/javascript" src="../../../scripts/main.js" defer></script>
 <script type="text/javascript" src="../../../scripts/prism.js" async></script>
-<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script>
-<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script></head>
 <body>
-    <div class="root">
-    <nav class="navigation theme-dark" id="navigation-wrapper">
-<a class="library-name--link" href="../../../index.html">
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../../index.html" tabindex="1">
                     sesl.androidx
             </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
         </button>
@@ -44,74 +41,76 @@
         <div class="library-version" id="library-version">
         </div>
         <div class="navigation-controls">
-        <div class="filter-section filter-section_loading" id="filter-section">
-                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":apppickerview/main">main</button>
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":apppickerview/release">release</button>
             <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
                 <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
-                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
-                    <div class="dropdown--header"><span>Platform filter</span>
-                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
                             <i class="ui-kit-icon ui-kit-icon_cross"></i>
                         </button>
                     </div>
                         <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
                             <label class="checkbox">
-                                <input type="checkbox" class="checkbox--input" id=":apppickerview/main" data-filter=":apppickerview/main">
+                                <input type="checkbox" class="checkbox--input" id=":apppickerview/release" data-filter=":apppickerview/release">
                                 <span class="checkbox--icon"></span>
-                                main
+                                release
                             </label>
                         </li>
                 </ul>
                 <div class="dropdown--overlay"></div>
             </div>
-        </div>
+        </ul>
             <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
             </button>
             <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
                 API
             </div>
         </div>
-    </nav>
-        <div id="container">
-            <div class="sidebar" id="leftColumn">
-                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
-                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox">
-                        <div class="dropdown--header">
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
                             <span>
                                     sesl.androidx
                             </span>
-                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
-                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
-                            </button>
-                        </div>
-                        <div class="sidebar--inner" id="sideMenu"></div>
-                    </ul>
-                    <div class="dropdown--overlay"></div>
-                </div>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
             </div>
-            <div id="main">
-<div class="main-content" data-page-type="classlike" id="content" pageids="apppickerview::androidx.apppickerview.widget/AppPickerView///PointingToDeclaration//80215744">
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="apppickerview::androidx.apppickerview.widget/AppPickerView///PointingToDeclaration//-818378058">
   <div class="breadcrumbs"><a href="../../index.html">apppickerview</a><span class="delimiter">/</span><a href="../index.html">androidx.apppickerview.widget</a><span class="delimiter">/</span><span class="current">AppPickerView</span></div>
   <div class="cover ">
     <h1 class="cover"><span>App</span><wbr><span>Picker</span><wbr><span><span>View</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="index.html"><strike>AppPickerView</strike></a> : <a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.html">RecyclerView</a>, <a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.RecyclerListener.html">RecyclerView.RecyclerListener</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/tribalfs/sesl-androidx/blob/sesl-androidx-main/apppickerview/apppickerview/src/main/java/androidx/apppickerview/widget/AppPickerView.java#L66">source</a>)</span></span></div><div class="deprecation-content"><h3 class="">Deprecated</h3></div></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="index.html"><strike>AppPickerView</strike></a> : <a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.html">RecyclerView</a>, <a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.RecyclerListener.html">RecyclerView.RecyclerListener</a></div><div class="deprecation-content"><h3 class="">Deprecated</h3></div></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
     <div class="tabs-section-body">
       <div data-togglable="CONSTRUCTOR">
-        <h2 class="">Constructors</h2>
-        <div class="table"><a data-name="-934374037%2FConstructors%2F80215744" anchor-label="AppPickerView" id="-934374037%2FConstructors%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+        <h2 class="tableheader">Constructors</h2>
+        <div class="table"><a data-name="-934374037%2FConstructors%2F-818378058" anchor-label="AppPickerView" id="-934374037%2FConstructors%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-togglable="CONSTRUCTOR" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-app-picker-view.html"><span>App</span><wbr><span>Picker</span><wbr><span><span>View</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-934374037%2FConstructors%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-934374037%2FConstructors%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a><span class="token punctuation">, </span></span><span class="parameter ">defStyleAttr<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a><span class="token punctuation">, </span></span><span class="parameter ">defStyleAttr<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
@@ -119,138 +118,138 @@
         </div>
       </div>
       <div data-togglable="TYPE">
-        <h2 class="">Types</h2>
-        <div class="table"><a data-name="759464074%2FClasslikes%2F80215744" anchor-label="AppLabelInfo" id="759464074%2FClasslikes%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+        <h2 class="tableheader">Types</h2>
+        <div class="table"><a data-name="759464074%2FClasslikes%2F-818378058" anchor-label="AppLabelInfo" id="759464074%2FClasslikes%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-app-label-info/index.html"><span>App</span><wbr><span>Label</span><wbr><span><span>Info</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="759464074%2FClasslikes%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="759464074%2FClasslikes%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-app-label-info/index.html">AppLabelInfo</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-app-label-info/index.html">AppLabelInfo</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1998067220%2FClasslikes%2F80215744" anchor-label="AppPickerOrder" id="-1998067220%2FClasslikes%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="-1998067220%2FClasslikes%2F-818378058" anchor-label="AppPickerOrder" id="-1998067220%2FClasslikes%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-app-picker-order/index.html"><span>App</span><wbr><span>Picker</span><wbr><span><span>Order</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1998067220%2FClasslikes%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1998067220%2FClasslikes%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY_GROUP">LIBRARY_GROUP</a></span><wbr><span class="token punctuation">)</span></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/java/lang/annotation/Retention.html"><span class="token annotation builtin">Retention</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><a href="https://developer.android.com/reference/kotlin/java/lang/annotation/RetentionPolicy.html">RetentionPolicy.SOURCE</a></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">annotation class </span><a href="-app-picker-order/index.html">AppPickerOrder</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY_GROUP">LIBRARY_GROUP</a></span><wbr><span class="token punctuation">)</span></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/java/lang/annotation/Retention.html"><span class="token annotation builtin">Retention</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><a href="https://developer.android.com/reference/kotlin/java/lang/annotation/RetentionPolicy.html">RetentionPolicy.SOURCE</a></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">annotation class </span><a href="-app-picker-order/index.html">AppPickerOrder</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1112114%2FClasslikes%2F80215744" anchor-label="AppPickerType" id="-1112114%2FClasslikes%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="-1112114%2FClasslikes%2F-818378058" anchor-label="AppPickerType" id="-1112114%2FClasslikes%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-app-picker-type/index.html"><span>App</span><wbr><span>Picker</span><wbr><span><span>Type</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1112114%2FClasslikes%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1112114%2FClasslikes%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY_GROUP">LIBRARY_GROUP</a></span><wbr><span class="token punctuation">)</span></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/java/lang/annotation/Retention.html"><span class="token annotation builtin">Retention</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><a href="https://developer.android.com/reference/kotlin/java/lang/annotation/RetentionPolicy.html">RetentionPolicy.SOURCE</a></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">annotation class </span><a href="-app-picker-type/index.html">AppPickerType</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY_GROUP">LIBRARY_GROUP</a></span><wbr><span class="token punctuation">)</span></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/java/lang/annotation/Retention.html"><span class="token annotation builtin">Retention</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><a href="https://developer.android.com/reference/kotlin/java/lang/annotation/RetentionPolicy.html">RetentionPolicy.SOURCE</a></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">annotation class </span><a href="-app-picker-type/index.html">AppPickerType</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-158229025%2FClasslikes%2F80215744" anchor-label="FooterViewHolder" id="-158229025%2FClasslikes%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="-158229025%2FClasslikes%2F-818378058" anchor-label="FooterViewHolder" id="-158229025%2FClasslikes%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-footer-view-holder/index.html"><span>Footer</span><wbr><span>View</span><wbr><span><span>Holder</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-158229025%2FClasslikes%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-158229025%2FClasslikes%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-footer-view-holder/index.html">FooterViewHolder</a> : <a href="-view-holder/index.html">AppPickerView.ViewHolder</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-footer-view-holder/index.html">FooterViewHolder</a> : <a href="-view-holder/index.html">AppPickerView.ViewHolder</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1787872339%2FClasslikes%2F80215744" anchor-label="HeaderViewHolder" id="-1787872339%2FClasslikes%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="-1787872339%2FClasslikes%2F-818378058" anchor-label="HeaderViewHolder" id="-1787872339%2FClasslikes%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-header-view-holder/index.html"><span>Header</span><wbr><span>View</span><wbr><span><span>Holder</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1787872339%2FClasslikes%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1787872339%2FClasslikes%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-header-view-holder/index.html">HeaderViewHolder</a> : <a href="-view-holder/index.html">AppPickerView.ViewHolder</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-header-view-holder/index.html">HeaderViewHolder</a> : <a href="-view-holder/index.html">AppPickerView.ViewHolder</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="910866939%2FClasslikes%2F80215744" anchor-label="OnBindListener" id="910866939%2FClasslikes%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="910866939%2FClasslikes%2F-818378058" anchor-label="OnBindListener" id="910866939%2FClasslikes%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-on-bind-listener/index.html"><span>On</span><wbr><span>Bind</span><wbr><span><span>Listener</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="910866939%2FClasslikes%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="910866939%2FClasslikes%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-on-bind-listener/index.html">OnBindListener</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-on-bind-listener/index.html">OnBindListener</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1925668952%2FClasslikes%2F80215744" anchor-label="OnSearchFilterListener" id="1925668952%2FClasslikes%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="1925668952%2FClasslikes%2F-818378058" anchor-label="OnSearchFilterListener" id="1925668952%2FClasslikes%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-on-search-filter-listener/index.html"><span>On</span><wbr><span>Search</span><wbr><span>Filter</span><wbr><span><span>Listener</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1925668952%2FClasslikes%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1925668952%2FClasslikes%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-on-search-filter-listener/index.html">OnSearchFilterListener</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-on-search-filter-listener/index.html">OnSearchFilterListener</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="794146913%2FClasslikes%2F80215744" anchor-label="SeparatorViewHolder" id="794146913%2FClasslikes%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="794146913%2FClasslikes%2F-818378058" anchor-label="SeparatorViewHolder" id="794146913%2FClasslikes%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-separator-view-holder/index.html"><span>Separator</span><wbr><span>View</span><wbr><span><span>Holder</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="794146913%2FClasslikes%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="794146913%2FClasslikes%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-separator-view-holder/index.html">SeparatorViewHolder</a> : <a href="-view-holder/index.html">AppPickerView.ViewHolder</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-separator-view-holder/index.html">SeparatorViewHolder</a> : <a href="-view-holder/index.html">AppPickerView.ViewHolder</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-351013638%2FClasslikes%2F80215744" anchor-label="ViewHolder" id="-351013638%2FClasslikes%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="-351013638%2FClasslikes%2F-818378058" anchor-label="ViewHolder" id="-351013638%2FClasslikes%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-view-holder/index.html"><span>View</span><wbr><span><span>Holder</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-351013638%2FClasslikes%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-351013638%2FClasslikes%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-view-holder/index.html">ViewHolder</a> : <a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.ViewHolder.html">RecyclerView.ViewHolder</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-view-holder/index.html">ViewHolder</a> : <a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.ViewHolder.html">RecyclerView.ViewHolder</a></div></div></div>
                 </div>
               </div>
             </div>
@@ -258,258 +257,258 @@
         </div>
       </div>
       <div data-togglable="PROPERTY">
-        <h2 class="">Properties</h2>
-        <div class="table"><a data-name="-335776828%2FProperties%2F80215744" anchor-label="ALL_APPS_STRING" id="-335776828%2FProperties%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+        <h2 class="tableheader">Properties</h2>
+        <div class="table"><a data-name="-335776828%2FProperties%2F-818378058" anchor-label="ALL_APPS_STRING" id="-335776828%2FProperties%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-a-l-l_-a-p-p-s_-s-t-r-i-n-g.html"><span>ALL_</span><wbr><span>APPS_</span><wbr><span>STRING</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-335776828%2FProperties%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-335776828%2FProperties%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-a-l-l_-a-p-p-s_-s-t-r-i-n-g.html">ALL_APPS_STRING</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token operator"> = </span><span class="token string">"all_apps"</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-a-l-l_-a-p-p-s_-s-t-r-i-n-g.html">ALL_APPS_STRING</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token operator"> = </span><span class="token string">"all_apps"</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-770998115%2FProperties%2F80215744" anchor-label="KEY_APP_SEPARATOR" id="-770998115%2FProperties%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="-770998115%2FProperties%2F-818378058" anchor-label="KEY_APP_SEPARATOR" id="-770998115%2FProperties%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-k-e-y_-a-p-p_-s-e-p-a-r-a-t-o-r.html"><span>KEY_</span><wbr><span>APP_</span><wbr><span>SEPARATOR</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-770998115%2FProperties%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-770998115%2FProperties%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-k-e-y_-a-p-p_-s-e-p-a-r-a-t-o-r.html">KEY_APP_SEPARATOR</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token operator"> = </span><span class="token string">"app_picker_separator"</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-k-e-y_-a-p-p_-s-e-p-a-r-a-t-o-r.html">KEY_APP_SEPARATOR</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token operator"> = </span><span class="token string">"app_picker_separator"</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1514973012%2FProperties%2F80215744" anchor-label="mIsDividerVisible" id="1514973012%2FProperties%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="1514973012%2FProperties%2F-818378058" anchor-label="mIsDividerVisible" id="1514973012%2FProperties%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="m-is-divider-visible.html"><span>m</span><wbr><span>Is</span><wbr><span>Divider</span><wbr><span><span>Visible</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1514973012%2FProperties%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1514973012%2FProperties%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">var </span><a href="m-is-divider-visible.html">mIsDividerVisible</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">var </span><a href="m-is-divider-visible.html">mIsDividerVisible</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="899814269%2FProperties%2F80215744" anchor-label="ORDER_ASCENDING" id="899814269%2FProperties%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="899814269%2FProperties%2F-818378058" anchor-label="ORDER_ASCENDING" id="899814269%2FProperties%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-o-r-d-e-r_-a-s-c-e-n-d-i-n-g.html"><span>ORDER_</span><wbr><span>ASCENDING</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="899814269%2FProperties%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="899814269%2FProperties%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-o-r-d-e-r_-a-s-c-e-n-d-i-n-g.html">ORDER_ASCENDING</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">1</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-o-r-d-e-r_-a-s-c-e-n-d-i-n-g.html">ORDER_ASCENDING</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">1</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-2122147457%2FProperties%2F80215744" anchor-label="ORDER_ASCENDING_IGNORE_CASE" id="-2122147457%2FProperties%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="-2122147457%2FProperties%2F-818378058" anchor-label="ORDER_ASCENDING_IGNORE_CASE" id="-2122147457%2FProperties%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-o-r-d-e-r_-a-s-c-e-n-d-i-n-g_-i-g-n-o-r-e_-c-a-s-e.html"><span>ORDER_</span><wbr><span>ASCENDING_</span><wbr><span>IGNORE_</span><wbr><span>CASE</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2122147457%2FProperties%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2122147457%2FProperties%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-o-r-d-e-r_-a-s-c-e-n-d-i-n-g_-i-g-n-o-r-e_-c-a-s-e.html">ORDER_ASCENDING_IGNORE_CASE</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">2</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-o-r-d-e-r_-a-s-c-e-n-d-i-n-g_-i-g-n-o-r-e_-c-a-s-e.html">ORDER_ASCENDING_IGNORE_CASE</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">2</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1918074035%2FProperties%2F80215744" anchor-label="ORDER_DESCENDING" id="-1918074035%2FProperties%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="-1918074035%2FProperties%2F-818378058" anchor-label="ORDER_DESCENDING" id="-1918074035%2FProperties%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-o-r-d-e-r_-d-e-s-c-e-n-d-i-n-g.html"><span>ORDER_</span><wbr><span>DESCENDING</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1918074035%2FProperties%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1918074035%2FProperties%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-o-r-d-e-r_-d-e-s-c-e-n-d-i-n-g.html">ORDER_DESCENDING</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">3</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-o-r-d-e-r_-d-e-s-c-e-n-d-i-n-g.html">ORDER_DESCENDING</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">3</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1261186737%2FProperties%2F80215744" anchor-label="ORDER_DESCENDING_IGNORE_CASE" id="-1261186737%2FProperties%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="-1261186737%2FProperties%2F-818378058" anchor-label="ORDER_DESCENDING_IGNORE_CASE" id="-1261186737%2FProperties%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-o-r-d-e-r_-d-e-s-c-e-n-d-i-n-g_-i-g-n-o-r-e_-c-a-s-e.html"><span>ORDER_</span><wbr><span>DESCENDING_</span><wbr><span>IGNORE_</span><wbr><span>CASE</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1261186737%2FProperties%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1261186737%2FProperties%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-o-r-d-e-r_-d-e-s-c-e-n-d-i-n-g_-i-g-n-o-r-e_-c-a-s-e.html">ORDER_DESCENDING_IGNORE_CASE</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">4</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-o-r-d-e-r_-d-e-s-c-e-n-d-i-n-g_-i-g-n-o-r-e_-c-a-s-e.html">ORDER_DESCENDING_IGNORE_CASE</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">4</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="596345101%2FProperties%2F80215744" anchor-label="ORDER_NONE" id="596345101%2FProperties%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="596345101%2FProperties%2F-818378058" anchor-label="ORDER_NONE" id="596345101%2FProperties%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-o-r-d-e-r_-n-o-n-e.html"><span>ORDER_</span><wbr><span>NONE</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="596345101%2FProperties%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="596345101%2FProperties%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-o-r-d-e-r_-n-o-n-e.html">ORDER_NONE</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-o-r-d-e-r_-n-o-n-e.html">ORDER_NONE</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="477484793%2FProperties%2F80215744" anchor-label="TYPE_GRID" id="477484793%2FProperties%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="477484793%2FProperties%2F-818378058" anchor-label="TYPE_GRID" id="477484793%2FProperties%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-t-y-p-e_-g-r-i-d.html"><span>TYPE_</span><wbr><span>GRID</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="477484793%2FProperties%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="477484793%2FProperties%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-t-y-p-e_-g-r-i-d.html">TYPE_GRID</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">7</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-t-y-p-e_-g-r-i-d.html">TYPE_GRID</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">7</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-629227233%2FProperties%2F80215744" anchor-label="TYPE_GRID_CHECKBOX" id="-629227233%2FProperties%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="-629227233%2FProperties%2F-818378058" anchor-label="TYPE_GRID_CHECKBOX" id="-629227233%2FProperties%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-t-y-p-e_-g-r-i-d_-c-h-e-c-k-b-o-x.html"><span>TYPE_</span><wbr><span>GRID_</span><wbr><span>CHECKBOX</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-629227233%2FProperties%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-629227233%2FProperties%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-t-y-p-e_-g-r-i-d_-c-h-e-c-k-b-o-x.html">TYPE_GRID_CHECKBOX</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">8</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-t-y-p-e_-g-r-i-d_-c-h-e-c-k-b-o-x.html">TYPE_GRID_CHECKBOX</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">8</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-831789919%2FProperties%2F80215744" anchor-label="TYPE_LIST" id="-831789919%2FProperties%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="-831789919%2FProperties%2F-818378058" anchor-label="TYPE_LIST" id="-831789919%2FProperties%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-t-y-p-e_-l-i-s-t.html"><span>TYPE_</span><wbr><span>LIST</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-831789919%2FProperties%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-831789919%2FProperties%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-t-y-p-e_-l-i-s-t.html">TYPE_LIST</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-t-y-p-e_-l-i-s-t.html">TYPE_LIST</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="923243973%2FProperties%2F80215744" anchor-label="TYPE_LIST_ACTION_BUTTON" id="923243973%2FProperties%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="923243973%2FProperties%2F-818378058" anchor-label="TYPE_LIST_ACTION_BUTTON" id="923243973%2FProperties%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-t-y-p-e_-l-i-s-t_-a-c-t-i-o-n_-b-u-t-t-o-n.html"><span>TYPE_</span><wbr><span>LIST_</span><wbr><span>ACTION_</span><wbr><span>BUTTON</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="923243973%2FProperties%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="923243973%2FProperties%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-t-y-p-e_-l-i-s-t_-a-c-t-i-o-n_-b-u-t-t-o-n.html">TYPE_LIST_ACTION_BUTTON</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">1</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-t-y-p-e_-l-i-s-t_-a-c-t-i-o-n_-b-u-t-t-o-n.html">TYPE_LIST_ACTION_BUTTON</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">1</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="137990263%2FProperties%2F80215744" anchor-label="TYPE_LIST_CHECKBOX" id="137990263%2FProperties%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="137990263%2FProperties%2F-818378058" anchor-label="TYPE_LIST_CHECKBOX" id="137990263%2FProperties%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-t-y-p-e_-l-i-s-t_-c-h-e-c-k-b-o-x.html"><span>TYPE_</span><wbr><span>LIST_</span><wbr><span>CHECKBOX</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="137990263%2FProperties%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="137990263%2FProperties%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-t-y-p-e_-l-i-s-t_-c-h-e-c-k-b-o-x.html">TYPE_LIST_CHECKBOX</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">2</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-t-y-p-e_-l-i-s-t_-c-h-e-c-k-b-o-x.html">TYPE_LIST_CHECKBOX</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">2</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="2018482797%2FProperties%2F80215744" anchor-label="TYPE_LIST_CHECKBOX_WITH_ALL_APPS" id="2018482797%2FProperties%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="2018482797%2FProperties%2F-818378058" anchor-label="TYPE_LIST_CHECKBOX_WITH_ALL_APPS" id="2018482797%2FProperties%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-t-y-p-e_-l-i-s-t_-c-h-e-c-k-b-o-x_-w-i-t-h_-a-l-l_-a-p-p-s.html"><span>TYPE_</span><wbr><span>LIST_</span><wbr><span>CHECKBOX_</span><wbr><span>WITH_</span><wbr><span>ALL_</span><wbr><span>APPS</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2018482797%2FProperties%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2018482797%2FProperties%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-t-y-p-e_-l-i-s-t_-c-h-e-c-k-b-o-x_-w-i-t-h_-a-l-l_-a-p-p-s.html">TYPE_LIST_CHECKBOX_WITH_ALL_APPS</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">3</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-t-y-p-e_-l-i-s-t_-c-h-e-c-k-b-o-x_-w-i-t-h_-a-l-l_-a-p-p-s.html">TYPE_LIST_CHECKBOX_WITH_ALL_APPS</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">3</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-108538541%2FProperties%2F80215744" anchor-label="TYPE_LIST_RADIOBUTTON" id="-108538541%2FProperties%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="-108538541%2FProperties%2F-818378058" anchor-label="TYPE_LIST_RADIOBUTTON" id="-108538541%2FProperties%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-t-y-p-e_-l-i-s-t_-r-a-d-i-o-b-u-t-t-o-n.html"><span>TYPE_</span><wbr><span>LIST_</span><wbr><span><span>RADIOBUTTON</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-108538541%2FProperties%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-108538541%2FProperties%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-t-y-p-e_-l-i-s-t_-r-a-d-i-o-b-u-t-t-o-n.html">TYPE_LIST_RADIOBUTTON</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">4</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-t-y-p-e_-l-i-s-t_-r-a-d-i-o-b-u-t-t-o-n.html">TYPE_LIST_RADIOBUTTON</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">4</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="340501862%2FProperties%2F80215744" anchor-label="TYPE_LIST_SWITCH" id="340501862%2FProperties%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="340501862%2FProperties%2F-818378058" anchor-label="TYPE_LIST_SWITCH" id="340501862%2FProperties%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-t-y-p-e_-l-i-s-t_-s-w-i-t-c-h.html"><span>TYPE_</span><wbr><span>LIST_</span><wbr><span>SWITCH</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="340501862%2FProperties%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="340501862%2FProperties%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-t-y-p-e_-l-i-s-t_-s-w-i-t-c-h.html">TYPE_LIST_SWITCH</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">5</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-t-y-p-e_-l-i-s-t_-s-w-i-t-c-h.html">TYPE_LIST_SWITCH</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">5</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="84336924%2FProperties%2F80215744" anchor-label="TYPE_LIST_SWITCH_WITH_ALL_APPS" id="84336924%2FProperties%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="84336924%2FProperties%2F-818378058" anchor-label="TYPE_LIST_SWITCH_WITH_ALL_APPS" id="84336924%2FProperties%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-t-y-p-e_-l-i-s-t_-s-w-i-t-c-h_-w-i-t-h_-a-l-l_-a-p-p-s.html"><span>TYPE_</span><wbr><span>LIST_</span><wbr><span>SWITCH_</span><wbr><span>WITH_</span><wbr><span>ALL_</span><wbr><span>APPS</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="84336924%2FProperties%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="84336924%2FProperties%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-t-y-p-e_-l-i-s-t_-s-w-i-t-c-h_-w-i-t-h_-a-l-l_-a-p-p-s.html">TYPE_LIST_SWITCH_WITH_ALL_APPS</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">6</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-t-y-p-e_-l-i-s-t_-s-w-i-t-c-h_-w-i-t-h_-a-l-l_-a-p-p-s.html">TYPE_LIST_SWITCH_WITH_ALL_APPS</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">6</span></div></div></div>
                 </div>
               </div>
             </div>
@@ -517,318 +516,318 @@
         </div>
       </div>
       <div data-togglable="FUNCTION">
-        <h2 class="">Functions</h2>
-        <div class="table"><a data-name="1733202232%2FFunctions%2F80215744" anchor-label="addPackage" id="1733202232%2FFunctions%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="1733202232%2FFunctions%2F-818378058" anchor-label="addPackage" id="1733202232%2FFunctions%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="add-package.html"><span>add</span><wbr><span><span>Package</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1733202232%2FFunctions%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1733202232%2FFunctions%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="add-package.html"><span class="token function">addPackage</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">position<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">label<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="add-package.html"><span class="token function">addPackage</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">position<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">label<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-941306335%2FFunctions%2F80215744" anchor-label="addSeparator" id="-941306335%2FFunctions%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="-941306335%2FFunctions%2F-818378058" anchor-label="addSeparator" id="-941306335%2FFunctions%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="add-separator.html"><span>add</span><wbr><span><span>Separator</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-941306335%2FFunctions%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-941306335%2FFunctions%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="add-separator.html"><span class="token function">addSeparator</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">position<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="add-separator.html"><span class="token function">addSeparator</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">position<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="382725254%2FFunctions%2F80215744" anchor-label="getAppLabelInfo" id="382725254%2FFunctions%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="382725254%2FFunctions%2F-818378058" anchor-label="getAppLabelInfo" id="382725254%2FFunctions%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-app-label-info.html"><span>get</span><wbr><span>App</span><wbr><span>Label</span><wbr><span><span>Info</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="382725254%2FFunctions%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="382725254%2FFunctions%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-app-label-info.html"><span class="token function">getAppLabelInfo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">position<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-app-label-info/index.html">AppPickerView.AppLabelInfo</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-app-label-info.html"><span class="token function">getAppLabelInfo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">position<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-app-label-info/index.html">AppPickerView.AppLabelInfo</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="643020691%2FFunctions%2F80215744" anchor-label="getAppLabelinfoList" id="643020691%2FFunctions%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="643020691%2FFunctions%2F-818378058" anchor-label="getAppLabelinfoList" id="643020691%2FFunctions%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-app-labelinfo-list.html"><span>get</span><wbr><span>App</span><wbr><span>Labelinfo</span><wbr><span><span>List</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="643020691%2FFunctions%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="643020691%2FFunctions%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-app-labelinfo-list.html"><span class="token function">getAppLabelinfoList</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>packageNamesList<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="-app-label-info/index.html">AppPickerView.AppLabelInfo</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-app-labelinfo-list.html"><span class="token function">getAppLabelinfoList</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>activityNamesList<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/android/content/ComponentName.html">ComponentName</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="-app-label-info/index.html">AppPickerView.AppLabelInfo</a><span class="token operator">&gt;</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-app-labelinfo-list.html"><span class="token function">getAppLabelinfoList</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>packageNamesList<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="-app-label-info/index.html">AppPickerView.AppLabelInfo</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-app-labelinfo-list.html"><span class="token function">getAppLabelinfoList</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>activityNamesList<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/android/content/ComponentName.html">ComponentName</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="-app-label-info/index.html">AppPickerView.AppLabelInfo</a><span class="token operator">&gt;</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="961169777%2FFunctions%2F80215744" anchor-label="getAppLabelOrder" id="961169777%2FFunctions%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="961169777%2FFunctions%2F-818378058" anchor-label="getAppLabelOrder" id="961169777%2FFunctions%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-app-label-order.html"><span>get</span><wbr><span>App</span><wbr><span>Label</span><wbr><span><span>Order</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="961169777%2FFunctions%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="961169777%2FFunctions%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-app-label-order.html"><span class="token function">getAppLabelOrder</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-app-label-order.html"><span class="token function">getAppLabelOrder</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1850554110%2FFunctions%2F80215744" anchor-label="getInstalledPackages" id="-1850554110%2FFunctions%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="-1850554110%2FFunctions%2F-818378058" anchor-label="getInstalledPackages" id="-1850554110%2FFunctions%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-installed-packages.html"><span>get</span><wbr><span>Installed</span><wbr><span><span>Packages</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1850554110%2FFunctions%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1850554110%2FFunctions%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-installed-packages.html"><span class="token function">getInstalledPackages</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token operator">&gt;</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-installed-packages.html"><span class="token function">getInstalledPackages</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token operator">&gt;</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1825563008%2FFunctions%2F80215744" anchor-label="getInstalledPackagesWithLabel" id="1825563008%2FFunctions%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="1825563008%2FFunctions%2F-818378058" anchor-label="getInstalledPackagesWithLabel" id="1825563008%2FFunctions%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-installed-packages-with-label.html"><span>get</span><wbr><span>Installed</span><wbr><span>Packages</span><wbr><span>With</span><wbr><span><span>Label</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1825563008%2FFunctions%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1825563008%2FFunctions%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-installed-packages-with-label.html"><span class="token function">getInstalledPackagesWithLabel</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="-app-label-info/index.html">AppPickerView.AppLabelInfo</a><span class="token operator">&gt;</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-installed-packages-with-label.html"><span class="token function">getInstalledPackagesWithLabel</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="-app-label-info/index.html">AppPickerView.AppLabelInfo</a><span class="token operator">&gt;</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="641584596%2FFunctions%2F80215744" anchor-label="getType" id="641584596%2FFunctions%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="641584596%2FFunctions%2F-818378058" anchor-label="getType" id="641584596%2FFunctions%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-type.html"><span>get</span><wbr><span><span>Type</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="641584596%2FFunctions%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="641584596%2FFunctions%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-type.html"><span class="token function">getType</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-type.html"><span class="token function">getType</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-429032857%2FFunctions%2F80215744" anchor-label="isAppPickerInitialized" id="-429032857%2FFunctions%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="-429032857%2FFunctions%2F-818378058" anchor-label="isAppPickerInitialized" id="-429032857%2FFunctions%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="is-app-picker-initialized.html"><span>is</span><wbr><span>App</span><wbr><span>Picker</span><wbr><span><span>Initialized</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-429032857%2FFunctions%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-429032857%2FFunctions%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-app-picker-initialized.html"><span class="token function">isAppPickerInitialized</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-app-picker-initialized.html"><span class="token function">isAppPickerInitialized</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1956221813%2FFunctions%2F80215744" anchor-label="onViewRecycled" id="-1956221813%2FFunctions%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="-1956221813%2FFunctions%2F-818378058" anchor-label="onViewRecycled" id="-1956221813%2FFunctions%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-view-recycled.html"><span>on</span><wbr><span>View</span><wbr><span><span>Recycled</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1956221813%2FFunctions%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1956221813%2FFunctions%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-view-recycled.html"><span class="token function">onViewRecycled</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>holder<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.ViewHolder.html">RecyclerView.ViewHolder</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-view-recycled.html"><span class="token function">onViewRecycled</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>holder<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.ViewHolder.html">RecyclerView.ViewHolder</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1352234743%2FFunctions%2F80215744" anchor-label="refresh" id="-1352234743%2FFunctions%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="-1352234743%2FFunctions%2F-818378058" anchor-label="refresh" id="-1352234743%2FFunctions%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="refresh.html"><span><span>refresh</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1352234743%2FFunctions%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1352234743%2FFunctions%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="refresh.html"><span class="token function">refresh</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="refresh.html"><span class="token function">refresh</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1569001515%2FFunctions%2F80215744" anchor-label="refreshUI" id="-1569001515%2FFunctions%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="-1569001515%2FFunctions%2F-818378058" anchor-label="refreshUI" id="-1569001515%2FFunctions%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="refresh-u-i.html"><span>refresh</span><wbr><span><span>UI</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1569001515%2FFunctions%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1569001515%2FFunctions%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="refresh-u-i.html"><span class="token function">refreshUI</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="refresh-u-i.html"><span class="token function">refreshUI</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">position<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="refresh-u-i.html"><span class="token function">refreshUI</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="refresh-u-i.html"><span class="token function">refreshUI</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">position<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-796298503%2FFunctions%2F80215744" anchor-label="resetComponentName" id="-796298503%2FFunctions%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="-796298503%2FFunctions%2F-818378058" anchor-label="resetComponentName" id="-796298503%2FFunctions%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="reset-component-name.html"><span>reset</span><wbr><span>Component</span><wbr><span><span>Name</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-796298503%2FFunctions%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-796298503%2FFunctions%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="reset-component-name.html"><span class="token function">resetComponentName</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>activityNamesList<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/android/content/ComponentName.html">ComponentName</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="reset-component-name.html"><span class="token function">resetComponentName</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>activityNamesList<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/android/content/ComponentName.html">ComponentName</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>labelInfoList<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="-app-label-info/index.html">AppPickerView.AppLabelInfo</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="reset-component-name.html"><span class="token function">resetComponentName</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>activityNamesList<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/android/content/ComponentName.html">ComponentName</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="reset-component-name.html"><span class="token function">resetComponentName</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>activityNamesList<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/android/content/ComponentName.html">ComponentName</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>labelInfoList<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="-app-label-info/index.html">AppPickerView.AppLabelInfo</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1510123527%2FFunctions%2F80215744" anchor-label="resetPackages" id="-1510123527%2FFunctions%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="-1510123527%2FFunctions%2F-818378058" anchor-label="resetPackages" id="-1510123527%2FFunctions%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="reset-packages.html"><span>reset</span><wbr><span><span>Packages</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1510123527%2FFunctions%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1510123527%2FFunctions%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="reset-packages.html"><span class="token function">resetPackages</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>packageNamesList<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="reset-packages.html"><span class="token function">resetPackages</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>packageNamesList<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>labelInfoList<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="-app-label-info/index.html">AppPickerView.AppLabelInfo</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="reset-packages.html"><span class="token function">resetPackages</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>packageNamesList<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="reset-packages.html"><span class="token function">resetPackages</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>packageNamesList<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>labelInfoList<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="-app-label-info/index.html">AppPickerView.AppLabelInfo</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="2122810966%2FFunctions%2F80215744" anchor-label="setAppLabelOrder" id="2122810966%2FFunctions%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="2122810966%2FFunctions%2F-818378058" anchor-label="setAppLabelOrder" id="2122810966%2FFunctions%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-app-label-order.html"><span>set</span><wbr><span>App</span><wbr><span>Label</span><wbr><span><span>Order</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2122810966%2FFunctions%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2122810966%2FFunctions%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-app-label-order.html"><span class="token function">setAppLabelOrder</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">order<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-app-label-order.html"><span class="token function">setAppLabelOrder</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">order<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-38977687%2FFunctions%2F80215744" anchor-label="setAppPickerView" id="-38977687%2FFunctions%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="-38977687%2FFunctions%2F-818378058" anchor-label="setAppPickerView" id="-38977687%2FFunctions%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-app-picker-view.html"><span>set</span><wbr><span>App</span><wbr><span>Picker</span><wbr><span><span>View</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-38977687%2FFunctions%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-38977687%2FFunctions%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-app-picker-view.html"><span class="token function">setAppPickerView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">type<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-app-picker-view.html"><span class="token function">setAppPickerView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">type<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">order<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-app-picker-view.html"><span class="token function">setAppPickerView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">type<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>packageNamesList<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-app-picker-view.html"><span class="token function">setAppPickerView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>activityNamesList<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/android/content/ComponentName.html">ComponentName</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">type<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-app-picker-view.html"><span class="token function">setAppPickerView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">type<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">order<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">showDivider<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-app-picker-view.html"><span class="token function">setAppPickerView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">type<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">order<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>activityNamesList<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/android/content/ComponentName.html">ComponentName</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-app-picker-view.html"><span class="token function">setAppPickerView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">type<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>packageNamesList<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">order<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-app-picker-view.html"><span class="token function">setAppPickerView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">type<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>packageNamesList<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>labelInfoList<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="-app-label-info/index.html">AppPickerView.AppLabelInfo</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-app-picker-view.html"><span class="token function">setAppPickerView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">type<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">order<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>labelInfoList<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="-app-label-info/index.html">AppPickerView.AppLabelInfo</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>activityNamesList<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/android/content/ComponentName.html">ComponentName</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-app-picker-view.html"><span class="token function">setAppPickerView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">type<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>packageNamesList<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">order<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>labelInfoList<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="-app-label-info/index.html">AppPickerView.AppLabelInfo</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-app-picker-view.html"><span class="token function">setAppPickerView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">type<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-app-picker-view.html"><span class="token function">setAppPickerView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">type<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">order<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-app-picker-view.html"><span class="token function">setAppPickerView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">type<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>packageNamesList<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-app-picker-view.html"><span class="token function">setAppPickerView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>activityNamesList<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/android/content/ComponentName.html">ComponentName</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">type<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-app-picker-view.html"><span class="token function">setAppPickerView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">type<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">order<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">showDivider<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-app-picker-view.html"><span class="token function">setAppPickerView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">type<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">order<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>activityNamesList<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/android/content/ComponentName.html">ComponentName</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-app-picker-view.html"><span class="token function">setAppPickerView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">type<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>packageNamesList<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">order<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-app-picker-view.html"><span class="token function">setAppPickerView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">type<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>packageNamesList<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>labelInfoList<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="-app-label-info/index.html">AppPickerView.AppLabelInfo</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-app-picker-view.html"><span class="token function">setAppPickerView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">type<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">order<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>labelInfoList<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="-app-label-info/index.html">AppPickerView.AppLabelInfo</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>activityNamesList<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/android/content/ComponentName.html">ComponentName</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-app-picker-view.html"><span class="token function">setAppPickerView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">type<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>packageNamesList<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">order<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>labelInfoList<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="-app-label-info/index.html">AppPickerView.AppLabelInfo</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-344753198%2FFunctions%2F80215744" anchor-label="setCustomAdapter" id="-344753198%2FFunctions%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="-344753198%2FFunctions%2F-818378058" anchor-label="setCustomAdapter" id="-344753198%2FFunctions%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-custom-adapter.html"><span>set</span><wbr><span>Custom</span><wbr><span><span>Adapter</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-344753198%2FFunctions%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-344753198%2FFunctions%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-custom-adapter.html"><span class="token function">setCustomAdapter</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">absAdapter<span class="token operator">: </span><a href="../-abs-adapter/index.html">AbsAdapter</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-custom-adapter.html"><span class="token function">setCustomAdapter</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">absAdapter<span class="token operator">: </span><a href="../-abs-adapter/index.html">AbsAdapter</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="42285658%2FFunctions%2F80215744" anchor-label="setCustomViewItemEnabled" id="42285658%2FFunctions%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="42285658%2FFunctions%2F-818378058" anchor-label="setCustomViewItemEnabled" id="42285658%2FFunctions%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-custom-view-item-enabled.html"><span>set</span><wbr><span>Custom</span><wbr><span>View</span><wbr><span>Item</span><wbr><span><span>Enabled</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="42285658%2FFunctions%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="42285658%2FFunctions%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-custom-view-item-enabled.html"><span class="token function">setCustomViewItemEnabled</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">enabled<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-custom-view-item-enabled.html"><span class="token function">setCustomViewItemEnabled</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">enabled<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="2111435226%2FFunctions%2F80215744" anchor-label="setGridSpanCount" id="2111435226%2FFunctions%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="2111435226%2FFunctions%2F-818378058" anchor-label="setGridSpanCount" id="2111435226%2FFunctions%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-grid-span-count.html"><span>set</span><wbr><span>Grid</span><wbr><span>Span</span><wbr><span><span>Count</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2111435226%2FFunctions%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2111435226%2FFunctions%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-grid-span-count.html"><span class="token function">setGridSpanCount</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">spanCount<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-grid-span-count.html"><span class="token function">setGridSpanCount</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">spanCount<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-900783331%2FFunctions%2F80215744" anchor-label="setOnBindListener" id="-900783331%2FFunctions%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="-900783331%2FFunctions%2F-818378058" anchor-label="setOnBindListener" id="-900783331%2FFunctions%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-on-bind-listener.html"><span>set</span><wbr><span>On</span><wbr><span>Bind</span><wbr><span><span>Listener</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-900783331%2FFunctions%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-900783331%2FFunctions%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-on-bind-listener.html"><span class="token function">setOnBindListener</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>listener<span class="token operator">: </span><a href="-on-bind-listener/index.html">AppPickerView.OnBindListener</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-on-bind-listener.html"><span class="token function">setOnBindListener</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>listener<span class="token operator">: </span><a href="-on-bind-listener/index.html">AppPickerView.OnBindListener</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1126241883%2FFunctions%2F80215744" anchor-label="setSearchFilter" id="1126241883%2FFunctions%2F80215744" data-filterable-set=":apppickerview/main"></a>
-          <div class="table-row" data-filterable-current=":apppickerview/main" data-filterable-set=":apppickerview/main">
+<a data-name="1126241883%2FFunctions%2F-818378058" anchor-label="setSearchFilter" id="1126241883%2FFunctions%2F-818378058" data-filterable-set=":apppickerview/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":apppickerview/release" data-filterable-set=":apppickerview/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-search-filter.html"><span>set</span><wbr><span>Search</span><wbr><span><span>Filter</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1126241883%2FFunctions%2F80215744"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1126241883%2FFunctions%2F-818378058"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-search-filter.html"><span class="token function">setSearchFilter</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>constraint<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-search-filter.html"><span class="token function">setSearchFilter</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>constraint<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>listener<span class="token operator">: </span><a href="-on-search-filter-listener/index.html">AppPickerView.OnSearchFilterListener</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":apppickerview/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-search-filter.html"><span class="token function">setSearchFilter</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>constraint<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-search-filter.html"><span class="token function">setSearchFilter</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>constraint<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>listener<span class="token operator">: </span><a href="-on-search-filter-listener/index.html">AppPickerView.OnSearchFilterListener</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
@@ -839,17 +838,21 @@
   </div>
 </div>
     <div class="footer">
-        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
-        <span>© 2026 Copyright</span>
-        <span class="pull-right">
-            <span>Generated by </span>
-            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
-                <span>dokka</span>
-            </a>
-        </span>
-    </div>
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
             </div>
         </div>
     </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

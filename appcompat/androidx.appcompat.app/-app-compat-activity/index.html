@@ -1,42 +1,39 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
     <title>AppCompatActivity</title>
-<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../";</script>
-    <script>document.documentElement.classList.replace("no-js","js");</script>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
     <script>const storage = localStorage.getItem("dokka-dark-mode")
-    if (storage == null) {
+      if (storage == null) {
         const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
         if (osDarkSchemePreferred === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    } else {
+      } else {
         const savedDarkMode = JSON.parse(storage)
-        if(savedDarkMode === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    }
+      }
     </script>
-<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
 <script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
 <link href="../../../styles/style.css" rel="Stylesheet">
 <link href="../../../styles/main.css" rel="Stylesheet">
 <link href="../../../styles/prism.css" rel="Stylesheet">
 <link href="../../../styles/logo-styles.css" rel="Stylesheet">
-<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
 <link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
-<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/safe-local-storage_blocking.js"></script>
 <script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
 <script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
 <script type="text/javascript" src="../../../scripts/main.js" defer></script>
 <script type="text/javascript" src="../../../scripts/prism.js" async></script>
-<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script>
-<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script></head>
 <body>
-    <div class="root">
-    <nav class="navigation theme-dark" id="navigation-wrapper">
-<a class="library-name--link" href="../../../index.html">
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../../index.html" tabindex="1">
                     sesl.androidx
             </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
         </button>
@@ -44,74 +41,76 @@
         <div class="library-version" id="library-version">
         </div>
         <div class="navigation-controls">
-        <div class="filter-section filter-section_loading" id="filter-section">
-                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":appcompat/main">main</button>
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":appcompat/release">release</button>
             <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
                 <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
-                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
-                    <div class="dropdown--header"><span>Platform filter</span>
-                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
                             <i class="ui-kit-icon ui-kit-icon_cross"></i>
                         </button>
                     </div>
                         <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
                             <label class="checkbox">
-                                <input type="checkbox" class="checkbox--input" id=":appcompat/main" data-filter=":appcompat/main">
+                                <input type="checkbox" class="checkbox--input" id=":appcompat/release" data-filter=":appcompat/release">
                                 <span class="checkbox--icon"></span>
-                                main
+                                release
                             </label>
                         </li>
                 </ul>
                 <div class="dropdown--overlay"></div>
             </div>
-        </div>
+        </ul>
             <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
             </button>
             <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
                 API
             </div>
         </div>
-    </nav>
-        <div id="container">
-            <div class="sidebar" id="leftColumn">
-                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
-                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox">
-                        <div class="dropdown--header">
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
                             <span>
                                     sesl.androidx
                             </span>
-                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
-                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
-                            </button>
-                        </div>
-                        <div class="sidebar--inner" id="sideMenu"></div>
-                    </ul>
-                    <div class="dropdown--overlay"></div>
-                </div>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
             </div>
-            <div id="main">
-<div class="main-content" data-page-type="classlike" id="content" pageids="appcompat::androidx.appcompat.app/AppCompatActivity///PointingToDeclaration//-177338031">
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="appcompat::androidx.appcompat.app/AppCompatActivity///PointingToDeclaration//538354823">
   <div class="breadcrumbs"><a href="../../index.html">appcompat</a><span class="delimiter">/</span><a href="../index.html">androidx.appcompat.app</a><span class="delimiter">/</span><span class="current">AppCompatActivity</span></div>
   <div class="cover ">
     <h1 class="cover"><span>App</span><wbr><span>Compat</span><wbr><span><span>Activity</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="index.html">AppCompatActivity</a> : <a href="https://developer.android.com/reference/kotlin/androidx/fragment/app/FragmentActivity.html">FragmentActivity</a>, <a href="../-app-compat-callback/index.html">AppCompatCallback</a>, <a href="https://developer.android.com/reference/kotlin/androidx/core/app/TaskStackBuilder.SupportParentable.html">TaskStackBuilder.SupportParentable</a>, <a href="../-action-bar-drawer-toggle/-delegate-provider/index.html">ActionBarDrawerToggle.DelegateProvider</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/tribalfs/sesl-androidx/blob/sesl-androidx-main/appcompat/appcompat/src/main/java/androidx/appcompat/app/AppCompatActivity.java#L79">source</a>)</span></span></div><p class="paragraph">Base class for activities that wish to use some of the newer platform features on older Android devices. Some of these backported features include: </p><ul><li>Using the action bar, including action items, navigation modes and more with the <a href="set-support-action-bar.html">setSupportActionBar</a> API.</li><li>Built-in switching between light and dark themes by using the Theme.AppCompat.DayNight theme and <a href="../-app-compat-delegate/set-default-night-mode.html">setDefaultNightMode</a> API.</li><li>Integration with <code class="lang-kotlin">DrawerLayout</code> by using the <a href="get-drawer-toggle-delegate.html">getDrawerToggleDelegate</a> API.</li></ul><p class="paragraph">Note that every activity that extends this class has to be themed with Theme.AppCompat or a theme that extends that theme.</p></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="index.html">AppCompatActivity</a> : <a href="https://developer.android.com/reference/kotlin/androidx/fragment/app/FragmentActivity.html">FragmentActivity</a>, <a href="../-app-compat-callback/index.html">AppCompatCallback</a>, <a href="https://developer.android.com/reference/kotlin/androidx/core/app/TaskStackBuilder.SupportParentable.html">TaskStackBuilder.SupportParentable</a>, <a href="../-action-bar-drawer-toggle/-delegate-provider/index.html">ActionBarDrawerToggle.DelegateProvider</a></div><p class="paragraph">Base class for activities that wish to use some of the newer platform features on older Android devices. Some of these backported features include: </p><ul><li>Using the action bar, including action items, navigation modes and more with the <a href="set-support-action-bar.html">setSupportActionBar</a> API.</li><li>Built-in switching between light and dark themes by using the <a href="https://developer.android.com/reference/kotlin/androidx/appcompat/R.style.html#theme_appcompat_daynight">Theme.AppCompat.DayNight</a> theme and <a href="../-app-compat-delegate/set-default-night-mode.html">setDefaultNightMode</a> API.</li><li>Integration with <code class="lang-java">DrawerLayout</code> by using the <a href="get-drawer-toggle-delegate.html">getDrawerToggleDelegate</a> API.</li></ul><p class="paragraph">Note that every activity that extends this class has to be themed with <a href="https://developer.android.com/reference/kotlin/androidx/appcompat/R.style.html#theme_appcompat">Theme.AppCompat</a> or a theme that extends that theme.</p></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
     <div class="tabs-section-body">
       <div data-togglable="CONSTRUCTOR">
-        <h2 class="">Constructors</h2>
-        <div class="table"><a data-name="572231591%2FConstructors%2F-177338031" anchor-label="AppCompatActivity" id="572231591%2FConstructors%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+        <h2 class="tableheader">Constructors</h2>
+        <div class="table"><a data-name="572231591%2FConstructors%2F538354823" anchor-label="AppCompatActivity" id="572231591%2FConstructors%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-togglable="CONSTRUCTOR" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-app-compat-activity.html"><span>App</span><wbr><span>Compat</span><wbr><span><span>Activity</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="572231591%2FConstructors%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="572231591%2FConstructors%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief ">Default constructor for AppCompatActivity.</div><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/LayoutRes.html"><span class="token annotation builtin">LayoutRes</span></a>&nbsp;</span>contentLayoutId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Alternate constructor that can be used to provide a default layout that will be inflated as part of <code class="lang-kotlin">super.onCreate(savedInstanceState)</code>.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief ">Default constructor for AppCompatActivity.</div><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/LayoutRes.html"><span class="token annotation builtin">LayoutRes</span></a>&nbsp;</span>contentLayoutId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Alternate constructor that can be used to provide a default layout that will be inflated as part of <code class="lang-java">super.onCreate(savedInstanceState)</code>.</div></div></div>
                 </div>
               </div>
             </div>
@@ -119,558 +118,558 @@
         </div>
       </div>
       <div data-togglable="FUNCTION">
-        <h2 class="">Functions</h2>
-        <div class="table"><a data-name="-652519453%2FFunctions%2F-177338031" anchor-label="addContentView" id="-652519453%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="-652519453%2FFunctions%2F538354823" anchor-label="addContentView" id="-652519453%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="add-content-view.html"><span>add</span><wbr><span>Content</span><wbr><span><span>View</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-652519453%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-652519453%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="add-content-view.html"><span class="token function">addContentView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">view<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token punctuation">, </span></span><span class="parameter ">params<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/ViewGroup.LayoutParams.html">ViewGroup.LayoutParams</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="add-content-view.html"><span class="token function">addContentView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">view<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token punctuation">, </span></span><span class="parameter ">params<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/ViewGroup.LayoutParams.html">ViewGroup.LayoutParams</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1220759843%2FFunctions%2F-177338031" anchor-label="closeOptionsMenu" id="-1220759843%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="-1220759843%2FFunctions%2F538354823" anchor-label="closeOptionsMenu" id="-1220759843%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="close-options-menu.html"><span>close</span><wbr><span>Options</span><wbr><span><span>Menu</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1220759843%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1220759843%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="close-options-menu.html"><span class="token function">closeOptionsMenu</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="close-options-menu.html"><span class="token function">closeOptionsMenu</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1347079600%2FFunctions%2F-177338031" anchor-label="dispatchKeyEvent" id="1347079600%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="1347079600%2FFunctions%2F538354823" anchor-label="dispatchKeyEvent" id="1347079600%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="dispatch-key-event.html"><span>dispatch</span><wbr><span>Key</span><wbr><span><span>Event</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1347079600%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1347079600%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="dispatch-key-event.html"><span class="token function">dispatchKeyEvent</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">event<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/KeyEvent.html">KeyEvent</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="dispatch-key-event.html"><span class="token function">dispatchKeyEvent</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">event<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/KeyEvent.html">KeyEvent</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1350672609%2FFunctions%2F-177338031" anchor-label="findViewById" id="1350672609%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="1350672609%2FFunctions%2F538354823" anchor-label="findViewById" id="1350672609%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="find-view-by-id.html"><span>find</span><wbr><span>View</span><wbr><span>By</span><wbr><span><span>Id</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1350672609%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1350672609%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="find-view-by-id.html">T</a><span class="token operator"> : </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token operator">?</span><span class="token operator">&gt; </span><a href="find-view-by-id.html"><span class="token function">findViewById</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/IdRes.html"><span class="token annotation builtin">IdRes</span></a>&nbsp;</span>id<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="find-view-by-id.html">T</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="find-view-by-id.html">T</a><span class="token operator"> : </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token operator">?</span><span class="token operator">&gt; </span><a href="find-view-by-id.html"><span class="token function">findViewById</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/IdRes.html"><span class="token annotation builtin">IdRes</span></a>&nbsp;</span>id<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="find-view-by-id.html">T</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1783008893%2FFunctions%2F-177338031" anchor-label="getDelegate" id="1783008893%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="1783008893%2FFunctions%2F538354823" anchor-label="getDelegate" id="1783008893%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-delegate.html"><span>get</span><wbr><span><span>Delegate</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1783008893%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1783008893%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-delegate.html"><span class="token function">getDelegate</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="../-app-compat-delegate/index.html">AppCompatDelegate</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-delegate.html"><span class="token function">getDelegate</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="../-app-compat-delegate/index.html">AppCompatDelegate</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-921690152%2FFunctions%2F-177338031" anchor-label="getDrawerToggleDelegate" id="-921690152%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="-921690152%2FFunctions%2F538354823" anchor-label="getDrawerToggleDelegate" id="-921690152%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-drawer-toggle-delegate.html"><span>get</span><wbr><span>Drawer</span><wbr><span>Toggle</span><wbr><span><span>Delegate</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-921690152%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-921690152%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-drawer-toggle-delegate.html"><span class="token function">getDrawerToggleDelegate</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="../-action-bar-drawer-toggle/-delegate/index.html">ActionBarDrawerToggle.Delegate</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-drawer-toggle-delegate.html"><span class="token function">getDrawerToggleDelegate</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="../-action-bar-drawer-toggle/-delegate/index.html">ActionBarDrawerToggle.Delegate</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="13623128%2FFunctions%2F-177338031" anchor-label="getMenuInflater" id="13623128%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="13623128%2FFunctions%2F538354823" anchor-label="getMenuInflater" id="13623128%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-menu-inflater.html"><span>get</span><wbr><span>Menu</span><wbr><span><span>Inflater</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="13623128%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="13623128%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-menu-inflater.html"><span class="token function">getMenuInflater</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/view/MenuInflater.html">MenuInflater</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-menu-inflater.html"><span class="token function">getMenuInflater</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/view/MenuInflater.html">MenuInflater</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-404044493%2FFunctions%2F-177338031" anchor-label="getResources" id="-404044493%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="-404044493%2FFunctions%2F538354823" anchor-label="getResources" id="-404044493%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-resources.html"><span>get</span><wbr><span><span>Resources</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-404044493%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-404044493%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-resources.html"><span class="token function">getResources</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/res/Resources.html">Resources</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-resources.html"><span class="token function">getResources</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/res/Resources.html">Resources</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="993354804%2FFunctions%2F-177338031" anchor-label="getSupportActionBar" id="993354804%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="993354804%2FFunctions%2F538354823" anchor-label="getSupportActionBar" id="993354804%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-support-action-bar.html"><span>get</span><wbr><span>Support</span><wbr><span>Action</span><wbr><span><span>Bar</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="993354804%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="993354804%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-support-action-bar.html"><span class="token function">getSupportActionBar</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="../-action-bar/index.html">ActionBar</a></div><div class="brief ">Support library version of <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html#getactionbar">getActionBar</a>.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-support-action-bar.html"><span class="token function">getSupportActionBar</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="../-action-bar/index.html">ActionBar</a></div><div class="brief ">Support library version of <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html#getactionbar">getActionBar</a>.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="192054068%2FFunctions%2F-177338031" anchor-label="getSupportParentActivityIntent" id="192054068%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="192054068%2FFunctions%2F538354823" anchor-label="getSupportParentActivityIntent" id="192054068%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-support-parent-activity-intent.html"><span>get</span><wbr><span>Support</span><wbr><span>Parent</span><wbr><span>Activity</span><wbr><span><span>Intent</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="192054068%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="192054068%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-support-parent-activity-intent.html"><span class="token function">getSupportParentActivityIntent</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/content/Intent.html">Intent</a></div><div class="brief ">Obtain an <a href="https://developer.android.com/reference/kotlin/android/content/Intent.html">android.content.Intent</a> that will launch an explicit target activity specified by sourceActivity's <a href="https://developer.android.com/reference/kotlin/androidx/core/app/NavUtils.html#parent_activity">PARENT_ACTIVITY</a><meta-data> element in the application's manifest.</meta-data></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-support-parent-activity-intent.html"><span class="token function">getSupportParentActivityIntent</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/content/Intent.html">Intent</a></div><div class="brief ">Obtain an <a href="https://developer.android.com/reference/kotlin/android/content/Intent.html">android.content.Intent</a> that will launch an explicit target activity specified by sourceActivity's <a href="https://developer.android.com/reference/kotlin/androidx/core/app/NavUtils.html#parent_activity">PARENT_ACTIVITY</a><meta-data> element in the application's manifest.</meta-data></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1946521782%2FFunctions%2F-177338031" anchor-label="invalidateOptionsMenu" id="1946521782%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="1946521782%2FFunctions%2F538354823" anchor-label="invalidateOptionsMenu" id="1946521782%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="invalidate-options-menu.html"><span>invalidate</span><wbr><span>Options</span><wbr><span><span>Menu</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1946521782%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1946521782%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="invalidate-options-menu.html"><span class="token function">invalidateOptionsMenu</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="invalidate-options-menu.html"><span class="token function">invalidateOptionsMenu</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1681265737%2FFunctions%2F-177338031" anchor-label="onConfigurationChanged" id="1681265737%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="1681265737%2FFunctions%2F538354823" anchor-label="onConfigurationChanged" id="1681265737%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-configuration-changed.html"><span>on</span><wbr><span>Configuration</span><wbr><span><span>Changed</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1681265737%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1681265737%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-configuration-changed.html"><span class="token function">onConfigurationChanged</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>newConfig<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/content/res/Configuration.html">Configuration</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-configuration-changed.html"><span class="token function">onConfigurationChanged</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>newConfig<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/content/res/Configuration.html">Configuration</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="394797256%2FFunctions%2F-177338031" anchor-label="onContentChanged" id="394797256%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="394797256%2FFunctions%2F538354823" anchor-label="onContentChanged" id="394797256%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-content-changed.html"><span>on</span><wbr><span>Content</span><wbr><span><span>Changed</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="394797256%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="394797256%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-content-changed.html"><span class="token function">onContentChanged</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-content-changed.html"><span class="token function">onContentChanged</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="232313904%2FFunctions%2F-177338031" anchor-label="onCreateSupportNavigateUpTaskStack" id="232313904%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="232313904%2FFunctions%2F538354823" anchor-label="onCreateSupportNavigateUpTaskStack" id="232313904%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-create-support-navigate-up-task-stack.html"><span>on</span><wbr><span>Create</span><wbr><span>Support</span><wbr><span>Navigate</span><wbr><span>Up</span><wbr><span>Task</span><wbr><span><span>Stack</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="232313904%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="232313904%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-create-support-navigate-up-task-stack.html"><span class="token function">onCreateSupportNavigateUpTaskStack</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>builder<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/androidx/core/app/TaskStackBuilder.html">TaskStackBuilder</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Support version of <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html#oncreatenavigateuptaskstack">onCreateNavigateUpTaskStack</a>.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-create-support-navigate-up-task-stack.html"><span class="token function">onCreateSupportNavigateUpTaskStack</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>builder<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/androidx/core/app/TaskStackBuilder.html">TaskStackBuilder</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Support version of <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html#oncreatenavigateuptaskstack">onCreateNavigateUpTaskStack</a>.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-750548645%2FFunctions%2F-177338031" anchor-label="onKeyDown" id="-750548645%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="-750548645%2FFunctions%2F538354823" anchor-label="onKeyDown" id="-750548645%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-key-down.html"><span>on</span><wbr><span>Key</span><wbr><span><span>Down</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-750548645%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-750548645%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-key-down.html"><span class="token function">onKeyDown</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">keyCode<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">event<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/KeyEvent.html">KeyEvent</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-key-down.html"><span class="token function">onKeyDown</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">keyCode<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">event<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/KeyEvent.html">KeyEvent</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-586138236%2FFunctions%2F-177338031" anchor-label="onMenuItemSelected" id="-586138236%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="-586138236%2FFunctions%2F538354823" anchor-label="onMenuItemSelected" id="-586138236%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-menu-item-selected.html"><span>on</span><wbr><span>Menu</span><wbr><span>Item</span><wbr><span><span>Selected</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-586138236%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-586138236%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="on-menu-item-selected.html"><span class="token function">onMenuItemSelected</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">featureId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">item<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/view/MenuItem.html">MenuItem</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="on-menu-item-selected.html"><span class="token function">onMenuItemSelected</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">featureId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">item<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/view/MenuItem.html">MenuItem</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-557391310%2FFunctions%2F-177338031" anchor-label="onMenuOpened" id="-557391310%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="-557391310%2FFunctions%2F538354823" anchor-label="onMenuOpened" id="-557391310%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-menu-opened.html"><span>on</span><wbr><span>Menu</span><wbr><span><span>Opened</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-557391310%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-557391310%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-menu-opened.html"><span class="token function">onMenuOpened</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">featureId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">menu<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/Menu.html">Menu</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Please note: AppCompat uses its own feature id for the action bar: <a href="../-app-compat-delegate/-f-e-a-t-u-r-e_-s-u-p-p-o-r-t_-a-c-t-i-o-n_-b-a-r.html">FEATURE_SUPPORT_ACTION_BAR</a>.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-menu-opened.html"><span class="token function">onMenuOpened</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">featureId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">menu<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/Menu.html">Menu</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Please note: AppCompat uses its own feature id for the action bar: <a href="../-app-compat-delegate/-f-e-a-t-u-r-e_-s-u-p-p-o-r-t_-a-c-t-i-o-n_-b-a-r.html">FEATURE_SUPPORT_ACTION_BAR</a>.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1124924710%2FFunctions%2F-177338031" anchor-label="onPanelClosed" id="1124924710%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="1124924710%2FFunctions%2F538354823" anchor-label="onPanelClosed" id="1124924710%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-panel-closed.html"><span>on</span><wbr><span>Panel</span><wbr><span><span>Closed</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1124924710%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1124924710%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-panel-closed.html"><span class="token function">onPanelClosed</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">featureId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>menu<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/view/Menu.html">Menu</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Please note: AppCompat uses its own feature id for the action bar: <a href="../-app-compat-delegate/-f-e-a-t-u-r-e_-s-u-p-p-o-r-t_-a-c-t-i-o-n_-b-a-r.html">FEATURE_SUPPORT_ACTION_BAR</a>.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-panel-closed.html"><span class="token function">onPanelClosed</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">featureId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>menu<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/view/Menu.html">Menu</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Please note: AppCompat uses its own feature id for the action bar: <a href="../-app-compat-delegate/-f-e-a-t-u-r-e_-s-u-p-p-o-r-t_-a-c-t-i-o-n_-b-a-r.html">FEATURE_SUPPORT_ACTION_BAR</a>.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1576638073%2FFunctions%2F-177338031" anchor-label="onPrepareSupportNavigateUpTaskStack" id="1576638073%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="1576638073%2FFunctions%2F538354823" anchor-label="onPrepareSupportNavigateUpTaskStack" id="1576638073%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-prepare-support-navigate-up-task-stack.html"><span>on</span><wbr><span>Prepare</span><wbr><span>Support</span><wbr><span>Navigate</span><wbr><span>Up</span><wbr><span>Task</span><wbr><span><span>Stack</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1576638073%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1576638073%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-prepare-support-navigate-up-task-stack.html"><span class="token function">onPrepareSupportNavigateUpTaskStack</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>builder<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/androidx/core/app/TaskStackBuilder.html">TaskStackBuilder</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Support version of <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html#onpreparenavigateuptaskstack">onPrepareNavigateUpTaskStack</a>.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-prepare-support-navigate-up-task-stack.html"><span class="token function">onPrepareSupportNavigateUpTaskStack</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>builder<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/androidx/core/app/TaskStackBuilder.html">TaskStackBuilder</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Support version of <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html#onpreparenavigateuptaskstack">onPrepareNavigateUpTaskStack</a>.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1124305045%2FFunctions%2F-177338031" anchor-label="onSupportActionModeFinished" id="-1124305045%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="-1124305045%2FFunctions%2F538354823" anchor-label="onSupportActionModeFinished" id="-1124305045%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-support-action-mode-finished.html"><span>on</span><wbr><span>Support</span><wbr><span>Action</span><wbr><span>Mode</span><wbr><span><span>Finished</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1124305045%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1124305045%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/CallSuper.html"><span class="token annotation builtin">CallSuper</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-support-action-mode-finished.html"><span class="token function">onSupportActionModeFinished</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>mode<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="../../androidx.appcompat.view/-action-mode/index.html">ActionMode</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Notifies the activity that a support action mode has finished.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/CallSuper.html"><span class="token annotation builtin">CallSuper</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-support-action-mode-finished.html"><span class="token function">onSupportActionModeFinished</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>mode<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="../../androidx.appcompat.view/-action-mode/index.html">ActionMode</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Notifies the activity that a support action mode has finished.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1415609320%2FFunctions%2F-177338031" anchor-label="onSupportActionModeStarted" id="-1415609320%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="-1415609320%2FFunctions%2F538354823" anchor-label="onSupportActionModeStarted" id="-1415609320%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-support-action-mode-started.html"><span>on</span><wbr><span>Support</span><wbr><span>Action</span><wbr><span>Mode</span><wbr><span><span>Started</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1415609320%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1415609320%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/CallSuper.html"><span class="token annotation builtin">CallSuper</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-support-action-mode-started.html"><span class="token function">onSupportActionModeStarted</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>mode<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="../../androidx.appcompat.view/-action-mode/index.html">ActionMode</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Notifies the Activity that a support action mode has been started.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/CallSuper.html"><span class="token annotation builtin">CallSuper</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-support-action-mode-started.html"><span class="token function">onSupportActionModeStarted</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>mode<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="../../androidx.appcompat.view/-action-mode/index.html">ActionMode</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Notifies the Activity that a support action mode has been started.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-346323475%2FFunctions%2F-177338031" anchor-label="onSupportContentChanged" id="-346323475%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="-346323475%2FFunctions%2F538354823" anchor-label="onSupportContentChanged" id="-346323475%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-support-content-changed.html"><span>on</span><wbr><span>Support</span><wbr><span>Content</span><wbr><span><span>Changed</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-346323475%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-346323475%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-support-content-changed.html"><span class="token function"><strike>onSupportContentChanged</strike></span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-support-content-changed.html"><span class="token function"><strike>onSupportContentChanged</strike></span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="68831388%2FFunctions%2F-177338031" anchor-label="onSupportNavigateUp" id="68831388%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="68831388%2FFunctions%2F538354823" anchor-label="onSupportNavigateUp" id="68831388%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-support-navigate-up.html"><span>on</span><wbr><span>Support</span><wbr><span>Navigate</span><wbr><span><span>Up</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="68831388%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="68831388%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-support-navigate-up.html"><span class="token function">onSupportNavigateUp</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">This method is called whenever the user chooses to navigate Up within your application's activity hierarchy from the action bar.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-support-navigate-up.html"><span class="token function">onSupportNavigateUp</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">This method is called whenever the user chooses to navigate Up within your application's activity hierarchy from the action bar.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1221758%2FFunctions%2F-177338031" anchor-label="onWindowStartingSupportActionMode" id="-1221758%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="-1221758%2FFunctions%2F538354823" anchor-label="onWindowStartingSupportActionMode" id="-1221758%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-window-starting-support-action-mode.html"><span>on</span><wbr><span>Window</span><wbr><span>Starting</span><wbr><span>Support</span><wbr><span>Action</span><wbr><span><span>Mode</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1221758%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1221758%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-window-starting-support-action-mode.html"><span class="token function">onWindowStartingSupportActionMode</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">callback<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="../../androidx.appcompat.view/-action-mode/-callback/index.html">ActionMode.Callback</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="../../androidx.appcompat.view/-action-mode/index.html">ActionMode</a></div><div class="brief ">Called when a support action mode is being started for this window.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-window-starting-support-action-mode.html"><span class="token function">onWindowStartingSupportActionMode</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">callback<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="../../androidx.appcompat.view/-action-mode/-callback/index.html">ActionMode.Callback</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="../../androidx.appcompat.view/-action-mode/index.html">ActionMode</a></div><div class="brief ">Called when a support action mode is being started for this window.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1724316293%2FFunctions%2F-177338031" anchor-label="openOptionsMenu" id="1724316293%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="1724316293%2FFunctions%2F538354823" anchor-label="openOptionsMenu" id="1724316293%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="open-options-menu.html"><span>open</span><wbr><span>Options</span><wbr><span><span>Menu</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1724316293%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1724316293%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="open-options-menu.html"><span class="token function">openOptionsMenu</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="open-options-menu.html"><span class="token function">openOptionsMenu</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-383343902%2FFunctions%2F-177338031" anchor-label="setContentView" id="-383343902%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="-383343902%2FFunctions%2F538354823" anchor-label="setContentView" id="-383343902%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-content-view.html"><span>set</span><wbr><span>Content</span><wbr><span><span>View</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-383343902%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-383343902%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-content-view.html"><span class="token function">setContentView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">view<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-content-view.html"><span class="token function">setContentView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/LayoutRes.html"><span class="token annotation builtin">LayoutRes</span></a>&nbsp;</span>layoutResID<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-content-view.html"><span class="token function">setContentView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">view<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token punctuation">, </span></span><span class="parameter ">params<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/ViewGroup.LayoutParams.html">ViewGroup.LayoutParams</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-content-view.html"><span class="token function">setContentView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">view<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-content-view.html"><span class="token function">setContentView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/LayoutRes.html"><span class="token annotation builtin">LayoutRes</span></a>&nbsp;</span>layoutResID<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-content-view.html"><span class="token function">setContentView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">view<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token punctuation">, </span></span><span class="parameter ">params<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/ViewGroup.LayoutParams.html">ViewGroup.LayoutParams</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1238010695%2FFunctions%2F-177338031" anchor-label="setSupportActionBar" id="-1238010695%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="-1238010695%2FFunctions%2F538354823" anchor-label="setSupportActionBar" id="-1238010695%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-support-action-bar.html"><span>set</span><wbr><span>Support</span><wbr><span>Action</span><wbr><span><span>Bar</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1238010695%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1238010695%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-support-action-bar.html"><span class="token function">setSupportActionBar</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span>toolbar<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="../../androidx.appcompat.widget/[main]-toolbar/index.html">Toolbar</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Set a <a href="https://developer.android.com/reference/kotlin/android/widget/Toolbar.html">Toolbar</a> to act as the <a href="../-action-bar/index.html">androidx.appcompat.app.ActionBar</a> for this Activity window.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-support-action-bar.html"><span class="token function">setSupportActionBar</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span>toolbar<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="../../androidx.appcompat.widget/-toolbar/index.html">Toolbar</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Set a <a href="https://developer.android.com/reference/kotlin/android/widget/Toolbar.html">Toolbar</a> to act as the <a href="../-action-bar/index.html">androidx.appcompat.app.ActionBar</a> for this Activity window.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1886142219%2FFunctions%2F-177338031" anchor-label="setSupportProgress" id="1886142219%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="1886142219%2FFunctions%2F538354823" anchor-label="setSupportProgress" id="1886142219%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-support-progress.html"><span>set</span><wbr><span>Support</span><wbr><span><span>Progress</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1886142219%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1886142219%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-support-progress.html"><span class="token function"><strike>setSupportProgress</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">progress<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-support-progress.html"><span class="token function"><strike>setSupportProgress</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">progress<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="194011066%2FFunctions%2F-177338031" anchor-label="setSupportProgressBarIndeterminate" id="194011066%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="194011066%2FFunctions%2F538354823" anchor-label="setSupportProgressBarIndeterminate" id="194011066%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-support-progress-bar-indeterminate.html"><span>set</span><wbr><span>Support</span><wbr><span>Progress</span><wbr><span>Bar</span><wbr><span><span>Indeterminate</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="194011066%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="194011066%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-support-progress-bar-indeterminate.html"><span class="token function"><strike>setSupportProgressBarIndeterminate</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">indeterminate<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-support-progress-bar-indeterminate.html"><span class="token function"><strike>setSupportProgressBarIndeterminate</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">indeterminate<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-2106999124%2FFunctions%2F-177338031" anchor-label="setSupportProgressBarIndeterminateVisibility" id="-2106999124%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="-2106999124%2FFunctions%2F538354823" anchor-label="setSupportProgressBarIndeterminateVisibility" id="-2106999124%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-support-progress-bar-indeterminate-visibility.html"><span>set</span><wbr><span>Support</span><wbr><span>Progress</span><wbr><span>Bar</span><wbr><span>Indeterminate</span><wbr><span><span>Visibility</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2106999124%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2106999124%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-support-progress-bar-indeterminate-visibility.html"><span class="token function"><strike>setSupportProgressBarIndeterminateVisibility</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">visible<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-support-progress-bar-indeterminate-visibility.html"><span class="token function"><strike>setSupportProgressBarIndeterminateVisibility</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">visible<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-338082099%2FFunctions%2F-177338031" anchor-label="setSupportProgressBarVisibility" id="-338082099%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="-338082099%2FFunctions%2F538354823" anchor-label="setSupportProgressBarVisibility" id="-338082099%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-support-progress-bar-visibility.html"><span>set</span><wbr><span>Support</span><wbr><span>Progress</span><wbr><span>Bar</span><wbr><span><span>Visibility</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-338082099%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-338082099%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-support-progress-bar-visibility.html"><span class="token function"><strike>setSupportProgressBarVisibility</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">visible<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-support-progress-bar-visibility.html"><span class="token function"><strike>setSupportProgressBarVisibility</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">visible<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1812036744%2FFunctions%2F-177338031" anchor-label="setTheme" id="-1812036744%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="-1812036744%2FFunctions%2F538354823" anchor-label="setTheme" id="-1812036744%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-theme.html"><span>set</span><wbr><span><span>Theme</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1812036744%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1812036744%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-theme.html"><span class="token function">setTheme</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/StyleRes.html"><span class="token annotation builtin">StyleRes</span></a>&nbsp;</span>resId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-theme.html"><span class="token function">setTheme</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/StyleRes.html"><span class="token annotation builtin">StyleRes</span></a>&nbsp;</span>resId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1150656037%2FFunctions%2F-177338031" anchor-label="startSupportActionMode" id="1150656037%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="1150656037%2FFunctions%2F538354823" anchor-label="startSupportActionMode" id="1150656037%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="start-support-action-mode.html"><span>start</span><wbr><span>Support</span><wbr><span>Action</span><wbr><span><span>Mode</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1150656037%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1150656037%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="start-support-action-mode.html"><span class="token function">startSupportActionMode</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">callback<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="../../androidx.appcompat.view/-action-mode/-callback/index.html">ActionMode.Callback</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="../../androidx.appcompat.view/-action-mode/index.html">ActionMode</a></div><div class="brief ">Start an action mode.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="start-support-action-mode.html"><span class="token function">startSupportActionMode</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">callback<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="../../androidx.appcompat.view/-action-mode/-callback/index.html">ActionMode.Callback</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="../../androidx.appcompat.view/-action-mode/index.html">ActionMode</a></div><div class="brief ">Start an action mode.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-850970929%2FFunctions%2F-177338031" anchor-label="supportInvalidateOptionsMenu" id="-850970929%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="-850970929%2FFunctions%2F538354823" anchor-label="supportInvalidateOptionsMenu" id="-850970929%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="support-invalidate-options-menu.html"><span>support</span><wbr><span>Invalidate</span><wbr><span>Options</span><wbr><span><span>Menu</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-850970929%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-850970929%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="support-invalidate-options-menu.html"><span class="token function">supportInvalidateOptionsMenu</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="support-invalidate-options-menu.html"><span class="token function">supportInvalidateOptionsMenu</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="901519858%2FFunctions%2F-177338031" anchor-label="supportNavigateUpTo" id="901519858%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="901519858%2FFunctions%2F538354823" anchor-label="supportNavigateUpTo" id="901519858%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="support-navigate-up-to.html"><span>support</span><wbr><span>Navigate</span><wbr><span>Up</span><wbr><span><span>To</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="901519858%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="901519858%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="support-navigate-up-to.html"><span class="token function">supportNavigateUpTo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>upIntent<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/content/Intent.html">Intent</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Navigate from sourceActivity to the activity specified by upIntent, finishing sourceActivity in the process.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="support-navigate-up-to.html"><span class="token function">supportNavigateUpTo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>upIntent<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/content/Intent.html">Intent</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Navigate from sourceActivity to the activity specified by upIntent, finishing sourceActivity in the process.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-912003359%2FFunctions%2F-177338031" anchor-label="supportRequestWindowFeature" id="-912003359%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="-912003359%2FFunctions%2F538354823" anchor-label="supportRequestWindowFeature" id="-912003359%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="support-request-window-feature.html"><span>support</span><wbr><span>Request</span><wbr><span>Window</span><wbr><span><span>Feature</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-912003359%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-912003359%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="support-request-window-feature.html"><span class="token function">supportRequestWindowFeature</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">featureId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Enable extended support library window features.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="support-request-window-feature.html"><span class="token function">supportRequestWindowFeature</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">featureId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Enable extended support library window features.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="134986295%2FFunctions%2F-177338031" anchor-label="supportShouldUpRecreateTask" id="134986295%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="134986295%2FFunctions%2F538354823" anchor-label="supportShouldUpRecreateTask" id="134986295%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="support-should-up-recreate-task.html"><span>support</span><wbr><span>Should</span><wbr><span>Up</span><wbr><span>Recreate</span><wbr><span><span>Task</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="134986295%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="134986295%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="support-should-up-recreate-task.html"><span class="token function">supportShouldUpRecreateTask</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>targetIntent<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/content/Intent.html">Intent</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Returns true if sourceActivity should recreate the task when navigating 'up' by using targetIntent.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="support-should-up-recreate-task.html"><span class="token function">supportShouldUpRecreateTask</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>targetIntent<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/content/Intent.html">Intent</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Returns true if sourceActivity should recreate the task when navigating 'up' by using targetIntent.</div></div></div>
                 </div>
               </div>
             </div>
@@ -681,17 +680,21 @@
   </div>
 </div>
     <div class="footer">
-        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
-        <span>© 2026 Copyright</span>
-        <span class="pull-right">
-            <span>Generated by </span>
-            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
-                <span>dokka</span>
-            </a>
-        </span>
-    </div>
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
             </div>
         </div>
     </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

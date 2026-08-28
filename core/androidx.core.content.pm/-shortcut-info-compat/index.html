@@ -1,42 +1,39 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
     <title>ShortcutInfoCompat</title>
-<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../";</script>
-    <script>document.documentElement.classList.replace("no-js","js");</script>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
     <script>const storage = localStorage.getItem("dokka-dark-mode")
-    if (storage == null) {
+      if (storage == null) {
         const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
         if (osDarkSchemePreferred === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    } else {
+      } else {
         const savedDarkMode = JSON.parse(storage)
-        if(savedDarkMode === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    }
+      }
     </script>
-<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
 <script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
 <link href="../../../styles/style.css" rel="Stylesheet">
 <link href="../../../styles/main.css" rel="Stylesheet">
 <link href="../../../styles/prism.css" rel="Stylesheet">
 <link href="../../../styles/logo-styles.css" rel="Stylesheet">
-<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
 <link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
-<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/safe-local-storage_blocking.js"></script>
 <script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
 <script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
 <script type="text/javascript" src="../../../scripts/main.js" defer></script>
 <script type="text/javascript" src="../../../scripts/prism.js" async></script>
-<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script>
-<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script></head>
 <body>
-    <div class="root">
-    <nav class="navigation theme-dark" id="navigation-wrapper">
-<a class="library-name--link" href="../../../index.html">
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../../index.html" tabindex="1">
                     sesl.androidx
             </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
         </button>
@@ -44,89 +41,91 @@
         <div class="library-version" id="library-version">
         </div>
         <div class="navigation-controls">
-        <div class="filter-section filter-section_loading" id="filter-section">
-                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":core/main">main</button>
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":core/release">release</button>
             <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
                 <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
-                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
-                    <div class="dropdown--header"><span>Platform filter</span>
-                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
                             <i class="ui-kit-icon ui-kit-icon_cross"></i>
                         </button>
                     </div>
                         <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
                             <label class="checkbox">
-                                <input type="checkbox" class="checkbox--input" id=":core/main" data-filter=":core/main">
+                                <input type="checkbox" class="checkbox--input" id=":core/release" data-filter=":core/release">
                                 <span class="checkbox--icon"></span>
-                                main
+                                release
                             </label>
                         </li>
                 </ul>
                 <div class="dropdown--overlay"></div>
             </div>
-        </div>
+        </ul>
             <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
             </button>
             <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
                 API
             </div>
         </div>
-    </nav>
-        <div id="container">
-            <div class="sidebar" id="leftColumn">
-                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
-                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox">
-                        <div class="dropdown--header">
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
                             <span>
                                     sesl.androidx
                             </span>
-                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
-                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
-                            </button>
-                        </div>
-                        <div class="sidebar--inner" id="sideMenu"></div>
-                    </ul>
-                    <div class="dropdown--overlay"></div>
-                </div>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
             </div>
-            <div id="main">
-<div class="main-content" data-page-type="classlike" id="content" pageids="core::androidx.core.content.pm/ShortcutInfoCompat///PointingToDeclaration//-108886845">
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="core::androidx.core.content.pm/ShortcutInfoCompat///PointingToDeclaration//-232177031">
   <div class="breadcrumbs"><a href="../../index.html">core</a><span class="delimiter">/</span><a href="../index.html">androidx.core.content.pm</a><span class="delimiter">/</span><span class="current">ShortcutInfoCompat</span></div>
   <div class="cover ">
     <h1 class="cover"><span>Shortcut</span><wbr><span>Info</span><wbr><span><span>Compat</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="index.html">ShortcutInfoCompat</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/tribalfs/sesl-androidx/blob/sesl-androidx-main/core/core/src/main/java/androidx/core/content/pm/ShortcutInfoCompat.java#L62">source</a>)</span></span></div><p class="paragraph">Helper for accessing features in <a href="https://developer.android.com/reference/kotlin/android/content/pm/ShortcutInfo.html">ShortcutInfo</a>.</p></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="index.html">ShortcutInfoCompat</a></div><p class="paragraph">Helper for accessing features in <a href="https://developer.android.com/reference/kotlin/android/content/pm/ShortcutInfo.html">ShortcutInfo</a>.</p></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
     <div class="tabs-section-body">
       <div data-togglable="TYPE">
-        <h2 class="">Types</h2>
-        <div class="table"><a data-name="-321602085%2FClasslikes%2F-108886845" anchor-label="Builder" id="-321602085%2FClasslikes%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+        <h2 class="tableheader">Types</h2>
+        <div class="table"><a data-name="-321602085%2FClasslikes%2F-232177031" anchor-label="Builder" id="-321602085%2FClasslikes%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-builder/index.html"><span><span>Builder</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-321602085%2FClasslikes%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-321602085%2FClasslikes%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-builder/index.html">Builder</a></div><div class="brief ">Builder class for <a href="index.html">ShortcutInfoCompat</a> objects.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-builder/index.html">Builder</a></div><div class="brief ">Builder class for <a href="index.html">ShortcutInfoCompat</a> objects.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1457702647%2FClasslikes%2F-108886845" anchor-label="Surface" id="-1457702647%2FClasslikes%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-1457702647%2FClasslikes%2F-232177031" anchor-label="Surface" id="-1457702647%2FClasslikes%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-surface/index.html"><span><span>Surface</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1457702647%2FClasslikes%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1457702647%2FClasslikes%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html">RestrictTo.Scope.LIBRARY_GROUP_PREFIX</a></span><wbr><span class="token punctuation">)</span></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/java/lang/annotation/Retention.html"><span class="token annotation builtin">Retention</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><a href="https://developer.android.com/reference/kotlin/java/lang/annotation/RetentionPolicy.html">RetentionPolicy.SOURCE</a></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">annotation class </span><a href="-surface/index.html">Surface</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html">RestrictTo.Scope.LIBRARY_GROUP_PREFIX</a></span><wbr><span class="token punctuation">)</span></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/java/lang/annotation/Retention.html"><span class="token annotation builtin">Retention</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><a href="https://developer.android.com/reference/kotlin/java/lang/annotation/RetentionPolicy.html">RetentionPolicy.SOURCE</a></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">annotation class </span><a href="-surface/index.html">Surface</a></div></div></div>
                 </div>
               </div>
             </div>
@@ -134,18 +133,18 @@
         </div>
       </div>
       <div data-togglable="PROPERTY">
-        <h2 class="">Properties</h2>
-        <div class="table"><a data-name="840644837%2FProperties%2F-108886845" anchor-label="SURFACE_LAUNCHER" id="840644837%2FProperties%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+        <h2 class="tableheader">Properties</h2>
+        <div class="table"><a data-name="840644837%2FProperties%2F-232177031" anchor-label="SURFACE_LAUNCHER" id="840644837%2FProperties%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-s-u-r-f-a-c-e_-l-a-u-n-c-h-e-r.html"><span>SURFACE_</span><wbr><span>LAUNCHER</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="840644837%2FProperties%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="840644837%2FProperties%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-s-u-r-f-a-c-e_-l-a-u-n-c-h-e-r.html">SURFACE_LAUNCHER</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">1</span></div><div class="brief ">Indicates system surfaces managed by a launcher app.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-s-u-r-f-a-c-e_-l-a-u-n-c-h-e-r.html">SURFACE_LAUNCHER</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">1</span></div><div class="brief ">Indicates system surfaces managed by a launcher app.</div></div></div>
                 </div>
               </div>
             </div>
@@ -153,408 +152,408 @@
         </div>
       </div>
       <div data-togglable="FUNCTION">
-        <h2 class="">Functions</h2>
-        <div class="table"><a data-name="-1856591202%2FFunctions%2F-108886845" anchor-label="getActivity" id="-1856591202%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="-1856591202%2FFunctions%2F-232177031" anchor-label="getActivity" id="-1856591202%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-activity.html"><span>get</span><wbr><span><span>Activity</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1856591202%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1856591202%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-activity.html"><span class="token function">getActivity</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/content/ComponentName.html">ComponentName</a></div><div class="brief ">Return the target activity.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-activity.html"><span class="token function">getActivity</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/content/ComponentName.html">ComponentName</a></div><div class="brief ">Return the target activity.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1128960975%2FFunctions%2F-108886845" anchor-label="getCategories" id="-1128960975%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-1128960975%2FFunctions%2F-232177031" anchor-label="getCategories" id="-1128960975%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-categories.html"><span>get</span><wbr><span><span>Categories</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1128960975%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1128960975%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-categories.html"><span class="token function">getCategories</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/java/util/Set.html">Set</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token operator">&gt;</span></div><div class="brief ">Return the categories set with <a href="-builder/set-categories.html">setCategories</a>.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-categories.html"><span class="token function">getCategories</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/java/util/Set.html">Set</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a><span class="token operator">&gt;</span></div><div class="brief ">Return the categories set with <a href="-builder/set-categories.html">setCategories</a>.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="983952162%2FFunctions%2F-108886845" anchor-label="getDisabledMessage" id="983952162%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="983952162%2FFunctions%2F-232177031" anchor-label="getDisabledMessage" id="983952162%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-disabled-message.html"><span>get</span><wbr><span>Disabled</span><wbr><span><span>Message</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="983952162%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="983952162%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-disabled-message.html"><span class="token function">getDisabledMessage</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/java/lang/CharSequence.html">CharSequence</a></div><div class="brief ">Return the message that should be shown when the user attempts to start a shortcut that is disabled.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-disabled-message.html"><span class="token function">getDisabledMessage</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/java/lang/CharSequence.html">CharSequence</a></div><div class="brief ">Return the message that should be shown when the user attempts to start a shortcut that is disabled.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="459277037%2FFunctions%2F-108886845" anchor-label="getDisabledReason" id="459277037%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="459277037%2FFunctions%2F-232177031" anchor-label="getDisabledReason" id="459277037%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-disabled-reason.html"><span>get</span><wbr><span>Disabled</span><wbr><span><span>Reason</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="459277037%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="459277037%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-disabled-reason.html"><span class="token function">getDisabledReason</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Returns why a shortcut has been disabled.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-disabled-reason.html"><span class="token function">getDisabledReason</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Returns why a shortcut has been disabled.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-611137037%2FFunctions%2F-108886845" anchor-label="getExcludedFromSurfaces" id="-611137037%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-611137037%2FFunctions%2F-232177031" anchor-label="getExcludedFromSurfaces" id="-611137037%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-excluded-from-surfaces.html"><span>get</span><wbr><span>Excluded</span><wbr><span>From</span><wbr><span><span>Surfaces</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-611137037%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-611137037%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-excluded-from-surfaces.html"><span class="token function">getExcludedFromSurfaces</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Returns a bitmask of all surfaces this shortcut is excluded from.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-excluded-from-surfaces.html"><span class="token function">getExcludedFromSurfaces</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Returns a bitmask of all surfaces this shortcut is excluded from.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="450550218%2FFunctions%2F-108886845" anchor-label="getExtras" id="450550218%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="450550218%2FFunctions%2F-232177031" anchor-label="getExtras" id="450550218%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-extras.html"><span>get</span><wbr><span><span>Extras</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="450550218%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="450550218%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-extras.html"><span class="token function">getExtras</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/os/PersistableBundle.html">PersistableBundle</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-extras.html"><span class="token function">getExtras</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/os/PersistableBundle.html">PersistableBundle</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1585843084%2FFunctions%2F-108886845" anchor-label="getIcon" id="-1585843084%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-1585843084%2FFunctions%2F-232177031" anchor-label="getIcon" id="-1585843084%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-icon.html"><span>get</span><wbr><span><span>Icon</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1585843084%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1585843084%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY_GROUP_PREFIX">LIBRARY_GROUP_PREFIX</a></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-icon.html"><span class="token function">getIcon</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../androidx.core.graphics.drawable/-icon-compat/index.html">IconCompat</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY_GROUP_PREFIX">LIBRARY_GROUP_PREFIX</a></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-icon.html"><span class="token function">getIcon</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../androidx.core.graphics.drawable/-icon-compat/index.html">IconCompat</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1018249746%2FFunctions%2F-108886845" anchor-label="getId" id="1018249746%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="1018249746%2FFunctions%2F-232177031" anchor-label="getId" id="1018249746%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-id.html"><span>get</span><wbr><span><span>Id</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1018249746%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1018249746%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-id.html"><span class="token function">getId</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a></div><div class="brief ">Returns the ID of a shortcut.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-id.html"><span class="token function">getId</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a></div><div class="brief ">Returns the ID of a shortcut.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="404296625%2FFunctions%2F-108886845" anchor-label="getIntent" id="404296625%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="404296625%2FFunctions%2F-232177031" anchor-label="getIntent" id="404296625%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-intent.html"><span>get</span><wbr><span><span>Intent</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="404296625%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="404296625%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-intent.html"><span class="token function">getIntent</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/content/Intent.html">Intent</a></div><div class="brief ">Returns the intent that is executed when the user selects this shortcut.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-intent.html"><span class="token function">getIntent</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/content/Intent.html">Intent</a></div><div class="brief ">Returns the intent that is executed when the user selects this shortcut.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1214548278%2FFunctions%2F-108886845" anchor-label="getIntents" id="1214548278%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="1214548278%2FFunctions%2F-232177031" anchor-label="getIntents" id="1214548278%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-intents.html"><span>get</span><wbr><span><span>Intents</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1214548278%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1214548278%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-intents.html"><span class="token function">getIntents</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-array/index.html">Array</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/android/content/Intent.html">Intent</a><span class="token operator">&gt;</span></div><div class="brief ">Return the intent set with <a href="-builder/set-intents.html">setIntents</a>.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-intents.html"><span class="token function">getIntents</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-array/index.html">Array</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/android/content/Intent.html">Intent</a><span class="token operator">&gt;</span></div><div class="brief ">Return the intent set with <a href="-builder/set-intents.html">setIntents</a>.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1789264469%2FFunctions%2F-108886845" anchor-label="getLastChangedTimestamp" id="1789264469%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="1789264469%2FFunctions%2F-232177031" anchor-label="getLastChangedTimestamp" id="1789264469%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-last-changed-timestamp.html"><span>get</span><wbr><span>Last</span><wbr><span>Changed</span><wbr><span><span>Timestamp</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1789264469%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1789264469%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-last-changed-timestamp.html"><span class="token function">getLastChangedTimestamp</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></div><div class="brief ">Last time when any of the fields was updated.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-last-changed-timestamp.html"><span class="token function">getLastChangedTimestamp</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></div><div class="brief ">Last time when any of the fields was updated.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1998612788%2FFunctions%2F-108886845" anchor-label="getLocusId" id="1998612788%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="1998612788%2FFunctions%2F-232177031" anchor-label="getLocusId" id="1998612788%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-locus-id.html"><span>get</span><wbr><span>Locus</span><wbr><span><span>Id</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1998612788%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1998612788%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-locus-id.html"><span class="token function">getLocusId</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="../../androidx.core.content/[main]-locus-id-compat/index.html">LocusIdCompat</a></div><div class="brief ">Gets the <a href="../../androidx.core.content/[main]-locus-id-compat/index.html">LocusIdCompat</a> associated with this shortcut.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-locus-id.html"><span class="token function">getLocusId</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="../../androidx.core.content/-locus-id-compat/index.html">LocusIdCompat</a></div><div class="brief ">Gets the <a href="../../androidx.core.content/-locus-id-compat/index.html">LocusIdCompat</a> associated with this shortcut.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1167366101%2FFunctions%2F-108886845" anchor-label="getLongLabel" id="1167366101%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="1167366101%2FFunctions%2F-232177031" anchor-label="getLongLabel" id="1167366101%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-long-label.html"><span>get</span><wbr><span>Long</span><wbr><span><span>Label</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1167366101%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1167366101%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-long-label.html"><span class="token function">getLongLabel</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/java/lang/CharSequence.html">CharSequence</a></div><div class="brief ">Return the long description of a shortcut.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-long-label.html"><span class="token function">getLongLabel</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/java/lang/CharSequence.html">CharSequence</a></div><div class="brief ">Return the long description of a shortcut.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1599189721%2FFunctions%2F-108886845" anchor-label="getPackage" id="-1599189721%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-1599189721%2FFunctions%2F-232177031" anchor-label="getPackage" id="-1599189721%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-package.html"><span>get</span><wbr><span><span>Package</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1599189721%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1599189721%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-package.html"><span class="token function">getPackage</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a></div><div class="brief ">Return the package name of the publisher app.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-package.html"><span class="token function">getPackage</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a></div><div class="brief ">Return the package name of the publisher app.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-188095455%2FFunctions%2F-108886845" anchor-label="getRank" id="-188095455%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-188095455%2FFunctions%2F-232177031" anchor-label="getRank" id="-188095455%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-rank.html"><span>get</span><wbr><span><span>Rank</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-188095455%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-188095455%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-rank.html"><span class="token function">getRank</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Returns the rank of the shortcut set with <a href="-builder/set-rank.html">setRank</a>.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-rank.html"><span class="token function">getRank</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Returns the rank of the shortcut set with <a href="-builder/set-rank.html">setRank</a>.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-493066763%2FFunctions%2F-108886845" anchor-label="getShortLabel" id="-493066763%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-493066763%2FFunctions%2F-232177031" anchor-label="getShortLabel" id="-493066763%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-short-label.html"><span>get</span><wbr><span>Short</span><wbr><span><span>Label</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-493066763%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-493066763%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-short-label.html"><span class="token function">getShortLabel</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/java/lang/CharSequence.html">CharSequence</a></div><div class="brief ">Return the short description of a shortcut.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-short-label.html"><span class="token function">getShortLabel</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/java/lang/CharSequence.html">CharSequence</a></div><div class="brief ">Return the short description of a shortcut.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1646776768%2FFunctions%2F-108886845" anchor-label="getTransientExtras" id="1646776768%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="1646776768%2FFunctions%2F-232177031" anchor-label="getTransientExtras" id="1646776768%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-transient-extras.html"><span>get</span><wbr><span>Transient</span><wbr><span><span>Extras</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1646776768%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1646776768%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY_GROUP_PREFIX">LIBRARY_GROUP_PREFIX</a></span><wbr><span class="token punctuation">)</span></div><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-transient-extras.html"><span class="token function">getTransientExtras</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a></div><div class="brief ">Get additional extras from the shortcut, which will not be persisted anywhere once the shortcut is published.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY_GROUP_PREFIX">LIBRARY_GROUP_PREFIX</a></span><wbr><span class="token punctuation">)</span></div><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-transient-extras.html"><span class="token function">getTransientExtras</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a></div><div class="brief ">Get additional extras from the shortcut, which will not be persisted anywhere once the shortcut is published.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1532787802%2FFunctions%2F-108886845" anchor-label="getUserHandle" id="1532787802%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="1532787802%2FFunctions%2F-232177031" anchor-label="getUserHandle" id="1532787802%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-user-handle.html"><span>get</span><wbr><span>User</span><wbr><span><span>Handle</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1532787802%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1532787802%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-user-handle.html"><span class="token function">getUserHandle</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/os/UserHandle.html">UserHandle</a></div><div class="brief "><a href="https://developer.android.com/reference/kotlin/android/os/UserHandle.html">UserHandle</a> on which the publisher created this shortcut.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-user-handle.html"><span class="token function">getUserHandle</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/os/UserHandle.html">UserHandle</a></div><div class="brief "><a href="https://developer.android.com/reference/kotlin/android/os/UserHandle.html">UserHandle</a> on which the publisher created this shortcut.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-496457299%2FFunctions%2F-108886845" anchor-label="hasKeyFieldsOnly" id="-496457299%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-496457299%2FFunctions%2F-232177031" anchor-label="hasKeyFieldsOnly" id="-496457299%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="has-key-fields-only.html"><span>has</span><wbr><span>Key</span><wbr><span>Fields</span><wbr><span><span>Only</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-496457299%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-496457299%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="has-key-fields-only.html"><span class="token function">hasKeyFieldsOnly</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Return whether a shortcut only contains "key" information only or not.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="has-key-fields-only.html"><span class="token function">hasKeyFieldsOnly</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Return whether a shortcut only contains "key" information only or not.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1278750645%2FFunctions%2F-108886845" anchor-label="isCached" id="-1278750645%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-1278750645%2FFunctions%2F-232177031" anchor-label="isCached" id="-1278750645%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="is-cached.html"><span>is</span><wbr><span><span>Cached</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1278750645%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1278750645%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-cached.html"><span class="token function">isCached</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Return whether a shortcut is cached.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-cached.html"><span class="token function">isCached</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Return whether a shortcut is cached.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="838132895%2FFunctions%2F-108886845" anchor-label="isDeclaredInManifest" id="838132895%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="838132895%2FFunctions%2F-232177031" anchor-label="isDeclaredInManifest" id="838132895%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="is-declared-in-manifest.html"><span>is</span><wbr><span>Declared</span><wbr><span>In</span><wbr><span><span>Manifest</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="838132895%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="838132895%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-declared-in-manifest.html"><span class="token function">isDeclaredInManifest</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Return whether a shortcut is static; that is, whether a shortcut is published from AndroidManifest.xml.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-declared-in-manifest.html"><span class="token function">isDeclaredInManifest</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Return whether a shortcut is static; that is, whether a shortcut is published from AndroidManifest.xml.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="240444142%2FFunctions%2F-108886845" anchor-label="isDynamic" id="240444142%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="240444142%2FFunctions%2F-232177031" anchor-label="isDynamic" id="240444142%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="is-dynamic.html"><span>is</span><wbr><span><span>Dynamic</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="240444142%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="240444142%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-dynamic.html"><span class="token function">isDynamic</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Return whether a shortcut is dynamic.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-dynamic.html"><span class="token function">isDynamic</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Return whether a shortcut is dynamic.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-53232084%2FFunctions%2F-108886845" anchor-label="isEnabled" id="-53232084%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-53232084%2FFunctions%2F-232177031" anchor-label="isEnabled" id="-53232084%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="is-enabled.html"><span>is</span><wbr><span><span>Enabled</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-53232084%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-53232084%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-enabled.html"><span class="token function">isEnabled</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Returns <code class="lang-kotlin">false</code> if a shortcut is disabled with <a href="../-shortcut-manager-compat/disable-shortcuts.html">disableShortcuts</a>.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-enabled.html"><span class="token function">isEnabled</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Returns <code class="lang-java">false</code> if a shortcut is disabled with <a href="../-shortcut-manager-compat/disable-shortcuts.html">disableShortcuts</a>.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1205892544%2FFunctions%2F-108886845" anchor-label="isExcludedFromSurfaces" id="1205892544%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="1205892544%2FFunctions%2F-232177031" anchor-label="isExcludedFromSurfaces" id="1205892544%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="is-excluded-from-surfaces.html"><span>is</span><wbr><span>Excluded</span><wbr><span>From</span><wbr><span><span>Surfaces</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1205892544%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1205892544%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-excluded-from-surfaces.html"><span class="token function">isExcludedFromSurfaces</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">surface<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Return true if the shortcut is excluded from specified surface.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-excluded-from-surfaces.html"><span class="token function">isExcludedFromSurfaces</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">surface<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Return true if the shortcut is excluded from specified surface.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-69425397%2FFunctions%2F-108886845" anchor-label="isImmutable" id="-69425397%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-69425397%2FFunctions%2F-232177031" anchor-label="isImmutable" id="-69425397%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="is-immutable.html"><span>is</span><wbr><span><span>Immutable</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-69425397%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-69425397%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-immutable.html"><span class="token function">isImmutable</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Return if a shortcut is immutable, in which case it cannot be modified with any of <a href="../-shortcut-manager-compat/index.html">ShortcutManagerCompat</a> APIs.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-immutable.html"><span class="token function">isImmutable</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Return if a shortcut is immutable, in which case it cannot be modified with any of <a href="../-shortcut-manager-compat/index.html">ShortcutManagerCompat</a> APIs.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="877942357%2FFunctions%2F-108886845" anchor-label="isPinned" id="877942357%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="877942357%2FFunctions%2F-232177031" anchor-label="isPinned" id="877942357%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="is-pinned.html"><span>is</span><wbr><span><span>Pinned</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="877942357%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="877942357%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-pinned.html"><span class="token function">isPinned</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Return whether a shortcut is pinned.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-pinned.html"><span class="token function">isPinned</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Return whether a shortcut is pinned.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1103078168%2FFunctions%2F-108886845" anchor-label="toShortcutInfo" id="-1103078168%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-1103078168%2FFunctions%2F-232177031" anchor-label="toShortcutInfo" id="-1103078168%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="to-shortcut-info.html"><span>to</span><wbr><span>Shortcut</span><wbr><span><span>Info</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1103078168%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1103078168%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RequiresApi.html"><span class="token annotation builtin">RequiresApi</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">25</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="to-shortcut-info.html"><span class="token function">toShortcutInfo</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/pm/ShortcutInfo.html">ShortcutInfo</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RequiresApi.html"><span class="token annotation builtin">RequiresApi</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">25</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="to-shortcut-info.html"><span class="token function">toShortcutInfo</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/pm/ShortcutInfo.html">ShortcutInfo</a></div></div></div>
                 </div>
               </div>
             </div>
@@ -565,17 +564,21 @@
   </div>
 </div>
     <div class="footer">
-        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
-        <span>© 2026 Copyright</span>
-        <span class="pull-right">
-            <span>Generated by </span>
-            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
-                <span>dokka</span>
-            </a>
-        </span>
-    </div>
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
             </div>
         </div>
     </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

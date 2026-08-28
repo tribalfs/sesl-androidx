@@ -1,42 +1,39 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
     <title>androidx.core.widget</title>
-<link href="../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../";</script>
-    <script>document.documentElement.classList.replace("no-js","js");</script>
+<link href="../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
     <script>const storage = localStorage.getItem("dokka-dark-mode")
-    if (storage == null) {
+      if (storage == null) {
         const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
         if (osDarkSchemePreferred === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    } else {
+      } else {
         const savedDarkMode = JSON.parse(storage)
-        if(savedDarkMode === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    }
+      }
     </script>
-<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
 <script type="text/javascript" src="../../scripts/sourceset_dependencies.js" async></script>
 <link href="../../styles/style.css" rel="Stylesheet">
 <link href="../../styles/main.css" rel="Stylesheet">
 <link href="../../styles/prism.css" rel="Stylesheet">
 <link href="../../styles/logo-styles.css" rel="Stylesheet">
-<link href="../../styles/font-jb-sans-auto.css" rel="Stylesheet">
 <link href="../../ui-kit/ui-kit.min.css" rel="Stylesheet">
-<script type="text/javascript" src="../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../scripts/safe-local-storage_blocking.js"></script>
 <script type="text/javascript" src="../../scripts/navigation-loader.js" async></script>
 <script type="text/javascript" src="../../scripts/platform-content-handler.js" async></script>
 <script type="text/javascript" src="../../scripts/main.js" defer></script>
 <script type="text/javascript" src="../../scripts/prism.js" async></script>
-<script type="text/javascript" src="../../ui-kit/ui-kit.min.js" defer></script>
-<script type="text/javascript" src="../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<script type="text/javascript" src="../../ui-kit/ui-kit.min.js" defer></script></head>
 <body>
-    <div class="root">
-    <nav class="navigation theme-dark" id="navigation-wrapper">
-<a class="library-name--link" href="../../index.html">
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../index.html" tabindex="1">
                     sesl.androidx
             </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
         </button>
@@ -44,53 +41,55 @@
         <div class="library-version" id="library-version">
         </div>
         <div class="navigation-controls">
-        <div class="filter-section filter-section_loading" id="filter-section">
-                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":core/main">main</button>
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":core/release">release</button>
             <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
                 <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
-                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
-                    <div class="dropdown--header"><span>Platform filter</span>
-                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
                             <i class="ui-kit-icon ui-kit-icon_cross"></i>
                         </button>
                     </div>
                         <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
                             <label class="checkbox">
-                                <input type="checkbox" class="checkbox--input" id=":core/main" data-filter=":core/main">
+                                <input type="checkbox" class="checkbox--input" id=":core/release" data-filter=":core/release">
                                 <span class="checkbox--icon"></span>
-                                main
+                                release
                             </label>
                         </li>
                 </ul>
                 <div class="dropdown--overlay"></div>
             </div>
-        </div>
+        </ul>
             <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
             </button>
             <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
                 API
             </div>
         </div>
-    </nav>
-        <div id="container">
-            <div class="sidebar" id="leftColumn">
-                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
-                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox">
-                        <div class="dropdown--header">
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
                             <span>
                                     sesl.androidx
                             </span>
-                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
-                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
-                            </button>
-                        </div>
-                        <div class="sidebar--inner" id="sideMenu"></div>
-                    </ul>
-                    <div class="dropdown--overlay"></div>
-                </div>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
             </div>
-            <div id="main">
-<div class="main-content" data-page-type="package" id="content" pageids="core::androidx.core.widget////PointingToDeclaration//-108886845">
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="package" id="content" pageids="core::androidx.core.widget////PointingToDeclaration//-232177031">
   <div class="breadcrumbs"><a href="../index.html">core</a><span class="delimiter">/</span><span class="current">androidx.core.widget</span></div>
   <div class="cover ">
     <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
@@ -99,318 +98,318 @@
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="TYPE">Types</button></div>
     <div class="tabs-section-body">
       <div data-togglable="TYPE">
-        <h2 class="">Types</h2>
-        <div class="table"><a data-name="1540251974%2FClasslikes%2F-108886845" anchor-label="AutoScrollHelper" id="1540251974%2FClasslikes%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+        <h2 class="tableheader">Types</h2>
+        <div class="table"><a data-name="1540251974%2FClasslikes%2F-232177031" anchor-label="AutoScrollHelper" id="1540251974%2FClasslikes%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-auto-scroll-helper/index.html"><span>Auto</span><wbr><span>Scroll</span><wbr><span><span>Helper</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1540251974%2FClasslikes%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1540251974%2FClasslikes%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">class </span><a href="-auto-scroll-helper/index.html">AutoScrollHelper</a> : <a href="https://developer.android.com/reference/kotlin/android/view/View.OnTouchListener.html">View.OnTouchListener</a></div><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">class </span><a href="-auto-scroll-helper/index.html">AutoScrollHelper</a> : <a href="https://developer.android.com/reference/kotlin/android/view/View.OnTouchListener.html">View.OnTouchListener</a></div><div class="brief ">AutoScrollHelper is a utility class for adding automatic edge-triggered scrolling to Views.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">class </span><a href="-auto-scroll-helper/index.html">AutoScrollHelper</a> : <a href="https://developer.android.com/reference/kotlin/android/view/View.OnTouchListener.html">View.OnTouchListener</a></div><div class="brief ">AutoScrollHelper is a utility class for adding automatic edge-triggered scrolling to Views.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="120494836%2FClasslikes%2F-108886845" anchor-label="AutoSizeableTextView" id="120494836%2FClasslikes%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="120494836%2FClasslikes%2F-232177031" anchor-label="AutoSizeableTextView" id="120494836%2FClasslikes%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-auto-sizeable-text-view/index.html"><span>Auto</span><wbr><span>Sizeable</span><wbr><span>Text</span><wbr><span><span>View</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="120494836%2FClasslikes%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="120494836%2FClasslikes%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY_GROUP_PREFIX">LIBRARY_GROUP_PREFIX</a></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">interface </span><a href="-auto-sizeable-text-view/index.html">AutoSizeableTextView</a></div><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY_GROUP_PREFIX">LIBRARY_GROUP_PREFIX</a></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">interface </span><a href="-auto-sizeable-text-view/index.html">AutoSizeableTextView</a></div><div class="brief ">Interface which allows a <a href="https://developer.android.com/reference/kotlin/android/widget/TextView.html">android.widget.TextView</a> to receive background auto-sizing calls from <a href="-text-view-compat/index.html">TextViewCompat</a> when running on API v26 devices or lower.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY_GROUP_PREFIX">LIBRARY_GROUP_PREFIX</a></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">interface </span><a href="-auto-sizeable-text-view/index.html">AutoSizeableTextView</a></div><div class="brief ">Interface which allows a <a href="https://developer.android.com/reference/kotlin/android/widget/TextView.html">android.widget.TextView</a> to receive background auto-sizing calls from <a href="-text-view-compat/index.html">TextViewCompat</a> when running on API v26 devices or lower.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1624587991%2FClasslikes%2F-108886845" anchor-label="CheckedTextViewCompat" id="1624587991%2FClasslikes%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="1624587991%2FClasslikes%2F-232177031" anchor-label="CheckedTextViewCompat" id="1624587991%2FClasslikes%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-checked-text-view-compat/index.html"><span>Checked</span><wbr><span>Text</span><wbr><span>View</span><wbr><span><span>Compat</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1624587991%2FClasslikes%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1624587991%2FClasslikes%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-checked-text-view-compat/index.html">CheckedTextViewCompat</a></div><div class="symbol monospace"><span class="token keyword">class </span><a href="-checked-text-view-compat/index.html">CheckedTextViewCompat</a></div><div class="brief ">Helper for accessing <a href="https://developer.android.com/reference/kotlin/android/widget/CheckedTextView.html">CheckedTextView</a>.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-checked-text-view-compat/index.html">CheckedTextViewCompat</a></div><div class="brief ">Helper for accessing <a href="https://developer.android.com/reference/kotlin/android/widget/CheckedTextView.html">CheckedTextView</a>.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="990277873%2FClasslikes%2F-108886845" anchor-label="CompoundButtonCompat" id="990277873%2FClasslikes%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="990277873%2FClasslikes%2F-232177031" anchor-label="CompoundButtonCompat" id="990277873%2FClasslikes%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-compound-button-compat/index.html"><span>Compound</span><wbr><span>Button</span><wbr><span><span>Compat</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="990277873%2FClasslikes%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="990277873%2FClasslikes%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-compound-button-compat/index.html">CompoundButtonCompat</a></div><div class="symbol monospace"><span class="token keyword">class </span><a href="-compound-button-compat/index.html">CompoundButtonCompat</a></div><div class="brief ">Helper for accessing <a href="https://developer.android.com/reference/kotlin/android/widget/CompoundButton.html">CompoundButton</a>.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-compound-button-compat/index.html">CompoundButtonCompat</a></div><div class="brief ">Helper for accessing <a href="https://developer.android.com/reference/kotlin/android/widget/CompoundButton.html">CompoundButton</a>.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1841242545%2FClasslikes%2F-108886845" anchor-label="ContentLoadingProgressBar" id="-1841242545%2FClasslikes%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-1841242545%2FClasslikes%2F-232177031" anchor-label="ContentLoadingProgressBar" id="-1841242545%2FClasslikes%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-content-loading-progress-bar/index.html"><span>Content</span><wbr><span>Loading</span><wbr><span>Progress</span><wbr><span><span>Bar</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1841242545%2FClasslikes%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1841242545%2FClasslikes%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-content-loading-progress-bar/index.html">ContentLoadingProgressBar</a> : <a href="https://developer.android.com/reference/kotlin/android/widget/ProgressBar.html">ProgressBar</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-content-loading-progress-bar/index.html">ContentLoadingProgressBar</a> : <a href="https://developer.android.com/reference/kotlin/android/widget/ProgressBar.html">ProgressBar</a></div><div class="brief ">ContentLoadingProgressBar implements a ProgressBar that waits a minimum time to be dismissed before showing.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-content-loading-progress-bar/index.html">ContentLoadingProgressBar</a> : <a href="https://developer.android.com/reference/kotlin/android/widget/ProgressBar.html">ProgressBar</a></div><div class="brief ">ContentLoadingProgressBar implements a ProgressBar that waits a minimum time to be dismissed before showing.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1844295328%2FClasslikes%2F-108886845" anchor-label="EdgeEffectCompat" id="-1844295328%2FClasslikes%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-1844295328%2FClasslikes%2F-232177031" anchor-label="EdgeEffectCompat" id="-1844295328%2FClasslikes%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-edge-effect-compat/index.html"><span>Edge</span><wbr><span>Effect</span><wbr><span><span>Compat</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1844295328%2FClasslikes%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1844295328%2FClasslikes%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-edge-effect-compat/index.html">EdgeEffectCompat</a></div><div class="symbol monospace"><span class="token keyword">class </span><a href="-edge-effect-compat/index.html">EdgeEffectCompat</a></div><div class="brief "><strong>SESL Variant</strong> Helper for accessing <a href="https://developer.android.com/reference/kotlin/android/widget/EdgeEffect.html">EdgeEffect</a>.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-edge-effect-compat/index.html">EdgeEffectCompat</a></div><div class="brief "><strong>SESL Variant</strong> Helper for accessing <a href="https://developer.android.com/reference/kotlin/android/widget/EdgeEffect.html">EdgeEffect</a>.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="591416912%2FClasslikes%2F-108886845" anchor-label="ImageViewCompat" id="591416912%2FClasslikes%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="591416912%2FClasslikes%2F-232177031" anchor-label="ImageViewCompat" id="591416912%2FClasslikes%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-image-view-compat/index.html"><span>Image</span><wbr><span>View</span><wbr><span><span>Compat</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="591416912%2FClasslikes%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="591416912%2FClasslikes%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-image-view-compat/index.html">ImageViewCompat</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-image-view-compat/index.html">ImageViewCompat</a></div><div class="brief ">Helper for accessing features in <a href="https://developer.android.com/reference/kotlin/android/widget/ImageView.html">ImageView</a>.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-image-view-compat/index.html">ImageViewCompat</a></div><div class="brief ">Helper for accessing features in <a href="https://developer.android.com/reference/kotlin/android/widget/ImageView.html">ImageView</a>.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="476045362%2FClasslikes%2F-108886845" anchor-label="ListPopupWindowCompat" id="476045362%2FClasslikes%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="476045362%2FClasslikes%2F-232177031" anchor-label="ListPopupWindowCompat" id="476045362%2FClasslikes%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-list-popup-window-compat/index.html"><span>List</span><wbr><span>Popup</span><wbr><span>Window</span><wbr><span><span>Compat</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="476045362%2FClasslikes%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="476045362%2FClasslikes%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-list-popup-window-compat/index.html">ListPopupWindowCompat</a></div><div class="symbol monospace"><span class="token keyword">class </span><a href="-list-popup-window-compat/index.html">ListPopupWindowCompat</a></div><div class="brief ">Helper for accessing features in <a href="https://developer.android.com/reference/kotlin/android/widget/ListPopupWindow.html">ListPopupWindow</a>.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-list-popup-window-compat/index.html">ListPopupWindowCompat</a></div><div class="brief ">Helper for accessing features in <a href="https://developer.android.com/reference/kotlin/android/widget/ListPopupWindow.html">ListPopupWindow</a>.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="489569571%2FClasslikes%2F-108886845" anchor-label="ListViewAutoScrollHelper" id="489569571%2FClasslikes%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="489569571%2FClasslikes%2F-232177031" anchor-label="ListViewAutoScrollHelper" id="489569571%2FClasslikes%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-list-view-auto-scroll-helper/index.html"><span>List</span><wbr><span>View</span><wbr><span>Auto</span><wbr><span>Scroll</span><wbr><span><span>Helper</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="489569571%2FClasslikes%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="489569571%2FClasslikes%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-list-view-auto-scroll-helper/index.html">ListViewAutoScrollHelper</a> : <a href="-auto-scroll-helper/index.html">AutoScrollHelper</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-list-view-auto-scroll-helper/index.html">ListViewAutoScrollHelper</a> : <a href="-auto-scroll-helper/index.html">AutoScrollHelper</a></div><div class="brief ">An implementation of <a href="-auto-scroll-helper/index.html">AutoScrollHelper</a> that knows how to scroll through a <a href="https://developer.android.com/reference/kotlin/android/widget/ListView.html">ListView</a>.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-list-view-auto-scroll-helper/index.html">ListViewAutoScrollHelper</a> : <a href="-auto-scroll-helper/index.html">AutoScrollHelper</a></div><div class="brief ">An implementation of <a href="-auto-scroll-helper/index.html">AutoScrollHelper</a> that knows how to scroll through a <a href="https://developer.android.com/reference/kotlin/android/widget/ListView.html">ListView</a>.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1089153077%2FClasslikes%2F-108886845" anchor-label="ListViewCompat" id="-1089153077%2FClasslikes%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-1089153077%2FClasslikes%2F-232177031" anchor-label="ListViewCompat" id="-1089153077%2FClasslikes%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-list-view-compat/index.html"><span>List</span><wbr><span>View</span><wbr><span><span>Compat</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1089153077%2FClasslikes%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1089153077%2FClasslikes%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-list-view-compat/index.html"><strike>ListViewCompat</strike></a></div><div class="symbol monospace"><span class="token keyword">class </span><a href="-list-view-compat/index.html"><strike>ListViewCompat</strike></a></div><div class="brief ">Helper for accessing features in <a href="https://developer.android.com/reference/kotlin/android/widget/ListView.html">ListView</a>.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-list-view-compat/index.html"><strike>ListViewCompat</strike></a></div><div class="brief ">Helper for accessing features in <a href="https://developer.android.com/reference/kotlin/android/widget/ListView.html">ListView</a>.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="398136039%2FClasslikes%2F-108886845" anchor-label="NestedScrollView" id="398136039%2FClasslikes%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="398136039%2FClasslikes%2F-232177031" anchor-label="NestedScrollView" id="398136039%2FClasslikes%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-nested-scroll-view/index.html"><span>Nested</span><wbr><span>Scroll</span><wbr><span><span>View</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="398136039%2FClasslikes%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="398136039%2FClasslikes%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-nested-scroll-view/index.html">NestedScrollView</a> : <a href="https://developer.android.com/reference/kotlin/android/widget/FrameLayout.html">FrameLayout</a>, <a href="../androidx.core.view/[main]-nested-scrolling-parent3/index.html">NestedScrollingParent3</a>, <a href="../androidx.core.view/[main]-nested-scrolling-child3/index.html">NestedScrollingChild3</a>, <a href="../androidx.core.view/[main]-scrolling-view/index.html">ScrollingView</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-nested-scroll-view/index.html">NestedScrollView</a> : <a href="https://developer.android.com/reference/kotlin/android/widget/FrameLayout.html">FrameLayout</a>, <a href="../androidx.core.view/[main]-nested-scrolling-parent3/index.html">NestedScrollingParent3</a>, <a href="../androidx.core.view/[main]-nested-scrolling-child3/index.html">NestedScrollingChild3</a>, <a href="../androidx.core.view/[main]-scrolling-view/index.html">ScrollingView</a></div><div class="brief ">(SESL Modified) NestedScrollView is just like <a href="https://developer.android.com/reference/kotlin/android/widget/ScrollView.html">ScrollView</a>, but it supports acting as both a nested scrolling parent and child on both new and old versions of Android.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-nested-scroll-view/index.html">NestedScrollView</a> : <a href="https://developer.android.com/reference/kotlin/android/widget/FrameLayout.html">FrameLayout</a>, <a href="../androidx.core.view/-nested-scrolling-parent3/index.html">NestedScrollingParent3</a>, <a href="../androidx.core.view/-nested-scrolling-child3/index.html">NestedScrollingChild3</a>, <a href="../androidx.core.view/-scrolling-view/index.html">ScrollingView</a></div><div class="brief ">(SESL Modified) NestedScrollView is just like <a href="https://developer.android.com/reference/kotlin/android/widget/ScrollView.html">ScrollView</a>, but it supports acting as both a nested scrolling parent and child on both new and old versions of Android.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1494791323%2FClasslikes%2F-108886845" anchor-label="PopupMenuCompat" id="-1494791323%2FClasslikes%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-1494791323%2FClasslikes%2F-232177031" anchor-label="PopupMenuCompat" id="-1494791323%2FClasslikes%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-popup-menu-compat/index.html"><span>Popup</span><wbr><span>Menu</span><wbr><span><span>Compat</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1494791323%2FClasslikes%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1494791323%2FClasslikes%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-popup-menu-compat/index.html">PopupMenuCompat</a></div><div class="symbol monospace"><span class="token keyword">class </span><a href="-popup-menu-compat/index.html">PopupMenuCompat</a></div><div class="brief ">Helper for accessing features in <a href="https://developer.android.com/reference/kotlin/android/widget/PopupMenu.html">PopupMenu</a>.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-popup-menu-compat/index.html">PopupMenuCompat</a></div><div class="brief ">Helper for accessing features in <a href="https://developer.android.com/reference/kotlin/android/widget/PopupMenu.html">PopupMenu</a>.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="273830260%2FClasslikes%2F-108886845" anchor-label="PopupWindowCompat" id="273830260%2FClasslikes%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="273830260%2FClasslikes%2F-232177031" anchor-label="PopupWindowCompat" id="273830260%2FClasslikes%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-popup-window-compat/index.html"><span>Popup</span><wbr><span>Window</span><wbr><span><span>Compat</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="273830260%2FClasslikes%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="273830260%2FClasslikes%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-popup-window-compat/index.html">PopupWindowCompat</a></div><div class="symbol monospace"><span class="token keyword">class </span><a href="-popup-window-compat/index.html">PopupWindowCompat</a></div><div class="brief ">Helper for accessing features in <a href="https://developer.android.com/reference/kotlin/android/widget/PopupWindow.html">PopupWindow</a>.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-popup-window-compat/index.html">PopupWindowCompat</a></div><div class="brief ">Helper for accessing features in <a href="https://developer.android.com/reference/kotlin/android/widget/PopupWindow.html">PopupWindow</a>.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-2108258028%2FClasslikes%2F-108886845" anchor-label="ScrollerCompat" id="-2108258028%2FClasslikes%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-2108258028%2FClasslikes%2F-232177031" anchor-label="ScrollerCompat" id="-2108258028%2FClasslikes%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-scroller-compat/index.html"><span>Scroller</span><wbr><span><span>Compat</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2108258028%2FClasslikes%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2108258028%2FClasslikes%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-scroller-compat/index.html"><strike>ScrollerCompat</strike></a></div><div class="symbol monospace"><span class="token keyword">class </span><a href="-scroller-compat/index.html"><strike>ScrollerCompat</strike></a></div><div class="brief ">Provides access to new <a href="https://developer.android.com/reference/kotlin/android/widget/Scroller.html">Scroller</a> APIs when available.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-scroller-compat/index.html"><strike>ScrollerCompat</strike></a></div><div class="brief ">Provides access to new <a href="https://developer.android.com/reference/kotlin/android/widget/Scroller.html">Scroller</a> APIs when available.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1789532201%2FClasslikes%2F-108886845" anchor-label="SeslEdgeEffect" id="-1789532201%2FClasslikes%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-1789532201%2FClasslikes%2F-232177031" anchor-label="SeslEdgeEffect" id="-1789532201%2FClasslikes%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-sesl-edge-effect/index.html"><span>Sesl</span><wbr><span>Edge</span><wbr><span><span>Effect</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1789532201%2FClasslikes%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1789532201%2FClasslikes%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY_GROUP_PREFIX">LIBRARY_GROUP_PREFIX</a></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">class </span><a href="-sesl-edge-effect/index.html">SeslEdgeEffect</a> : <a href="https://developer.android.com/reference/kotlin/android/widget/EdgeEffect.html">EdgeEffect</a></div><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY_GROUP_PREFIX">LIBRARY_GROUP_PREFIX</a></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">class </span><a href="-sesl-edge-effect/index.html">SeslEdgeEffect</a> : <a href="https://developer.android.com/reference/kotlin/android/widget/EdgeEffect.html">EdgeEffect</a></div><div class="brief ">Samsung Edge Effect class.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY_GROUP_PREFIX">LIBRARY_GROUP_PREFIX</a></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">class </span><a href="-sesl-edge-effect/index.html">SeslEdgeEffect</a> : <a href="https://developer.android.com/reference/kotlin/android/widget/EdgeEffect.html">EdgeEffect</a></div><div class="brief ">Samsung Edge Effect class.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-468107044%2FClasslikes%2F-108886845" anchor-label="TextViewCompat" id="-468107044%2FClasslikes%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-468107044%2FClasslikes%2F-232177031" anchor-label="TextViewCompat" id="-468107044%2FClasslikes%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-text-view-compat/index.html"><span>Text</span><wbr><span>View</span><wbr><span><span>Compat</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-468107044%2FClasslikes%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-468107044%2FClasslikes%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-text-view-compat/index.html">TextViewCompat</a></div><div class="symbol monospace"><span class="token keyword">class </span><a href="-text-view-compat/index.html">TextViewCompat</a></div><div class="brief ">Helper for accessing features in <a href="https://developer.android.com/reference/kotlin/android/widget/TextView.html">TextView</a>.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-text-view-compat/index.html">TextViewCompat</a></div><div class="brief ">Helper for accessing features in <a href="https://developer.android.com/reference/kotlin/android/widget/TextView.html">TextView</a>.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1149350571%2FClasslikes%2F-108886845" anchor-label="TextViewOnReceiveContentListener" id="-1149350571%2FClasslikes%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-1149350571%2FClasslikes%2F-232177031" anchor-label="TextViewOnReceiveContentListener" id="-1149350571%2FClasslikes%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-text-view-on-receive-content-listener/index.html"><span>Text</span><wbr><span>View</span><wbr><span>On</span><wbr><span>Receive</span><wbr><span>Content</span><wbr><span><span>Listener</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1149350571%2FClasslikes%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1149350571%2FClasslikes%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY_GROUP_PREFIX">LIBRARY_GROUP_PREFIX</a></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">class </span><a href="-text-view-on-receive-content-listener/index.html">TextViewOnReceiveContentListener</a> : <a href="../androidx.core.view/[main]-on-receive-content-listener/index.html">OnReceiveContentListener</a></div><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY_GROUP_PREFIX">LIBRARY_GROUP_PREFIX</a></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">class </span><a href="-text-view-on-receive-content-listener/index.html">TextViewOnReceiveContentListener</a> : <a href="../androidx.core.view/[main]-on-receive-content-listener/index.html">OnReceiveContentListener</a></div><div class="brief ">Default implementation inserting content into editable <a href="https://developer.android.com/reference/kotlin/android/widget/TextView.html">TextView</a> components.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY_GROUP_PREFIX">LIBRARY_GROUP_PREFIX</a></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">class </span><a href="-text-view-on-receive-content-listener/index.html">TextViewOnReceiveContentListener</a> : <a href="../androidx.core.view/-on-receive-content-listener/index.html">OnReceiveContentListener</a></div><div class="brief ">Default implementation inserting content into editable <a href="https://developer.android.com/reference/kotlin/android/widget/TextView.html">TextView</a> components.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-2133002450%2FClasslikes%2F-108886845" anchor-label="TintableCheckedTextView" id="-2133002450%2FClasslikes%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-2133002450%2FClasslikes%2F-232177031" anchor-label="TintableCheckedTextView" id="-2133002450%2FClasslikes%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-tintable-checked-text-view/index.html"><span>Tintable</span><wbr><span>Checked</span><wbr><span>Text</span><wbr><span><span>View</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2133002450%2FClasslikes%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2133002450%2FClasslikes%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY_GROUP_PREFIX">LIBRARY_GROUP_PREFIX</a></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">interface </span><a href="-tintable-checked-text-view/index.html">TintableCheckedTextView</a></div><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY_GROUP_PREFIX">LIBRARY_GROUP_PREFIX</a></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">interface </span><a href="-tintable-checked-text-view/index.html">TintableCheckedTextView</a></div><div class="brief ">Interface which allows a <a href="https://developer.android.com/reference/kotlin/android/widget/CheckedTextView.html">android.widget.CheckedTextView</a> to receive tinting calls from <code class="lang-kotlin">CheckedTextViewCompat</code> when running on API v20 devices or lower.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY_GROUP_PREFIX">LIBRARY_GROUP_PREFIX</a></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">interface </span><a href="-tintable-checked-text-view/index.html">TintableCheckedTextView</a></div><div class="brief ">Interface which allows a <a href="https://developer.android.com/reference/kotlin/android/widget/CheckedTextView.html">android.widget.CheckedTextView</a> to receive tinting calls from <code class="lang-java">CheckedTextViewCompat</code> when running on API v20 devices or lower.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-116099010%2FClasslikes%2F-108886845" anchor-label="TintableCompoundButton" id="-116099010%2FClasslikes%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-116099010%2FClasslikes%2F-232177031" anchor-label="TintableCompoundButton" id="-116099010%2FClasslikes%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-tintable-compound-button/index.html"><span>Tintable</span><wbr><span>Compound</span><wbr><span><span>Button</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-116099010%2FClasslikes%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-116099010%2FClasslikes%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-tintable-compound-button/index.html">TintableCompoundButton</a></div><div class="symbol monospace"><span class="token keyword">interface </span><a href="-tintable-compound-button/index.html">TintableCompoundButton</a></div><div class="brief ">Interface which allows a <a href="https://developer.android.com/reference/kotlin/android/widget/CompoundButton.html">android.widget.CompoundButton</a> to receive tinting calls from <code class="lang-kotlin">CompoundButtonCompat</code> when running on API v20 devices or lower.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-tintable-compound-button/index.html">TintableCompoundButton</a></div><div class="brief ">Interface which allows a <a href="https://developer.android.com/reference/kotlin/android/widget/CompoundButton.html">android.widget.CompoundButton</a> to receive tinting calls from <code class="lang-java">CompoundButtonCompat</code> when running on API v20 devices or lower.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="350852536%2FClasslikes%2F-108886845" anchor-label="TintableCompoundDrawablesView" id="350852536%2FClasslikes%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="350852536%2FClasslikes%2F-232177031" anchor-label="TintableCompoundDrawablesView" id="350852536%2FClasslikes%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-tintable-compound-drawables-view/index.html"><span>Tintable</span><wbr><span>Compound</span><wbr><span>Drawables</span><wbr><span><span>View</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="350852536%2FClasslikes%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="350852536%2FClasslikes%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-tintable-compound-drawables-view/index.html">TintableCompoundDrawablesView</a></div><div class="symbol monospace"><span class="token keyword">interface </span><a href="-tintable-compound-drawables-view/index.html">TintableCompoundDrawablesView</a></div><div class="brief ">Interface which allows <a href="https://developer.android.com/reference/kotlin/android/widget/TextView.html">android.widget.TextView</a> and subclasses to tint compound drawables with <a href="-text-view-compat/index.html">TextViewCompat</a> when running on API v22 devices or lower.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-tintable-compound-drawables-view/index.html">TintableCompoundDrawablesView</a></div><div class="brief ">Interface which allows <a href="https://developer.android.com/reference/kotlin/android/widget/TextView.html">android.widget.TextView</a> and subclasses to tint compound drawables with <a href="-text-view-compat/index.html">TextViewCompat</a> when running on API v22 devices or lower.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1335552652%2FClasslikes%2F-108886845" anchor-label="TintableImageSourceView" id="1335552652%2FClasslikes%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="1335552652%2FClasslikes%2F-232177031" anchor-label="TintableImageSourceView" id="1335552652%2FClasslikes%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-tintable-image-source-view/index.html"><span>Tintable</span><wbr><span>Image</span><wbr><span>Source</span><wbr><span><span>View</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1335552652%2FClasslikes%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1335552652%2FClasslikes%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY_GROUP_PREFIX">LIBRARY_GROUP_PREFIX</a></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">interface </span><a href="-tintable-image-source-view/index.html">TintableImageSourceView</a></div><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY_GROUP_PREFIX">LIBRARY_GROUP_PREFIX</a></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">interface </span><a href="-tintable-image-source-view/index.html">TintableImageSourceView</a></div><div class="brief ">Interface which allows an <a href="https://developer.android.com/reference/kotlin/android/widget/ImageView.html">android.widget.ImageView</a> to receive image tinting calls from <a href="-image-view-compat/index.html">ImageViewCompat</a> when running on API v20 devices or lower.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY_GROUP_PREFIX">LIBRARY_GROUP_PREFIX</a></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">interface </span><a href="-tintable-image-source-view/index.html">TintableImageSourceView</a></div><div class="brief ">Interface which allows an <a href="https://developer.android.com/reference/kotlin/android/widget/ImageView.html">android.widget.ImageView</a> to receive image tinting calls from <a href="-image-view-compat/index.html">ImageViewCompat</a> when running on API v20 devices or lower.</div></div></div>
                 </div>
               </div>
             </div>
@@ -421,17 +420,21 @@
   </div>
 </div>
     <div class="footer">
-        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
-        <span>© 2026 Copyright</span>
-        <span class="pull-right">
-            <span>Generated by </span>
-            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
-                <span>dokka</span>
-            </a>
-        </span>
-    </div>
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
             </div>
         </div>
     </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

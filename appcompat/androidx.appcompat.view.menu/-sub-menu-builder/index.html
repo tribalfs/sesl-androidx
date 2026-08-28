@@ -1,42 +1,39 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
     <title>SubMenuBuilder</title>
-<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../";</script>
-    <script>document.documentElement.classList.replace("no-js","js");</script>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
     <script>const storage = localStorage.getItem("dokka-dark-mode")
-    if (storage == null) {
+      if (storage == null) {
         const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
         if (osDarkSchemePreferred === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    } else {
+      } else {
         const savedDarkMode = JSON.parse(storage)
-        if(savedDarkMode === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    }
+      }
     </script>
-<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
 <script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
 <link href="../../../styles/style.css" rel="Stylesheet">
 <link href="../../../styles/main.css" rel="Stylesheet">
 <link href="../../../styles/prism.css" rel="Stylesheet">
 <link href="../../../styles/logo-styles.css" rel="Stylesheet">
-<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
 <link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
-<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/safe-local-storage_blocking.js"></script>
 <script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
 <script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
 <script type="text/javascript" src="../../../scripts/main.js" defer></script>
 <script type="text/javascript" src="../../../scripts/prism.js" async></script>
-<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script>
-<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script></head>
 <body>
-    <div class="root">
-    <nav class="navigation theme-dark" id="navigation-wrapper">
-<a class="library-name--link" href="../../../index.html">
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../../index.html" tabindex="1">
                     sesl.androidx
             </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
         </button>
@@ -44,74 +41,76 @@
         <div class="library-version" id="library-version">
         </div>
         <div class="navigation-controls">
-        <div class="filter-section filter-section_loading" id="filter-section">
-                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":appcompat/main">main</button>
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":appcompat/release">release</button>
             <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
                 <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
-                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
-                    <div class="dropdown--header"><span>Platform filter</span>
-                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
                             <i class="ui-kit-icon ui-kit-icon_cross"></i>
                         </button>
                     </div>
                         <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
                             <label class="checkbox">
-                                <input type="checkbox" class="checkbox--input" id=":appcompat/main" data-filter=":appcompat/main">
+                                <input type="checkbox" class="checkbox--input" id=":appcompat/release" data-filter=":appcompat/release">
                                 <span class="checkbox--icon"></span>
-                                main
+                                release
                             </label>
                         </li>
                 </ul>
                 <div class="dropdown--overlay"></div>
             </div>
-        </div>
+        </ul>
             <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
             </button>
             <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
                 API
             </div>
         </div>
-    </nav>
-        <div id="container">
-            <div class="sidebar" id="leftColumn">
-                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
-                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox">
-                        <div class="dropdown--header">
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
                             <span>
                                     sesl.androidx
                             </span>
-                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
-                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
-                            </button>
-                        </div>
-                        <div class="sidebar--inner" id="sideMenu"></div>
-                    </ul>
-                    <div class="dropdown--overlay"></div>
-                </div>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
             </div>
-            <div id="main">
-<div class="main-content" data-page-type="classlike" id="content" pageids="appcompat::androidx.appcompat.view.menu/SubMenuBuilder///PointingToDeclaration//-177338031">
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="appcompat::androidx.appcompat.view.menu/SubMenuBuilder///PointingToDeclaration//538354823">
   <div class="breadcrumbs"><a href="../../index.html">appcompat</a><span class="delimiter">/</span><a href="../index.html">androidx.appcompat.view.menu</a><span class="delimiter">/</span><span class="current">SubMenuBuilder</span></div>
   <div class="cover ">
     <h1 class="cover"><span>Sub</span><wbr><span>Menu</span><wbr><span><span>Builder</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY_GROUP_PREFIX">LIBRARY_GROUP_PREFIX</a></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">class </span><a href="index.html">SubMenuBuilder</a> : <a href="../-menu-builder/index.html">MenuBuilder</a>, <a href="https://developer.android.com/reference/kotlin/android/view/SubMenu.html">SubMenu</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/tribalfs/sesl-androidx/blob/sesl-androidx-main/appcompat/appcompat/src/main/java/androidx/appcompat/view/menu/SubMenuBuilder.java#L38">source</a>)</span></span></div><p class="paragraph">The model for a sub menu, which is an extension of the menu. Most methods are proxied to the parent menu.</p></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY_GROUP_PREFIX">LIBRARY_GROUP_PREFIX</a></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">class </span><a href="index.html">SubMenuBuilder</a> : <a href="../-menu-builder/index.html">MenuBuilder</a>, <a href="https://developer.android.com/reference/kotlin/android/view/SubMenu.html">SubMenu</a></div><p class="paragraph">The model for a sub menu, which is an extension of the menu. Most methods are proxied to the parent menu.</p></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
     <div class="tabs-section-body">
       <div data-togglable="CONSTRUCTOR">
-        <h2 class="">Constructors</h2>
-        <div class="table"><a data-name="-678427374%2FConstructors%2F-177338031" anchor-label="SubMenuBuilder" id="-678427374%2FConstructors%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+        <h2 class="tableheader">Constructors</h2>
+        <div class="table"><a data-name="-678427374%2FConstructors%2F538354823" anchor-label="SubMenuBuilder" id="-678427374%2FConstructors%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-togglable="CONSTRUCTOR" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-sub-menu-builder.html"><span>Sub</span><wbr><span>Menu</span><wbr><span><span>Builder</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-678427374%2FConstructors%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-678427374%2FConstructors%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">parentMenu<span class="token operator">: </span><a href="../-menu-builder/index.html">MenuBuilder</a><span class="token punctuation">, </span></span><span class="parameter ">item<span class="token operator">: </span><a href="../-menu-item-impl/index.html">MenuItemImpl</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">parentMenu<span class="token operator">: </span><a href="../-menu-builder/index.html">MenuBuilder</a><span class="token punctuation">, </span></span><span class="parameter ">item<span class="token operator">: </span><a href="../-menu-item-impl/index.html">MenuItemImpl</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
@@ -119,258 +118,258 @@
         </div>
       </div>
       <div data-togglable="FUNCTION">
-        <h2 class="">Functions</h2>
-        <div class="table"><a data-name="-632192748%2FFunctions%2F-177338031" anchor-label="collapseItemActionView" id="-632192748%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="-632192748%2FFunctions%2F538354823" anchor-label="collapseItemActionView" id="-632192748%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="collapse-item-action-view.html"><span>collapse</span><wbr><span>Item</span><wbr><span>Action</span><wbr><span><span>View</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-632192748%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-632192748%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="collapse-item-action-view.html"><span class="token function">collapseItemActionView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">item<span class="token operator">: </span><a href="../-menu-item-impl/index.html">MenuItemImpl</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="collapse-item-action-view.html"><span class="token function">collapseItemActionView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">item<span class="token operator">: </span><a href="../-menu-item-impl/index.html">MenuItemImpl</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1718099711%2FFunctions%2F-177338031" anchor-label="expandItemActionView" id="-1718099711%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="-1718099711%2FFunctions%2F538354823" anchor-label="expandItemActionView" id="-1718099711%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="expand-item-action-view.html"><span>expand</span><wbr><span>Item</span><wbr><span>Action</span><wbr><span><span>View</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1718099711%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1718099711%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="expand-item-action-view.html"><span class="token function">expandItemActionView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">item<span class="token operator">: </span><a href="../-menu-item-impl/index.html">MenuItemImpl</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="expand-item-action-view.html"><span class="token function">expandItemActionView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">item<span class="token operator">: </span><a href="../-menu-item-impl/index.html">MenuItemImpl</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-278481707%2FFunctions%2F-177338031" anchor-label="getActionViewStatesKey" id="-278481707%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="-278481707%2FFunctions%2F538354823" anchor-label="getActionViewStatesKey" id="-278481707%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-action-view-states-key.html"><span>get</span><wbr><span>Action</span><wbr><span>View</span><wbr><span>States</span><wbr><span><span>Key</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-278481707%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-278481707%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-action-view-states-key.html"><span class="token function">getActionViewStatesKey</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-action-view-states-key.html"><span class="token function">getActionViewStatesKey</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/String.html">String</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-404998352%2FFunctions%2F-177338031" anchor-label="getItem" id="-404998352%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="-404998352%2FFunctions%2F538354823" anchor-label="getItem" id="-404998352%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-item.html"><span>get</span><wbr><span><span>Item</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-404998352%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-404998352%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-item.html"><span class="token function">getItem</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/MenuItem.html">MenuItem</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-item.html"><span class="token function">getItem</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/MenuItem.html">MenuItem</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-398559910%2FFunctions%2F-177338031" anchor-label="getParentMenu" id="-398559910%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="-398559910%2FFunctions%2F538354823" anchor-label="getParentMenu" id="-398559910%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-parent-menu.html"><span>get</span><wbr><span>Parent</span><wbr><span><span>Menu</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-398559910%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-398559910%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-parent-menu.html"><span class="token function">getParentMenu</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/Menu.html">Menu</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-parent-menu.html"><span class="token function">getParentMenu</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/Menu.html">Menu</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-439617118%2FFunctions%2F-177338031" anchor-label="getRootMenu" id="-439617118%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="-439617118%2FFunctions%2F538354823" anchor-label="getRootMenu" id="-439617118%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-root-menu.html"><span>get</span><wbr><span>Root</span><wbr><span><span>Menu</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-439617118%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-439617118%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-root-menu.html"><span class="token function">getRootMenu</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-menu-builder/index.html">MenuBuilder</a></div><div class="brief ">Gets the root menu (if this is a submenu, find its root menu).</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-root-menu.html"><span class="token function">getRootMenu</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-menu-builder/index.html">MenuBuilder</a></div><div class="brief ">Gets the root menu (if this is a submenu, find its root menu).</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-2075944068%2FFunctions%2F-177338031" anchor-label="isGroupDividerEnabled" id="-2075944068%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="-2075944068%2FFunctions%2F538354823" anchor-label="isGroupDividerEnabled" id="-2075944068%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="is-group-divider-enabled.html"><span>is</span><wbr><span>Group</span><wbr><span>Divider</span><wbr><span><span>Enabled</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2075944068%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2075944068%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-group-divider-enabled.html"><span class="token function">isGroupDividerEnabled</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-group-divider-enabled.html"><span class="token function">isGroupDividerEnabled</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1856510044%2FFunctions%2F-177338031" anchor-label="isQwertyMode" id="1856510044%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="1856510044%2FFunctions%2F538354823" anchor-label="isQwertyMode" id="1856510044%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="is-qwerty-mode.html"><span>is</span><wbr><span>Qwerty</span><wbr><span><span>Mode</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1856510044%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1856510044%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-qwerty-mode.html"><span class="token function">isQwertyMode</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-qwerty-mode.html"><span class="token function">isQwertyMode</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="799842866%2FFunctions%2F-177338031" anchor-label="isShortcutsVisible" id="799842866%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="799842866%2FFunctions%2F538354823" anchor-label="isShortcutsVisible" id="799842866%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="is-shortcuts-visible.html"><span>is</span><wbr><span>Shortcuts</span><wbr><span><span>Visible</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="799842866%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="799842866%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-shortcuts-visible.html"><span class="token function">isShortcutsVisible</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-shortcuts-visible.html"><span class="token function">isShortcutsVisible</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1861951229%2FFunctions%2F-177338031" anchor-label="setCallback" id="-1861951229%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="-1861951229%2FFunctions%2F538354823" anchor-label="setCallback" id="-1861951229%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-callback.html"><span>set</span><wbr><span><span>Callback</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1861951229%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1861951229%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-callback.html"><span class="token function">setCallback</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">callback<span class="token operator">: </span><a href="../-menu-builder/-callback/index.html">MenuBuilder.Callback</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-callback.html"><span class="token function">setCallback</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">callback<span class="token operator">: </span><a href="../-menu-builder/-callback/index.html">MenuBuilder.Callback</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-244803042%2FFunctions%2F-177338031" anchor-label="setGroupDividerEnabled" id="-244803042%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="-244803042%2FFunctions%2F538354823" anchor-label="setGroupDividerEnabled" id="-244803042%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-group-divider-enabled.html"><span>set</span><wbr><span>Group</span><wbr><span>Divider</span><wbr><span><span>Enabled</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-244803042%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-244803042%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-group-divider-enabled.html"><span class="token function">setGroupDividerEnabled</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">groupDividerEnabled<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-group-divider-enabled.html"><span class="token function">setGroupDividerEnabled</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">groupDividerEnabled<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-896145369%2FFunctions%2F-177338031" anchor-label="setHeaderIcon" id="-896145369%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="-896145369%2FFunctions%2F538354823" anchor-label="setHeaderIcon" id="-896145369%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-header-icon.html"><span>set</span><wbr><span>Header</span><wbr><span><span>Icon</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-896145369%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-896145369%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-header-icon.html"><span class="token function">setHeaderIcon</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">icon<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/graphics/drawable/Drawable.html">Drawable</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/SubMenu.html">SubMenu</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-header-icon.html"><span class="token function">setHeaderIcon</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">iconRes<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/SubMenu.html">SubMenu</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-header-icon.html"><span class="token function">setHeaderIcon</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">icon<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/graphics/drawable/Drawable.html">Drawable</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/SubMenu.html">SubMenu</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-header-icon.html"><span class="token function">setHeaderIcon</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">iconRes<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/SubMenu.html">SubMenu</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1425831170%2FFunctions%2F-177338031" anchor-label="setHeaderTitle" id="-1425831170%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="-1425831170%2FFunctions%2F538354823" anchor-label="setHeaderTitle" id="-1425831170%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-header-title.html"><span>set</span><wbr><span>Header</span><wbr><span><span>Title</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1425831170%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1425831170%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-header-title.html"><span class="token function">setHeaderTitle</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">titleRes<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/SubMenu.html">SubMenu</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-header-title.html"><span class="token function">setHeaderTitle</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">title<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/CharSequence.html">CharSequence</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/SubMenu.html">SubMenu</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-header-title.html"><span class="token function">setHeaderTitle</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">titleRes<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/SubMenu.html">SubMenu</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-header-title.html"><span class="token function">setHeaderTitle</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">title<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/CharSequence.html">CharSequence</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/SubMenu.html">SubMenu</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1207925454%2FFunctions%2F-177338031" anchor-label="setHeaderView" id="1207925454%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="1207925454%2FFunctions%2F538354823" anchor-label="setHeaderView" id="1207925454%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-header-view.html"><span>set</span><wbr><span>Header</span><wbr><span><span>View</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1207925454%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1207925454%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-header-view.html"><span class="token function">setHeaderView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">view<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/SubMenu.html">SubMenu</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-header-view.html"><span class="token function">setHeaderView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">view<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/SubMenu.html">SubMenu</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1840871821%2FFunctions%2F-177338031" anchor-label="setIcon" id="1840871821%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="1840871821%2FFunctions%2F538354823" anchor-label="setIcon" id="1840871821%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-icon.html"><span>set</span><wbr><span><span>Icon</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1840871821%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1840871821%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-icon.html"><span class="token function">setIcon</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">icon<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/graphics/drawable/Drawable.html">Drawable</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/SubMenu.html">SubMenu</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-icon.html"><span class="token function">setIcon</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">iconRes<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/SubMenu.html">SubMenu</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-icon.html"><span class="token function">setIcon</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">icon<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/graphics/drawable/Drawable.html">Drawable</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/SubMenu.html">SubMenu</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-icon.html"><span class="token function">setIcon</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">iconRes<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/SubMenu.html">SubMenu</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="478037822%2FFunctions%2F-177338031" anchor-label="setQwertyMode" id="478037822%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="478037822%2FFunctions%2F538354823" anchor-label="setQwertyMode" id="478037822%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-qwerty-mode.html"><span>set</span><wbr><span>Qwerty</span><wbr><span><span>Mode</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="478037822%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="478037822%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-qwerty-mode.html"><span class="token function">setQwertyMode</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">isQwerty<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-qwerty-mode.html"><span class="token function">setQwertyMode</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">isQwerty<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1690115928%2FFunctions%2F-177338031" anchor-label="setShortcutsVisible" id="-1690115928%2FFunctions%2F-177338031" data-filterable-set=":appcompat/main"></a>
-          <div class="table-row" data-filterable-current=":appcompat/main" data-filterable-set=":appcompat/main">
+<a data-name="-1690115928%2FFunctions%2F538354823" anchor-label="setShortcutsVisible" id="-1690115928%2FFunctions%2F538354823" data-filterable-set=":appcompat/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":appcompat/release" data-filterable-set=":appcompat/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-shortcuts-visible.html"><span>set</span><wbr><span>Shortcuts</span><wbr><span><span>Visible</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1690115928%2FFunctions%2F-177338031"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1690115928%2FFunctions%2F538354823"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-shortcuts-visible.html"><span class="token function">setShortcutsVisible</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">shortcutsVisible<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Sets whether the shortcuts should be visible on menus.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":appcompat/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-shortcuts-visible.html"><span class="token function">setShortcutsVisible</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">shortcutsVisible<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Sets whether the shortcuts should be visible on menus.</div></div></div>
                 </div>
               </div>
             </div>
@@ -381,17 +380,21 @@
   </div>
 </div>
     <div class="footer">
-        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
-        <span>© 2026 Copyright</span>
-        <span class="pull-right">
-            <span>Generated by </span>
-            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
-                <span>dokka</span>
-            </a>
-        </span>
-    </div>
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
             </div>
         </div>
     </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

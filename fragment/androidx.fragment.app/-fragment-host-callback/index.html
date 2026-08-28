@@ -1,42 +1,39 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
     <title>FragmentHostCallback</title>
-<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../";</script>
-    <script>document.documentElement.classList.replace("no-js","js");</script>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
     <script>const storage = localStorage.getItem("dokka-dark-mode")
-    if (storage == null) {
+      if (storage == null) {
         const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
         if (osDarkSchemePreferred === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    } else {
+      } else {
         const savedDarkMode = JSON.parse(storage)
-        if(savedDarkMode === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    }
+      }
     </script>
-<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
 <script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
 <link href="../../../styles/style.css" rel="Stylesheet">
 <link href="../../../styles/main.css" rel="Stylesheet">
 <link href="../../../styles/prism.css" rel="Stylesheet">
 <link href="../../../styles/logo-styles.css" rel="Stylesheet">
-<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
 <link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
-<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/safe-local-storage_blocking.js"></script>
 <script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
 <script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
 <script type="text/javascript" src="../../../scripts/main.js" defer></script>
 <script type="text/javascript" src="../../../scripts/prism.js" async></script>
-<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script>
-<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script></head>
 <body>
-    <div class="root">
-    <nav class="navigation theme-dark" id="navigation-wrapper">
-<a class="library-name--link" href="../../../index.html">
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../../index.html" tabindex="1">
                     sesl.androidx
             </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
         </button>
@@ -44,74 +41,76 @@
         <div class="library-version" id="library-version">
         </div>
         <div class="navigation-controls">
-        <div class="filter-section filter-section_loading" id="filter-section">
-                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":fragment/main">main</button>
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":fragment/release">release</button>
             <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
                 <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
-                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
-                    <div class="dropdown--header"><span>Platform filter</span>
-                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
                             <i class="ui-kit-icon ui-kit-icon_cross"></i>
                         </button>
                     </div>
                         <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
                             <label class="checkbox">
-                                <input type="checkbox" class="checkbox--input" id=":fragment/main" data-filter=":fragment/main">
+                                <input type="checkbox" class="checkbox--input" id=":fragment/release" data-filter=":fragment/release">
                                 <span class="checkbox--icon"></span>
-                                main
+                                release
                             </label>
                         </li>
                 </ul>
                 <div class="dropdown--overlay"></div>
             </div>
-        </div>
+        </ul>
             <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
             </button>
             <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
                 API
             </div>
         </div>
-    </nav>
-        <div id="container">
-            <div class="sidebar" id="leftColumn">
-                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
-                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox">
-                        <div class="dropdown--header">
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
                             <span>
                                     sesl.androidx
                             </span>
-                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
-                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
-                            </button>
-                        </div>
-                        <div class="sidebar--inner" id="sideMenu"></div>
-                    </ul>
-                    <div class="dropdown--overlay"></div>
-                </div>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
             </div>
-            <div id="main">
-<div class="main-content" data-page-type="classlike" id="content" pageids="fragment::androidx.fragment.app/FragmentHostCallback///PointingToDeclaration//2082345138">
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="fragment::androidx.fragment.app/FragmentHostCallback///PointingToDeclaration//966909736">
   <div class="breadcrumbs"><a href="../../index.html">fragment</a><span class="delimiter">/</span><a href="../index.html">androidx.fragment.app</a><span class="delimiter">/</span><span class="current">FragmentHostCallback</span></div>
   <div class="cover ">
     <h1 class="cover"><span>Fragment</span><wbr><span>Host</span><wbr><span><span>Callback</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fragment/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">class </span><a href="index.html">FragmentHostCallback</a><span class="token operator">&lt;</span><a href="index.html">H</a><span class="token operator">&gt;</span> : <a href="../[main]-fragment-container/index.html">FragmentContainer</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/tribalfs/sesl-androidx/blob/sesl-androidx-main/fragment/fragment/src/main/java/androidx/fragment/app/FragmentHostCallback.kt#L56">source</a>)</span></span></div><p class="paragraph">Integration points with the Fragment host.</p><p class="paragraph">Fragments may be hosted by any object; such as an <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>. In order to host fragments, implement <a href="index.html">FragmentHostCallback</a>, overriding the methods applicable to the host.</p><p class="paragraph">FragmentManager changes its behavior based on what optional interfaces your FragmentHostCallback implements. This includes the following:</p><ul><li><p class="paragraph"><a href="https://developer.android.com/reference/kotlin/androidx/activity/result/ActivityResultRegistryOwner.html"><strong>androidx.activity.result.ActivityResultRegistryOwner</strong></a>: Removes the need to override .onStartIntentSenderFromFragment or .onRequestPermissionsFromFragment.</p></li><li><p class="paragraph"><a href="../[main]-fragment-on-attach-listener/index.html"><strong>FragmentOnAttachListener</strong></a>: Removes the need to manually call <a href="https://developer.android.com/reference/kotlin/androidx/fragment/app/FragmentManager.html#addfragmentonattachlistener">FragmentManager.addFragmentOnAttachListener</a> from your host in order to receive <a href="https://developer.android.com/reference/kotlin/androidx/fragment/app/FragmentOnAttachListener.html#onattachfragment">FragmentOnAttachListener.onAttachFragment</a> callbacks for the <a href="../[main]-fragment-controller/get-support-fragment-manager.html">FragmentController.getSupportFragmentManager</a>.</p></li><li><p class="paragraph"><a href="https://developer.android.com/reference/kotlin/androidx/activity/OnBackPressedDispatcherOwner.html"><strong>androidx.activity.OnBackPressedDispatcherOwner</strong></a>: Removes the need to manually call <a href="../[main]-fragment-manager/pop-back-stack-immediate.html">FragmentManager.popBackStackImmediate</a> when handling the system back button.</p></li><li><p class="paragraph"><a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/ViewModelStoreOwner.html"><strong>androidx.lifecycle.ViewModelStoreOwner</strong></a>: Removes the need for your <a href="../[main]-fragment-controller/index.html">FragmentController</a> to call <a href="../[main]-fragment-controller/retain-nested-non-config.html">FragmentController.retainNestedNonConfig</a> or <a href="https://developer.android.com/reference/kotlin/androidx/fragment/app/FragmentController.html#restoreallstate">FragmentController.restoreAllState</a>.</p></li></ul><h4 class="">Parameters</h4><div class="table"><div class="table-row" data-filterable-current=":fragment/main" data-filterable-set=":fragment/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>H</span></span></u></div></span></div><div><div class="title"><p class="paragraph">the type of object that's currently hosting the fragments. An instance of this class must be returned by <a href="on-get-host.html">onGetHost</a>.</p></div></div></div></div></div></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fragment/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">class </span><a href="index.html">FragmentHostCallback</a><span class="token operator">&lt;</span><a href="index.html">H</a><span class="token operator">&gt;</span> : <a href="../-fragment-container/index.html">FragmentContainer</a></div><p class="paragraph">Integration points with the Fragment host.</p><p class="paragraph">Fragments may be hosted by any object; such as an <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a>. In order to host fragments, implement <a href="index.html">FragmentHostCallback</a>, overriding the methods applicable to the host.</p><p class="paragraph">FragmentManager changes its behavior based on what optional interfaces your FragmentHostCallback implements. This includes the following:</p><ul><li><p class="paragraph"><a href="https://developer.android.com/reference/kotlin/androidx/activity/result/ActivityResultRegistryOwner.html"><strong>androidx.activity.result.ActivityResultRegistryOwner</strong></a>: Removes the need to override .onStartIntentSenderFromFragment or .onRequestPermissionsFromFragment.</p></li><li><p class="paragraph"><a href="../-fragment-on-attach-listener/index.html"><strong>FragmentOnAttachListener</strong></a>: Removes the need to manually call <a href="https://developer.android.com/reference/kotlin/androidx/fragment/app/FragmentManager.html#addFragmentOnAttachListener(androidx.fragment.app.FragmentOnAttachListener)">FragmentManager.addFragmentOnAttachListener</a> from your host in order to receive <a href="https://developer.android.com/reference/kotlin/androidx/fragment/app/FragmentOnAttachListener.html#onAttachFragment(androidx.fragment.app.FragmentManager,androidx.fragment.app.Fragment)">FragmentOnAttachListener.onAttachFragment</a> callbacks for the <a href="../-fragment-controller/get-support-fragment-manager.html">FragmentController.getSupportFragmentManager</a>.</p></li><li><p class="paragraph"><a href="https://developer.android.com/reference/kotlin/androidx/activity/OnBackPressedDispatcherOwner.html"><strong>androidx.activity.OnBackPressedDispatcherOwner</strong></a>: Removes the need to manually call <a href="../-fragment-manager/pop-back-stack-immediate.html">FragmentManager.popBackStackImmediate</a> when handling the system back button.</p></li><li><p class="paragraph"><a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/ViewModelStoreOwner.html"><strong>androidx.lifecycle.ViewModelStoreOwner</strong></a>: Removes the need for your <a href="../-fragment-controller/index.html">FragmentController</a> to call <a href="../-fragment-controller/retain-nested-non-config.html">FragmentController.retainNestedNonConfig</a> or <a href="https://developer.android.com/reference/kotlin/androidx/fragment/app/FragmentController.html#restoreAllState(android.os.Parcelable,kotlin.collections.MutableList)">FragmentController.restoreAllState</a>.</p></li></ul><h4 class="tableheader">Type Parameters</h4><div class="table"><div class="table-row table-row_content" data-filterable-current=":fragment/release" data-filterable-set=":fragment/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>H</span></span></u></div></span></div><div><div class="title"><p class="paragraph">the type of object that's currently hosting the fragments. An instance of this class must be returned by <a href="on-get-host.html">onGetHost</a>.</p></div></div></div></div></div></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
     <div class="tabs-section-body">
       <div data-togglable="CONSTRUCTOR">
-        <h2 class="">Constructors</h2>
-        <div class="table"><a data-name="1231487375%2FConstructors%2F2082345138" anchor-label="FragmentHostCallback" id="1231487375%2FConstructors%2F2082345138" data-filterable-set=":fragment/main"></a>
-          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":fragment/main" data-filterable-set=":fragment/main">
+        <h2 class="tableheader">Constructors</h2>
+        <div class="table"><a data-name="1231487375%2FConstructors%2F966909736" anchor-label="FragmentHostCallback" id="1231487375%2FConstructors%2F966909736" data-filterable-set=":fragment/release"></a>
+          <div class="table-row table-row_content" data-togglable="CONSTRUCTOR" data-filterable-current=":fragment/release" data-filterable-set=":fragment/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-fragment-host-callback.html"><span>Fragment</span><wbr><span>Host</span><wbr><span><span>Callback</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1231487375%2FConstructors%2F2082345138"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1231487375%2FConstructors%2F966909736"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fragment/main"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">handler<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/Handler.html">Handler</a><span class="token punctuation">, </span></span><span class="parameter ">windowAnimations<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fragment/release"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">handler<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/Handler.html">Handler</a><span class="token punctuation">, </span></span><span class="parameter ">windowAnimations<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
@@ -119,63 +118,63 @@
         </div>
       </div>
       <div data-togglable="PROPERTY">
-        <h2 class="">Properties</h2>
-        <div class="table"><a data-name="1124871459%2FProperties%2F2082345138" anchor-label="activity" id="1124871459%2FProperties%2F2082345138" data-filterable-set=":fragment/main"></a>
-          <div class="table-row" data-filterable-current=":fragment/main" data-filterable-set=":fragment/main">
+        <h2 class="tableheader">Properties</h2>
+        <div class="table"><a data-name="1124871459%2FProperties%2F966909736" anchor-label="activity" id="1124871459%2FProperties%2F966909736" data-filterable-set=":fragment/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fragment/release" data-filterable-set=":fragment/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="activity.html"><span><span>activity</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1124871459%2FProperties%2F2082345138"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1124871459%2FProperties%2F966909736"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fragment/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@get:</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="token punctuation">[</span><span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.LIBRARY.html">RestrictTo.Scope.LIBRARY</a></span><wbr><span class="token punctuation">]</span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">val </span><a href="activity.html">activity</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a><span class="token operator">?</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fragment/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@get:</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="token punctuation">[</span><span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY">RestrictTo.Scope.LIBRARY</a></span><wbr><span class="token punctuation">]</span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">val </span><a href="activity.html">activity</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a><span class="token operator">?</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="294657209%2FProperties%2F2082345138" anchor-label="context" id="294657209%2FProperties%2F2082345138" data-filterable-set=":fragment/main"></a>
-          <div class="table-row" data-filterable-current=":fragment/main" data-filterable-set=":fragment/main">
+<a data-name="294657209%2FProperties%2F966909736" anchor-label="context" id="294657209%2FProperties%2F966909736" data-filterable-set=":fragment/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fragment/release" data-filterable-set=":fragment/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="context.html"><span><span>context</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="294657209%2FProperties%2F2082345138"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="294657209%2FProperties%2F966909736"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fragment/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@get:</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="token punctuation">[</span><span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.LIBRARY.html">RestrictTo.Scope.LIBRARY</a></span><wbr><span class="token punctuation">]</span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">val </span><a href="context.html">context</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fragment/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@get:</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="token punctuation">[</span><span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY">RestrictTo.Scope.LIBRARY</a></span><wbr><span class="token punctuation">]</span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">val </span><a href="context.html">context</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="260802539%2FProperties%2F2082345138" anchor-label="fragmentManager" id="260802539%2FProperties%2F2082345138" data-filterable-set=":fragment/main"></a>
-          <div class="table-row" data-filterable-current=":fragment/main" data-filterable-set=":fragment/main">
+<a data-name="260802539%2FProperties%2F966909736" anchor-label="fragmentManager" id="260802539%2FProperties%2F966909736" data-filterable-set=":fragment/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fragment/release" data-filterable-set=":fragment/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="fragment-manager.html"><span>fragment</span><wbr><span><span>Manager</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="260802539%2FProperties%2F2082345138"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="260802539%2FProperties%2F966909736"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fragment/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@get:</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="token punctuation">[</span><span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.LIBRARY.html">RestrictTo.Scope.LIBRARY</a></span><wbr><span class="token punctuation">]</span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">val </span><a href="fragment-manager.html">fragmentManager</a><span class="token operator">: </span><a href="../[main]-fragment-manager/index.html">FragmentManager</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fragment/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@get:</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="token punctuation">[</span><span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY">RestrictTo.Scope.LIBRARY</a></span><wbr><span class="token punctuation">]</span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">val </span><a href="fragment-manager.html">fragmentManager</a><span class="token operator">: </span><a href="../-fragment-manager/index.html">FragmentManager</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1372090238%2FProperties%2F2082345138" anchor-label="handler" id="1372090238%2FProperties%2F2082345138" data-filterable-set=":fragment/main"></a>
-          <div class="table-row" data-filterable-current=":fragment/main" data-filterable-set=":fragment/main">
+<a data-name="1372090238%2FProperties%2F966909736" anchor-label="handler" id="1372090238%2FProperties%2F966909736" data-filterable-set=":fragment/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fragment/release" data-filterable-set=":fragment/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="handler.html"><span><span>handler</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1372090238%2FProperties%2F2082345138"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1372090238%2FProperties%2F966909736"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fragment/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@get:</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="token punctuation">[</span><span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.LIBRARY.html">RestrictTo.Scope.LIBRARY</a></span><wbr><span class="token punctuation">]</span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">val </span><a href="handler.html">handler</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/Handler.html">Handler</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fragment/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@get:</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="token punctuation">[</span><span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY">RestrictTo.Scope.LIBRARY</a></span><wbr><span class="token punctuation">]</span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">val </span><a href="handler.html">handler</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/Handler.html">Handler</a></div></div></div>
                 </div>
               </div>
             </div>
@@ -183,198 +182,198 @@
         </div>
       </div>
       <div data-togglable="FUNCTION">
-        <h2 class="">Functions</h2>
-        <div class="table"><a data-name="-580206241%2FFunctions%2F2082345138" anchor-label="onDump" id="-580206241%2FFunctions%2F2082345138" data-filterable-set=":fragment/main"></a>
-          <div class="table-row" data-filterable-current=":fragment/main" data-filterable-set=":fragment/main">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="-580206241%2FFunctions%2F966909736" anchor-label="onDump" id="-580206241%2FFunctions%2F966909736" data-filterable-set=":fragment/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fragment/release" data-filterable-set=":fragment/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-dump.html"><span>on</span><wbr><span><span>Dump</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-580206241%2FFunctions%2F2082345138"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-580206241%2FFunctions%2F966909736"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fragment/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-dump.html"><span class="token function">onDump</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">prefix<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">fd<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/io/FileDescriptor.html">FileDescriptor</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">writer<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/io/PrintWriter.html">PrintWriter</a><span class="token punctuation">, </span></span><span class="parameter ">args<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-array/index.html">Array</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token operator">?</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Print internal state into the given stream.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fragment/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-dump.html"><span class="token function">onDump</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">prefix<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">fd<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/io/FileDescriptor.html">FileDescriptor</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">writer<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/io/PrintWriter.html">PrintWriter</a><span class="token punctuation">, </span></span><span class="parameter ">args<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-array/index.html">Array</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token operator">?</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Print internal state into the given stream.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1053692447%2FFunctions%2F2082345138" anchor-label="onFindViewById" id="-1053692447%2FFunctions%2F2082345138" data-filterable-set=":fragment/main"></a>
-          <div class="table-row" data-filterable-current=":fragment/main" data-filterable-set=":fragment/main">
+<a data-name="-1053692447%2FFunctions%2F966909736" anchor-label="onFindViewById" id="-1053692447%2FFunctions%2F966909736" data-filterable-set=":fragment/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fragment/release" data-filterable-set=":fragment/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-find-view-by-id.html"><span>on</span><wbr><span>Find</span><wbr><span>View</span><wbr><span>By</span><wbr><span><span>Id</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1053692447%2FFunctions%2F2082345138"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1053692447%2FFunctions%2F966909736"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fragment/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="on-find-view-by-id.html"><span class="token function">onFindViewById</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">id<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Return the view with the given resource ID. May return <code class="lang-kotlin">null</code> if the view is not a child of this container.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fragment/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="on-find-view-by-id.html"><span class="token function">onFindViewById</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">id<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Return the view with the given resource ID. May return <code class="lang-java">null</code> if the view is not a child of this container.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1729098135%2FFunctions%2F2082345138" anchor-label="onGetHost" id="-1729098135%2FFunctions%2F2082345138" data-filterable-set=":fragment/main"></a>
-          <div class="table-row" data-filterable-current=":fragment/main" data-filterable-set=":fragment/main">
+<a data-name="-1729098135%2FFunctions%2F966909736" anchor-label="onGetHost" id="-1729098135%2FFunctions%2F966909736" data-filterable-set=":fragment/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fragment/release" data-filterable-set=":fragment/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-get-host.html"><span>on</span><wbr><span>Get</span><wbr><span><span>Host</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1729098135%2FFunctions%2F2082345138"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1729098135%2FFunctions%2F966909736"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fragment/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="on-get-host.html"><span class="token function">onGetHost</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">H</a></div><div class="brief "><p class="paragraph">Return the object that's currently hosting the fragment. If a <a href="../[main]-fragment/index.html">Fragment</a> is hosted by a <a href="../[main]-fragment-activity/index.html">FragmentActivity</a>, the object returned here should be the same object returned from <a href="../[main]-fragment/get-activity.html">Fragment.getActivity</a>.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fragment/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="on-get-host.html"><span class="token function">onGetHost</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">H</a></div><div class="brief "><p class="paragraph">Return the object that's currently hosting the fragment. If a <a href="../-fragment/index.html">Fragment</a> is hosted by a <a href="../-fragment-activity/index.html">FragmentActivity</a>, the object returned here should be the same object returned from <a href="../-fragment/get-activity.html">Fragment.getActivity</a>.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1188698908%2FFunctions%2F2082345138" anchor-label="onGetLayoutInflater" id="1188698908%2FFunctions%2F2082345138" data-filterable-set=":fragment/main"></a>
-          <div class="table-row" data-filterable-current=":fragment/main" data-filterable-set=":fragment/main">
+<a data-name="1188698908%2FFunctions%2F966909736" anchor-label="onGetLayoutInflater" id="1188698908%2FFunctions%2F966909736" data-filterable-set=":fragment/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fragment/release" data-filterable-set=":fragment/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-get-layout-inflater.html"><span>on</span><wbr><span>Get</span><wbr><span>Layout</span><wbr><span><span>Inflater</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1188698908%2FFunctions%2F2082345138"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1188698908%2FFunctions%2F966909736"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fragment/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-get-layout-inflater.html"><span class="token function">onGetLayoutInflater</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/LayoutInflater.html">LayoutInflater</a></div><div class="brief "><p class="paragraph">Return a <a href="https://developer.android.com/reference/kotlin/android/view/LayoutInflater.html">LayoutInflater</a>. See <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html#getlayoutinflater">Activity.getLayoutInflater</a>.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fragment/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-get-layout-inflater.html"><span class="token function">onGetLayoutInflater</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/LayoutInflater.html">LayoutInflater</a></div><div class="brief "><p class="paragraph">Return a <a href="https://developer.android.com/reference/kotlin/android/view/LayoutInflater.html">LayoutInflater</a>. See <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html#getLayoutInflater()">Activity.getLayoutInflater</a>.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-61475726%2FFunctions%2F2082345138" anchor-label="onGetWindowAnimations" id="-61475726%2FFunctions%2F2082345138" data-filterable-set=":fragment/main"></a>
-          <div class="table-row" data-filterable-current=":fragment/main" data-filterable-set=":fragment/main">
+<a data-name="-61475726%2FFunctions%2F966909736" anchor-label="onGetWindowAnimations" id="-61475726%2FFunctions%2F966909736" data-filterable-set=":fragment/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fragment/release" data-filterable-set=":fragment/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-get-window-animations.html"><span>on</span><wbr><span>Get</span><wbr><span>Window</span><wbr><span><span>Animations</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-61475726%2FFunctions%2F2082345138"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-61475726%2FFunctions%2F966909736"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fragment/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-get-window-animations.html"><span class="token function">onGetWindowAnimations</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief "><p class="paragraph">Return the window animations.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fragment/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-get-window-animations.html"><span class="token function">onGetWindowAnimations</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief "><p class="paragraph">Return the window animations.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1298522952%2FFunctions%2F2082345138" anchor-label="onHasView" id="1298522952%2FFunctions%2F2082345138" data-filterable-set=":fragment/main"></a>
-          <div class="table-row" data-filterable-current=":fragment/main" data-filterable-set=":fragment/main">
+<a data-name="1298522952%2FFunctions%2F966909736" anchor-label="onHasView" id="1298522952%2FFunctions%2F966909736" data-filterable-set=":fragment/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fragment/release" data-filterable-set=":fragment/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-has-view.html"><span>on</span><wbr><span>Has</span><wbr><span><span>View</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1298522952%2FFunctions%2F2082345138"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1298522952%2FFunctions%2F966909736"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fragment/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="on-has-view.html"><span class="token function">onHasView</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Return <code class="lang-kotlin">true</code> if the container holds any view.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fragment/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="on-has-view.html"><span class="token function">onHasView</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Return <code class="lang-java">true</code> if the container holds any view.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="584543662%2FFunctions%2F2082345138" anchor-label="onHasWindowAnimations" id="584543662%2FFunctions%2F2082345138" data-filterable-set=":fragment/main"></a>
-          <div class="table-row" data-filterable-current=":fragment/main" data-filterable-set=":fragment/main">
+<a data-name="584543662%2FFunctions%2F966909736" anchor-label="onHasWindowAnimations" id="584543662%2FFunctions%2F966909736" data-filterable-set=":fragment/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fragment/release" data-filterable-set=":fragment/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-has-window-animations.html"><span>on</span><wbr><span>Has</span><wbr><span>Window</span><wbr><span><span>Animations</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="584543662%2FFunctions%2F2082345138"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="584543662%2FFunctions%2F966909736"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fragment/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-has-window-animations.html"><span class="token function">onHasWindowAnimations</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Return <code class="lang-kotlin">true</code> if there are window animations.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fragment/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-has-window-animations.html"><span class="token function">onHasWindowAnimations</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Return <code class="lang-kotlin">true</code> if there are window animations.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1348181670%2FFunctions%2F2082345138" anchor-label="onRequestPermissionsFromFragment" id="-1348181670%2FFunctions%2F2082345138" data-filterable-set=":fragment/main"></a>
-          <div class="table-row" data-filterable-current=":fragment/main" data-filterable-set=":fragment/main">
+<a data-name="-1348181670%2FFunctions%2F966909736" anchor-label="onRequestPermissionsFromFragment" id="-1348181670%2FFunctions%2F966909736" data-filterable-set=":fragment/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fragment/release" data-filterable-set=":fragment/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-request-permissions-from-fragment.html"><span>on</span><wbr><span>Request</span><wbr><span>Permissions</span><wbr><span>From</span><wbr><span><span>Fragment</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1348181670%2FFunctions%2F2082345138"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1348181670%2FFunctions%2F966909736"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fragment/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-request-permissions-from-fragment.html"><span class="token function"><strike>onRequestPermissionsFromFragment</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">fragment<span class="token operator">: </span><a href="../[main]-fragment/index.html">Fragment</a><span class="token punctuation">, </span></span><span class="parameter ">permissions<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-array/index.html">Array</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">requestCode<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Requests permissions from the given fragment. See <a href="https://developer.android.com/reference/kotlin/androidx/fragment/app/FragmentActivity.html#requestpermissions">FragmentActivity.requestPermissions</a></p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fragment/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-request-permissions-from-fragment.html"><span class="token function"><strike>onRequestPermissionsFromFragment</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">fragment<span class="token operator">: </span><a href="../-fragment/index.html">Fragment</a><span class="token punctuation">, </span></span><span class="parameter ">permissions<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-array/index.html">Array</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">requestCode<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Requests permissions from the given fragment. See <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html#requestPermissions(kotlin.Array,kotlin.Int)">FragmentActivity.requestPermissions</a></p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1527778816%2FFunctions%2F2082345138" anchor-label="onShouldSaveFragmentState" id="-1527778816%2FFunctions%2F2082345138" data-filterable-set=":fragment/main"></a>
-          <div class="table-row" data-filterable-current=":fragment/main" data-filterable-set=":fragment/main">
+<a data-name="-1527778816%2FFunctions%2F966909736" anchor-label="onShouldSaveFragmentState" id="-1527778816%2FFunctions%2F966909736" data-filterable-set=":fragment/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fragment/release" data-filterable-set=":fragment/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-should-save-fragment-state.html"><span>on</span><wbr><span>Should</span><wbr><span>Save</span><wbr><span>Fragment</span><wbr><span><span>State</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1527778816%2FFunctions%2F2082345138"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1527778816%2FFunctions%2F966909736"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fragment/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-should-save-fragment-state.html"><span class="token function">onShouldSaveFragmentState</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">fragment<span class="token operator">: </span><a href="../[main]-fragment/index.html">Fragment</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Return <code class="lang-kotlin">true</code> if the fragment's state needs to be saved.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fragment/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-should-save-fragment-state.html"><span class="token function">onShouldSaveFragmentState</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">fragment<span class="token operator">: </span><a href="../-fragment/index.html">Fragment</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Return <code class="lang-kotlin">true</code> if the fragment's state needs to be saved.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1232959366%2FFunctions%2F2082345138" anchor-label="onShouldShowRequestPermissionRationale" id="-1232959366%2FFunctions%2F2082345138" data-filterable-set=":fragment/main"></a>
-          <div class="table-row" data-filterable-current=":fragment/main" data-filterable-set=":fragment/main">
+<a data-name="-1232959366%2FFunctions%2F966909736" anchor-label="onShouldShowRequestPermissionRationale" id="-1232959366%2FFunctions%2F966909736" data-filterable-set=":fragment/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fragment/release" data-filterable-set=":fragment/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-should-show-request-permission-rationale.html"><span>on</span><wbr><span>Should</span><wbr><span>Show</span><wbr><span>Request</span><wbr><span>Permission</span><wbr><span><span>Rationale</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1232959366%2FFunctions%2F2082345138"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1232959366%2FFunctions%2F966909736"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fragment/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-should-show-request-permission-rationale.html"><span class="token function">onShouldShowRequestPermissionRationale</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">permission<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Checks whether to show permission rationale UI from a fragment. See <a href="https://developer.android.com/reference/kotlin/androidx/fragment/app/FragmentActivity.html#shouldshowrequestpermissionrationale">FragmentActivity.shouldShowRequestPermissionRationale</a></p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fragment/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-should-show-request-permission-rationale.html"><span class="token function">onShouldShowRequestPermissionRationale</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">permission<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Checks whether to show permission rationale UI from a fragment. See <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html#shouldShowRequestPermissionRationale(kotlin.String)">FragmentActivity.shouldShowRequestPermissionRationale</a></p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1637920583%2FFunctions%2F2082345138" anchor-label="onStartActivityFromFragment" id="1637920583%2FFunctions%2F2082345138" data-filterable-set=":fragment/main"></a>
-          <div class="table-row" data-filterable-current=":fragment/main" data-filterable-set=":fragment/main">
+<a data-name="1637920583%2FFunctions%2F966909736" anchor-label="onStartActivityFromFragment" id="1637920583%2FFunctions%2F966909736" data-filterable-set=":fragment/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fragment/release" data-filterable-set=":fragment/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-start-activity-from-fragment.html"><span>on</span><wbr><span>Start</span><wbr><span>Activity</span><wbr><span>From</span><wbr><span><span>Fragment</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1637920583%2FFunctions%2F2082345138"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1637920583%2FFunctions%2F966909736"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fragment/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-start-activity-from-fragment.html"><span class="token function">onStartActivityFromFragment</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">fragment<span class="token operator">: </span><a href="../[main]-fragment/index.html">Fragment</a><span class="token punctuation">, </span></span><span class="parameter ">intent<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Intent.html">Intent</a><span class="token punctuation">, </span></span><span class="parameter ">requestCode<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-start-activity-from-fragment.html"><span class="token function">onStartActivityFromFragment</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">fragment<span class="token operator">: </span><a href="../[main]-fragment/index.html">Fragment</a><span class="token punctuation">, </span></span><span class="parameter ">intent<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Intent.html">Intent</a><span class="token punctuation">, </span></span><span class="parameter ">requestCode<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">options<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Starts a new <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a> from the given fragment. See <a href="https://developer.android.com/reference/kotlin/androidx/fragment/app/FragmentActivity.html#startactivityforresult">FragmentActivity.startActivityForResult</a>.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fragment/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-start-activity-from-fragment.html"><span class="token function">onStartActivityFromFragment</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">fragment<span class="token operator">: </span><a href="../-fragment/index.html">Fragment</a><span class="token punctuation">, </span></span><span class="parameter ">intent<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Intent.html">Intent</a><span class="token punctuation">, </span></span><span class="parameter ">requestCode<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-start-activity-from-fragment.html"><span class="token function">onStartActivityFromFragment</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">fragment<span class="token operator">: </span><a href="../-fragment/index.html">Fragment</a><span class="token punctuation">, </span></span><span class="parameter ">intent<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Intent.html">Intent</a><span class="token punctuation">, </span></span><span class="parameter ">requestCode<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">options<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Starts a new <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html">Activity</a> from the given fragment. See <a href="https://developer.android.com/reference/kotlin/androidx/activity/ComponentActivity.html#startActivityForResult(android.content.Intent,kotlin.Int)">FragmentActivity.startActivityForResult</a>.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-427992661%2FFunctions%2F2082345138" anchor-label="onStartIntentSenderFromFragment" id="-427992661%2FFunctions%2F2082345138" data-filterable-set=":fragment/main"></a>
-          <div class="table-row" data-filterable-current=":fragment/main" data-filterable-set=":fragment/main">
+<a data-name="-427992661%2FFunctions%2F966909736" anchor-label="onStartIntentSenderFromFragment" id="-427992661%2FFunctions%2F966909736" data-filterable-set=":fragment/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fragment/release" data-filterable-set=":fragment/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-start-intent-sender-from-fragment.html"><span>on</span><wbr><span>Start</span><wbr><span>Intent</span><wbr><span>Sender</span><wbr><span>From</span><wbr><span><span>Fragment</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-427992661%2FFunctions%2F2082345138"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-427992661%2FFunctions%2F966909736"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fragment/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-start-intent-sender-from-fragment.html"><span class="token function"><strike>onStartIntentSenderFromFragment</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">fragment<span class="token operator">: </span><a href="../[main]-fragment/index.html">Fragment</a><span class="token punctuation">, </span></span><span class="parameter ">intent<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/IntentSender.html">IntentSender</a><span class="token punctuation">, </span></span><span class="parameter ">requestCode<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">fillInIntent<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Intent.html">Intent</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">flagsMask<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">flagsValues<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">extraFlags<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">options<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Starts a new <a href="https://developer.android.com/reference/kotlin/android/content/IntentSender.html">IntentSender</a> from the given fragment. See <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html#startintentsender">Activity.startIntentSender</a>.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fragment/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-start-intent-sender-from-fragment.html"><span class="token function"><strike>onStartIntentSenderFromFragment</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">fragment<span class="token operator">: </span><a href="../-fragment/index.html">Fragment</a><span class="token punctuation">, </span></span><span class="parameter ">intent<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/IntentSender.html">IntentSender</a><span class="token punctuation">, </span></span><span class="parameter ">requestCode<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">fillInIntent<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Intent.html">Intent</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">flagsMask<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">flagsValues<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">extraFlags<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">options<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Starts a new <a href="https://developer.android.com/reference/kotlin/android/content/IntentSender.html">IntentSender</a> from the given fragment. See <a href="https://developer.android.com/reference/kotlin/android/app/Activity.html#startIntentSender(android.content.IntentSender,android.content.Intent,kotlin.Int,kotlin.Int,kotlin.Int)">Activity.startIntentSender</a>.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="303913472%2FFunctions%2F2082345138" anchor-label="onSupportInvalidateOptionsMenu" id="303913472%2FFunctions%2F2082345138" data-filterable-set=":fragment/main"></a>
-          <div class="table-row" data-filterable-current=":fragment/main" data-filterable-set=":fragment/main">
+<a data-name="303913472%2FFunctions%2F966909736" anchor-label="onSupportInvalidateOptionsMenu" id="303913472%2FFunctions%2F966909736" data-filterable-set=":fragment/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fragment/release" data-filterable-set=":fragment/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-support-invalidate-options-menu.html"><span>on</span><wbr><span>Support</span><wbr><span>Invalidate</span><wbr><span>Options</span><wbr><span><span>Menu</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="303913472%2FFunctions%2F2082345138"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="303913472%2FFunctions%2F966909736"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fragment/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-support-invalidate-options-menu.html"><span class="token function">onSupportInvalidateOptionsMenu</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Invalidates the activity's options menu. See <a href="../[main]-fragment-activity/support-invalidate-options-menu.html">FragmentActivity.supportInvalidateOptionsMenu</a></p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fragment/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-support-invalidate-options-menu.html"><span class="token function">onSupportInvalidateOptionsMenu</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Invalidates the activity's options menu. See <a href="../-fragment-activity/support-invalidate-options-menu.html">FragmentActivity.supportInvalidateOptionsMenu</a></p></div></div></div>
                 </div>
               </div>
             </div>
@@ -385,17 +384,21 @@
   </div>
 </div>
     <div class="footer">
-        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
-        <span>© 2026 Copyright</span>
-        <span class="pull-right">
-            <span>Generated by </span>
-            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
-                <span>dokka</span>
-            </a>
-        </span>
-    </div>
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
             </div>
         </div>
     </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

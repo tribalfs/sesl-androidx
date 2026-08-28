@@ -1,42 +1,39 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
     <title>SeslSleepTimePicker</title>
-<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../";</script>
-    <script>document.documentElement.classList.replace("no-js","js");</script>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
     <script>const storage = localStorage.getItem("dokka-dark-mode")
-    if (storage == null) {
+      if (storage == null) {
         const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
         if (osDarkSchemePreferred === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    } else {
+      } else {
         const savedDarkMode = JSON.parse(storage)
-        if(savedDarkMode === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    }
+      }
     </script>
-<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
 <script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
 <link href="../../../styles/style.css" rel="Stylesheet">
 <link href="../../../styles/main.css" rel="Stylesheet">
 <link href="../../../styles/prism.css" rel="Stylesheet">
 <link href="../../../styles/logo-styles.css" rel="Stylesheet">
-<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
 <link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
-<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/safe-local-storage_blocking.js"></script>
 <script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
 <script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
 <script type="text/javascript" src="../../../scripts/main.js" defer></script>
 <script type="text/javascript" src="../../../scripts/prism.js" async></script>
-<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script>
-<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script></head>
 <body>
-    <div class="root">
-    <nav class="navigation theme-dark" id="navigation-wrapper">
-<a class="library-name--link" href="../../../index.html">
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../../index.html" tabindex="1">
                     sesl.androidx
             </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
         </button>
@@ -44,62 +41,64 @@
         <div class="library-version" id="library-version">
         </div>
         <div class="navigation-controls">
-        <div class="filter-section filter-section_loading" id="filter-section">
-                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":picker-basic/main">main</button>
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":picker-basic/release">release</button>
             <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
                 <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
-                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
-                    <div class="dropdown--header"><span>Platform filter</span>
-                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
                             <i class="ui-kit-icon ui-kit-icon_cross"></i>
                         </button>
                     </div>
                         <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
                             <label class="checkbox">
-                                <input type="checkbox" class="checkbox--input" id=":picker-basic/main" data-filter=":picker-basic/main">
+                                <input type="checkbox" class="checkbox--input" id=":picker-basic/release" data-filter=":picker-basic/release">
                                 <span class="checkbox--icon"></span>
-                                main
+                                release
                             </label>
                         </li>
                 </ul>
                 <div class="dropdown--overlay"></div>
             </div>
-        </div>
+        </ul>
             <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
             </button>
             <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
                 API
             </div>
         </div>
-    </nav>
-        <div id="container">
-            <div class="sidebar" id="leftColumn">
-                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
-                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox">
-                        <div class="dropdown--header">
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
                             <span>
                                     sesl.androidx
                             </span>
-                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
-                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
-                            </button>
-                        </div>
-                        <div class="sidebar--inner" id="sideMenu"></div>
-                    </ul>
-                    <div class="dropdown--overlay"></div>
-                </div>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
             </div>
-            <div id="main">
-<div class="main-content" data-page-type="classlike" id="content" pageids="picker-basic::androidx.picker.widget/SeslSleepTimePicker///PointingToDeclaration//1964638515">
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="picker-basic::androidx.picker.widget/SeslSleepTimePicker///PointingToDeclaration//-907171095">
   <div class="breadcrumbs"><a href="../../index.html">picker-basic</a><span class="delimiter">/</span><a href="../index.html">androidx.picker.widget</a><span class="delimiter">/</span><span class="current">SeslSleepTimePicker</span></div>
   <div class="cover ">
     <h1 class="cover"><span>Sesl</span><wbr><span>Sleep</span><wbr><span>Time</span><wbr><span><span>Picker</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-basic/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="index.html">SeslSleepTimePicker</a> : <a href="https://developer.android.com/reference/kotlin/android/widget/LinearLayout.html">LinearLayout</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/tribalfs/sesl-androidx/blob/sesl-androidx-main/picker/picker-basic/src/main/java/androidx/picker/widget/SeslSleepTimePicker.java#L111">source</a>)</span></span></div><p class="paragraph">A custom view that allows users to select a bedtime and wakeup time using a circular seek bar. It displays the selected times and the calculated sleep duration. </p><p class="paragraph">The picker provides visual feedback and animations as the user interacts with the seek bar. It also supports different time formats (12-hour or 24-hour) based on the device's settings. </p><p class="paragraph">Key features: </p><ul><li>Circular seek bar for intuitive time selection.</li><li>Display of bedtime, wakeup time, and sleep duration.</li><li>Animations for selecting and unselecting time icons.</li><li>Support for 12-hour and 24-hour time formats.</li><li>Haptic feedback during time adjustments.</li><li>Customizable sleep duration formatting.</li><li>Ability to set and display a sleep goal.</li><li>Handles configuration changes and instance state saving/restoring.</li></ul><p class="paragraph">To use this picker, add it to your layout XML and interact with it programmatically. You can set initial bed and wakeup times, listen for time changes, and customize its appearance. </p><p class="paragraph">Example usage in XML: </p><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-basic/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="index.html">SeslSleepTimePicker</a> : <a href="https://developer.android.com/reference/kotlin/android/widget/LinearLayout.html">LinearLayout</a></div><p class="paragraph">A custom view that allows users to select a bedtime and wakeup time using a circular seek bar. It displays the selected times and the calculated sleep duration. </p><p class="paragraph">The picker provides visual feedback and animations as the user interacts with the seek bar. It also supports different time formats (12-hour or 24-hour) based on the device's settings. </p><p class="paragraph">Key features: </p><ul><li>Circular seek bar for intuitive time selection.</li><li>Display of bedtime, wakeup time, and sleep duration.</li><li>Animations for selecting and unselecting time icons.</li><li>Support for 12-hour and 24-hour time formats.</li><li>Haptic feedback during time adjustments.</li><li>Customizable sleep duration formatting.</li><li>Ability to set and display a sleep goal.</li><li>Handles configuration changes and instance state saving/restoring.</li></ul><p class="paragraph">To use this picker, add it to your layout XML and interact with it programmatically. You can set initial bed and wakeup times, listen for time changes, and customize its appearance. </p><p class="paragraph">Example usage in XML: </p><div class="sample-container"><pre><code class="block lang-java" theme="idea">
 &lt;com.samsung.android.widget.SeslSleepTimePicker
     android:id="@+id/sleep_time_picker"
     android:layout_width="match_parent"
     android:layout_height="wrap_content" /&gt;
-</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">Example usage in Java: </p><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">
+</code></pre><span class="copy-tooltip"><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div><span class="copy-icon"></span></span></div><p class="paragraph">Example usage in Java: </p><div class="sample-container"><pre><code class="block lang-java" theme="idea">
 SeslSleepTimePicker sleepTimePicker = findViewById(R.id.sleep_time_picker);
 sleepTimePicker.setBedTimeInMinute(1320); // 10:00 PM
 sleepTimePicker.setWakeUpTimeInMinute(420); // 7:00 AM
@@ -107,24 +106,24 @@ sleepTimePicker.setOnSleepTimeChangeListener(new SeslSleepTimePicker.OnSleepTime
     
     public void onSleepTimeChanged(float bedTimeInMinutes, float wakeupTimeInMinutes) {
         // Handle time changes
-    }</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+    }</code></pre><span class="copy-tooltip"><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div><span class="copy-icon"></span></span></div></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
     <div class="tabs-section-body">
       <div data-togglable="CONSTRUCTOR">
-        <h2 class="">Constructors</h2>
-        <div class="table"><a data-name="1236832073%2FConstructors%2F1964638515" anchor-label="SeslSleepTimePicker" id="1236832073%2FConstructors%2F1964638515" data-filterable-set=":picker-basic/main"></a>
-          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":picker-basic/main" data-filterable-set=":picker-basic/main">
+        <h2 class="tableheader">Constructors</h2>
+        <div class="table"><a data-name="1236832073%2FConstructors%2F-907171095" anchor-label="SeslSleepTimePicker" id="1236832073%2FConstructors%2F-907171095" data-filterable-set=":picker-basic/release"></a>
+          <div class="table-row table-row_content" data-togglable="CONSTRUCTOR" data-filterable-current=":picker-basic/release" data-filterable-set=":picker-basic/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-sesl-sleep-time-picker.html"><span>Sesl</span><wbr><span>Sleep</span><wbr><span>Time</span><wbr><span><span>Picker</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1236832073%2FConstructors%2F1964638515"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1236832073%2FConstructors%2F-907171095"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-basic/main"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>context<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span>attributeSet<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Constructs a new SeslSleepTimePicker instance.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-basic/release"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>context<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span>attributeSet<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Constructs a new SeslSleepTimePicker instance.</div></div></div>
                 </div>
               </div>
             </div>
@@ -132,33 +131,33 @@ sleepTimePicker.setOnSleepTimeChangeListener(new SeslSleepTimePicker.OnSleepTime
         </div>
       </div>
       <div data-togglable="TYPE">
-        <h2 class="">Types</h2>
-        <div class="table"><a data-name="-2012624425%2FClasslikes%2F1964638515" anchor-label="OnSleepTimeChangedListener" id="-2012624425%2FClasslikes%2F1964638515" data-filterable-set=":picker-basic/main"></a>
-          <div class="table-row" data-filterable-current=":picker-basic/main" data-filterable-set=":picker-basic/main">
+        <h2 class="tableheader">Types</h2>
+        <div class="table"><a data-name="-2012624425%2FClasslikes%2F-907171095" anchor-label="OnSleepTimeChangedListener" id="-2012624425%2FClasslikes%2F-907171095" data-filterable-set=":picker-basic/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":picker-basic/release" data-filterable-set=":picker-basic/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-on-sleep-time-changed-listener/index.html"><span>On</span><wbr><span>Sleep</span><wbr><span>Time</span><wbr><span>Changed</span><wbr><span><span>Listener</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2012624425%2FClasslikes%2F1964638515"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2012624425%2FClasslikes%2F-907171095"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-basic/main"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-on-sleep-time-changed-listener/index.html">OnSleepTimeChangedListener</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-basic/release"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-on-sleep-time-changed-listener/index.html">OnSleepTimeChangedListener</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="314770427%2FClasslikes%2F1964638515" anchor-label="SleepDurationFormatter" id="314770427%2FClasslikes%2F1964638515" data-filterable-set=":picker-basic/main"></a>
-          <div class="table-row" data-filterable-current=":picker-basic/main" data-filterable-set=":picker-basic/main">
+<a data-name="314770427%2FClasslikes%2F-907171095" anchor-label="SleepDurationFormatter" id="314770427%2FClasslikes%2F-907171095" data-filterable-set=":picker-basic/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":picker-basic/release" data-filterable-set=":picker-basic/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-sleep-duration-formatter/index.html"><span>Sleep</span><wbr><span>Duration</span><wbr><span><span>Formatter</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="314770427%2FClasslikes%2F1964638515"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="314770427%2FClasslikes%2F-907171095"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-basic/main"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-sleep-duration-formatter/index.html">SleepDurationFormatter</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-basic/release"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-sleep-duration-formatter/index.html">SleepDurationFormatter</a></div></div></div>
                 </div>
               </div>
             </div>
@@ -166,213 +165,213 @@ sleepTimePicker.setOnSleepTimeChangeListener(new SeslSleepTimePicker.OnSleepTime
         </div>
       </div>
       <div data-togglable="FUNCTION">
-        <h2 class="">Functions</h2>
-        <div class="table"><a data-name="-256387884%2FFunctions%2F1964638515" anchor-label="getBedTimeInMinute" id="-256387884%2FFunctions%2F1964638515" data-filterable-set=":picker-basic/main"></a>
-          <div class="table-row" data-filterable-current=":picker-basic/main" data-filterable-set=":picker-basic/main">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="-256387884%2FFunctions%2F-907171095" anchor-label="getBedTimeInMinute" id="-256387884%2FFunctions%2F-907171095" data-filterable-set=":picker-basic/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":picker-basic/release" data-filterable-set=":picker-basic/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-bed-time-in-minute.html"><span>get</span><wbr><span>Bed</span><wbr><span>Time</span><wbr><span>In</span><wbr><span><span>Minute</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-256387884%2FFunctions%2F1964638515"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-256387884%2FFunctions%2F-907171095"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-basic/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-bed-time-in-minute.html"><span class="token function">getBedTimeInMinute</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-basic/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-bed-time-in-minute.html"><span class="token function">getBedTimeInMinute</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-109832376%2FFunctions%2F1964638515" anchor-label="getBedTimeView" id="-109832376%2FFunctions%2F1964638515" data-filterable-set=":picker-basic/main"></a>
-          <div class="table-row" data-filterable-current=":picker-basic/main" data-filterable-set=":picker-basic/main">
+<a data-name="-109832376%2FFunctions%2F-907171095" anchor-label="getBedTimeView" id="-109832376%2FFunctions%2F-907171095" data-filterable-set=":picker-basic/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":picker-basic/release" data-filterable-set=":picker-basic/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-bed-time-view.html"><span>get</span><wbr><span>Bed</span><wbr><span>Time</span><wbr><span><span>View</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-109832376%2FFunctions%2F1964638515"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-109832376%2FFunctions%2F-907171095"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-basic/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-bed-time-view.html"><span class="token function">getBedTimeView</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/widget/LinearLayout.html">LinearLayout</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-basic/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-bed-time-view.html"><span class="token function">getBedTimeView</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/widget/LinearLayout.html">LinearLayout</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="2101771322%2FFunctions%2F1964638515" anchor-label="getWakeUpTimeInMinute" id="2101771322%2FFunctions%2F1964638515" data-filterable-set=":picker-basic/main"></a>
-          <div class="table-row" data-filterable-current=":picker-basic/main" data-filterable-set=":picker-basic/main">
+<a data-name="2101771322%2FFunctions%2F-907171095" anchor-label="getWakeUpTimeInMinute" id="2101771322%2FFunctions%2F-907171095" data-filterable-set=":picker-basic/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":picker-basic/release" data-filterable-set=":picker-basic/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-wake-up-time-in-minute.html"><span>get</span><wbr><span>Wake</span><wbr><span>Up</span><wbr><span>Time</span><wbr><span>In</span><wbr><span><span>Minute</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2101771322%2FFunctions%2F1964638515"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2101771322%2FFunctions%2F-907171095"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-basic/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-wake-up-time-in-minute.html"><span class="token function">getWakeUpTimeInMinute</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-basic/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-wake-up-time-in-minute.html"><span class="token function">getWakeUpTimeInMinute</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1889165742%2FFunctions%2F1964638515" anchor-label="getWakeUpTimeView" id="1889165742%2FFunctions%2F1964638515" data-filterable-set=":picker-basic/main"></a>
-          <div class="table-row" data-filterable-current=":picker-basic/main" data-filterable-set=":picker-basic/main">
+<a data-name="1889165742%2FFunctions%2F-907171095" anchor-label="getWakeUpTimeView" id="1889165742%2FFunctions%2F-907171095" data-filterable-set=":picker-basic/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":picker-basic/release" data-filterable-set=":picker-basic/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-wake-up-time-view.html"><span>get</span><wbr><span>Wake</span><wbr><span>Up</span><wbr><span>Time</span><wbr><span><span>View</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1889165742%2FFunctions%2F1964638515"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1889165742%2FFunctions%2F-907171095"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-basic/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-wake-up-time-view.html"><span class="token function">getWakeUpTimeView</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/widget/LinearLayout.html">LinearLayout</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-basic/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-wake-up-time-view.html"><span class="token function">getWakeUpTimeView</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/widget/LinearLayout.html">LinearLayout</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-2080122362%2FFunctions%2F1964638515" anchor-label="onConfigurationChanged" id="-2080122362%2FFunctions%2F1964638515" data-filterable-set=":picker-basic/main"></a>
-          <div class="table-row" data-filterable-current=":picker-basic/main" data-filterable-set=":picker-basic/main">
+<a data-name="-2080122362%2FFunctions%2F-907171095" anchor-label="onConfigurationChanged" id="-2080122362%2FFunctions%2F-907171095" data-filterable-set=":picker-basic/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":picker-basic/release" data-filterable-set=":picker-basic/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-configuration-changed.html"><span>on</span><wbr><span>Configuration</span><wbr><span><span>Changed</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2080122362%2FFunctions%2F1964638515"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2080122362%2FFunctions%2F-907171095"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-basic/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="on-configuration-changed.html"><span class="token function">onConfigurationChanged</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">configuration<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/res/Configuration.html">Configuration</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-basic/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="on-configuration-changed.html"><span class="token function">onConfigurationChanged</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">configuration<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/res/Configuration.html">Configuration</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1188649092%2FFunctions%2F1964638515" anchor-label="onRestoreInstanceState" id="-1188649092%2FFunctions%2F1964638515" data-filterable-set=":picker-basic/main"></a>
-          <div class="table-row" data-filterable-current=":picker-basic/main" data-filterable-set=":picker-basic/main">
+<a data-name="-1188649092%2FFunctions%2F-907171095" anchor-label="onRestoreInstanceState" id="-1188649092%2FFunctions%2F-907171095" data-filterable-set=":picker-basic/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":picker-basic/release" data-filterable-set=":picker-basic/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-restore-instance-state.html"><span>on</span><wbr><span>Restore</span><wbr><span>Instance</span><wbr><span><span>State</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1188649092%2FFunctions%2F1964638515"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1188649092%2FFunctions%2F-907171095"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-basic/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="on-restore-instance-state.html"><span class="token function">onRestoreInstanceState</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">parcelable<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/Parcelable.html">Parcelable</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-basic/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="on-restore-instance-state.html"><span class="token function">onRestoreInstanceState</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">parcelable<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/Parcelable.html">Parcelable</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-2048981003%2FFunctions%2F1964638515" anchor-label="onSaveInstanceState" id="-2048981003%2FFunctions%2F1964638515" data-filterable-set=":picker-basic/main"></a>
-          <div class="table-row" data-filterable-current=":picker-basic/main" data-filterable-set=":picker-basic/main">
+<a data-name="-2048981003%2FFunctions%2F-907171095" anchor-label="onSaveInstanceState" id="-2048981003%2FFunctions%2F-907171095" data-filterable-set=":picker-basic/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":picker-basic/release" data-filterable-set=":picker-basic/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-save-instance-state.html"><span>on</span><wbr><span>Save</span><wbr><span>Instance</span><wbr><span><span>State</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2048981003%2FFunctions%2F1964638515"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2048981003%2FFunctions%2F-907171095"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-basic/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span></div></div><span class="token keyword">fun </span><a href="on-save-instance-state.html"><span class="token function">onSaveInstanceState</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/os/Parcelable.html">Parcelable</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-basic/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span></div></div><span class="token keyword">fun </span><a href="on-save-instance-state.html"><span class="token function">onSaveInstanceState</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/os/Parcelable.html">Parcelable</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-613340730%2FFunctions%2F1964638515" anchor-label="setBedTimeInMinute" id="-613340730%2FFunctions%2F1964638515" data-filterable-set=":picker-basic/main"></a>
-          <div class="table-row" data-filterable-current=":picker-basic/main" data-filterable-set=":picker-basic/main">
+<a data-name="-613340730%2FFunctions%2F-907171095" anchor-label="setBedTimeInMinute" id="-613340730%2FFunctions%2F-907171095" data-filterable-set=":picker-basic/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":picker-basic/release" data-filterable-set=":picker-basic/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-bed-time-in-minute.html"><span>set</span><wbr><span>Bed</span><wbr><span>Time</span><wbr><span>In</span><wbr><span><span>Minute</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-613340730%2FFunctions%2F1964638515"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-613340730%2FFunctions%2F-907171095"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-basic/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-bed-time-in-minute.html"><span class="token function">setBedTimeInMinute</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">timeInMinute<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-basic/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-bed-time-in-minute.html"><span class="token function">setBedTimeInMinute</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">timeInMinute<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="458823563%2FFunctions%2F1964638515" anchor-label="setOnSleepTimeChangeListener" id="458823563%2FFunctions%2F1964638515" data-filterable-set=":picker-basic/main"></a>
-          <div class="table-row" data-filterable-current=":picker-basic/main" data-filterable-set=":picker-basic/main">
+<a data-name="458823563%2FFunctions%2F-907171095" anchor-label="setOnSleepTimeChangeListener" id="458823563%2FFunctions%2F-907171095" data-filterable-set=":picker-basic/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":picker-basic/release" data-filterable-set=":picker-basic/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-on-sleep-time-change-listener.html"><span>set</span><wbr><span>On</span><wbr><span>Sleep</span><wbr><span>Time</span><wbr><span>Change</span><wbr><span><span>Listener</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="458823563%2FFunctions%2F1964638515"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="458823563%2FFunctions%2F-907171095"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-basic/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-on-sleep-time-change-listener.html"><span class="token function">setOnSleepTimeChangeListener</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span>onSleepTimeChangedListener<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="-on-sleep-time-changed-listener/index.html">SeslSleepTimePicker.OnSleepTimeChangedListener</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-basic/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-on-sleep-time-change-listener.html"><span class="token function">setOnSleepTimeChangeListener</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span>onSleepTimeChangedListener<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="-on-sleep-time-changed-listener/index.html">SeslSleepTimePicker.OnSleepTimeChangedListener</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="192215993%2FFunctions%2F1964638515" anchor-label="setSleepDurationFormatter" id="192215993%2FFunctions%2F1964638515" data-filterable-set=":picker-basic/main"></a>
-          <div class="table-row" data-filterable-current=":picker-basic/main" data-filterable-set=":picker-basic/main">
+<a data-name="192215993%2FFunctions%2F-907171095" anchor-label="setSleepDurationFormatter" id="192215993%2FFunctions%2F-907171095" data-filterable-set=":picker-basic/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":picker-basic/release" data-filterable-set=":picker-basic/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-sleep-duration-formatter.html"><span>set</span><wbr><span>Sleep</span><wbr><span>Duration</span><wbr><span><span>Formatter</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="192215993%2FFunctions%2F1964638515"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="192215993%2FFunctions%2F-907171095"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-basic/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-sleep-duration-formatter.html"><span class="token function">setSleepDurationFormatter</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>sleepDurationFormatter<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="-sleep-duration-formatter/index.html">SeslSleepTimePicker.SleepDurationFormatter</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Sets the <a href="-sleep-duration-formatter/index.html">SleepDurationFormatter</a> to be used for formatting the sleep duration string.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-basic/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-sleep-duration-formatter.html"><span class="token function">setSleepDurationFormatter</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>sleepDurationFormatter<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="-sleep-duration-formatter/index.html">SeslSleepTimePicker.SleepDurationFormatter</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Sets the <a href="-sleep-duration-formatter/index.html">SleepDurationFormatter</a> to be used for formatting the sleep duration string.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1893514183%2FFunctions%2F1964638515" anchor-label="setSleepDurationTextStyle" id="-1893514183%2FFunctions%2F1964638515" data-filterable-set=":picker-basic/main"></a>
-          <div class="table-row" data-filterable-current=":picker-basic/main" data-filterable-set=":picker-basic/main">
+<a data-name="-1893514183%2FFunctions%2F-907171095" anchor-label="setSleepDurationTextStyle" id="-1893514183%2FFunctions%2F-907171095" data-filterable-set=":picker-basic/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":picker-basic/release" data-filterable-set=":picker-basic/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-sleep-duration-text-style.html"><span>set</span><wbr><span>Sleep</span><wbr><span>Duration</span><wbr><span>Text</span><wbr><span><span>Style</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1893514183%2FFunctions%2F1964638515"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1893514183%2FFunctions%2F-907171095"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-basic/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-sleep-duration-text-style.html"><span class="token function">setSleepDurationTextStyle</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/StyleRes.html"><span class="token annotation builtin">StyleRes</span></a>&nbsp;</span>style<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-basic/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-sleep-duration-text-style.html"><span class="token function">setSleepDurationTextStyle</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/StyleRes.html"><span class="token annotation builtin">StyleRes</span></a>&nbsp;</span>style<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1314118992%2FFunctions%2F1964638515" anchor-label="setSleepGoal" id="-1314118992%2FFunctions%2F1964638515" data-filterable-set=":picker-basic/main"></a>
-          <div class="table-row" data-filterable-current=":picker-basic/main" data-filterable-set=":picker-basic/main">
+<a data-name="-1314118992%2FFunctions%2F-907171095" anchor-label="setSleepGoal" id="-1314118992%2FFunctions%2F-907171095" data-filterable-set=":picker-basic/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":picker-basic/release" data-filterable-set=":picker-basic/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-sleep-goal.html"><span>set</span><wbr><span>Sleep</span><wbr><span><span>Goal</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1314118992%2FFunctions%2F1964638515"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1314118992%2FFunctions%2F-907171095"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-basic/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-sleep-goal.html"><span class="token function">setSleepGoal</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">sleepTimeMinutes<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a><span class="token punctuation">, </span></span><span class="parameter ">wakeupTimeMinutes<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Sets the sleep goal display on the picker.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-basic/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-sleep-goal.html"><span class="token function">setSleepGoal</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">sleepTimeMinutes<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a><span class="token punctuation">, </span></span><span class="parameter ">wakeupTimeMinutes<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Sets the sleep goal display on the picker.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1467908527%2FFunctions%2F1964638515" anchor-label="setTimeTextSizeRatio" id="1467908527%2FFunctions%2F1964638515" data-filterable-set=":picker-basic/main"></a>
-          <div class="table-row" data-filterable-current=":picker-basic/main" data-filterable-set=":picker-basic/main">
+<a data-name="1467908527%2FFunctions%2F-907171095" anchor-label="setTimeTextSizeRatio" id="1467908527%2FFunctions%2F-907171095" data-filterable-set=":picker-basic/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":picker-basic/release" data-filterable-set=":picker-basic/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-time-text-size-ratio.html"><span>set</span><wbr><span>Time</span><wbr><span>Text</span><wbr><span>Size</span><wbr><span><span>Ratio</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1467908527%2FFunctions%2F1964638515"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1467908527%2FFunctions%2F-907171095"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-basic/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="set-time-text-size-ratio.html"><span class="token function">setTimeTextSizeRatio</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>resources<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/content/res/Resources.html">Resources</a><span class="token punctuation">, </span></span><span class="parameter ">textSizeRatio<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-basic/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="set-time-text-size-ratio.html"><span class="token function">setTimeTextSizeRatio</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>resources<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/content/res/Resources.html">Resources</a><span class="token punctuation">, </span></span><span class="parameter ">textSizeRatio<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="336003256%2FFunctions%2F1964638515" anchor-label="setWakeUpTimeInMinute" id="336003256%2FFunctions%2F1964638515" data-filterable-set=":picker-basic/main"></a>
-          <div class="table-row" data-filterable-current=":picker-basic/main" data-filterable-set=":picker-basic/main">
+<a data-name="336003256%2FFunctions%2F-907171095" anchor-label="setWakeUpTimeInMinute" id="336003256%2FFunctions%2F-907171095" data-filterable-set=":picker-basic/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":picker-basic/release" data-filterable-set=":picker-basic/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-wake-up-time-in-minute.html"><span>set</span><wbr><span>Wake</span><wbr><span>Up</span><wbr><span>Time</span><wbr><span>In</span><wbr><span><span>Minute</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="336003256%2FFunctions%2F1964638515"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="336003256%2FFunctions%2F-907171095"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-basic/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-wake-up-time-in-minute.html"><span class="token function">setWakeUpTimeInMinute</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">wakeUpTimeInMinute<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":picker-basic/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-wake-up-time-in-minute.html"><span class="token function">setWakeUpTimeInMinute</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">wakeUpTimeInMinute<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
@@ -383,17 +382,21 @@ sleepTimePicker.setOnSleepTimeChangeListener(new SeslSleepTimePicker.OnSleepTime
   </div>
 </div>
     <div class="footer">
-        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
-        <span>© 2026 Copyright</span>
-        <span class="pull-right">
-            <span>Generated by </span>
-            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
-                <span>dokka</span>
-            </a>
-        </span>
-    </div>
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
             </div>
         </div>
     </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

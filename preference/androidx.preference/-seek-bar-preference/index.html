@@ -1,42 +1,39 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
     <title>SeekBarPreference</title>
-<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../";</script>
-    <script>document.documentElement.classList.replace("no-js","js");</script>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
     <script>const storage = localStorage.getItem("dokka-dark-mode")
-    if (storage == null) {
+      if (storage == null) {
         const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
         if (osDarkSchemePreferred === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    } else {
+      } else {
         const savedDarkMode = JSON.parse(storage)
-        if(savedDarkMode === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    }
+      }
     </script>
-<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
 <script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
 <link href="../../../styles/style.css" rel="Stylesheet">
 <link href="../../../styles/main.css" rel="Stylesheet">
 <link href="../../../styles/prism.css" rel="Stylesheet">
 <link href="../../../styles/logo-styles.css" rel="Stylesheet">
-<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
 <link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
-<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/safe-local-storage_blocking.js"></script>
 <script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
 <script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
 <script type="text/javascript" src="../../../scripts/main.js" defer></script>
 <script type="text/javascript" src="../../../scripts/prism.js" async></script>
-<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script>
-<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script></head>
 <body>
-    <div class="root">
-    <nav class="navigation theme-dark" id="navigation-wrapper">
-<a class="library-name--link" href="../../../index.html">
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../../index.html" tabindex="1">
                     sesl.androidx
             </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
         </button>
@@ -44,76 +41,78 @@
         <div class="library-version" id="library-version">
         </div>
         <div class="navigation-controls">
-        <div class="filter-section filter-section_loading" id="filter-section">
-                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":preference/main">main</button>
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":preference/release">release</button>
             <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
                 <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
-                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
-                    <div class="dropdown--header"><span>Platform filter</span>
-                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
                             <i class="ui-kit-icon ui-kit-icon_cross"></i>
                         </button>
                     </div>
                         <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
                             <label class="checkbox">
-                                <input type="checkbox" class="checkbox--input" id=":preference/main" data-filter=":preference/main">
+                                <input type="checkbox" class="checkbox--input" id=":preference/release" data-filter=":preference/release">
                                 <span class="checkbox--icon"></span>
-                                main
+                                release
                             </label>
                         </li>
                 </ul>
                 <div class="dropdown--overlay"></div>
             </div>
-        </div>
+        </ul>
             <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
             </button>
             <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
                 API
             </div>
         </div>
-    </nav>
-        <div id="container">
-            <div class="sidebar" id="leftColumn">
-                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
-                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox">
-                        <div class="dropdown--header">
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
                             <span>
                                     sesl.androidx
                             </span>
-                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
-                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
-                            </button>
-                        </div>
-                        <div class="sidebar--inner" id="sideMenu"></div>
-                    </ul>
-                    <div class="dropdown--overlay"></div>
-                </div>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
             </div>
-            <div id="main">
-<div class="main-content" data-page-type="classlike" id="content" pageids="preference::androidx.preference/SeekBarPreference///PointingToDeclaration//1907887559">
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="preference::androidx.preference/SeekBarPreference///PointingToDeclaration//-1209206659">
   <div class="breadcrumbs"><a href="../../index.html">preference</a><span class="delimiter">/</span><a href="../index.html">androidx.preference</a><span class="delimiter">/</span><span class="current">SeekBarPreference</span></div>
   <div class="cover ">
     <h1 class="cover"><span>Seek</span><wbr><span>Bar</span><wbr><span><span>Preference</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":preference/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="index.html">SeekBarPreference</a> : <a href="../-preference/index.html">Preference</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/tribalfs/sesl-androidx/blob/sesl-androidx-main/preference/preference/src/main/java/androidx/preference/SeekBarPreference.java#L31">source</a>)</span></span></div><p class="paragraph">(SESL modified) Preference based on android.preference.SeekBarPreference but uses support preference as a base . It contains a title and a <a href="https://developer.android.com/reference/kotlin/androidx/appcompat/widget/SeslSeekBar.html">SeslSeekBar</a> The actual preference layout is customizable by setting <code class="lang-kotlin">android:layout</code> on the preference widget layout or <code class="lang-kotlin">seekBarPreferenceStyle</code> attribute. </p><p class="paragraph">The <a href="https://developer.android.com/reference/kotlin/androidx/appcompat/widget/SeslSeekBar.html">SeslSeekBar</a> within the preference can be defined adjustable or not by setting <code class="lang-kotlin">
-adjustable</code> attribute. If adjustable, the preference will be responsive to DPAD left/right keys. Otherwise, it skips those keys. </p><p class="paragraph">Other <a href="https://developer.android.com/reference/kotlin/androidx/appcompat/widget/SeslSeekBar.html">SeslSeekBar</a> specific attributes (e.g. <code class="lang-kotlin">title, summary, defaultValue, min,
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":preference/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="index.html">SeekBarPreference</a> : <a href="../-preference/index.html">Preference</a></div><p class="paragraph">(SESL modified) Preference based on android.preference.SeekBarPreference but uses support preference as a base . It contains a title and a <a href="https://developer.android.com/reference/kotlin/androidx/appcompat/widget/SeslSeekBar.html">SeslSeekBar</a> The actual preference layout is customizable by setting <code class="lang-java">android:layout</code> on the preference widget layout or <code class="lang-java">seekBarPreferenceStyle</code> attribute. </p><p class="paragraph">The <a href="https://developer.android.com/reference/kotlin/androidx/appcompat/widget/SeslSeekBar.html">SeslSeekBar</a> within the preference can be defined adjustable or not by setting <code class="lang-java">
+adjustable</code> attribute. If adjustable, the preference will be responsive to DPAD left/right keys. Otherwise, it skips those keys. </p><p class="paragraph">Other <a href="https://developer.android.com/reference/kotlin/androidx/appcompat/widget/SeslSeekBar.html">SeslSeekBar</a> specific attributes (e.g. <code class="lang-java">title, summary, defaultValue, min,
 max</code>) can be set directly on the preference widget layout.</p></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
     <div class="tabs-section-body">
       <div data-togglable="CONSTRUCTOR">
-        <h2 class="">Constructors</h2>
-        <div class="table"><a data-name="-754391704%2FConstructors%2F1907887559" anchor-label="SeekBarPreference" id="-754391704%2FConstructors%2F1907887559" data-filterable-set=":preference/main"></a>
-          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":preference/main" data-filterable-set=":preference/main">
+        <h2 class="tableheader">Constructors</h2>
+        <div class="table"><a data-name="-754391704%2FConstructors%2F-1209206659" anchor-label="SeekBarPreference" id="-754391704%2FConstructors%2F-1209206659" data-filterable-set=":preference/release"></a>
+          <div class="table-row table-row_content" data-togglable="CONSTRUCTOR" data-filterable-current=":preference/release" data-filterable-set=":preference/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-seek-bar-preference.html"><span>Seek</span><wbr><span>Bar</span><wbr><span><span>Preference</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-754391704%2FConstructors%2F1907887559"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-754391704%2FConstructors%2F-1209206659"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":preference/main"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a><span class="token punctuation">, </span></span><span class="parameter ">defStyleAttr<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">defStyleRes<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a><span class="token punctuation">, </span></span><span class="parameter ">defStyleAttr<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":preference/release"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a><span class="token punctuation">, </span></span><span class="parameter ">defStyleAttr<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">defStyleRes<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a><span class="token punctuation">, </span></span><span class="parameter ">defStyleAttr<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
@@ -121,18 +120,18 @@ max</code>) can be set directly on the preference widget layout.</p></div></div>
         </div>
       </div>
       <div data-togglable="TYPE">
-        <h2 class="">Types</h2>
-        <div class="table"><a data-name="2089217469%2FClasslikes%2F1907887559" anchor-label="OnSeekBarPreferenceChangeListener" id="2089217469%2FClasslikes%2F1907887559" data-filterable-set=":preference/main"></a>
-          <div class="table-row" data-filterable-current=":preference/main" data-filterable-set=":preference/main">
+        <h2 class="tableheader">Types</h2>
+        <div class="table"><a data-name="2089217469%2FClasslikes%2F-1209206659" anchor-label="OnSeekBarPreferenceChangeListener" id="2089217469%2FClasslikes%2F-1209206659" data-filterable-set=":preference/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":preference/release" data-filterable-set=":preference/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-on-seek-bar-preference-change-listener/index.html"><span>On</span><wbr><span>Seek</span><wbr><span>Bar</span><wbr><span>Preference</span><wbr><span>Change</span><wbr><span><span>Listener</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2089217469%2FClasslikes%2F1907887559"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2089217469%2FClasslikes%2F-1209206659"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":preference/main"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-on-seek-bar-preference-change-listener/index.html">OnSeekBarPreferenceChangeListener</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":preference/release"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-on-seek-bar-preference-change-listener/index.html">OnSeekBarPreferenceChangeListener</a></div></div></div>
                 </div>
               </div>
             </div>
@@ -140,258 +139,258 @@ max</code>) can be set directly on the preference widget layout.</p></div></div>
         </div>
       </div>
       <div data-togglable="FUNCTION">
-        <h2 class="">Functions</h2>
-        <div class="table"><a data-name="-1138293625%2FFunctions%2F1907887559" anchor-label="getMax" id="-1138293625%2FFunctions%2F1907887559" data-filterable-set=":preference/main"></a>
-          <div class="table-row" data-filterable-current=":preference/main" data-filterable-set=":preference/main">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="-1138293625%2FFunctions%2F-1209206659" anchor-label="getMax" id="-1138293625%2FFunctions%2F-1209206659" data-filterable-set=":preference/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":preference/release" data-filterable-set=":preference/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-max.html"><span>get</span><wbr><span><span>Max</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1138293625%2FFunctions%2F1907887559"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1138293625%2FFunctions%2F-1209206659"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":preference/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-max.html"><span class="token function">getMax</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Gets the upper bound set on the <a href="https://developer.android.com/reference/kotlin/androidx/appcompat/widget/SeslSeekBar.html">SeslSeekBar</a>.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":preference/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-max.html"><span class="token function">getMax</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Gets the upper bound set on the <a href="https://developer.android.com/reference/kotlin/androidx/appcompat/widget/SeslSeekBar.html">SeslSeekBar</a>.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1949453145%2FFunctions%2F1907887559" anchor-label="getMin" id="1949453145%2FFunctions%2F1907887559" data-filterable-set=":preference/main"></a>
-          <div class="table-row" data-filterable-current=":preference/main" data-filterable-set=":preference/main">
+<a data-name="1949453145%2FFunctions%2F-1209206659" anchor-label="getMin" id="1949453145%2FFunctions%2F-1209206659" data-filterable-set=":preference/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":preference/release" data-filterable-set=":preference/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-min.html"><span>get</span><wbr><span><span>Min</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1949453145%2FFunctions%2F1907887559"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1949453145%2FFunctions%2F-1209206659"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":preference/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-min.html"><span class="token function">getMin</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Gets the lower bound set on the <a href="https://developer.android.com/reference/kotlin/androidx/appcompat/widget/SeslSeekBar.html">SeslSeekBar</a>.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":preference/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-min.html"><span class="token function">getMin</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Gets the lower bound set on the <a href="https://developer.android.com/reference/kotlin/androidx/appcompat/widget/SeslSeekBar.html">SeslSeekBar</a>.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1387251632%2FFunctions%2F1907887559" anchor-label="getSeekBar" id="-1387251632%2FFunctions%2F1907887559" data-filterable-set=":preference/main"></a>
-          <div class="table-row" data-filterable-current=":preference/main" data-filterable-set=":preference/main">
+<a data-name="-1387251632%2FFunctions%2F-1209206659" anchor-label="getSeekBar" id="-1387251632%2FFunctions%2F-1209206659" data-filterable-set=":preference/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":preference/release" data-filterable-set=":preference/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-seek-bar.html"><span>get</span><wbr><span>Seek</span><wbr><span><span>Bar</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1387251632%2FFunctions%2F1907887559"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1387251632%2FFunctions%2F-1209206659"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":preference/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-seek-bar.html"><span class="token function">getSeekBar</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/appcompat/widget/SeslSeekBar.html">SeslSeekBar</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":preference/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-seek-bar.html"><span class="token function">getSeekBar</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/appcompat/widget/SeslSeekBar.html">SeslSeekBar</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="149938203%2FFunctions%2F1907887559" anchor-label="getSeekBarIncrement" id="149938203%2FFunctions%2F1907887559" data-filterable-set=":preference/main"></a>
-          <div class="table-row" data-filterable-current=":preference/main" data-filterable-set=":preference/main">
+<a data-name="149938203%2FFunctions%2F-1209206659" anchor-label="getSeekBarIncrement" id="149938203%2FFunctions%2F-1209206659" data-filterable-set=":preference/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":preference/release" data-filterable-set=":preference/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-seek-bar-increment.html"><span>get</span><wbr><span>Seek</span><wbr><span>Bar</span><wbr><span><span>Increment</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="149938203%2FFunctions%2F1907887559"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="149938203%2FFunctions%2F-1209206659"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":preference/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="get-seek-bar-increment.html"><span class="token function">getSeekBarIncrement</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Returns the amount of increment change via each arrow key click.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":preference/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="get-seek-bar-increment.html"><span class="token function">getSeekBarIncrement</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Returns the amount of increment change via each arrow key click.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-596892452%2FFunctions%2F1907887559" anchor-label="getShowSeekBarValue" id="-596892452%2FFunctions%2F1907887559" data-filterable-set=":preference/main"></a>
-          <div class="table-row" data-filterable-current=":preference/main" data-filterable-set=":preference/main">
+<a data-name="-596892452%2FFunctions%2F-1209206659" anchor-label="getShowSeekBarValue" id="-596892452%2FFunctions%2F-1209206659" data-filterable-set=":preference/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":preference/release" data-filterable-set=":preference/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-show-seek-bar-value.html"><span>get</span><wbr><span>Show</span><wbr><span>Seek</span><wbr><span>Bar</span><wbr><span><span>Value</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-596892452%2FFunctions%2F1907887559"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-596892452%2FFunctions%2F-1209206659"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":preference/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-show-seek-bar-value.html"><span class="token function">getShowSeekBarValue</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Gets whether the current <a href="https://developer.android.com/reference/kotlin/androidx/appcompat/widget/SeslSeekBar.html">SeslSeekBar</a> value is displayed to the user.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":preference/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-show-seek-bar-value.html"><span class="token function">getShowSeekBarValue</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Gets whether the current <a href="https://developer.android.com/reference/kotlin/androidx/appcompat/widget/SeslSeekBar.html">SeslSeekBar</a> value is displayed to the user.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-634662555%2FFunctions%2F1907887559" anchor-label="getUpdatesContinuously" id="-634662555%2FFunctions%2F1907887559" data-filterable-set=":preference/main"></a>
-          <div class="table-row" data-filterable-current=":preference/main" data-filterable-set=":preference/main">
+<a data-name="-634662555%2FFunctions%2F-1209206659" anchor-label="getUpdatesContinuously" id="-634662555%2FFunctions%2F-1209206659" data-filterable-set=":preference/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":preference/release" data-filterable-set=":preference/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-updates-continuously.html"><span>get</span><wbr><span>Updates</span><wbr><span><span>Continuously</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-634662555%2FFunctions%2F1907887559"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-634662555%2FFunctions%2F-1209206659"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":preference/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-updates-continuously.html"><span class="token function">getUpdatesContinuously</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Gets whether the <a href="index.html">SeekBarPreference</a> should continuously save the <a href="https://developer.android.com/reference/kotlin/androidx/appcompat/widget/SeslSeekBar.html">SeslSeekBar</a> value while it is being dragged.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":preference/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-updates-continuously.html"><span class="token function">getUpdatesContinuously</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Gets whether the <a href="index.html">SeekBarPreference</a> should continuously save the <a href="https://developer.android.com/reference/kotlin/androidx/appcompat/widget/SeslSeekBar.html">SeslSeekBar</a> value while it is being dragged.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="249699738%2FFunctions%2F1907887559" anchor-label="getValue" id="249699738%2FFunctions%2F1907887559" data-filterable-set=":preference/main"></a>
-          <div class="table-row" data-filterable-current=":preference/main" data-filterable-set=":preference/main">
+<a data-name="249699738%2FFunctions%2F-1209206659" anchor-label="getValue" id="249699738%2FFunctions%2F-1209206659" data-filterable-set=":preference/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":preference/release" data-filterable-set=":preference/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-value.html"><span>get</span><wbr><span><span>Value</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="249699738%2FFunctions%2F1907887559"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="249699738%2FFunctions%2F-1209206659"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":preference/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-value.html"><span class="token function">getValue</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Gets the current progress of the <a href="https://developer.android.com/reference/kotlin/androidx/appcompat/widget/SeslSeekBar.html">SeslSeekBar</a>.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":preference/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-value.html"><span class="token function">getValue</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Gets the current progress of the <a href="https://developer.android.com/reference/kotlin/androidx/appcompat/widget/SeslSeekBar.html">SeslSeekBar</a>.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1665844770%2FFunctions%2F1907887559" anchor-label="isAdjustable" id="1665844770%2FFunctions%2F1907887559" data-filterable-set=":preference/main"></a>
-          <div class="table-row" data-filterable-current=":preference/main" data-filterable-set=":preference/main">
+<a data-name="1665844770%2FFunctions%2F-1209206659" anchor-label="isAdjustable" id="1665844770%2FFunctions%2F-1209206659" data-filterable-set=":preference/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":preference/release" data-filterable-set=":preference/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="is-adjustable.html"><span>is</span><wbr><span><span>Adjustable</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1665844770%2FFunctions%2F1907887559"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1665844770%2FFunctions%2F-1209206659"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":preference/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-adjustable.html"><span class="token function">isAdjustable</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Gets whether the <a href="https://developer.android.com/reference/kotlin/androidx/appcompat/widget/SeslSeekBar.html">SeslSeekBar</a> should respond to the left/right keys.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":preference/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-adjustable.html"><span class="token function">isAdjustable</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Gets whether the <a href="https://developer.android.com/reference/kotlin/androidx/appcompat/widget/SeslSeekBar.html">SeslSeekBar</a> should respond to the left/right keys.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1852042354%2FFunctions%2F1907887559" anchor-label="onBindViewHolder" id="-1852042354%2FFunctions%2F1907887559" data-filterable-set=":preference/main"></a>
-          <div class="table-row" data-filterable-current=":preference/main" data-filterable-set=":preference/main">
+<a data-name="-1852042354%2FFunctions%2F-1209206659" anchor-label="onBindViewHolder" id="-1852042354%2FFunctions%2F-1209206659" data-filterable-set=":preference/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":preference/release" data-filterable-set=":preference/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-bind-view-holder.html"><span>on</span><wbr><span>Bind</span><wbr><span>View</span><wbr><span><span>Holder</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1852042354%2FFunctions%2F1907887559"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1852042354%2FFunctions%2F-1209206659"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":preference/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-bind-view-holder.html"><span class="token function">onBindViewHolder</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>holder<span class="token operator">: </span><a href="../-preference-view-holder/index.html">PreferenceViewHolder</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Binds the created View to the data for this preference.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":preference/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-bind-view-holder.html"><span class="token function">onBindViewHolder</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>holder<span class="token operator">: </span><a href="../-preference-view-holder/index.html">PreferenceViewHolder</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Binds the created View to the data for this preference.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1473742432%2FFunctions%2F1907887559" anchor-label="setAdjustable" id="1473742432%2FFunctions%2F1907887559" data-filterable-set=":preference/main"></a>
-          <div class="table-row" data-filterable-current=":preference/main" data-filterable-set=":preference/main">
+<a data-name="1473742432%2FFunctions%2F-1209206659" anchor-label="setAdjustable" id="1473742432%2FFunctions%2F-1209206659" data-filterable-set=":preference/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":preference/release" data-filterable-set=":preference/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-adjustable.html"><span>set</span><wbr><span><span>Adjustable</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1473742432%2FFunctions%2F1907887559"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1473742432%2FFunctions%2F-1209206659"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":preference/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-adjustable.html"><span class="token function">setAdjustable</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">adjustable<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Sets whether the <a href="https://developer.android.com/reference/kotlin/androidx/appcompat/widget/SeslSeekBar.html">SeslSeekBar</a> should respond to the left/right keys.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":preference/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-adjustable.html"><span class="token function">setAdjustable</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">adjustable<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Sets whether the <a href="https://developer.android.com/reference/kotlin/androidx/appcompat/widget/SeslSeekBar.html">SeslSeekBar</a> should respond to the left/right keys.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-845206400%2FFunctions%2F1907887559" anchor-label="setMax" id="-845206400%2FFunctions%2F1907887559" data-filterable-set=":preference/main"></a>
-          <div class="table-row" data-filterable-current=":preference/main" data-filterable-set=":preference/main">
+<a data-name="-845206400%2FFunctions%2F-1209206659" anchor-label="setMax" id="-845206400%2FFunctions%2F-1209206659" data-filterable-set=":preference/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":preference/release" data-filterable-set=":preference/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-max.html"><span>set</span><wbr><span><span>Max</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-845206400%2FFunctions%2F1907887559"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-845206400%2FFunctions%2F-1209206659"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":preference/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="set-max.html"><span class="token function">setMax</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">max<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Sets the upper bound on the <a href="https://developer.android.com/reference/kotlin/androidx/appcompat/widget/SeslSeekBar.html">SeslSeekBar</a>.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":preference/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="set-max.html"><span class="token function">setMax</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">max<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Sets the upper bound on the <a href="https://developer.android.com/reference/kotlin/androidx/appcompat/widget/SeslSeekBar.html">SeslSeekBar</a>.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="904240238%2FFunctions%2F1907887559" anchor-label="setMin" id="904240238%2FFunctions%2F1907887559" data-filterable-set=":preference/main"></a>
-          <div class="table-row" data-filterable-current=":preference/main" data-filterable-set=":preference/main">
+<a data-name="904240238%2FFunctions%2F-1209206659" anchor-label="setMin" id="904240238%2FFunctions%2F-1209206659" data-filterable-set=":preference/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":preference/release" data-filterable-set=":preference/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-min.html"><span>set</span><wbr><span><span>Min</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="904240238%2FFunctions%2F1907887559"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="904240238%2FFunctions%2F-1209206659"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":preference/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-min.html"><span class="token function">setMin</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">min<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Sets the lower bound on the <a href="https://developer.android.com/reference/kotlin/androidx/appcompat/widget/SeslSeekBar.html">SeslSeekBar</a>.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":preference/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-min.html"><span class="token function">setMin</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">min<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Sets the lower bound on the <a href="https://developer.android.com/reference/kotlin/androidx/appcompat/widget/SeslSeekBar.html">SeslSeekBar</a>.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-75913167%2FFunctions%2F1907887559" anchor-label="setOnSeekBarPreferenceChangeListener" id="-75913167%2FFunctions%2F1907887559" data-filterable-set=":preference/main"></a>
-          <div class="table-row" data-filterable-current=":preference/main" data-filterable-set=":preference/main">
+<a data-name="-75913167%2FFunctions%2F-1209206659" anchor-label="setOnSeekBarPreferenceChangeListener" id="-75913167%2FFunctions%2F-1209206659" data-filterable-set=":preference/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":preference/release" data-filterable-set=":preference/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-on-seek-bar-preference-change-listener.html"><span>set</span><wbr><span>On</span><wbr><span>Seek</span><wbr><span>Bar</span><wbr><span>Preference</span><wbr><span>Change</span><wbr><span><span>Listener</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-75913167%2FFunctions%2F1907887559"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-75913167%2FFunctions%2F-1209206659"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":preference/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-on-seek-bar-preference-change-listener.html"><span class="token function">setOnSeekBarPreferenceChangeListener</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">onSeekBarPreferenceChangeListener<span class="token operator">: </span><a href="-on-seek-bar-preference-change-listener/index.html">SeekBarPreference.OnSeekBarPreferenceChangeListener</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":preference/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-on-seek-bar-preference-change-listener.html"><span class="token function">setOnSeekBarPreferenceChangeListener</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">onSeekBarPreferenceChangeListener<span class="token operator">: </span><a href="-on-seek-bar-preference-change-listener/index.html">SeekBarPreference.OnSeekBarPreferenceChangeListener</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-203140604%2FFunctions%2F1907887559" anchor-label="setSeekBarIncrement" id="-203140604%2FFunctions%2F1907887559" data-filterable-set=":preference/main"></a>
-          <div class="table-row" data-filterable-current=":preference/main" data-filterable-set=":preference/main">
+<a data-name="-203140604%2FFunctions%2F-1209206659" anchor-label="setSeekBarIncrement" id="-203140604%2FFunctions%2F-1209206659" data-filterable-set=":preference/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":preference/release" data-filterable-set=":preference/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-seek-bar-increment.html"><span>set</span><wbr><span>Seek</span><wbr><span>Bar</span><wbr><span><span>Increment</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-203140604%2FFunctions%2F1907887559"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-203140604%2FFunctions%2F-1209206659"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":preference/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="set-seek-bar-increment.html"><span class="token function">setSeekBarIncrement</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">seekBarIncrement<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Sets the increment amount on the <a href="https://developer.android.com/reference/kotlin/androidx/appcompat/widget/SeslSeekBar.html">SeslSeekBar</a> for each arrow key press.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":preference/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="set-seek-bar-increment.html"><span class="token function">setSeekBarIncrement</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">seekBarIncrement<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Sets the increment amount on the <a href="https://developer.android.com/reference/kotlin/androidx/appcompat/widget/SeslSeekBar.html">SeslSeekBar</a> for each arrow key press.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-787632950%2FFunctions%2F1907887559" anchor-label="setShowSeekBarValue" id="-787632950%2FFunctions%2F1907887559" data-filterable-set=":preference/main"></a>
-          <div class="table-row" data-filterable-current=":preference/main" data-filterable-set=":preference/main">
+<a data-name="-787632950%2FFunctions%2F-1209206659" anchor-label="setShowSeekBarValue" id="-787632950%2FFunctions%2F-1209206659" data-filterable-set=":preference/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":preference/release" data-filterable-set=":preference/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-show-seek-bar-value.html"><span>set</span><wbr><span>Show</span><wbr><span>Seek</span><wbr><span>Bar</span><wbr><span><span>Value</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-787632950%2FFunctions%2F1907887559"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-787632950%2FFunctions%2F-1209206659"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":preference/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-show-seek-bar-value.html"><span class="token function">setShowSeekBarValue</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">showSeekBarValue<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Sets whether the current <a href="https://developer.android.com/reference/kotlin/androidx/appcompat/widget/SeslSeekBar.html">SeslSeekBar</a> value is displayed to the user.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":preference/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-show-seek-bar-value.html"><span class="token function">setShowSeekBarValue</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">showSeekBarValue<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Sets whether the current <a href="https://developer.android.com/reference/kotlin/androidx/appcompat/widget/SeslSeekBar.html">SeslSeekBar</a> value is displayed to the user.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1629876599%2FFunctions%2F1907887559" anchor-label="setUpdatesContinuously" id="-1629876599%2FFunctions%2F1907887559" data-filterable-set=":preference/main"></a>
-          <div class="table-row" data-filterable-current=":preference/main" data-filterable-set=":preference/main">
+<a data-name="-1629876599%2FFunctions%2F-1209206659" anchor-label="setUpdatesContinuously" id="-1629876599%2FFunctions%2F-1209206659" data-filterable-set=":preference/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":preference/release" data-filterable-set=":preference/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-updates-continuously.html"><span>set</span><wbr><span>Updates</span><wbr><span><span>Continuously</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1629876599%2FFunctions%2F1907887559"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1629876599%2FFunctions%2F-1209206659"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":preference/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-updates-continuously.html"><span class="token function">setUpdatesContinuously</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">updatesContinuously<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Sets whether the <a href="index.html">SeekBarPreference</a> should continuously save the <a href="https://developer.android.com/reference/kotlin/androidx/appcompat/widget/SeslSeekBar.html">SeslSeekBar</a> value while it is being dragged.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":preference/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-updates-continuously.html"><span class="token function">setUpdatesContinuously</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">updatesContinuously<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Sets whether the <a href="index.html">SeekBarPreference</a> should continuously save the <a href="https://developer.android.com/reference/kotlin/androidx/appcompat/widget/SeslSeekBar.html">SeslSeekBar</a> value while it is being dragged.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-572290675%2FFunctions%2F1907887559" anchor-label="setValue" id="-572290675%2FFunctions%2F1907887559" data-filterable-set=":preference/main"></a>
-          <div class="table-row" data-filterable-current=":preference/main" data-filterable-set=":preference/main">
+<a data-name="-572290675%2FFunctions%2F-1209206659" anchor-label="setValue" id="-572290675%2FFunctions%2F-1209206659" data-filterable-set=":preference/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":preference/release" data-filterable-set=":preference/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-value.html"><span>set</span><wbr><span><span>Value</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-572290675%2FFunctions%2F1907887559"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-572290675%2FFunctions%2F-1209206659"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":preference/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-value.html"><span class="token function">setValue</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">seekBarValue<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Sets the current progress of the <a href="https://developer.android.com/reference/kotlin/androidx/appcompat/widget/SeslSeekBar.html">SeslSeekBar</a>.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":preference/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-value.html"><span class="token function">setValue</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">seekBarValue<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Sets the current progress of the <a href="https://developer.android.com/reference/kotlin/androidx/appcompat/widget/SeslSeekBar.html">SeslSeekBar</a>.</div></div></div>
                 </div>
               </div>
             </div>
@@ -402,17 +401,21 @@ max</code>) can be set directly on the preference widget layout.</p></div></div>
   </div>
 </div>
     <div class="footer">
-        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
-        <span>© 2026 Copyright</span>
-        <span class="pull-right">
-            <span>Generated by </span>
-            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
-                <span>dokka</span>
-            </a>
-        </span>
-    </div>
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
             </div>
         </div>
     </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

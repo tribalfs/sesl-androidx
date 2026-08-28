@@ -1,42 +1,39 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
     <title>requestFontWithFallbackChain</title>
-<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../";</script>
-    <script>document.documentElement.classList.replace("no-js","js");</script>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
     <script>const storage = localStorage.getItem("dokka-dark-mode")
-    if (storage == null) {
+      if (storage == null) {
         const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
         if (osDarkSchemePreferred === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    } else {
+      } else {
         const savedDarkMode = JSON.parse(storage)
-        if(savedDarkMode === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    }
+      }
     </script>
-<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
 <script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
 <link href="../../../styles/style.css" rel="Stylesheet">
 <link href="../../../styles/main.css" rel="Stylesheet">
 <link href="../../../styles/prism.css" rel="Stylesheet">
 <link href="../../../styles/logo-styles.css" rel="Stylesheet">
-<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
 <link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
-<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/safe-local-storage_blocking.js"></script>
 <script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
 <script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
 <script type="text/javascript" src="../../../scripts/main.js" defer></script>
 <script type="text/javascript" src="../../../scripts/prism.js" async></script>
-<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script>
-<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script></head>
 <body>
-    <div class="root">
-    <nav class="navigation theme-dark" id="navigation-wrapper">
-<a class="library-name--link" href="../../../index.html">
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../../index.html" tabindex="1">
                     sesl.androidx
             </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
         </button>
@@ -44,71 +41,77 @@
         <div class="library-version" id="library-version">
         </div>
         <div class="navigation-controls">
-        <div class="filter-section filter-section_loading" id="filter-section">
-                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":core/main">main</button>
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":core/release">release</button>
             <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
                 <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
-                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
-                    <div class="dropdown--header"><span>Platform filter</span>
-                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
                             <i class="ui-kit-icon ui-kit-icon_cross"></i>
                         </button>
                     </div>
                         <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
                             <label class="checkbox">
-                                <input type="checkbox" class="checkbox--input" id=":core/main" data-filter=":core/main">
+                                <input type="checkbox" class="checkbox--input" id=":core/release" data-filter=":core/release">
                                 <span class="checkbox--icon"></span>
-                                main
+                                release
                             </label>
                         </li>
                 </ul>
                 <div class="dropdown--overlay"></div>
             </div>
-        </div>
+        </ul>
             <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
             </button>
             <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
                 API
             </div>
         </div>
-    </nav>
-        <div id="container">
-            <div class="sidebar" id="leftColumn">
-                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
-                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox">
-                        <div class="dropdown--header">
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
                             <span>
                                     sesl.androidx
                             </span>
-                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
-                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
-                            </button>
-                        </div>
-                        <div class="sidebar--inner" id="sideMenu"></div>
-                    </ul>
-                    <div class="dropdown--overlay"></div>
-                </div>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
             </div>
-            <div id="main">
-<div class="main-content" data-page-type="member" id="content" pageids="core::androidx.core.provider/FontsContractCompat/requestFontWithFallbackChain/#android.content.Context#java.util.List<androidx.core.provider.FontRequest>#int#java.util.concurrent.Executor#java.util.concurrent.Executor#androidx.core.provider.FontsContractCompat.FontRequestCallback/PointingToDeclaration//-108886845">
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="member" id="content" pageids="core::androidx.core.provider/FontsContractCompat/requestFontWithFallbackChain/#android.content.Context#java.util.List<androidx.core.provider.FontRequest>#int#java.util.concurrent.Executor#java.util.concurrent.Executor#androidx.core.provider.FontsContractCompat.FontRequestCallback/PointingToDeclaration//-232177031">
   <div class="breadcrumbs"><a href="../../index.html">core</a><span class="delimiter">/</span><a href="../index.html">androidx.core.provider</a><span class="delimiter">/</span><a href="index.html">FontsContractCompat</a><span class="delimiter">/</span><span class="current">requestFontWithFallbackChain</span></div>
   <div class="cover ">
     <h1 class="cover"><span>request</span><wbr><span>Font</span><wbr><span>With</span><wbr><span>Fallback</span><wbr><span><span>Chain</span></span></h1>
   </div>
-  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="request-font-with-fallback-chain.html"><span class="token function">requestFontWithFallbackChain</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>context<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>requests<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="../-font-request/index.html">FontRequest</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">style<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span>loadingExecutor<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/java/util/concurrent/Executor.html">Executor</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>callbackExecutor<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/java/util/concurrent/Executor.html">Executor</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>callback<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="-font-request-callback/index.html">FontsContractCompat.FontRequestCallback</a></span></span><span class="token punctuation">)</span><span class="clearfix"><span class="floating-right">(<a href="https://github.com/tribalfs/sesl-androidx/blob/sesl-androidx-main/core/core/src/main/java/androidx/core/provider/FontsContractCompat.java#L202">source</a>)</span></span></div><p class="paragraph">Request a font async as specified with <a href="../-font-request/index.html">FontRequest</a> Loading may take several seconds, and the <code class="lang-kotlin">loadingExecutor</code> passed should be available to run blocking requests for several seconds. Results will be returned via <code class="lang-kotlin">callbackExecutor</code>.</p><h4 class="">Parameters</h4><div class="table"><div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>context</span></span></u></div></span></div><div><div class="title"><p class="paragraph">A context to be used for fetching from font provider</p></div></div></div></div><div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>requests</span></span></u></div></span></div><div><div class="title"><p class="paragraph">An array of <a href="../-font-request/index.html">FontRequest</a> objects that identify the provider and query for the request, followed by any fallbacks. Fallbacks are used in the order specified. Note that the performance implications of font fallback scale with the number of fonts involved, so the length of this parameter should be kept to a minimum; we recommend no more than 2 (that is, the primary font and a single downloadable custom fallback).</p></div></div></div></div><div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>style</span></span></u></div></span></div><div><div class="title"><p class="paragraph">Typeface Style such as <a href="https://developer.android.com/reference/kotlin/android/graphics/Typeface.html#normal">NORMAL</a>, <a href="https://developer.android.com/reference/kotlin/android/graphics/Typeface.html#bold">BOLD</a><a href="https://developer.android.com/reference/kotlin/android/graphics/Typeface.html#italic">ITALIC</a>, <a href="https://developer.android.com/reference/kotlin/android/graphics/Typeface.html#bold_italic">BOLD_ITALIC</a>.</p></div></div></div></div><div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>loading</span><wbr><span><span>Executor</span></span></u></div></span></div><div><div class="title"><p class="paragraph">executor to load font on. Loading may take several _seconds_. If <code class="lang-kotlin">null</code>, a default executor shared with other null-requests will be used.</p></div></div></div></div><div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>callback</span><wbr><span><span>Executor</span></span></u></div></span></div><div><div class="title"><p class="paragraph">Used to dispatch callback</p></div></div></div></div><div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>callback</span></span></u></div></span></div><div><div class="title"><p class="paragraph">A callback that will be triggered when results are obtained.</p></div></div></div></div></div></div></div>
+  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="request-font-with-fallback-chain.html"><span class="token function">requestFontWithFallbackChain</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>context<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>requests<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="../-font-request/index.html">FontRequest</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">style<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span>loadingExecutor<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/Nullable///PointingToDeclaration/"><span class="token annotation builtin">Nullable</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/java/util/concurrent/Executor.html">Executor</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>callbackExecutor<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="https://developer.android.com/reference/kotlin/java/util/concurrent/Executor.html">Executor</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span>callback<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.jspecify.annotations/NonNull///PointingToDeclaration/"><span class="token annotation builtin">NonNull</span></span>&nbsp;</span><a href="-font-request-callback/index.html">FontsContractCompat.FontRequestCallback</a></span></span><span class="token punctuation">)</span></div><p class="paragraph">Request a font async as specified with <a href="../-font-request/index.html">FontRequest</a> Loading may take several seconds, and the <code class="lang-java">loadingExecutor</code> passed should be available to run blocking requests for several seconds. Results will be returned via <code class="lang-java">callbackExecutor</code>.</p><h4 class="tableheader">Parameters</h4><div class="table"><div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>context</span></span></u></div></span></div><div><div class="title"><p class="paragraph">A context to be used for fetching from font provider</p></div></div></div></div><div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>requests</span></span></u></div></span></div><div><div class="title"><p class="paragraph">An array of <a href="../-font-request/index.html">FontRequest</a> objects that identify the provider and query for the request, followed by any fallbacks. Fallbacks are used in the order specified. Note that the performance implications of font fallback scale with the number of fonts involved, so the length of this parameter should be kept to a minimum; we recommend no more than 2 (that is, the primary font and a single downloadable custom fallback).</p></div></div></div></div><div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>style</span></span></u></div></span></div><div><div class="title"><p class="paragraph">Typeface Style such as <a href="https://developer.android.com/reference/kotlin/android/graphics/Typeface.html#NORMAL">NORMAL</a>, <a href="https://developer.android.com/reference/kotlin/android/graphics/Typeface.html#BOLD">BOLD</a><a href="https://developer.android.com/reference/kotlin/android/graphics/Typeface.html#ITALIC">ITALIC</a>, <a href="https://developer.android.com/reference/kotlin/android/graphics/Typeface.html#BOLD_ITALIC">BOLD_ITALIC</a>.</p></div></div></div></div><div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>loading</span><wbr><span><span>Executor</span></span></u></div></span></div><div><div class="title"><p class="paragraph">executor to load font on. Loading may take several _seconds_. If <code class="lang-java">null</code>, a default executor shared with other null-requests will be used.</p></div></div></div></div><div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>callback</span><wbr><span><span>Executor</span></span></u></div></span></div><div><div class="title"><p class="paragraph">Used to dispatch callback</p></div></div></div></div><div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>callback</span></span></u></div></span></div><div><div class="title"><p class="paragraph">A callback that will be triggered when results are obtained.</p></div></div></div></div></div></div></div>
 </div>
     <div class="footer">
-        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
-        <span>© 2026 Copyright</span>
-        <span class="pull-right">
-            <span>Generated by </span>
-            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
-                <span>dokka</span>
-            </a>
-        </span>
-    </div>
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
             </div>
         </div>
     </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

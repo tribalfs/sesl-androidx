@@ -1,42 +1,39 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
     <title>Companion</title>
-<link href="../../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../../";</script>
-    <script>document.documentElement.classList.replace("no-js","js");</script>
+<link href="../../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
     <script>const storage = localStorage.getItem("dokka-dark-mode")
-    if (storage == null) {
+      if (storage == null) {
         const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
         if (osDarkSchemePreferred === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    } else {
+      } else {
         const savedDarkMode = JSON.parse(storage)
-        if(savedDarkMode === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    }
+      }
     </script>
-<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
 <script type="text/javascript" src="../../../../scripts/sourceset_dependencies.js" async></script>
 <link href="../../../../styles/style.css" rel="Stylesheet">
 <link href="../../../../styles/main.css" rel="Stylesheet">
 <link href="../../../../styles/prism.css" rel="Stylesheet">
 <link href="../../../../styles/logo-styles.css" rel="Stylesheet">
-<link href="../../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
 <link href="../../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
-<script type="text/javascript" src="../../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../../scripts/safe-local-storage_blocking.js"></script>
 <script type="text/javascript" src="../../../../scripts/navigation-loader.js" async></script>
 <script type="text/javascript" src="../../../../scripts/platform-content-handler.js" async></script>
 <script type="text/javascript" src="../../../../scripts/main.js" defer></script>
 <script type="text/javascript" src="../../../../scripts/prism.js" async></script>
-<script type="text/javascript" src="../../../../ui-kit/ui-kit.min.js" defer></script>
-<script type="text/javascript" src="../../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<script type="text/javascript" src="../../../../ui-kit/ui-kit.min.js" defer></script></head>
 <body>
-    <div class="root">
-    <nav class="navigation theme-dark" id="navigation-wrapper">
-<a class="library-name--link" href="../../../../index.html">
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../../../index.html" tabindex="1">
                     sesl.androidx
             </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
         </button>
@@ -44,284 +41,286 @@
         <div class="library-version" id="library-version">
         </div>
         <div class="navigation-controls">
-        <div class="filter-section filter-section_loading" id="filter-section">
-                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":slidingpanelayout/main">main</button>
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":slidingpanelayout/release">release</button>
             <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
                 <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
-                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
-                    <div class="dropdown--header"><span>Platform filter</span>
-                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
                             <i class="ui-kit-icon ui-kit-icon_cross"></i>
                         </button>
                     </div>
                         <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
                             <label class="checkbox">
-                                <input type="checkbox" class="checkbox--input" id=":slidingpanelayout/main" data-filter=":slidingpanelayout/main">
+                                <input type="checkbox" class="checkbox--input" id=":slidingpanelayout/release" data-filter=":slidingpanelayout/release">
                                 <span class="checkbox--icon"></span>
-                                main
+                                release
                             </label>
                         </li>
                 </ul>
                 <div class="dropdown--overlay"></div>
             </div>
-        </div>
+        </ul>
             <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
             </button>
             <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
                 API
             </div>
         </div>
-    </nav>
-        <div id="container">
-            <div class="sidebar" id="leftColumn">
-                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
-                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox">
-                        <div class="dropdown--header">
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
                             <span>
                                     sesl.androidx
                             </span>
-                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
-                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
-                            </button>
-                        </div>
-                        <div class="sidebar--inner" id="sideMenu"></div>
-                    </ul>
-                    <div class="dropdown--overlay"></div>
-                </div>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
             </div>
-            <div id="main">
-<div class="main-content" data-page-type="classlike" id="content" pageids="slidingpanelayout::androidx.slidingpanelayout.widget/SlidingPaneLayout.Companion///PointingToDeclaration//-2069516396">
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="slidingpanelayout::androidx.slidingpanelayout.widget/SlidingPaneLayout.Companion///PointingToDeclaration//1287343242">
   <div class="breadcrumbs"><a href="../../../index.html">slidingpanelayout</a><span class="delimiter">/</span><a href="../../index.html">androidx.slidingpanelayout.widget</a><span class="delimiter">/</span><a href="../index.html">SlidingPaneLayout</a><span class="delimiter">/</span><span class="current">Companion</span></div>
   <div class="cover ">
     <h1 class="cover"><span><span>Companion</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":slidingpanelayout/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="index.html">Companion</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/tribalfs/sesl-androidx/blob/sesl-androidx-main/slidingpanelayout/slidingpanelayout/src/main/java/androidx/slidingpanelayout/widget/SlidingPaneLayout.kt#L2848">source</a>)</span></span></div></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":slidingpanelayout/release"><div class="symbol monospace"><span class="token keyword">object </span><a href="index.html">Companion</a></div></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
     <div class="tabs-section-body">
       <div data-togglable="PROPERTY">
-        <h2 class="">Properties</h2>
-        <div class="table"><a data-name="1729530882%2FProperties%2F-2069516396" anchor-label="LOCK_MODE_LOCKED" id="1729530882%2FProperties%2F-2069516396" data-filterable-set=":slidingpanelayout/main"></a>
-          <div class="table-row" data-filterable-current=":slidingpanelayout/main" data-filterable-set=":slidingpanelayout/main">
+        <h2 class="tableheader">Properties</h2>
+        <div class="table"><a data-name="1729530882%2FProperties%2F1287343242" anchor-label="LOCK_MODE_LOCKED" id="1729530882%2FProperties%2F1287343242" data-filterable-set=":slidingpanelayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":slidingpanelayout/release" data-filterable-set=":slidingpanelayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-l-o-c-k_-m-o-d-e_-l-o-c-k-e-d.html"><span>LOCK_</span><wbr><span>MODE_</span><wbr><span>LOCKED</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1729530882%2FProperties%2F-2069516396"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1729530882%2FProperties%2F1287343242"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":slidingpanelayout/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-l-o-c-k_-m-o-d-e_-l-o-c-k-e-d.html">LOCK_MODE_LOCKED</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">3</span></div><div class="brief "><p class="paragraph">The user cannot swipe between list and detail panes, though the app can open or close the drawer/list pane programmatically.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":slidingpanelayout/release"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-l-o-c-k_-m-o-d-e_-l-o-c-k-e-d.html">LOCK_MODE_LOCKED</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">3</span></div><div class="brief "><p class="paragraph">The user cannot swipe between list and detail panes, though the app can open or close the drawer/list pane programmatically.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1521720403%2FProperties%2F-2069516396" anchor-label="LOCK_MODE_LOCKED_CLOSED" id="-1521720403%2FProperties%2F-2069516396" data-filterable-set=":slidingpanelayout/main"></a>
-          <div class="table-row" data-filterable-current=":slidingpanelayout/main" data-filterable-set=":slidingpanelayout/main">
+<a data-name="-1521720403%2FProperties%2F1287343242" anchor-label="LOCK_MODE_LOCKED_CLOSED" id="-1521720403%2FProperties%2F1287343242" data-filterable-set=":slidingpanelayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":slidingpanelayout/release" data-filterable-set=":slidingpanelayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-l-o-c-k_-m-o-d-e_-l-o-c-k-e-d_-c-l-o-s-e-d.html"><span>LOCK_</span><wbr><span>MODE_</span><wbr><span>LOCKED_</span><wbr><span>CLOSED</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1521720403%2FProperties%2F-2069516396"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1521720403%2FProperties%2F1287343242"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":slidingpanelayout/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-l-o-c-k_-m-o-d-e_-l-o-c-k-e-d_-c-l-o-s-e-d.html">LOCK_MODE_LOCKED_CLOSED</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">2</span></div><div class="brief "><p class="paragraph">The drawer/list pane is locked in a closed position. The user cannot swipe to open the drawer/list pane, but the app can open it programmatically.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":slidingpanelayout/release"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-l-o-c-k_-m-o-d-e_-l-o-c-k-e-d_-c-l-o-s-e-d.html">LOCK_MODE_LOCKED_CLOSED</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">2</span></div><div class="brief "><p class="paragraph">The drawer/list pane is locked in a closed position. The user cannot swipe to open the drawer/list pane, but the app can open it programmatically.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1853458545%2FProperties%2F-2069516396" anchor-label="LOCK_MODE_LOCKED_OPEN" id="-1853458545%2FProperties%2F-2069516396" data-filterable-set=":slidingpanelayout/main"></a>
-          <div class="table-row" data-filterable-current=":slidingpanelayout/main" data-filterable-set=":slidingpanelayout/main">
+<a data-name="-1853458545%2FProperties%2F1287343242" anchor-label="LOCK_MODE_LOCKED_OPEN" id="-1853458545%2FProperties%2F1287343242" data-filterable-set=":slidingpanelayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":slidingpanelayout/release" data-filterable-set=":slidingpanelayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-l-o-c-k_-m-o-d-e_-l-o-c-k-e-d_-o-p-e-n.html"><span>LOCK_</span><wbr><span>MODE_</span><wbr><span>LOCKED_</span><wbr><span>OPEN</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1853458545%2FProperties%2F-2069516396"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1853458545%2FProperties%2F1287343242"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":slidingpanelayout/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-l-o-c-k_-m-o-d-e_-l-o-c-k-e-d_-o-p-e-n.html">LOCK_MODE_LOCKED_OPEN</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">1</span></div><div class="brief "><p class="paragraph">The drawer/list pane is locked in an open position. The user cannot swipe to close the drawer/list pane, but the app can close it programmatically.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":slidingpanelayout/release"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-l-o-c-k_-m-o-d-e_-l-o-c-k-e-d_-o-p-e-n.html">LOCK_MODE_LOCKED_OPEN</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">1</span></div><div class="brief "><p class="paragraph">The drawer/list pane is locked in an open position. The user cannot swipe to close the drawer/list pane, but the app can close it programmatically.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-370170231%2FProperties%2F-2069516396" anchor-label="LOCK_MODE_UNLOCKED" id="-370170231%2FProperties%2F-2069516396" data-filterable-set=":slidingpanelayout/main"></a>
-          <div class="table-row" data-filterable-current=":slidingpanelayout/main" data-filterable-set=":slidingpanelayout/main">
+<a data-name="-370170231%2FProperties%2F1287343242" anchor-label="LOCK_MODE_UNLOCKED" id="-370170231%2FProperties%2F1287343242" data-filterable-set=":slidingpanelayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":slidingpanelayout/release" data-filterable-set=":slidingpanelayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-l-o-c-k_-m-o-d-e_-u-n-l-o-c-k-e-d.html"><span>LOCK_</span><wbr><span>MODE_</span><wbr><span>UNLOCKED</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-370170231%2FProperties%2F-2069516396"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-370170231%2FProperties%2F1287343242"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":slidingpanelayout/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-l-o-c-k_-m-o-d-e_-u-n-l-o-c-k-e-d.html">LOCK_MODE_UNLOCKED</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span></div><div class="brief "><p class="paragraph">User can freely swipe between drawer/list and detail panes.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":slidingpanelayout/release"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-l-o-c-k_-m-o-d-e_-u-n-l-o-c-k-e-d.html">LOCK_MODE_UNLOCKED</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span></div><div class="brief "><p class="paragraph">User can freely swipe between drawer/list and detail panes.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1728962654%2FProperties%2F-2069516396" anchor-label="PENDING_ACTION_COLLAPSED" id="1728962654%2FProperties%2F-2069516396" data-filterable-set=":slidingpanelayout/main"></a>
-          <div class="table-row" data-filterable-current=":slidingpanelayout/main" data-filterable-set=":slidingpanelayout/main">
+<a data-name="1728962654%2FProperties%2F1287343242" anchor-label="PENDING_ACTION_COLLAPSED" id="1728962654%2FProperties%2F1287343242" data-filterable-set=":slidingpanelayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":slidingpanelayout/release" data-filterable-set=":slidingpanelayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-p-e-n-d-i-n-g_-a-c-t-i-o-n_-c-o-l-l-a-p-s-e-d.html"><span>PENDING_</span><wbr><span>ACTION_</span><wbr><span>COLLAPSED</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1728962654%2FProperties%2F-2069516396"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1728962654%2FProperties%2F1287343242"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":slidingpanelayout/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-p-e-n-d-i-n-g_-a-c-t-i-o-n_-c-o-l-l-a-p-s-e-d.html">PENDING_ACTION_COLLAPSED</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">2</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":slidingpanelayout/release"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-p-e-n-d-i-n-g_-a-c-t-i-o-n_-c-o-l-l-a-p-s-e-d.html">PENDING_ACTION_COLLAPSED</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">2</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="51555570%2FProperties%2F-2069516396" anchor-label="PENDING_ACTION_COLLAPSED_LOCK" id="51555570%2FProperties%2F-2069516396" data-filterable-set=":slidingpanelayout/main"></a>
-          <div class="table-row" data-filterable-current=":slidingpanelayout/main" data-filterable-set=":slidingpanelayout/main">
+<a data-name="51555570%2FProperties%2F1287343242" anchor-label="PENDING_ACTION_COLLAPSED_LOCK" id="51555570%2FProperties%2F1287343242" data-filterable-set=":slidingpanelayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":slidingpanelayout/release" data-filterable-set=":slidingpanelayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-p-e-n-d-i-n-g_-a-c-t-i-o-n_-c-o-l-l-a-p-s-e-d_-l-o-c-k.html"><span>PENDING_</span><wbr><span>ACTION_</span><wbr><span>COLLAPSED_</span><wbr><span>LOCK</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="51555570%2FProperties%2F-2069516396"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="51555570%2FProperties%2F1287343242"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":slidingpanelayout/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-p-e-n-d-i-n-g_-a-c-t-i-o-n_-c-o-l-l-a-p-s-e-d_-l-o-c-k.html">PENDING_ACTION_COLLAPSED_LOCK</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">258</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":slidingpanelayout/release"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-p-e-n-d-i-n-g_-a-c-t-i-o-n_-c-o-l-l-a-p-s-e-d_-l-o-c-k.html">PENDING_ACTION_COLLAPSED_LOCK</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">258</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="306566956%2FProperties%2F-2069516396" anchor-label="PENDING_ACTION_EXPANDED" id="306566956%2FProperties%2F-2069516396" data-filterable-set=":slidingpanelayout/main"></a>
-          <div class="table-row" data-filterable-current=":slidingpanelayout/main" data-filterable-set=":slidingpanelayout/main">
+<a data-name="306566956%2FProperties%2F1287343242" anchor-label="PENDING_ACTION_EXPANDED" id="306566956%2FProperties%2F1287343242" data-filterable-set=":slidingpanelayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":slidingpanelayout/release" data-filterable-set=":slidingpanelayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-p-e-n-d-i-n-g_-a-c-t-i-o-n_-e-x-p-a-n-d-e-d.html"><span>PENDING_</span><wbr><span>ACTION_</span><wbr><span>EXPANDED</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="306566956%2FProperties%2F-2069516396"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="306566956%2FProperties%2F1287343242"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":slidingpanelayout/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-p-e-n-d-i-n-g_-a-c-t-i-o-n_-e-x-p-a-n-d-e-d.html">PENDING_ACTION_EXPANDED</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">1</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":slidingpanelayout/release"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-p-e-n-d-i-n-g_-a-c-t-i-o-n_-e-x-p-a-n-d-e-d.html">PENDING_ACTION_EXPANDED</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">1</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-370489628%2FProperties%2F-2069516396" anchor-label="PENDING_ACTION_EXPANDED_LOCK" id="-370489628%2FProperties%2F-2069516396" data-filterable-set=":slidingpanelayout/main"></a>
-          <div class="table-row" data-filterable-current=":slidingpanelayout/main" data-filterable-set=":slidingpanelayout/main">
+<a data-name="-370489628%2FProperties%2F1287343242" anchor-label="PENDING_ACTION_EXPANDED_LOCK" id="-370489628%2FProperties%2F1287343242" data-filterable-set=":slidingpanelayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":slidingpanelayout/release" data-filterable-set=":slidingpanelayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-p-e-n-d-i-n-g_-a-c-t-i-o-n_-e-x-p-a-n-d-e-d_-l-o-c-k.html"><span>PENDING_</span><wbr><span>ACTION_</span><wbr><span>EXPANDED_</span><wbr><span>LOCK</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-370489628%2FProperties%2F-2069516396"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-370489628%2FProperties%2F1287343242"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":slidingpanelayout/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-p-e-n-d-i-n-g_-a-c-t-i-o-n_-e-x-p-a-n-d-e-d_-l-o-c-k.html">PENDING_ACTION_EXPANDED_LOCK</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">257</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":slidingpanelayout/release"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-p-e-n-d-i-n-g_-a-c-t-i-o-n_-e-x-p-a-n-d-e-d_-l-o-c-k.html">PENDING_ACTION_EXPANDED_LOCK</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">257</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="901942669%2FProperties%2F-2069516396" anchor-label="PENDING_ACTION_NONE" id="901942669%2FProperties%2F-2069516396" data-filterable-set=":slidingpanelayout/main"></a>
-          <div class="table-row" data-filterable-current=":slidingpanelayout/main" data-filterable-set=":slidingpanelayout/main">
+<a data-name="901942669%2FProperties%2F1287343242" anchor-label="PENDING_ACTION_NONE" id="901942669%2FProperties%2F1287343242" data-filterable-set=":slidingpanelayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":slidingpanelayout/release" data-filterable-set=":slidingpanelayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-p-e-n-d-i-n-g_-a-c-t-i-o-n_-n-o-n-e.html"><span>PENDING_</span><wbr><span>ACTION_</span><wbr><span>NONE</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="901942669%2FProperties%2F-2069516396"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="901942669%2FProperties%2F1287343242"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":slidingpanelayout/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-p-e-n-d-i-n-g_-a-c-t-i-o-n_-n-o-n-e.html">PENDING_ACTION_NONE</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":slidingpanelayout/release"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-p-e-n-d-i-n-g_-a-c-t-i-o-n_-n-o-n-e.html">PENDING_ACTION_NONE</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="961405470%2FProperties%2F-2069516396" anchor-label="SESL_STATE_CLOSE" id="961405470%2FProperties%2F-2069516396" data-filterable-set=":slidingpanelayout/main"></a>
-          <div class="table-row" data-filterable-current=":slidingpanelayout/main" data-filterable-set=":slidingpanelayout/main">
+<a data-name="961405470%2FProperties%2F1287343242" anchor-label="SESL_STATE_CLOSE" id="961405470%2FProperties%2F1287343242" data-filterable-set=":slidingpanelayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":slidingpanelayout/release" data-filterable-set=":slidingpanelayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-s-e-s-l_-s-t-a-t-e_-c-l-o-s-e.html"><span>SESL_</span><wbr><span>STATE_</span><wbr><span>CLOSE</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="961405470%2FProperties%2F-2069516396"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="961405470%2FProperties%2F1287343242"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":slidingpanelayout/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-s-e-s-l_-s-t-a-t-e_-c-l-o-s-e.html">SESL_STATE_CLOSE</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":slidingpanelayout/release"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-s-e-s-l_-s-t-a-t-e_-c-l-o-s-e.html">SESL_STATE_CLOSE</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-975423984%2FProperties%2F-2069516396" anchor-label="SESL_STATE_IDLE" id="-975423984%2FProperties%2F-2069516396" data-filterable-set=":slidingpanelayout/main"></a>
-          <div class="table-row" data-filterable-current=":slidingpanelayout/main" data-filterable-set=":slidingpanelayout/main">
+<a data-name="-975423984%2FProperties%2F1287343242" anchor-label="SESL_STATE_IDLE" id="-975423984%2FProperties%2F1287343242" data-filterable-set=":slidingpanelayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":slidingpanelayout/release" data-filterable-set=":slidingpanelayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-s-e-s-l_-s-t-a-t-e_-i-d-l-e.html"><span>SESL_</span><wbr><span>STATE_</span><wbr><span>IDLE</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-975423984%2FProperties%2F-2069516396"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-975423984%2FProperties%2F1287343242"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":slidingpanelayout/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-s-e-s-l_-s-t-a-t-e_-i-d-l-e.html">SESL_STATE_IDLE</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">2</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":slidingpanelayout/release"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-s-e-s-l_-s-t-a-t-e_-i-d-l-e.html">SESL_STATE_IDLE</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">2</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-2030804902%2FProperties%2F-2069516396" anchor-label="SESL_STATE_OPEN" id="-2030804902%2FProperties%2F-2069516396" data-filterable-set=":slidingpanelayout/main"></a>
-          <div class="table-row" data-filterable-current=":slidingpanelayout/main" data-filterable-set=":slidingpanelayout/main">
+<a data-name="-2030804902%2FProperties%2F1287343242" anchor-label="SESL_STATE_OPEN" id="-2030804902%2FProperties%2F1287343242" data-filterable-set=":slidingpanelayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":slidingpanelayout/release" data-filterable-set=":slidingpanelayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-s-e-s-l_-s-t-a-t-e_-o-p-e-n.html"><span>SESL_</span><wbr><span>STATE_</span><wbr><span>OPEN</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2030804902%2FProperties%2F-2069516396"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2030804902%2FProperties%2F1287343242"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":slidingpanelayout/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-s-e-s-l_-s-t-a-t-e_-o-p-e-n.html">SESL_STATE_OPEN</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">1</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":slidingpanelayout/release"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-s-e-s-l_-s-t-a-t-e_-o-p-e-n.html">SESL_STATE_OPEN</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">1</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-74182708%2FProperties%2F-2069516396" anchor-label="SPLIT_DIVIDER_POSITION_AUTO" id="-74182708%2FProperties%2F-2069516396" data-filterable-set=":slidingpanelayout/main"></a>
-          <div class="table-row" data-filterable-current=":slidingpanelayout/main" data-filterable-set=":slidingpanelayout/main">
+<a data-name="-74182708%2FProperties%2F1287343242" anchor-label="SPLIT_DIVIDER_POSITION_AUTO" id="-74182708%2FProperties%2F1287343242" data-filterable-set=":slidingpanelayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":slidingpanelayout/release" data-filterable-set=":slidingpanelayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-s-p-l-i-t_-d-i-v-i-d-e-r_-p-o-s-i-t-i-o-n_-a-u-t-o.html"><span>SPLIT_</span><wbr><span>DIVIDER_</span><wbr><span>POSITION_</span><wbr><span>AUTO</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-74182708%2FProperties%2F-2069516396"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-74182708%2FProperties%2F1287343242"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":slidingpanelayout/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-s-p-l-i-t_-d-i-v-i-d-e-r_-p-o-s-i-t-i-o-n_-a-u-t-o.html">SPLIT_DIVIDER_POSITION_AUTO</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief "><p class="paragraph">Value for <a href="../split-divider-position.html">splitDividerPosition</a> indicating that the position should be automatically determined by other layout policy (e.g. <a href="../-layout-params/weight.html">LayoutParams.weight</a>) rather than set to a specific pixel value. <a href="../visual-divider-position.html">visualDividerPosition</a> will continue to reflect the currently displayed position of the divider.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":slidingpanelayout/release"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-s-p-l-i-t_-d-i-v-i-d-e-r_-p-o-s-i-t-i-o-n_-a-u-t-o.html">SPLIT_DIVIDER_POSITION_AUTO</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief "><p class="paragraph">Value for <a href="../split-divider-position.html">splitDividerPosition</a> indicating that the position should be automatically determined by other layout policy (e.g. <a href="../-layout-params/weight.html">LayoutParams.weight</a>) rather than set to a specific pixel value. <a href="../visual-divider-position.html">visualDividerPosition</a> will continue to reflect the currently displayed position of the divider.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1500506623%2FProperties%2F-2069516396" anchor-label="USER_RESIZE_RELAYOUT_WHEN_COMPLETE" id="-1500506623%2FProperties%2F-2069516396" data-filterable-set=":slidingpanelayout/main"></a>
-          <div class="table-row" data-filterable-current=":slidingpanelayout/main" data-filterable-set=":slidingpanelayout/main">
+<a data-name="-1500506623%2FProperties%2F1287343242" anchor-label="USER_RESIZE_RELAYOUT_WHEN_COMPLETE" id="-1500506623%2FProperties%2F1287343242" data-filterable-set=":slidingpanelayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":slidingpanelayout/release" data-filterable-set=":slidingpanelayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-u-s-e-r_-r-e-s-i-z-e_-r-e-l-a-y-o-u-t_-w-h-e-n_-c-o-m-p-l-e-t-e.html"><span>USER_</span><wbr><span>RESIZE_</span><wbr><span>RELAYOUT_</span><wbr><span>WHEN_</span><wbr><span>COMPLETE</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1500506623%2FProperties%2F-2069516396"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1500506623%2FProperties%2F1287343242"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":slidingpanelayout/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-field/index.html"><span class="token annotation builtin">JvmField</span></a></div></div><span class="token keyword">val </span><a href="-u-s-e-r_-r-e-s-i-z-e_-r-e-l-a-y-o-u-t_-w-h-e-n_-c-o-m-p-l-e-t-e.html">USER_RESIZE_RELAYOUT_WHEN_COMPLETE</a><span class="token operator">: </span><a href="../-user-resize-behavior/index.html">SlidingPaneLayout.UserResizeBehavior</a></div><div class="brief "><p class="paragraph"><a href="../-user-resize-behavior/index.html">UserResizeBehavior</a> where the divider can be released at any position respecting the minimum sizes of each pane view. Relayout occurs only when the divider is released.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":slidingpanelayout/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-field/index.html"><span class="token annotation builtin">JvmField</span></a></div></div><span class="token keyword">val </span><a href="-u-s-e-r_-r-e-s-i-z-e_-r-e-l-a-y-o-u-t_-w-h-e-n_-c-o-m-p-l-e-t-e.html">USER_RESIZE_RELAYOUT_WHEN_COMPLETE</a><span class="token operator">: </span><a href="../-user-resize-behavior/index.html">SlidingPaneLayout.UserResizeBehavior</a></div><div class="brief "><p class="paragraph"><a href="../-user-resize-behavior/index.html">UserResizeBehavior</a> where the divider can be released at any position respecting the minimum sizes of each pane view. Relayout occurs only when the divider is released.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="840281165%2FProperties%2F-2069516396" anchor-label="USER_RESIZE_RELAYOUT_WHEN_MOVED" id="840281165%2FProperties%2F-2069516396" data-filterable-set=":slidingpanelayout/main"></a>
-          <div class="table-row" data-filterable-current=":slidingpanelayout/main" data-filterable-set=":slidingpanelayout/main">
+<a data-name="840281165%2FProperties%2F1287343242" anchor-label="USER_RESIZE_RELAYOUT_WHEN_MOVED" id="840281165%2FProperties%2F1287343242" data-filterable-set=":slidingpanelayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":slidingpanelayout/release" data-filterable-set=":slidingpanelayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-u-s-e-r_-r-e-s-i-z-e_-r-e-l-a-y-o-u-t_-w-h-e-n_-m-o-v-e-d.html"><span>USER_</span><wbr><span>RESIZE_</span><wbr><span>RELAYOUT_</span><wbr><span>WHEN_</span><wbr><span>MOVED</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="840281165%2FProperties%2F-2069516396"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="840281165%2FProperties%2F1287343242"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":slidingpanelayout/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-field/index.html"><span class="token annotation builtin">JvmField</span></a></div></div><span class="token keyword">val </span><a href="-u-s-e-r_-r-e-s-i-z-e_-r-e-l-a-y-o-u-t_-w-h-e-n_-m-o-v-e-d.html">USER_RESIZE_RELAYOUT_WHEN_MOVED</a><span class="token operator">: </span><a href="../-user-resize-behavior/index.html">SlidingPaneLayout.UserResizeBehavior</a></div><div class="brief "><p class="paragraph"><a href="../-user-resize-behavior/index.html">UserResizeBehavior</a> where the divider can be released at any position respecting the minimum sizes of each pane view, but relayout will occur on each frame when the divider is moved. This setting can have significant performance implications on complex layouts.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":slidingpanelayout/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-field/index.html"><span class="token annotation builtin">JvmField</span></a></div></div><span class="token keyword">val </span><a href="-u-s-e-r_-r-e-s-i-z-e_-r-e-l-a-y-o-u-t_-w-h-e-n_-m-o-v-e-d.html">USER_RESIZE_RELAYOUT_WHEN_MOVED</a><span class="token operator">: </span><a href="../-user-resize-behavior/index.html">SlidingPaneLayout.UserResizeBehavior</a></div><div class="brief "><p class="paragraph"><a href="../-user-resize-behavior/index.html">UserResizeBehavior</a> where the divider can be released at any position respecting the minimum sizes of each pane view, but relayout will occur on each frame when the divider is moved. This setting can have significant performance implications on complex layouts.</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -332,17 +331,21 @@
   </div>
 </div>
     <div class="footer">
-        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
-        <span>© 2026 Copyright</span>
-        <span class="pull-right">
-            <span>Generated by </span>
-            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
-                <span>dokka</span>
-            </a>
-        </span>
-    </div>
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
             </div>
         </div>
     </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

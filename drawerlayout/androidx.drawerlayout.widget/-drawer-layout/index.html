@@ -1,42 +1,39 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
     <title>DrawerLayout</title>
-<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../";</script>
-    <script>document.documentElement.classList.replace("no-js","js");</script>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
     <script>const storage = localStorage.getItem("dokka-dark-mode")
-    if (storage == null) {
+      if (storage == null) {
         const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
         if (osDarkSchemePreferred === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    } else {
+      } else {
         const savedDarkMode = JSON.parse(storage)
-        if(savedDarkMode === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    }
+      }
     </script>
-<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
 <script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
 <link href="../../../styles/style.css" rel="Stylesheet">
 <link href="../../../styles/main.css" rel="Stylesheet">
 <link href="../../../styles/prism.css" rel="Stylesheet">
 <link href="../../../styles/logo-styles.css" rel="Stylesheet">
-<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
 <link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
-<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/safe-local-storage_blocking.js"></script>
 <script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
 <script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
 <script type="text/javascript" src="../../../scripts/main.js" defer></script>
 <script type="text/javascript" src="../../../scripts/prism.js" async></script>
-<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script>
-<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script></head>
 <body>
-    <div class="root">
-    <nav class="navigation theme-dark" id="navigation-wrapper">
-<a class="library-name--link" href="../../../index.html">
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../../index.html" tabindex="1">
                     sesl.androidx
             </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
         </button>
@@ -44,74 +41,76 @@
         <div class="library-version" id="library-version">
         </div>
         <div class="navigation-controls">
-        <div class="filter-section filter-section_loading" id="filter-section">
-                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":drawerlayout/main">main</button>
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":drawerlayout/release">release</button>
             <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
                 <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
-                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
-                    <div class="dropdown--header"><span>Platform filter</span>
-                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
                             <i class="ui-kit-icon ui-kit-icon_cross"></i>
                         </button>
                     </div>
                         <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
                             <label class="checkbox">
-                                <input type="checkbox" class="checkbox--input" id=":drawerlayout/main" data-filter=":drawerlayout/main">
+                                <input type="checkbox" class="checkbox--input" id=":drawerlayout/release" data-filter=":drawerlayout/release">
                                 <span class="checkbox--icon"></span>
-                                main
+                                release
                             </label>
                         </li>
                 </ul>
                 <div class="dropdown--overlay"></div>
             </div>
-        </div>
+        </ul>
             <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
             </button>
             <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
                 API
             </div>
         </div>
-    </nav>
-        <div id="container">
-            <div class="sidebar" id="leftColumn">
-                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
-                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox">
-                        <div class="dropdown--header">
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
                             <span>
                                     sesl.androidx
                             </span>
-                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
-                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
-                            </button>
-                        </div>
-                        <div class="sidebar--inner" id="sideMenu"></div>
-                    </ul>
-                    <div class="dropdown--overlay"></div>
-                </div>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
             </div>
-            <div id="main">
-<div class="main-content" data-page-type="classlike" id="content" pageids="drawerlayout::androidx.drawerlayout.widget/DrawerLayout///PointingToDeclaration//-1677039225">
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="drawerlayout::androidx.drawerlayout.widget/DrawerLayout///PointingToDeclaration//-528776131">
   <div class="breadcrumbs"><a href="../../index.html">drawerlayout</a><span class="delimiter">/</span><a href="../index.html">androidx.drawerlayout.widget</a><span class="delimiter">/</span><span class="current">DrawerLayout</span></div>
   <div class="cover ">
     <h1 class="cover"><span>Drawer</span><wbr><span><span>Layout</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="index.html">DrawerLayout</a> : <a href="https://developer.android.com/reference/kotlin/android/view/ViewGroup.html">ViewGroup</a>, <a href="https://developer.android.com/reference/kotlin/androidx/customview/widget/Openable.html">Openable</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/tribalfs/sesl-androidx/blob/sesl-androidx-main/drawerlayout/drawerlayout/src/main/java/androidx/drawerlayout/widget/DrawerLayout.java#L113">source</a>)</span></span></div><p class="paragraph">(SESL modified) DrawerLayout acts as a top-level container for window content that allows for interactive "drawer" views to be pulled out from one or both vertical edges of the window. </p><p class="paragraph">Drawer positioning and layout is controlled using the <code class="lang-kotlin">android:layout_gravity</code> attribute on child views corresponding to which side of the view you want the drawer to emerge from: left or right (or start/end on platform versions that support layout direction.) Note that you can only have one drawer view for each vertical edge of the window. If your layout configures more than one drawer view per vertical edge of the window, an exception will be thrown at runtime. </p><p class="paragraph">To use a DrawerLayout, position your primary content view as the first child with width and height of <code class="lang-kotlin">match_parent</code> and no <code class="lang-kotlin">layout_gravity&gt;</code>. Add drawers as child views after the main content view and set the <code class="lang-kotlin">layout_gravity</code> appropriately. Drawers commonly use <code class="lang-kotlin">match_parent</code> for height with a fixed width.</p><p class="paragraph"><a href="-drawer-listener/index.html">DrawerListener</a> can be used to monitor the state and motion of drawer views. Avoid performing expensive operations such as layout during animation as it can cause stuttering; try to perform expensive operations during the <a href="-s-t-a-t-e_-i-d-l-e.html">STATE_IDLE</a> state. <a href="-simple-drawer-listener/index.html">SimpleDrawerListener</a> offers default/no-op implementations of each callback method.</p><p class="paragraph">As per the <a href="{@docRoot}design/patterns/navigation-drawer.html">Android Design guide</a>, any drawers positioned to the left/start should always contain content for navigating around the application, whereas any drawers positioned to the right/end should always contain actions to take on the current content. This preserves the same navigation left, actions right structure present in the Action Bar and elsewhere.</p><p class="paragraph">For more information about how to use DrawerLayout, read <a href="{@docRoot}training/implementing-navigation/nav-drawer.html">Creating a Navigation Drawer</a>.</p></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="index.html">DrawerLayout</a> : <a href="https://developer.android.com/reference/kotlin/android/view/ViewGroup.html">ViewGroup</a>, <a href="https://developer.android.com/reference/kotlin/androidx/customview/widget/Openable.html">Openable</a></div><p class="paragraph">(SESL modified) DrawerLayout acts as a top-level container for window content that allows for interactive "drawer" views to be pulled out from one or both vertical edges of the window. </p><p class="paragraph">Drawer positioning and layout is controlled using the <code class="lang-java">android:layout_gravity</code> attribute on child views corresponding to which side of the view you want the drawer to emerge from: left or right (or start/end on platform versions that support layout direction.) Note that you can only have one drawer view for each vertical edge of the window. If your layout configures more than one drawer view per vertical edge of the window, an exception will be thrown at runtime. </p><p class="paragraph">To use a DrawerLayout, position your primary content view as the first child with width and height of <code class="lang-java">match_parent</code> and no <code class="lang-java">layout_gravity&gt;</code>. Add drawers as child views after the main content view and set the <code class="lang-java">layout_gravity</code> appropriately. Drawers commonly use <code class="lang-java">match_parent</code> for height with a fixed width.</p><p class="paragraph"><a href="-drawer-listener/index.html">DrawerListener</a> can be used to monitor the state and motion of drawer views. Avoid performing expensive operations such as layout during animation as it can cause stuttering; try to perform expensive operations during the <a href="-s-t-a-t-e_-i-d-l-e.html">STATE_IDLE</a> state. <a href="-simple-drawer-listener/index.html">SimpleDrawerListener</a> offers default/no-op implementations of each callback method.</p><p class="paragraph">As per the <a href="{@docRoot}design/patterns/navigation-drawer.html">Android Design guide</a>, any drawers positioned to the left/start should always contain content for navigating around the application, whereas any drawers positioned to the right/end should always contain actions to take on the current content. This preserves the same navigation left, actions right structure present in the Action Bar and elsewhere.</p><p class="paragraph">For more information about how to use DrawerLayout, read <a href="{@docRoot}training/implementing-navigation/nav-drawer.html">Creating a Navigation Drawer</a>.</p></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
     <div class="tabs-section-body">
       <div data-togglable="CONSTRUCTOR">
-        <h2 class="">Constructors</h2>
-        <div class="table"><a data-name="2113653808%2FConstructors%2F-1677039225" anchor-label="DrawerLayout" id="2113653808%2FConstructors%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+        <h2 class="tableheader">Constructors</h2>
+        <div class="table"><a data-name="2113653808%2FConstructors%2F-528776131" anchor-label="DrawerLayout" id="2113653808%2FConstructors%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-togglable="CONSTRUCTOR" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-drawer-layout.html"><span>Drawer</span><wbr><span><span>Layout</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2113653808%2FConstructors%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2113653808%2FConstructors%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a><span class="token punctuation">, </span></span><span class="parameter ">defStyleAttr<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a><span class="token punctuation">, </span></span><span class="parameter ">defStyleAttr<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
@@ -119,48 +118,48 @@
         </div>
       </div>
       <div data-togglable="TYPE">
-        <h2 class="">Types</h2>
-        <div class="table"><a data-name="1018334422%2FClasslikes%2F-1677039225" anchor-label="DrawerListener" id="1018334422%2FClasslikes%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+        <h2 class="tableheader">Types</h2>
+        <div class="table"><a data-name="1018334422%2FClasslikes%2F-528776131" anchor-label="DrawerListener" id="1018334422%2FClasslikes%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-drawer-listener/index.html"><span>Drawer</span><wbr><span><span>Listener</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1018334422%2FClasslikes%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1018334422%2FClasslikes%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-drawer-listener/index.html">DrawerListener</a></div><div class="brief ">Listener for monitoring events about drawers.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-drawer-listener/index.html">DrawerListener</a></div><div class="brief ">Listener for monitoring events about drawers.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1781046997%2FClasslikes%2F-1677039225" anchor-label="LayoutParams" id="-1781046997%2FClasslikes%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="-1781046997%2FClasslikes%2F-528776131" anchor-label="LayoutParams" id="-1781046997%2FClasslikes%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-layout-params/index.html"><span>Layout</span><wbr><span><span>Params</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1781046997%2FClasslikes%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1781046997%2FClasslikes%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-layout-params/index.html">LayoutParams</a> : <a href="https://developer.android.com/reference/kotlin/android/view/ViewGroup.MarginLayoutParams.html">ViewGroup.MarginLayoutParams</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-layout-params/index.html">LayoutParams</a> : <a href="https://developer.android.com/reference/kotlin/android/view/ViewGroup.MarginLayoutParams.html">ViewGroup.MarginLayoutParams</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1001435324%2FClasslikes%2F-1677039225" anchor-label="SimpleDrawerListener" id="-1001435324%2FClasslikes%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="-1001435324%2FClasslikes%2F-528776131" anchor-label="SimpleDrawerListener" id="-1001435324%2FClasslikes%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-simple-drawer-listener/index.html"><span>Simple</span><wbr><span>Drawer</span><wbr><span><span>Listener</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1001435324%2FClasslikes%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1001435324%2FClasslikes%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">class </span><a href="-simple-drawer-listener/index.html">SimpleDrawerListener</a> : <a href="-drawer-listener/index.html">DrawerLayout.DrawerListener</a></div><div class="brief ">Stub/no-op implementations of all methods of <a href="-drawer-listener/index.html">DrawerListener</a>.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">class </span><a href="-simple-drawer-listener/index.html">SimpleDrawerListener</a> : <a href="-drawer-listener/index.html">DrawerLayout.DrawerListener</a></div><div class="brief ">Stub/no-op implementations of all methods of <a href="-drawer-listener/index.html">DrawerListener</a>.</div></div></div>
                 </div>
               </div>
             </div>
@@ -168,108 +167,108 @@
         </div>
       </div>
       <div data-togglable="PROPERTY">
-        <h2 class="">Properties</h2>
-        <div class="table"><a data-name="629447931%2FProperties%2F-1677039225" anchor-label="LOCK_MODE_LOCKED_CLOSED" id="629447931%2FProperties%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+        <h2 class="tableheader">Properties</h2>
+        <div class="table"><a data-name="629447931%2FProperties%2F-528776131" anchor-label="LOCK_MODE_LOCKED_CLOSED" id="629447931%2FProperties%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-l-o-c-k_-m-o-d-e_-l-o-c-k-e-d_-c-l-o-s-e-d.html"><span>LOCK_</span><wbr><span>MODE_</span><wbr><span>LOCKED_</span><wbr><span>CLOSED</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="629447931%2FProperties%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="629447931%2FProperties%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-l-o-c-k_-m-o-d-e_-l-o-c-k-e-d_-c-l-o-s-e-d.html">LOCK_MODE_LOCKED_CLOSED</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">1</span></div><div class="brief ">The drawer is locked closed.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-l-o-c-k_-m-o-d-e_-l-o-c-k-e-d_-c-l-o-s-e-d.html">LOCK_MODE_LOCKED_CLOSED</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">1</span></div><div class="brief ">The drawer is locked closed.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1165536349%2FProperties%2F-1677039225" anchor-label="LOCK_MODE_LOCKED_OPEN" id="1165536349%2FProperties%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="1165536349%2FProperties%2F-528776131" anchor-label="LOCK_MODE_LOCKED_OPEN" id="1165536349%2FProperties%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-l-o-c-k_-m-o-d-e_-l-o-c-k-e-d_-o-p-e-n.html"><span>LOCK_</span><wbr><span>MODE_</span><wbr><span>LOCKED_</span><wbr><span>OPEN</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1165536349%2FProperties%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1165536349%2FProperties%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-l-o-c-k_-m-o-d-e_-l-o-c-k-e-d_-o-p-e-n.html">LOCK_MODE_LOCKED_OPEN</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">2</span></div><div class="brief ">The drawer is locked open.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-l-o-c-k_-m-o-d-e_-l-o-c-k-e-d_-o-p-e-n.html">LOCK_MODE_LOCKED_OPEN</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">2</span></div><div class="brief ">The drawer is locked open.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-991569300%2FProperties%2F-1677039225" anchor-label="LOCK_MODE_UNDEFINED" id="-991569300%2FProperties%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="-991569300%2FProperties%2F-528776131" anchor-label="LOCK_MODE_UNDEFINED" id="-991569300%2FProperties%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-l-o-c-k_-m-o-d-e_-u-n-d-e-f-i-n-e-d.html"><span>LOCK_</span><wbr><span>MODE_</span><wbr><span>UNDEFINED</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-991569300%2FProperties%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-991569300%2FProperties%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-l-o-c-k_-m-o-d-e_-u-n-d-e-f-i-n-e-d.html">LOCK_MODE_UNDEFINED</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">3</span></div><div class="brief ">The drawer's lock state is reset to default.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-l-o-c-k_-m-o-d-e_-u-n-d-e-f-i-n-e-d.html">LOCK_MODE_UNDEFINED</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">3</span></div><div class="brief ">The drawer's lock state is reset to default.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1324329861%2FProperties%2F-1677039225" anchor-label="LOCK_MODE_UNLOCKED" id="-1324329861%2FProperties%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="-1324329861%2FProperties%2F-528776131" anchor-label="LOCK_MODE_UNLOCKED" id="-1324329861%2FProperties%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-l-o-c-k_-m-o-d-e_-u-n-l-o-c-k-e-d.html"><span>LOCK_</span><wbr><span>MODE_</span><wbr><span>UNLOCKED</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1324329861%2FProperties%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1324329861%2FProperties%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-l-o-c-k_-m-o-d-e_-u-n-l-o-c-k-e-d.html">LOCK_MODE_UNLOCKED</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span></div><div class="brief ">The drawer is unlocked.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-l-o-c-k_-m-o-d-e_-u-n-l-o-c-k-e-d.html">LOCK_MODE_UNLOCKED</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span></div><div class="brief ">The drawer is unlocked.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-355856951%2FProperties%2F-1677039225" anchor-label="STATE_DRAGGING" id="-355856951%2FProperties%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="-355856951%2FProperties%2F-528776131" anchor-label="STATE_DRAGGING" id="-355856951%2FProperties%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-s-t-a-t-e_-d-r-a-g-g-i-n-g.html"><span>STATE_</span><wbr><span>DRAGGING</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-355856951%2FProperties%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-355856951%2FProperties%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-s-t-a-t-e_-d-r-a-g-g-i-n-g.html">STATE_DRAGGING</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">1</span></div><div class="brief ">Indicates that a drawer is currently being dragged by the user.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-s-t-a-t-e_-d-r-a-g-g-i-n-g.html">STATE_DRAGGING</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">1</span></div><div class="brief ">Indicates that a drawer is currently being dragged by the user.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1227393124%2FProperties%2F-1677039225" anchor-label="STATE_IDLE" id="1227393124%2FProperties%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="1227393124%2FProperties%2F-528776131" anchor-label="STATE_IDLE" id="1227393124%2FProperties%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-s-t-a-t-e_-i-d-l-e.html"><span>STATE_</span><wbr><span>IDLE</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1227393124%2FProperties%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1227393124%2FProperties%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-s-t-a-t-e_-i-d-l-e.html">STATE_IDLE</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span></div><div class="brief ">Indicates that any drawers are in an idle, settled state.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-s-t-a-t-e_-i-d-l-e.html">STATE_IDLE</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span></div><div class="brief ">Indicates that any drawers are in an idle, settled state.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-996811280%2FProperties%2F-1677039225" anchor-label="STATE_SETTLING" id="-996811280%2FProperties%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="-996811280%2FProperties%2F-528776131" anchor-label="STATE_SETTLING" id="-996811280%2FProperties%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-s-t-a-t-e_-s-e-t-t-l-i-n-g.html"><span>STATE_</span><wbr><span>SETTLING</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-996811280%2FProperties%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-996811280%2FProperties%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-s-t-a-t-e_-s-e-t-t-l-i-n-g.html">STATE_SETTLING</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">2</span></div><div class="brief ">Indicates that a drawer is in the process of settling to a final position.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-s-t-a-t-e_-s-e-t-t-l-i-n-g.html">STATE_SETTLING</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">2</span></div><div class="brief ">Indicates that a drawer is in the process of settling to a final position.</div></div></div>
                 </div>
               </div>
             </div>
@@ -277,573 +276,573 @@
         </div>
       </div>
       <div data-togglable="FUNCTION">
-        <h2 class="">Functions</h2>
-        <div class="table"><a data-name="-1336909710%2FFunctions%2F-1677039225" anchor-label="addDrawerListener" id="-1336909710%2FFunctions%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="-1336909710%2FFunctions%2F-528776131" anchor-label="addDrawerListener" id="-1336909710%2FFunctions%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="add-drawer-listener.html"><span>add</span><wbr><span>Drawer</span><wbr><span><span>Listener</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1336909710%2FFunctions%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1336909710%2FFunctions%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="add-drawer-listener.html"><span class="token function">addDrawerListener</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>listener<span class="token operator">: </span><a href="-drawer-listener/index.html">DrawerLayout.DrawerListener</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Adds the specified listener to the list of listeners that will be notified of drawer events.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="add-drawer-listener.html"><span class="token function">addDrawerListener</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>listener<span class="token operator">: </span><a href="-drawer-listener/index.html">DrawerLayout.DrawerListener</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Adds the specified listener to the list of listeners that will be notified of drawer events.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1757537158%2FFunctions%2F-1677039225" anchor-label="addFocusables" id="1757537158%2FFunctions%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="1757537158%2FFunctions%2F-528776131" anchor-label="addFocusables" id="1757537158%2FFunctions%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="add-focusables.html"><span>add</span><wbr><span><span>Focusables</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1757537158%2FFunctions%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1757537158%2FFunctions%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="add-focusables.html"><span class="token function">addFocusables</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">views<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/ArrayList.html">ArrayList</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">direction<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">focusableMode<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="add-focusables.html"><span class="token function">addFocusables</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">views<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/ArrayList.html">ArrayList</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">direction<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">focusableMode<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="651032046%2FFunctions%2F-1677039225" anchor-label="addView" id="651032046%2FFunctions%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="651032046%2FFunctions%2F-528776131" anchor-label="addView" id="651032046%2FFunctions%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="add-view.html"><span>add</span><wbr><span><span>View</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="651032046%2FFunctions%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="651032046%2FFunctions%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="add-view.html"><span class="token function">addView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">child<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token punctuation">, </span></span><span class="parameter ">index<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">params<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/ViewGroup.LayoutParams.html">ViewGroup.LayoutParams</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="add-view.html"><span class="token function">addView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">child<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token punctuation">, </span></span><span class="parameter ">index<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">params<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/ViewGroup.LayoutParams.html">ViewGroup.LayoutParams</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="2041609692%2FFunctions%2F-1677039225" anchor-label="close" id="2041609692%2FFunctions%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="2041609692%2FFunctions%2F-528776131" anchor-label="close" id="2041609692%2FFunctions%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="close.html"><span><span>close</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2041609692%2FFunctions%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2041609692%2FFunctions%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="close.html"><span class="token function">close</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief ">Close the <a href="https://developer.android.com/reference/kotlin/androidx/core/view/GravityCompat.html#start">START</a> drawer by animating it out of view.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="close.html"><span class="token function">close</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief ">Close the <a href="https://developer.android.com/reference/kotlin/androidx/core/view/GravityCompat.html#start">START</a> drawer by animating it out of view.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1651993814%2FFunctions%2F-1677039225" anchor-label="closeDrawer" id="1651993814%2FFunctions%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="1651993814%2FFunctions%2F-528776131" anchor-label="closeDrawer" id="1651993814%2FFunctions%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="close-drawer.html"><span>close</span><wbr><span><span>Drawer</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1651993814%2FFunctions%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1651993814%2FFunctions%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="close-drawer.html"><span class="token function">closeDrawer</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>drawerView<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Close the specified drawer view by animating it into view.</div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="close-drawer.html"><span class="token function">closeDrawer</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">gravity<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Close the specified drawer by animating it out of view.</div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="close-drawer.html"><span class="token function">closeDrawer</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>drawerView<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token punctuation">, </span></span><span class="parameter ">animate<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Close the specified drawer view.</div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="close-drawer.html"><span class="token function">closeDrawer</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">gravity<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">animate<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Close the specified drawer.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="close-drawer.html"><span class="token function">closeDrawer</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>drawerView<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Close the specified drawer view by animating it into view.</div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="close-drawer.html"><span class="token function">closeDrawer</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">gravity<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Close the specified drawer by animating it out of view.</div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="close-drawer.html"><span class="token function">closeDrawer</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>drawerView<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token punctuation">, </span></span><span class="parameter ">animate<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Close the specified drawer view.</div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="close-drawer.html"><span class="token function">closeDrawer</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">gravity<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">animate<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Close the specified drawer.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-357166724%2FFunctions%2F-1677039225" anchor-label="closeDrawers" id="-357166724%2FFunctions%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="-357166724%2FFunctions%2F-528776131" anchor-label="closeDrawers" id="-357166724%2FFunctions%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="close-drawers.html"><span>close</span><wbr><span><span>Drawers</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-357166724%2FFunctions%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-357166724%2FFunctions%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="close-drawers.html"><span class="token function">closeDrawers</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief ">Close all currently open drawer views by animating them out of view.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="close-drawers.html"><span class="token function">closeDrawers</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief ">Close all currently open drawer views by animating them out of view.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-577978256%2FFunctions%2F-1677039225" anchor-label="computeScroll" id="-577978256%2FFunctions%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="-577978256%2FFunctions%2F-528776131" anchor-label="computeScroll" id="-577978256%2FFunctions%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="compute-scroll.html"><span>compute</span><wbr><span><span>Scroll</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-577978256%2FFunctions%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-577978256%2FFunctions%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="compute-scroll.html"><span class="token function">computeScroll</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="compute-scroll.html"><span class="token function">computeScroll</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-2042489563%2FFunctions%2F-1677039225" anchor-label="dispatchGenericMotionEvent" id="-2042489563%2FFunctions%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="-2042489563%2FFunctions%2F-528776131" anchor-label="dispatchGenericMotionEvent" id="-2042489563%2FFunctions%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="dispatch-generic-motion-event.html"><span>dispatch</span><wbr><span>Generic</span><wbr><span>Motion</span><wbr><span><span>Event</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2042489563%2FFunctions%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2042489563%2FFunctions%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="dispatch-generic-motion-event.html"><span class="token function">dispatchGenericMotionEvent</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">event<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/MotionEvent.html">MotionEvent</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="dispatch-generic-motion-event.html"><span class="token function">dispatchGenericMotionEvent</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">event<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/MotionEvent.html">MotionEvent</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="448702926%2FFunctions%2F-1677039225" anchor-label="generateLayoutParams" id="448702926%2FFunctions%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="448702926%2FFunctions%2F-528776131" anchor-label="generateLayoutParams" id="448702926%2FFunctions%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="generate-layout-params.html"><span>generate</span><wbr><span>Layout</span><wbr><span><span>Params</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="448702926%2FFunctions%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="448702926%2FFunctions%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="generate-layout-params.html"><span class="token function">generateLayoutParams</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/ViewGroup.LayoutParams.html">ViewGroup.LayoutParams</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="generate-layout-params.html"><span class="token function">generateLayoutParams</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">attrs<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/util/AttributeSet.html">AttributeSet</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/ViewGroup.LayoutParams.html">ViewGroup.LayoutParams</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1477472912%2FFunctions%2F-1677039225" anchor-label="getDrawerElevation" id="1477472912%2FFunctions%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="1477472912%2FFunctions%2F-528776131" anchor-label="getDrawerElevation" id="1477472912%2FFunctions%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-drawer-elevation.html"><span>get</span><wbr><span>Drawer</span><wbr><span><span>Elevation</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1477472912%2FFunctions%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1477472912%2FFunctions%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-drawer-elevation.html"><span class="token function">getDrawerElevation</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></div><div class="brief ">The base elevation of the drawer(s) relative to the parent, in pixels.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-drawer-elevation.html"><span class="token function">getDrawerElevation</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></div><div class="brief ">The base elevation of the drawer(s) relative to the parent, in pixels.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1510285876%2FFunctions%2F-1677039225" anchor-label="getDrawerLockMode" id="-1510285876%2FFunctions%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="-1510285876%2FFunctions%2F-528776131" anchor-label="getDrawerLockMode" id="-1510285876%2FFunctions%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-drawer-lock-mode.html"><span>get</span><wbr><span>Drawer</span><wbr><span>Lock</span><wbr><span><span>Mode</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1510285876%2FFunctions%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1510285876%2FFunctions%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-drawer-lock-mode.html"><span class="token function">getDrawerLockMode</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>drawerView<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Check the lock mode of the given drawer view.</div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-drawer-lock-mode.html"><span class="token function">getDrawerLockMode</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">edgeGravity<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Check the lock mode of the drawer with the given gravity.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-drawer-lock-mode.html"><span class="token function">getDrawerLockMode</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>drawerView<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Check the lock mode of the given drawer view.</div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-drawer-lock-mode.html"><span class="token function">getDrawerLockMode</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">edgeGravity<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief ">Check the lock mode of the drawer with the given gravity.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="2112788958%2FFunctions%2F-1677039225" anchor-label="getDrawerTitle" id="2112788958%2FFunctions%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="2112788958%2FFunctions%2F-528776131" anchor-label="getDrawerTitle" id="2112788958%2FFunctions%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-drawer-title.html"><span>get</span><wbr><span>Drawer</span><wbr><span><span>Title</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2112788958%2FFunctions%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2112788958%2FFunctions%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-drawer-title.html"><span class="token function">getDrawerTitle</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">edgeGravity<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/CharSequence.html">CharSequence</a></div><div class="brief ">Returns the title of the drawer with the given gravity.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-drawer-title.html"><span class="token function">getDrawerTitle</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">edgeGravity<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/CharSequence.html">CharSequence</a></div><div class="brief ">Returns the title of the drawer with the given gravity.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-208804081%2FFunctions%2F-1677039225" anchor-label="getStatusBarBackgroundDrawable" id="-208804081%2FFunctions%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="-208804081%2FFunctions%2F-528776131" anchor-label="getStatusBarBackgroundDrawable" id="-208804081%2FFunctions%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-status-bar-background-drawable.html"><span>get</span><wbr><span>Status</span><wbr><span>Bar</span><wbr><span>Background</span><wbr><span><span>Drawable</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-208804081%2FFunctions%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-208804081%2FFunctions%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-status-bar-background-drawable.html"><span class="token function">getStatusBarBackgroundDrawable</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/graphics/drawable/Drawable.html">Drawable</a></div><div class="brief ">Gets the drawable used to draw in the insets area for the status bar.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-status-bar-background-drawable.html"><span class="token function">getStatusBarBackgroundDrawable</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/graphics/drawable/Drawable.html">Drawable</a></div><div class="brief ">Gets the drawable used to draw in the insets area for the status bar.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1699527896%2FFunctions%2F-1677039225" anchor-label="isDrawerOpen" id="1699527896%2FFunctions%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="1699527896%2FFunctions%2F-528776131" anchor-label="isDrawerOpen" id="1699527896%2FFunctions%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="is-drawer-open.html"><span>is</span><wbr><span>Drawer</span><wbr><span><span>Open</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1699527896%2FFunctions%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1699527896%2FFunctions%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-drawer-open.html"><span class="token function">isDrawerOpen</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>drawer<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-drawer-open.html"><span class="token function">isDrawerOpen</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">drawerGravity<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Check if the given drawer view is currently in an open state.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-drawer-open.html"><span class="token function">isDrawerOpen</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>drawer<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-drawer-open.html"><span class="token function">isDrawerOpen</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">drawerGravity<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Check if the given drawer view is currently in an open state.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1733506316%2FFunctions%2F-1677039225" anchor-label="isDrawerVisible" id="1733506316%2FFunctions%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="1733506316%2FFunctions%2F-528776131" anchor-label="isDrawerVisible" id="1733506316%2FFunctions%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="is-drawer-visible.html"><span>is</span><wbr><span>Drawer</span><wbr><span><span>Visible</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1733506316%2FFunctions%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1733506316%2FFunctions%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-drawer-visible.html"><span class="token function">isDrawerVisible</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>drawer<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-drawer-visible.html"><span class="token function">isDrawerVisible</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">drawerGravity<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Check if a given drawer view is currently visible on-screen.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-drawer-visible.html"><span class="token function">isDrawerVisible</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>drawer<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-drawer-visible.html"><span class="token function">isDrawerVisible</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">drawerGravity<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Check if a given drawer view is currently visible on-screen.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1774616206%2FFunctions%2F-1677039225" anchor-label="isOpen" id="-1774616206%2FFunctions%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="-1774616206%2FFunctions%2F-528776131" anchor-label="isOpen" id="-1774616206%2FFunctions%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="is-open.html"><span>is</span><wbr><span><span>Open</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1774616206%2FFunctions%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1774616206%2FFunctions%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-open.html"><span class="token function">isOpen</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Check if the <a href="https://developer.android.com/reference/kotlin/androidx/core/view/GravityCompat.html#start">START</a> drawer is currently in an open state.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="is-open.html"><span class="token function">isOpen</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Check if the <a href="https://developer.android.com/reference/kotlin/androidx/core/view/GravityCompat.html#start">START</a> drawer is currently in an open state.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1273264259%2FFunctions%2F-1677039225" anchor-label="onDraw" id="1273264259%2FFunctions%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="1273264259%2FFunctions%2F-528776131" anchor-label="onDraw" id="1273264259%2FFunctions%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-draw.html"><span>on</span><wbr><span><span>Draw</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1273264259%2FFunctions%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1273264259%2FFunctions%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-draw.html"><span class="token function">onDraw</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>c<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/graphics/Canvas.html">Canvas</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-draw.html"><span class="token function">onDraw</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>c<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/graphics/Canvas.html">Canvas</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-731467908%2FFunctions%2F-1677039225" anchor-label="onInterceptTouchEvent" id="-731467908%2FFunctions%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="-731467908%2FFunctions%2F-528776131" anchor-label="onInterceptTouchEvent" id="-731467908%2FFunctions%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-intercept-touch-event.html"><span>on</span><wbr><span>Intercept</span><wbr><span>Touch</span><wbr><span><span>Event</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-731467908%2FFunctions%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-731467908%2FFunctions%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-intercept-touch-event.html"><span class="token function">onInterceptTouchEvent</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">ev<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/MotionEvent.html">MotionEvent</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-intercept-touch-event.html"><span class="token function">onInterceptTouchEvent</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">ev<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/MotionEvent.html">MotionEvent</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1123163999%2FFunctions%2F-1677039225" anchor-label="onKeyDown" id="1123163999%2FFunctions%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="1123163999%2FFunctions%2F-528776131" anchor-label="onKeyDown" id="1123163999%2FFunctions%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-key-down.html"><span>on</span><wbr><span>Key</span><wbr><span><span>Down</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1123163999%2FFunctions%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1123163999%2FFunctions%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-key-down.html"><span class="token function">onKeyDown</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">keyCode<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">event<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/KeyEvent.html">KeyEvent</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-key-down.html"><span class="token function">onKeyDown</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">keyCode<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">event<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/KeyEvent.html">KeyEvent</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="158678872%2FFunctions%2F-1677039225" anchor-label="onKeyUp" id="158678872%2FFunctions%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="158678872%2FFunctions%2F-528776131" anchor-label="onKeyUp" id="158678872%2FFunctions%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-key-up.html"><span>on</span><wbr><span>Key</span><wbr><span><span>Up</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="158678872%2FFunctions%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="158678872%2FFunctions%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-key-up.html"><span class="token function">onKeyUp</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">keyCode<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">event<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/KeyEvent.html">KeyEvent</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-key-up.html"><span class="token function">onKeyUp</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">keyCode<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">event<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/KeyEvent.html">KeyEvent</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="231283683%2FFunctions%2F-1677039225" anchor-label="onRtlPropertiesChanged" id="231283683%2FFunctions%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="231283683%2FFunctions%2F-528776131" anchor-label="onRtlPropertiesChanged" id="231283683%2FFunctions%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-rtl-properties-changed.html"><span>on</span><wbr><span>Rtl</span><wbr><span>Properties</span><wbr><span><span>Changed</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="231283683%2FFunctions%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="231283683%2FFunctions%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-rtl-properties-changed.html"><span class="token function">onRtlPropertiesChanged</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">layoutDirection<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-rtl-properties-changed.html"><span class="token function">onRtlPropertiesChanged</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">layoutDirection<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1042790478%2FFunctions%2F-1677039225" anchor-label="onTouchEvent" id="-1042790478%2FFunctions%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="-1042790478%2FFunctions%2F-528776131" anchor-label="onTouchEvent" id="-1042790478%2FFunctions%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="on-touch-event.html"><span>on</span><wbr><span>Touch</span><wbr><span><span>Event</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1042790478%2FFunctions%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1042790478%2FFunctions%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-touch-event.html"><span class="token function">onTouchEvent</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">ev<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/MotionEvent.html">MotionEvent</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="on-touch-event.html"><span class="token function">onTouchEvent</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">ev<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/MotionEvent.html">MotionEvent</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="604419260%2FFunctions%2F-1677039225" anchor-label="open" id="604419260%2FFunctions%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="604419260%2FFunctions%2F-528776131" anchor-label="open" id="604419260%2FFunctions%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="open.html"><span><span>open</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="604419260%2FFunctions%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="604419260%2FFunctions%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="open.html"><span class="token function">open</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief ">Open the <a href="https://developer.android.com/reference/kotlin/androidx/core/view/GravityCompat.html#start">START</a> drawer by animating it into view.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="open.html"><span class="token function">open</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief ">Open the <a href="https://developer.android.com/reference/kotlin/androidx/core/view/GravityCompat.html#start">START</a> drawer by animating it into view.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="2109597234%2FFunctions%2F-1677039225" anchor-label="openDrawer" id="2109597234%2FFunctions%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="2109597234%2FFunctions%2F-528776131" anchor-label="openDrawer" id="2109597234%2FFunctions%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="open-drawer.html"><span>open</span><wbr><span><span>Drawer</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2109597234%2FFunctions%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2109597234%2FFunctions%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="open-drawer.html"><span class="token function">openDrawer</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>drawerView<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Open the specified drawer view by animating it into view.</div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="open-drawer.html"><span class="token function">openDrawer</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">gravity<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Open the specified drawer by animating it out of view.</div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="open-drawer.html"><span class="token function">openDrawer</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>drawerView<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token punctuation">, </span></span><span class="parameter ">animate<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Open the specified drawer view.</div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="open-drawer.html"><span class="token function">openDrawer</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">gravity<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">animate<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Open the specified drawer.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="open-drawer.html"><span class="token function">openDrawer</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>drawerView<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Open the specified drawer view by animating it into view.</div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="open-drawer.html"><span class="token function">openDrawer</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">gravity<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Open the specified drawer by animating it out of view.</div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="open-drawer.html"><span class="token function">openDrawer</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>drawerView<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a><span class="token punctuation">, </span></span><span class="parameter ">animate<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Open the specified drawer view.</div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="open-drawer.html"><span class="token function">openDrawer</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">gravity<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">animate<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Open the specified drawer.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1314269791%2FFunctions%2F-1677039225" anchor-label="removeDrawerListener" id="-1314269791%2FFunctions%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="-1314269791%2FFunctions%2F-528776131" anchor-label="removeDrawerListener" id="-1314269791%2FFunctions%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="remove-drawer-listener.html"><span>remove</span><wbr><span>Drawer</span><wbr><span><span>Listener</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1314269791%2FFunctions%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1314269791%2FFunctions%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="remove-drawer-listener.html"><span class="token function">removeDrawerListener</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>listener<span class="token operator">: </span><a href="-drawer-listener/index.html">DrawerLayout.DrawerListener</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Removes the specified listener from the list of listeners that will be notified of drawer events.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="remove-drawer-listener.html"><span class="token function">removeDrawerListener</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>listener<span class="token operator">: </span><a href="-drawer-listener/index.html">DrawerLayout.DrawerListener</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Removes the specified listener from the list of listeners that will be notified of drawer events.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-411223865%2FFunctions%2F-1677039225" anchor-label="requestDisallowInterceptTouchEvent" id="-411223865%2FFunctions%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="-411223865%2FFunctions%2F-528776131" anchor-label="requestDisallowInterceptTouchEvent" id="-411223865%2FFunctions%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="request-disallow-intercept-touch-event.html"><span>request</span><wbr><span>Disallow</span><wbr><span>Intercept</span><wbr><span>Touch</span><wbr><span><span>Event</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-411223865%2FFunctions%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-411223865%2FFunctions%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="request-disallow-intercept-touch-event.html"><span class="token function">requestDisallowInterceptTouchEvent</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">disallowIntercept<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="request-disallow-intercept-touch-event.html"><span class="token function">requestDisallowInterceptTouchEvent</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">disallowIntercept<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-349525669%2FFunctions%2F-1677039225" anchor-label="requestLayout" id="-349525669%2FFunctions%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="-349525669%2FFunctions%2F-528776131" anchor-label="requestLayout" id="-349525669%2FFunctions%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="request-layout.html"><span>request</span><wbr><span><span>Layout</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-349525669%2FFunctions%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-349525669%2FFunctions%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="request-layout.html"><span class="token function">requestLayout</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="request-layout.html"><span class="token function">requestLayout</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="100585844%2FFunctions%2F-1677039225" anchor-label="seslSetContentView" id="100585844%2FFunctions%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="100585844%2FFunctions%2F-528776131" anchor-label="seslSetContentView" id="100585844%2FFunctions%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="sesl-set-content-view.html"><span>sesl</span><wbr><span>Set</span><wbr><span>Content</span><wbr><span><span>View</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="100585844%2FFunctions%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="100585844%2FFunctions%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="sesl-set-content-view.html"><span class="token function">seslSetContentView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">view<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="sesl-set-content-view.html"><span class="token function">seslSetContentView</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">view<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="672467209%2FFunctions%2F-1677039225" anchor-label="seslSetTouchSensitivity" id="672467209%2FFunctions%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="672467209%2FFunctions%2F-528776131" anchor-label="seslSetTouchSensitivity" id="672467209%2FFunctions%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="sesl-set-touch-sensitivity.html"><span>sesl</span><wbr><span>Set</span><wbr><span>Touch</span><wbr><span><span>Sensitivity</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="672467209%2FFunctions%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="672467209%2FFunctions%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="sesl-set-touch-sensitivity.html"><span class="token function">seslSetTouchSensitivity</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">sensitivity<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="sesl-set-touch-sensitivity.html"><span class="token function">seslSetTouchSensitivity</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">sensitivity<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1889636544%2FFunctions%2F-1677039225" anchor-label="setChildInsets" id="-1889636544%2FFunctions%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="-1889636544%2FFunctions%2F-528776131" anchor-label="setChildInsets" id="-1889636544%2FFunctions%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-child-insets.html"><span>set</span><wbr><span>Child</span><wbr><span><span>Insets</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1889636544%2FFunctions%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1889636544%2FFunctions%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY_GROUP_PREFIX">LIBRARY_GROUP_PREFIX</a></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-child-insets.html"><span class="token function">setChildInsets</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>insets<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/core/view/WindowInsetsCompat.html">WindowInsetsCompat</a><span class="token punctuation">, </span></span><span class="parameter ">draw<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div><div class="brief ">with fitsSystemWindows="true"</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY_GROUP_PREFIX">LIBRARY_GROUP_PREFIX</a></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-child-insets.html"><span class="token function">setChildInsets</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>insets<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/core/view/WindowInsetsCompat.html">WindowInsetsCompat</a><span class="token punctuation">, </span></span><span class="parameter ">draw<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div><div class="brief ">with fitsSystemWindows="true"</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1958855050%2FFunctions%2F-1677039225" anchor-label="setDrawerElevation" id="1958855050%2FFunctions%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="1958855050%2FFunctions%2F-528776131" anchor-label="setDrawerElevation" id="1958855050%2FFunctions%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-drawer-elevation.html"><span>set</span><wbr><span>Drawer</span><wbr><span><span>Elevation</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1958855050%2FFunctions%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1958855050%2FFunctions%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-drawer-elevation.html"><span class="token function">setDrawerElevation</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">elevation<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Sets the base elevation of the drawer(s) relative to the parent, in pixels.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-drawer-elevation.html"><span class="token function">setDrawerElevation</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">elevation<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Sets the base elevation of the drawer(s) relative to the parent, in pixels.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-378049391%2FFunctions%2F-1677039225" anchor-label="setDrawerListener" id="-378049391%2FFunctions%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="-378049391%2FFunctions%2F-528776131" anchor-label="setDrawerListener" id="-378049391%2FFunctions%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-drawer-listener.html"><span>set</span><wbr><span>Drawer</span><wbr><span><span>Listener</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-378049391%2FFunctions%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-378049391%2FFunctions%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-drawer-listener.html"><span class="token function"><strike>setDrawerListener</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">listener<span class="token operator">: </span><a href="-drawer-listener/index.html">DrawerLayout.DrawerListener</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Set a listener to be notified of drawer events.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-drawer-listener.html"><span class="token function"><strike>setDrawerListener</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">listener<span class="token operator">: </span><a href="-drawer-listener/index.html">DrawerLayout.DrawerListener</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Set a listener to be notified of drawer events.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1431672608%2FFunctions%2F-1677039225" anchor-label="setDrawerLockMode" id="-1431672608%2FFunctions%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="-1431672608%2FFunctions%2F-528776131" anchor-label="setDrawerLockMode" id="-1431672608%2FFunctions%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-drawer-lock-mode.html"><span>set</span><wbr><span>Drawer</span><wbr><span>Lock</span><wbr><span><span>Mode</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1431672608%2FFunctions%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1431672608%2FFunctions%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-drawer-lock-mode.html"><span class="token function">setDrawerLockMode</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">lockMode<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Enable or disable interaction with all drawers.</div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-drawer-lock-mode.html"><span class="token function">setDrawerLockMode</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">lockMode<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>drawerView<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-drawer-lock-mode.html"><span class="token function">setDrawerLockMode</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">lockMode<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">edgeGravity<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Enable or disable interaction with the given drawer.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-drawer-lock-mode.html"><span class="token function">setDrawerLockMode</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">lockMode<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Enable or disable interaction with all drawers.</div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-drawer-lock-mode.html"><span class="token function">setDrawerLockMode</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">lockMode<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a>&nbsp;</span>drawerView<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/View.html">View</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-drawer-lock-mode.html"><span class="token function">setDrawerLockMode</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">lockMode<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">edgeGravity<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Enable or disable interaction with the given drawer.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="939451015%2FFunctions%2F-1677039225" anchor-label="setDrawerShadow" id="939451015%2FFunctions%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="939451015%2FFunctions%2F-528776131" anchor-label="setDrawerShadow" id="939451015%2FFunctions%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-drawer-shadow.html"><span>set</span><wbr><span>Drawer</span><wbr><span><span>Shadow</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="939451015%2FFunctions%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="939451015%2FFunctions%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-drawer-shadow.html"><span class="token function">setDrawerShadow</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>shadowDrawable<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/graphics/drawable/Drawable.html">Drawable</a><span class="token punctuation">, </span></span><span class="parameter ">gravity<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-drawer-shadow.html"><span class="token function">setDrawerShadow</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/DrawableRes.html"><span class="token annotation builtin">DrawableRes</span></a>&nbsp;</span>resId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">gravity<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Set a simple drawable used for the left or right shadow.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-drawer-shadow.html"><span class="token function">setDrawerShadow</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>shadowDrawable<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/graphics/drawable/Drawable.html">Drawable</a><span class="token punctuation">, </span></span><span class="parameter ">gravity<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-drawer-shadow.html"><span class="token function">setDrawerShadow</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/DrawableRes.html"><span class="token annotation builtin">DrawableRes</span></a>&nbsp;</span>resId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">gravity<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Set a simple drawable used for the left or right shadow.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-2107854974%2FFunctions%2F-1677039225" anchor-label="setDrawerTitle" id="-2107854974%2FFunctions%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="-2107854974%2FFunctions%2F-528776131" anchor-label="setDrawerTitle" id="-2107854974%2FFunctions%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-drawer-title.html"><span>set</span><wbr><span>Drawer</span><wbr><span><span>Title</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2107854974%2FFunctions%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2107854974%2FFunctions%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-drawer-title.html"><span class="token function">setDrawerTitle</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">edgeGravity<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>title<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/CharSequence.html">CharSequence</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Sets the title of the drawer with the given gravity.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-drawer-title.html"><span class="token function">setDrawerTitle</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">edgeGravity<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>title<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/lang/CharSequence.html">CharSequence</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Sets the title of the drawer with the given gravity.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="931067486%2FFunctions%2F-1677039225" anchor-label="setScrimColor" id="931067486%2FFunctions%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="931067486%2FFunctions%2F-528776131" anchor-label="setScrimColor" id="931067486%2FFunctions%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-scrim-color.html"><span>set</span><wbr><span>Scrim</span><wbr><span><span>Color</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="931067486%2FFunctions%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="931067486%2FFunctions%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-scrim-color.html"><span class="token function">setScrimColor</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ColorInt.html"><span class="token annotation builtin">ColorInt</span></a>&nbsp;</span>color<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Set a color to use for the scrim that obscures primary content while a drawer is open.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-scrim-color.html"><span class="token function">setScrimColor</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ColorInt.html"><span class="token annotation builtin">ColorInt</span></a>&nbsp;</span>color<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Set a color to use for the scrim that obscures primary content while a drawer is open.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1566701053%2FFunctions%2F-1677039225" anchor-label="setStatusBarBackground" id="1566701053%2FFunctions%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="1566701053%2FFunctions%2F-528776131" anchor-label="setStatusBarBackground" id="1566701053%2FFunctions%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-status-bar-background.html"><span>set</span><wbr><span>Status</span><wbr><span>Bar</span><wbr><span><span>Background</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1566701053%2FFunctions%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1566701053%2FFunctions%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-status-bar-background.html"><span class="token function">setStatusBarBackground</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>bg<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/graphics/drawable/Drawable.html">Drawable</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-status-bar-background.html"><span class="token function">setStatusBarBackground</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">resId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Set a drawable to draw in the insets area for the status bar.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-status-bar-background.html"><span class="token function">setStatusBarBackground</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/Nullable.html"><span class="token annotation builtin">Nullable</span></a>&nbsp;</span>bg<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/graphics/drawable/Drawable.html">Drawable</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-status-bar-background.html"><span class="token function">setStatusBarBackground</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">resId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Set a drawable to draw in the insets area for the status bar.</div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1711737397%2FFunctions%2F-1677039225" anchor-label="setStatusBarBackgroundColor" id="1711737397%2FFunctions%2F-1677039225" data-filterable-set=":drawerlayout/main"></a>
-          <div class="table-row" data-filterable-current=":drawerlayout/main" data-filterable-set=":drawerlayout/main">
+<a data-name="1711737397%2FFunctions%2F-528776131" anchor-label="setStatusBarBackgroundColor" id="1711737397%2FFunctions%2F-528776131" data-filterable-set=":drawerlayout/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":drawerlayout/release" data-filterable-set=":drawerlayout/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="set-status-bar-background-color.html"><span>set</span><wbr><span>Status</span><wbr><span>Bar</span><wbr><span>Background</span><wbr><span><span>Color</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1711737397%2FFunctions%2F-1677039225"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1711737397%2FFunctions%2F-528776131"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-status-bar-background-color.html"><span class="token function">setStatusBarBackgroundColor</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ColorInt.html"><span class="token annotation builtin">ColorInt</span></a>&nbsp;</span>color<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Set a drawable to draw in the insets area for the status bar.</div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":drawerlayout/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="set-status-bar-background-color.html"><span class="token function">setStatusBarBackgroundColor</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ColorInt.html"><span class="token annotation builtin">ColorInt</span></a>&nbsp;</span>color<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Set a drawable to draw in the insets area for the status bar.</div></div></div>
                 </div>
               </div>
             </div>
@@ -854,17 +853,21 @@
   </div>
 </div>
     <div class="footer">
-        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
-        <span>© 2026 Copyright</span>
-        <span class="pull-right">
-            <span>Generated by </span>
-            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
-                <span>dokka</span>
-            </a>
-        </span>
-    </div>
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
             </div>
         </div>
     </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

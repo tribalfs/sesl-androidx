@@ -1,42 +1,39 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
     <title>BuildCompat</title>
-<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../";</script>
-    <script>document.documentElement.classList.replace("no-js","js");</script>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
     <script>const storage = localStorage.getItem("dokka-dark-mode")
-    if (storage == null) {
+      if (storage == null) {
         const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
         if (osDarkSchemePreferred === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    } else {
+      } else {
         const savedDarkMode = JSON.parse(storage)
-        if(savedDarkMode === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    }
+      }
     </script>
-<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
 <script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
 <link href="../../../styles/style.css" rel="Stylesheet">
 <link href="../../../styles/main.css" rel="Stylesheet">
 <link href="../../../styles/prism.css" rel="Stylesheet">
 <link href="../../../styles/logo-styles.css" rel="Stylesheet">
-<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
 <link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
-<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/safe-local-storage_blocking.js"></script>
 <script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
 <script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
 <script type="text/javascript" src="../../../scripts/main.js" defer></script>
 <script type="text/javascript" src="../../../scripts/prism.js" async></script>
-<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script>
-<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script></head>
 <body>
-    <div class="root">
-    <nav class="navigation theme-dark" id="navigation-wrapper">
-<a class="library-name--link" href="../../../index.html">
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../../index.html" tabindex="1">
                     sesl.androidx
             </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
         </button>
@@ -44,74 +41,76 @@
         <div class="library-version" id="library-version">
         </div>
         <div class="navigation-controls">
-        <div class="filter-section filter-section_loading" id="filter-section">
-                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":core/main">main</button>
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":core/release">release</button>
             <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
                 <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
-                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
-                    <div class="dropdown--header"><span>Platform filter</span>
-                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
                             <i class="ui-kit-icon ui-kit-icon_cross"></i>
                         </button>
                     </div>
                         <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
                             <label class="checkbox">
-                                <input type="checkbox" class="checkbox--input" id=":core/main" data-filter=":core/main">
+                                <input type="checkbox" class="checkbox--input" id=":core/release" data-filter=":core/release">
                                 <span class="checkbox--icon"></span>
-                                main
+                                release
                             </label>
                         </li>
                 </ul>
                 <div class="dropdown--overlay"></div>
             </div>
-        </div>
+        </ul>
             <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
             </button>
             <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
                 API
             </div>
         </div>
-    </nav>
-        <div id="container">
-            <div class="sidebar" id="leftColumn">
-                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
-                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox">
-                        <div class="dropdown--header">
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
                             <span>
                                     sesl.androidx
                             </span>
-                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
-                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
-                            </button>
-                        </div>
-                        <div class="sidebar--inner" id="sideMenu"></div>
-                    </ul>
-                    <div class="dropdown--overlay"></div>
-                </div>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
             </div>
-            <div id="main">
-<div class="main-content" data-page-type="classlike" id="content" pageids="core::androidx.core.os/BuildCompat///PointingToDeclaration//-108886845">
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="core::androidx.core.os/BuildCompat///PointingToDeclaration//-232177031">
   <div class="breadcrumbs"><a href="../../index.html">core</a><span class="delimiter">/</span><a href="../index.html">androidx.core.os</a><span class="delimiter">/</span><span class="current">BuildCompat</span></div>
   <div class="cover ">
     <h1 class="cover"><span>Build</span><wbr><span><span>Compat</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="index.html">BuildCompat</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/tribalfs/sesl-androidx/blob/sesl-androidx-main/core/core/src/main/java/androidx/core/os/BuildCompat.kt#L30">source</a>)</span></span></div><p class="paragraph">This class contains additional platform version checking methods for targeting pre-release versions of Android.</p></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">object </span><a href="index.html">BuildCompat</a></div><p class="paragraph">This class contains additional platform version checking methods for targeting pre-release versions of Android.</p></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
     <div class="tabs-section-body">
       <div data-togglable="TYPE">
-        <h2 class="">Types</h2>
-        <div class="table"><a data-name="-2056969664%2FClasslikes%2F-108886845" anchor-label="PrereleaseSdkCheck" id="-2056969664%2FClasslikes%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+        <h2 class="tableheader">Types</h2>
+        <div class="table"><a data-name="-2056969664%2FClasslikes%2F-232177031" anchor-label="PrereleaseSdkCheck" id="-2056969664%2FClasslikes%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-prerelease-sdk-check/index.html"><span>Prerelease</span><wbr><span>Sdk</span><wbr><span><span>Check</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2056969664%2FClasslikes%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2056969664%2FClasslikes%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">annotation class </span><a href="-prerelease-sdk-check/index.html">PrereleaseSdkCheck</a></div><div class="brief "><p class="paragraph">Experimental feature set for pre-release SDK checks.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><span class="token keyword">annotation class </span><a href="-prerelease-sdk-check/index.html">PrereleaseSdkCheck</a></div><div class="brief "><p class="paragraph">Experimental feature set for pre-release SDK checks.</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -119,63 +118,63 @@
         </div>
       </div>
       <div data-togglable="PROPERTY">
-        <h2 class="">Properties</h2>
-        <div class="table"><a data-name="2084350835%2FProperties%2F-108886845" anchor-label="AD_SERVICES_EXTENSION_INT" id="2084350835%2FProperties%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+        <h2 class="tableheader">Properties</h2>
+        <div class="table"><a data-name="2084350835%2FProperties%2F-232177031" anchor-label="AD_SERVICES_EXTENSION_INT" id="2084350835%2FProperties%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-a-d_-s-e-r-v-i-c-e-s_-e-x-t-e-n-s-i-o-n_-i-n-t.html"><span>AD_</span><wbr><span>SERVICES_</span><wbr><span>EXTENSION_</span><wbr><span>INT</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2084350835%2FProperties%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2084350835%2FProperties%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-field/index.html"><span class="token annotation builtin">JvmField</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ChecksSdkIntAtLeast.html"><span class="token annotation builtin">ChecksSdkIntAtLeast</span></a><span class="token punctuation">(</span><span>extension<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">1000000</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">val </span><a href="-a-d_-s-e-r-v-i-c-e-s_-e-x-t-e-n-s-i-o-n_-i-n-t.html">AD_SERVICES_EXTENSION_INT</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief "><p class="paragraph">The value of <code class="lang-kotlin">SdkExtensions.getExtensionVersion(AD_SERVICES)</code>. This is a convenience constant which provides the extension version in a similar style to <code class="lang-kotlin">Build.VERSION.SDK_INT</code>.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-field/index.html"><span class="token annotation builtin">JvmField</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ChecksSdkIntAtLeast.html"><span class="token annotation builtin">ChecksSdkIntAtLeast</span></a><span class="token punctuation">(</span><span>extension<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">1000000</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">val </span><a href="-a-d_-s-e-r-v-i-c-e-s_-e-x-t-e-n-s-i-o-n_-i-n-t.html">AD_SERVICES_EXTENSION_INT</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief "><p class="paragraph">The value of <code class="lang-kotlin">SdkExtensions.getExtensionVersion(AD_SERVICES)</code>. This is a convenience constant which provides the extension version in a similar style to <code class="lang-kotlin">Build.VERSION.SDK_INT</code>.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1579171557%2FProperties%2F-108886845" anchor-label="R_EXTENSION_INT" id="-1579171557%2FProperties%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-1579171557%2FProperties%2F-232177031" anchor-label="R_EXTENSION_INT" id="-1579171557%2FProperties%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-r_-e-x-t-e-n-s-i-o-n_-i-n-t.html"><span>R_</span><wbr><span>EXTENSION_</span><wbr><span>INT</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1579171557%2FProperties%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1579171557%2FProperties%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-field/index.html"><span class="token annotation builtin">JvmField</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ChecksSdkIntAtLeast.html"><span class="token annotation builtin">ChecksSdkIntAtLeast</span></a><span class="token punctuation">(</span><span>extension<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">30</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">val </span><a href="-r_-e-x-t-e-n-s-i-o-n_-i-n-t.html">R_EXTENSION_INT</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief "><p class="paragraph">The value of <code class="lang-kotlin">SdkExtensions.getExtensionVersion(R)</code>. This is a convenience constant which provides the extension version in a similar style to <code class="lang-kotlin">Build.VERSION.SDK_INT</code>.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-field/index.html"><span class="token annotation builtin">JvmField</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ChecksSdkIntAtLeast.html"><span class="token annotation builtin">ChecksSdkIntAtLeast</span></a><span class="token punctuation">(</span><span>extension<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">30</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">val </span><a href="-r_-e-x-t-e-n-s-i-o-n_-i-n-t.html">R_EXTENSION_INT</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief "><p class="paragraph">The value of <code class="lang-kotlin">SdkExtensions.getExtensionVersion(R)</code>. This is a convenience constant which provides the extension version in a similar style to <code class="lang-kotlin">Build.VERSION.SDK_INT</code>.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-117591558%2FProperties%2F-108886845" anchor-label="S_EXTENSION_INT" id="-117591558%2FProperties%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-117591558%2FProperties%2F-232177031" anchor-label="S_EXTENSION_INT" id="-117591558%2FProperties%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-s_-e-x-t-e-n-s-i-o-n_-i-n-t.html"><span>S_</span><wbr><span>EXTENSION_</span><wbr><span>INT</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-117591558%2FProperties%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-117591558%2FProperties%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-field/index.html"><span class="token annotation builtin">JvmField</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ChecksSdkIntAtLeast.html"><span class="token annotation builtin">ChecksSdkIntAtLeast</span></a><span class="token punctuation">(</span><span>extension<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">31</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">val </span><a href="-s_-e-x-t-e-n-s-i-o-n_-i-n-t.html">S_EXTENSION_INT</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief "><p class="paragraph">The value of <code class="lang-kotlin">SdkExtensions.getExtensionVersion(S)</code>. This is a convenience constant which provides the extension version in a similar style to <code class="lang-kotlin">Build.VERSION.SDK_INT</code>.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-field/index.html"><span class="token annotation builtin">JvmField</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ChecksSdkIntAtLeast.html"><span class="token annotation builtin">ChecksSdkIntAtLeast</span></a><span class="token punctuation">(</span><span>extension<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">31</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">val </span><a href="-s_-e-x-t-e-n-s-i-o-n_-i-n-t.html">S_EXTENSION_INT</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief "><p class="paragraph">The value of <code class="lang-kotlin">SdkExtensions.getExtensionVersion(S)</code>. This is a convenience constant which provides the extension version in a similar style to <code class="lang-kotlin">Build.VERSION.SDK_INT</code>.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1343988441%2FProperties%2F-108886845" anchor-label="T_EXTENSION_INT" id="1343988441%2FProperties%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="1343988441%2FProperties%2F-232177031" anchor-label="T_EXTENSION_INT" id="1343988441%2FProperties%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-t_-e-x-t-e-n-s-i-o-n_-i-n-t.html"><span>T_</span><wbr><span>EXTENSION_</span><wbr><span>INT</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1343988441%2FProperties%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1343988441%2FProperties%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-field/index.html"><span class="token annotation builtin">JvmField</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ChecksSdkIntAtLeast.html"><span class="token annotation builtin">ChecksSdkIntAtLeast</span></a><span class="token punctuation">(</span><span>extension<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">33</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">val </span><a href="-t_-e-x-t-e-n-s-i-o-n_-i-n-t.html">T_EXTENSION_INT</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief "><p class="paragraph">The value of <code class="lang-kotlin">SdkExtensions.getExtensionVersion(TIRAMISU)</code>. This is a convenience constant which provides the extension version in a similar style to <code class="lang-kotlin">Build.VERSION.SDK_INT</code>.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-field/index.html"><span class="token annotation builtin">JvmField</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ChecksSdkIntAtLeast.html"><span class="token annotation builtin">ChecksSdkIntAtLeast</span></a><span class="token punctuation">(</span><span>extension<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">33</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">val </span><a href="-t_-e-x-t-e-n-s-i-o-n_-i-n-t.html">T_EXTENSION_INT</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief "><p class="paragraph">The value of <code class="lang-kotlin">SdkExtensions.getExtensionVersion(TIRAMISU)</code>. This is a convenience constant which provides the extension version in a similar style to <code class="lang-kotlin">Build.VERSION.SDK_INT</code>.</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -183,198 +182,228 @@
         </div>
       </div>
       <div data-togglable="FUNCTION">
-        <h2 class="">Functions</h2>
-        <div class="table"><a data-name="1213051899%2FFunctions%2F-108886845" anchor-label="isAtLeastN" id="1213051899%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="840814215%2FFunctions%2F-232177031" anchor-label="isAtLeastB" id="840814215%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-at-least-b.html"><span>is</span><wbr><span>At</span><wbr><span>Least</span><wbr><span><span>B</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="840814215%2FFunctions%2F-232177031"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ChecksSdkIntAtLeast.html"><span class="token annotation builtin">ChecksSdkIntAtLeast</span></a><span class="token punctuation">(</span><span>api<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">36</span></span><span class="token punctuation">, </span></span><wbr><span>codename<span class="token operator"> = </span><span class="breakable-word"><span class="token string">"Baklava"</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="is-at-least-b.html"><span class="token function"><strike>isAtLeastB</strike></span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Checks if the device is running on a pre-release version of Android Baklava or a release version of Android Baklava or newer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-655596395%2FFunctions%2F-232177031" anchor-label="isAtLeastB_1" id="-655596395%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-at-least-b_1.html"><span>isAtLeastB_</span><wbr><span>1</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-655596395%2FFunctions%2F-232177031"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ChecksSdkIntAtLeast.html"><span class="token annotation builtin">ChecksSdkIntAtLeast</span></a><span class="token punctuation">(</span><span>api<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">3600001</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="is-at-least-b_1.html"><span class="token function"><strike>isAtLeastB_1</strike></span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Checks if the device is running on a release version of Android Baklava minor release 1, or newer.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1213051899%2FFunctions%2F-232177031" anchor-label="isAtLeastN" id="1213051899%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="is-at-least-n.html"><span>is</span><wbr><span>At</span><wbr><span>Least</span><wbr><span><span>N</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1213051899%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1213051899%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ChecksSdkIntAtLeast.html"><span class="token annotation builtin">ChecksSdkIntAtLeast</span></a><span class="token punctuation">(</span><span>api<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">24</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="is-at-least-n.html"><span class="token function"><strike>isAtLeastN</strike></span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Checks if the device is running on the Android N release or newer.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ChecksSdkIntAtLeast.html"><span class="token annotation builtin">ChecksSdkIntAtLeast</span></a><span class="token punctuation">(</span><span>api<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">24</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="is-at-least-n.html"><span class="token function"><strike>isAtLeastN</strike></span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Checks if the device is running on the Android N release or newer.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1938603757%2FFunctions%2F-108886845" anchor-label="isAtLeastNMR1" id="-1938603757%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-1938603757%2FFunctions%2F-232177031" anchor-label="isAtLeastNMR1" id="-1938603757%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="is-at-least-n-m-r1.html"><span>is</span><wbr><span>At</span><wbr><span>Least</span><wbr><span><span>NMR1</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1938603757%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1938603757%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ChecksSdkIntAtLeast.html"><span class="token annotation builtin">ChecksSdkIntAtLeast</span></a><span class="token punctuation">(</span><span>api<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">25</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="is-at-least-n-m-r1.html"><span class="token function"><strike>isAtLeastNMR1</strike></span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Checks if the device is running on the Android N MR1 release or newer.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ChecksSdkIntAtLeast.html"><span class="token annotation builtin">ChecksSdkIntAtLeast</span></a><span class="token punctuation">(</span><span>api<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">25</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="is-at-least-n-m-r1.html"><span class="token function"><strike>isAtLeastNMR1</strike></span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Checks if the device is running on the Android N MR1 release or newer.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1244071706%2FFunctions%2F-108886845" anchor-label="isAtLeastO" id="1244071706%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="1244071706%2FFunctions%2F-232177031" anchor-label="isAtLeastO" id="1244071706%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="is-at-least-o.html"><span>is</span><wbr><span>At</span><wbr><span>Least</span><wbr><span><span>O</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1244071706%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1244071706%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ChecksSdkIntAtLeast.html"><span class="token annotation builtin">ChecksSdkIntAtLeast</span></a><span class="token punctuation">(</span><span>api<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">26</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="is-at-least-o.html"><span class="token function"><strike>isAtLeastO</strike></span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Checks if the device is running on a release version of Android O or newer.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ChecksSdkIntAtLeast.html"><span class="token annotation builtin">ChecksSdkIntAtLeast</span></a><span class="token punctuation">(</span><span>api<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">26</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="is-at-least-o.html"><span class="token function"><strike>isAtLeastO</strike></span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Checks if the device is running on a release version of Android O or newer.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1245502060%2FFunctions%2F-108886845" anchor-label="isAtLeastOMR1" id="-1245502060%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-1245502060%2FFunctions%2F-232177031" anchor-label="isAtLeastOMR1" id="-1245502060%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="is-at-least-o-m-r1.html"><span>is</span><wbr><span>At</span><wbr><span>Least</span><wbr><span><span>OMR1</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1245502060%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1245502060%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ChecksSdkIntAtLeast.html"><span class="token annotation builtin">ChecksSdkIntAtLeast</span></a><span class="token punctuation">(</span><span>api<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">27</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="is-at-least-o-m-r1.html"><span class="token function"><strike>isAtLeastOMR1</strike></span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Checks if the device is running on a release version of Android O MR1 or newer.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ChecksSdkIntAtLeast.html"><span class="token annotation builtin">ChecksSdkIntAtLeast</span></a><span class="token punctuation">(</span><span>api<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">27</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="is-at-least-o-m-r1.html"><span class="token function"><strike>isAtLeastOMR1</strike></span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Checks if the device is running on a release version of Android O MR1 or newer.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1275091513%2FFunctions%2F-108886845" anchor-label="isAtLeastP" id="1275091513%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="1275091513%2FFunctions%2F-232177031" anchor-label="isAtLeastP" id="1275091513%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="is-at-least-p.html"><span>is</span><wbr><span>At</span><wbr><span>Least</span><wbr><span><span>P</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1275091513%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1275091513%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ChecksSdkIntAtLeast.html"><span class="token annotation builtin">ChecksSdkIntAtLeast</span></a><span class="token punctuation">(</span><span>api<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">28</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="is-at-least-p.html"><span class="token function"><strike>isAtLeastP</strike></span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Checks if the device is running on a release version of Android P or newer.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ChecksSdkIntAtLeast.html"><span class="token annotation builtin">ChecksSdkIntAtLeast</span></a><span class="token punctuation">(</span><span>api<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">28</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="is-at-least-p.html"><span class="token function"><strike>isAtLeastP</strike></span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Checks if the device is running on a release version of Android P or newer.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1473983476%2FFunctions%2F-108886845" anchor-label="isAtLeastPreReleaseCodename" id="1473983476%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="1473983476%2FFunctions%2F-232177031" anchor-label="isAtLeastPreReleaseCodename" id="1473983476%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="is-at-least-pre-release-codename.html"><span>is</span><wbr><span>At</span><wbr><span>Least</span><wbr><span>Pre</span><wbr><span>Release</span><wbr><span><span>Codename</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1473983476%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1473983476%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="token punctuation">[</span><span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.LIBRARY.html">RestrictTo.Scope.LIBRARY</a></span><wbr><span class="token punctuation">]</span></span><wbr><span class="token punctuation">)</span></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/VisibleForTesting.html"><span class="token annotation builtin">VisibleForTesting</span></a></div></div><span class="token keyword">fun </span><a href="is-at-least-pre-release-codename.html"><span class="token function">isAtLeastPreReleaseCodename</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">codename<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">buildCodename<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Checks if the codename is a matching or higher version than the given build value.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.html"><span class="token annotation builtin">RestrictTo</span></a><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="token punctuation">[</span><span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/RestrictTo.Scope.html#LIBRARY">RestrictTo.Scope.LIBRARY</a></span><wbr><span class="token punctuation">]</span></span><wbr><span class="token punctuation">)</span></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/VisibleForTesting.html"><span class="token annotation builtin">VisibleForTesting</span></a></div></div><span class="token keyword">fun </span><a href="is-at-least-pre-release-codename.html"><span class="token function">isAtLeastPreReleaseCodename</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">codename<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">buildCodename<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Checks if the codename is a matching or higher version than the given build value.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1306111320%2FFunctions%2F-108886845" anchor-label="isAtLeastQ" id="1306111320%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="1306111320%2FFunctions%2F-232177031" anchor-label="isAtLeastQ" id="1306111320%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="is-at-least-q.html"><span>is</span><wbr><span>At</span><wbr><span>Least</span><wbr><span><span>Q</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1306111320%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1306111320%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ChecksSdkIntAtLeast.html"><span class="token annotation builtin">ChecksSdkIntAtLeast</span></a><span class="token punctuation">(</span><span>api<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">29</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="is-at-least-q.html"><span class="token function"><strike>isAtLeastQ</strike></span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Checks if the device is running on release version of Android Q or newer.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ChecksSdkIntAtLeast.html"><span class="token annotation builtin">ChecksSdkIntAtLeast</span></a><span class="token punctuation">(</span><span>api<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">29</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="is-at-least-q.html"><span class="token function"><strike>isAtLeastQ</strike></span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Checks if the device is running on release version of Android Q or newer.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1337131127%2FFunctions%2F-108886845" anchor-label="isAtLeastR" id="1337131127%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="1337131127%2FFunctions%2F-232177031" anchor-label="isAtLeastR" id="1337131127%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="is-at-least-r.html"><span>is</span><wbr><span>At</span><wbr><span>Least</span><wbr><span><span>R</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1337131127%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1337131127%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ChecksSdkIntAtLeast.html"><span class="token annotation builtin">ChecksSdkIntAtLeast</span></a><span class="token punctuation">(</span><span>api<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">30</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="is-at-least-r.html"><span class="token function"><strike>isAtLeastR</strike></span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Checks if the device is running on release version of Android R or newer.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ChecksSdkIntAtLeast.html"><span class="token annotation builtin">ChecksSdkIntAtLeast</span></a><span class="token punctuation">(</span><span>api<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">30</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="is-at-least-r.html"><span class="token function"><strike>isAtLeastR</strike></span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Checks if the device is running on release version of Android R or newer.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1368150934%2FFunctions%2F-108886845" anchor-label="isAtLeastS" id="1368150934%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="1368150934%2FFunctions%2F-232177031" anchor-label="isAtLeastS" id="1368150934%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="is-at-least-s.html"><span>is</span><wbr><span>At</span><wbr><span>Least</span><wbr><span><span>S</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1368150934%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1368150934%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ChecksSdkIntAtLeast.html"><span class="token annotation builtin">ChecksSdkIntAtLeast</span></a><span class="token punctuation">(</span><span>api<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">31</span></span><span class="token punctuation">, </span></span><wbr><span>codename<span class="token operator"> = </span><span class="breakable-word"><span class="token string">"S"</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="is-at-least-s.html"><span class="token function"><strike>isAtLeastS</strike></span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Checks if the device is running on a pre-release version of Android S or a release version of Android S or newer.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ChecksSdkIntAtLeast.html"><span class="token annotation builtin">ChecksSdkIntAtLeast</span></a><span class="token punctuation">(</span><span>api<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">31</span></span><span class="token punctuation">, </span></span><wbr><span>codename<span class="token operator"> = </span><span class="breakable-word"><span class="token string">"S"</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="is-at-least-s.html"><span class="token function"><strike>isAtLeastS</strike></span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Checks if the device is running on a pre-release version of Android S or a release version of Android S or newer.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-17844646%2FFunctions%2F-108886845" anchor-label="isAtLeastSv2" id="-17844646%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="-17844646%2FFunctions%2F-232177031" anchor-label="isAtLeastSv2" id="-17844646%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="is-at-least-sv2.html"><span>is</span><wbr><span>At</span><wbr><span>Least</span><wbr><span><span>Sv2</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-17844646%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-17844646%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ChecksSdkIntAtLeast.html"><span class="token annotation builtin">ChecksSdkIntAtLeast</span></a><span class="token punctuation">(</span><span>api<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">32</span></span><span class="token punctuation">, </span></span><wbr><span>codename<span class="token operator"> = </span><span class="breakable-word"><span class="token string">"Sv2"</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="is-at-least-sv2.html"><span class="token function"><strike>isAtLeastSv2</strike></span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Checks if the device is running on a pre-release version of Android Sv2 or a release version of Android Sv2 or newer.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ChecksSdkIntAtLeast.html"><span class="token annotation builtin">ChecksSdkIntAtLeast</span></a><span class="token punctuation">(</span><span>api<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">32</span></span><span class="token punctuation">, </span></span><wbr><span>codename<span class="token operator"> = </span><span class="breakable-word"><span class="token string">"Sv2"</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="is-at-least-sv2.html"><span class="token function"><strike>isAtLeastSv2</strike></span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Checks if the device is running on a pre-release version of Android Sv2 or a release version of Android Sv2 or newer.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1399170741%2FFunctions%2F-108886845" anchor-label="isAtLeastT" id="1399170741%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="1399170741%2FFunctions%2F-232177031" anchor-label="isAtLeastT" id="1399170741%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="is-at-least-t.html"><span>is</span><wbr><span>At</span><wbr><span>Least</span><wbr><span><span>T</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1399170741%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1399170741%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ChecksSdkIntAtLeast.html"><span class="token annotation builtin">ChecksSdkIntAtLeast</span></a><span class="token punctuation">(</span><span>api<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">33</span></span><span class="token punctuation">, </span></span><wbr><span>codename<span class="token operator"> = </span><span class="breakable-word"><span class="token string">"Tiramisu"</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="is-at-least-t.html"><span class="token function"><strike>isAtLeastT</strike></span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Checks if the device is running on a pre-release version of Android Tiramisu or a release version of Android Tiramisu or newer.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ChecksSdkIntAtLeast.html"><span class="token annotation builtin">ChecksSdkIntAtLeast</span></a><span class="token punctuation">(</span><span>api<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">33</span></span><span class="token punctuation">, </span></span><wbr><span>codename<span class="token operator"> = </span><span class="breakable-word"><span class="token string">"Tiramisu"</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="is-at-least-t.html"><span class="token function"><strike>isAtLeastT</strike></span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Checks if the device is running on a pre-release version of Android Tiramisu or a release version of Android Tiramisu or newer.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1430190548%2FFunctions%2F-108886845" anchor-label="isAtLeastU" id="1430190548%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="1430190548%2FFunctions%2F-232177031" anchor-label="isAtLeastU" id="1430190548%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="is-at-least-u.html"><span>is</span><wbr><span>At</span><wbr><span>Least</span><wbr><span><span>U</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1430190548%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1430190548%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ChecksSdkIntAtLeast.html"><span class="token annotation builtin">ChecksSdkIntAtLeast</span></a><span class="token punctuation">(</span><span>api<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">34</span></span><span class="token punctuation">, </span></span><wbr><span>codename<span class="token operator"> = </span><span class="breakable-word"><span class="token string">"UpsideDownCake"</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="is-at-least-u.html"><span class="token function"><strike>isAtLeastU</strike></span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Checks if the device is running on a pre-release version of Android UpsideDownCake or a release version of Android UpsideDownCake or newer.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ChecksSdkIntAtLeast.html"><span class="token annotation builtin">ChecksSdkIntAtLeast</span></a><span class="token punctuation">(</span><span>api<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">34</span></span><span class="token punctuation">, </span></span><wbr><span>codename<span class="token operator"> = </span><span class="breakable-word"><span class="token string">"UpsideDownCake"</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="is-at-least-u.html"><span class="token function"><strike>isAtLeastU</strike></span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Checks if the device is running on a pre-release version of Android UpsideDownCake or a release version of Android UpsideDownCake or newer.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1461210355%2FFunctions%2F-108886845" anchor-label="isAtLeastV" id="1461210355%2FFunctions%2F-108886845" data-filterable-set=":core/main"></a>
-          <div class="table-row" data-filterable-current=":core/main" data-filterable-set=":core/main">
+<a data-name="1461210355%2FFunctions%2F-232177031" anchor-label="isAtLeastV" id="1461210355%2FFunctions%2F-232177031" data-filterable-set=":core/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/release" data-filterable-set=":core/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="is-at-least-v.html"><span>is</span><wbr><span>At</span><wbr><span>Least</span><wbr><span><span>V</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1461210355%2FFunctions%2F-108886845"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1461210355%2FFunctions%2F-232177031"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ChecksSdkIntAtLeast.html"><span class="token annotation builtin">ChecksSdkIntAtLeast</span></a><span class="token punctuation">(</span><span>api<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">35</span></span><span class="token punctuation">, </span></span><wbr><span>codename<span class="token operator"> = </span><span class="breakable-word"><span class="token string">"VanillaIceCream"</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="is-at-least-v.html"><span class="token function"><strike>isAtLeastV</strike></span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Checks if the device is running on a pre-release version of Android VanillaIceCream or a release version of Android VanillaIceCream or newer.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/ChecksSdkIntAtLeast.html"><span class="token annotation builtin">ChecksSdkIntAtLeast</span></a><span class="token punctuation">(</span><span>api<span class="token operator"> = </span><span class="breakable-word"><span class="token constant">35</span></span><span class="token punctuation">, </span></span><wbr><span>codename<span class="token operator"> = </span><span class="breakable-word"><span class="token string">"VanillaIceCream"</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><a href="is-at-least-v.html"><span class="token function"><strike>isAtLeastV</strike></span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Checks if the device is running on a pre-release version of Android VanillaIceCream or a release version of Android VanillaIceCream or newer.</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -385,17 +414,21 @@
   </div>
 </div>
     <div class="footer">
-        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
-        <span>© 2026 Copyright</span>
-        <span class="pull-right">
-            <span>Generated by </span>
-            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
-                <span>dokka</span>
-            </a>
-        </span>
-    </div>
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
             </div>
         </div>
     </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
