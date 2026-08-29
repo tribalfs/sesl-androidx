@@ -4,10 +4,6 @@ plugins {
 }
 
 android {
-    buildTypes.configureEach {
-        consumerProguardFiles("proguard-rules.pro")
-    }
-
     namespace = "androidx.fragment"
 }
 

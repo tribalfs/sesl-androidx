@@ -26,10 +26,6 @@ android {
 
     defaultConfig.vectorDrawables.useSupportLibrary = true
 
-    buildTypes. configureEach {
-        consumerProguardFiles("proguard-rules.pro")
-    }
-
     namespace = "androidx.preference"
 }
 

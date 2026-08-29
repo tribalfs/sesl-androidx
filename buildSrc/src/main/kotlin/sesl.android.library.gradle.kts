@@ -49,6 +49,16 @@ android {
 
     project.version = versionName
 
+    val rulesKeep = project.file("src/main/keepRules/rules.keep")
+    if (rulesKeep.exists()) {
+        defaultConfig.consumerProguardFiles(rulesKeep)
+    }
+
+    val proguardRules = project.file("proguard-rules.pro")
+    if (proguardRules.exists()) {
+        defaultConfig.consumerProguardFiles(proguardRules)
+    }
+
     lint { baseline = file("lint-baseline.xml") }
 
     publishing {

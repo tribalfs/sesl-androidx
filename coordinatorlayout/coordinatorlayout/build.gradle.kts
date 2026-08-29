@@ -9,10 +9,6 @@ android {
         }
     }
 
-    buildTypes.configureEach {
-        consumerProguardFiles("proguard-rules.pro")
-    }
-
     defaultConfig.vectorDrawables.useSupportLibrary = true
 
     namespace = "androidx.coordinatorlayout"
