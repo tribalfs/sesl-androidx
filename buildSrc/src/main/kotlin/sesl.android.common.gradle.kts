@@ -40,7 +40,6 @@ allprojects {
         }
         maven { url = uri("https://jitpack.io") }
         maven { url = uri("https://plugins.gradle.org/m2/") }
-        mavenLocal()
     }
 
     tasks.withType<Javadoc>().configureEach {
