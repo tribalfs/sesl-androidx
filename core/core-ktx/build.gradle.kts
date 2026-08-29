@@ -12,13 +12,13 @@ dependencies {
     api(libs.androidx.annotation)
 
     api(libs.sesl.androidx.core){
-        version { require("1.18.0+1.0.7-sesl8+rev0") }
+        version { require("1.19.0+1.0.7-sesl8+rev0") }
     }
 }
 
 extra.set(
     "pomInfo", mapOf(
         "name" to "SESL Core Kotlin Extensions",
-        "description" to "SESL variant of androidx.core:core-ktx module - Kotlin extensions for 'core' artifact"
+        "description" to "SESL variant of androidx.core:core-ktx module - empty compatibility artifact; Kotlin extensions are now part of the core artifact"
     )
 )
