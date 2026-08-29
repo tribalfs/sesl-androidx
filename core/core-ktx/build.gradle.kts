@@ -3,6 +3,7 @@ plugins {
 }
 
 android {
+    compileSdkMinor = 1
     namespace = "androidx.core.ktx"
 }
 
@@ -11,7 +12,7 @@ dependencies {
     api(libs.androidx.annotation)
 
     api(libs.sesl.androidx.core){
-        version { require("1.17.0+1.0.7-sesl8+rev0") }
+        version { require("1.18.0+1.0.7-sesl8+rev0") }
     }
 }
 
