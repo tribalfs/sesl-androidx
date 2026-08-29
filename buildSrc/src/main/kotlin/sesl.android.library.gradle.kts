@@ -96,15 +96,22 @@ dokka {
 
 // Register version file task
 val writeVersionFile = tasks.register("writeVersionFile") {
+    val projectName = project.name
+    val buildDir = project.layout.buildDirectory
+    val versionProvider = project.provider { project.version.toString() }
+    val namespaceProvider = project.provider { project.extensions.getByType<LibraryExtension>().namespace }
+
+    inputs.property("versionName", versionProvider)
+    inputs.property("namespace", namespaceProvider)
+    outputs.dir(buildDir.map { it.dir("javaResources/META-INF") })
+
     doLast {
-        val extension = project.extensions.getByType<LibraryExtension>()
-        val namespace = extension.namespace ?: throw GradleException("namespace not set for ${project.path}")
-        val versionName = project.version.toString()
-        val versionFileName = "${namespace}_${projectDir.name}.version"
-        val versionFileDir = file("build/javaResources/META-INF")
-        versionFileDir.mkdirs()
-        val versionFile = File(versionFileDir, versionFileName)
-        versionFile.writeText("${versionName}\n")
+        val namespace = namespaceProvider.get() ?: throw GradleException("namespace not set for module $projectName")
+        val versionName = versionProvider.get()
+        val versionFileName = "${namespace}_${projectName}.version"
+        val outputDir = buildDir.dir("javaResources/META-INF").get().asFile
+        outputDir.mkdirs()
+        File(outputDir, versionFileName).writeText("${versionName}\n")
     }
 }
 
@@ -117,10 +124,9 @@ publishing {
     publications {
         create<MavenPublication>("gpr") {
             val versionName = project.version.toString()
-            
+
             group = "sesl.androidx." + projectDir.parentFile.name
             version = versionName
-            from(components.findByName("release"))
 
             pom {
                 name.set(project.name)
@@ -142,6 +148,14 @@ publishing {
                     }
                 }
             }
+        }
+    }
+
+    // AGP registers variant components in afterEvaluate; attaching the release component there
+    // or the publication resolves empty and publishes only a pom.
+    project.afterEvaluate {
+        publishing.publications.named<MavenPublication>("gpr") {
+            from(components["release"])
         }
     }
 

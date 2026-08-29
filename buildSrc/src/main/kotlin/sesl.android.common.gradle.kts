@@ -21,6 +21,7 @@ val githubAccessToken = project.rootProject.extra["githubAccessToken"] as String
 
 allprojects {
     repositories {
+        mavenLocal()
         google()
         mavenCentral()
         maven {
