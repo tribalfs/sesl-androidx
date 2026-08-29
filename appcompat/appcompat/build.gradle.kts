@@ -4,7 +4,6 @@ plugins {
 
 dependencies {
     api(libs.sesl.androidx.core)
-    api(libs.sesl.androidx.coreKtx)
     api(libs.sesl.androidx.fragment)
     api(libs.sesl.androidx.drawerlayout)
 
