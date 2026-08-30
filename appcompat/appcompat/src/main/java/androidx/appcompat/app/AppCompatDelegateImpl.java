@@ -145,11 +145,6 @@ class AppCompatDelegateImpl extends AppCompatDelegate
     private static final boolean sCanReturnDifferentContext =
             !"robolectric".equals(Build.FINGERPRINT);
 
-    /**
-     * Flag indicating whether ContextThemeWrapper.applyOverrideConfiguration() is available.
-     */
-    private static final boolean sCanApplyOverrideConfiguration = Build.VERSION.SDK_INT >= 17; //sesl
-
     final Object mHost;
     final Context mContext;
     Window mWindow;
@@ -368,8 +363,7 @@ class AppCompatDelegateImpl extends AppCompatDelegate
         // If the base context is a ContextThemeWrapper (thus not an Application context)
         // and nobody's touched its Resources yet, we can shortcut and directly apply our
         // override configuration.
-        if (sCanApplyOverrideConfiguration
-                && baseContext instanceof android.view.ContextThemeWrapper) {
+        if (baseContext instanceof android.view.ContextThemeWrapper) {
             final Configuration config = createOverrideAppConfiguration(
                     baseContext, modeToApply, localesToApply, null, false);
             if (DEBUG) {
