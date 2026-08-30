@@ -145,6 +145,7 @@ configurations.implementation {
     exclude (group:"androidx.slidingpanelayout",  module:"slidingpanelayout")
     exclude (group:"androidx.swiperefreshlayout",  module:"swiperefreshlayout")
     exclude (group:"com.google.android.material", module: "material")
+    exclude (group:"androidx.fragment",  module:"fragment-ktx") //starting fragment 1.9.0+**
 }
 ```
 ##### Kotlin DSL
@@ -164,6 +165,7 @@ configurations.implementation {
     exclude ("androidx.slidingpanelayout",  "slidingpanelayout")
     exclude ("androidx.swiperefreshlayout",  "swiperefreshlayout")
     exclude ("com.google.android.material", "material")
+    exclude ("androidx.fragment",  "fragment-ktx") //starting fragment 1.9.0+**
 }
 ```
 ## [API Documentation (WIP)](https://tribalfs.github.io/sesl-androidx/) 
