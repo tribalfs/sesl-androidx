@@ -1047,33 +1047,36 @@ class AppCompatDelegateImpl extends AppCompatDelegate
         // We don't control measurement at that level, so we need to workaround it by making sure
         // that the decor view's padding is taken into account.
         final View windowDecor = mWindow.getDecorView();
-        cfl.setDecorPadding(windowDecor.getPaddingLeft(),
-                windowDecor.getPaddingTop(), windowDecor.getPaddingRight(),
-                windowDecor.getPaddingBottom());
 
-        TypedArray a = mContext.obtainStyledAttributes(R.styleable.AppCompatTheme);
-        a.getValue(R.styleable.AppCompatTheme_windowMinWidthMajor, cfl.getMinWidthMajor());
-        a.getValue(R.styleable.AppCompatTheme_windowMinWidthMinor, cfl.getMinWidthMinor());
+        if (cfl != null && windowDecor != null) {
+            cfl.setDecorPadding(windowDecor.getPaddingLeft(),
+                    windowDecor.getPaddingTop(), windowDecor.getPaddingRight(),
+                    windowDecor.getPaddingBottom());
 
-        if (a.hasValue(R.styleable.AppCompatTheme_windowFixedWidthMajor)) {
-            a.getValue(R.styleable.AppCompatTheme_windowFixedWidthMajor,
-                    cfl.getFixedWidthMajor());
-        }
-        if (a.hasValue(R.styleable.AppCompatTheme_windowFixedWidthMinor)) {
-            a.getValue(R.styleable.AppCompatTheme_windowFixedWidthMinor,
-                    cfl.getFixedWidthMinor());
-        }
-        if (a.hasValue(R.styleable.AppCompatTheme_windowFixedHeightMajor)) {
-            a.getValue(R.styleable.AppCompatTheme_windowFixedHeightMajor,
-                    cfl.getFixedHeightMajor());
-        }
-        if (a.hasValue(R.styleable.AppCompatTheme_windowFixedHeightMinor)) {
-            a.getValue(R.styleable.AppCompatTheme_windowFixedHeightMinor,
-                    cfl.getFixedHeightMinor());
-        }
-        a.recycle();
+            TypedArray a = mContext.obtainStyledAttributes(R.styleable.AppCompatTheme);
+            a.getValue(R.styleable.AppCompatTheme_windowMinWidthMajor, cfl.getMinWidthMajor());
+            a.getValue(R.styleable.AppCompatTheme_windowMinWidthMinor, cfl.getMinWidthMinor());
 
-        cfl.requestLayout();
+            if (a.hasValue(R.styleable.AppCompatTheme_windowFixedWidthMajor)) {
+                a.getValue(R.styleable.AppCompatTheme_windowFixedWidthMajor,
+                        cfl.getFixedWidthMajor());
+            }
+            if (a.hasValue(R.styleable.AppCompatTheme_windowFixedWidthMinor)) {
+                a.getValue(R.styleable.AppCompatTheme_windowFixedWidthMinor,
+                        cfl.getFixedWidthMinor());
+            }
+            if (a.hasValue(R.styleable.AppCompatTheme_windowFixedHeightMajor)) {
+                a.getValue(R.styleable.AppCompatTheme_windowFixedHeightMajor,
+                        cfl.getFixedHeightMajor());
+            }
+            if (a.hasValue(R.styleable.AppCompatTheme_windowFixedHeightMinor)) {
+                a.getValue(R.styleable.AppCompatTheme_windowFixedHeightMinor,
+                        cfl.getFixedHeightMinor());
+            }
+            a.recycle();
+
+            cfl.requestLayout();
+        }
     }
 
     @Override

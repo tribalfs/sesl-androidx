@@ -51,7 +51,7 @@ public class ContentFrameLayout extends FrameLayout {
     private TypedValue mFixedHeightMajor;
     private TypedValue mFixedHeightMinor;
 
-    private final Rect mDecorPadding;
+    private final Rect mDecorPadding = new Rect();
 
     private OnAttachListener mAttachListener;
 
@@ -66,7 +66,6 @@ public class ContentFrameLayout extends FrameLayout {
     public ContentFrameLayout(
             @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mDecorPadding = new Rect();
     }
 
     /**
