@@ -26,7 +26,6 @@ import android.graphics.Region;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
-import android.os.Build;
 import android.util.ArrayMap;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -35,11 +34,12 @@ import android.view.View;
 import android.view.ViewParent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.core.util.Consumer;
+
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -116,7 +116,6 @@ public class SeslTouchTargetDelegate extends TouchDelegate {
             }
         }
 
-        @RequiresApi(api = 23)
         public static void drawTouchBounds(@NonNull View view, @NonNull List<Rect> list) {
             if (view.getMeasuredWidth() <= 0 || view.getMeasuredHeight() <= 0) {
                 return;
@@ -188,9 +187,7 @@ public class SeslTouchTargetDelegate extends TouchDelegate {
                 }
             }
             if (arrayList.size() > 0) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    TouchBoundsPainter.drawTouchBounds(mAnchorView, arrayList);
-                }
+                TouchBoundsPainter.drawTouchBounds(mAnchorView, arrayList);
             }
         }
     }
@@ -203,9 +200,8 @@ public class SeslTouchTargetDelegate extends TouchDelegate {
     }
 
     @Override
-    @NonNull
     @RequiresApi(api = 29)
-    public AccessibilityNodeInfo.TouchDelegateInfo getTouchDelegateInfo() {
+    public AccessibilityNodeInfo.@NonNull TouchDelegateInfo getTouchDelegateInfo() {
         Log.i(TAG, "SeslTouchTargetDelegate does not support accessibility because it cannot support multi-touch delegation with AOSP View");
         ArrayMap<Region, View> map = new ArrayMap<>(1);
         map.put(new Region(new Rect()), mAnchorView);

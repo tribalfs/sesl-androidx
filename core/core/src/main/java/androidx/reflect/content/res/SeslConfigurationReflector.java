@@ -26,6 +26,7 @@ import androidx.reflect.DeviceInfo;
 import androidx.reflect.SeslBaseReflector;
 
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -39,6 +40,20 @@ public class SeslConfigurationReflector {
     private static final Class<?> mClass = Configuration.class;
 
     private SeslConfigurationReflector() {
+    }
+
+    //sesl9
+    /** Returns the {@code android.app.WindowConfiguration} object from the given {@link Configuration}. */
+    public static @Nullable Object getField_windowConfiguration(@NonNull Configuration configuration) {
+        Method method = SeslBaseReflector.getDeclaredMethod(mClass, "hidden_semGetWindowConfiguration");
+        if (method != null) {
+            Object windowConfiguration = SeslBaseReflector.invoke(configuration, method);
+            if (windowConfiguration != null
+                    && windowConfiguration.getClass().getName().equals("android.app.WindowConfiguration")) {
+                return windowConfiguration;
+            }
+        }
+        return null;
     }
 
     public static boolean isDexEnabled(@NonNull Configuration configuration) {
@@ -91,5 +106,40 @@ public class SeslConfigurationReflector {
         }
 
         return 0;
+    }
+
+    //sesl9
+    /** Returns whether the given {@link Configuration} represents a pop-over window. */
+    @Nullable
+    @RestrictTo({LIBRARY_GROUP_PREFIX})
+    public static Object getField_semIsPopOver(@NonNull Configuration configuration) {
+        Method declaredMethod = SeslBaseReflector.getDeclaredMethod(mClass, "semIsPopOver", (Class<?>[]) new Class[0]);
+        if (declaredMethod != null) {
+            return SeslBaseReflector.invoke(configuration, declaredMethod, new Object[0]);
+        }
+        return null;
+    }
+
+    /** Returns the Samsung display device type integer for the given {@link Configuration}. */
+    public static int getField_semDisplayDeviceType(@NonNull Configuration configuration) {
+        Object semDisplayDeviceType = null;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            Method method = SeslBaseReflector.getDeclaredMethod(mClass, "hidden_semDisplayDeviceType");
+            if (method != null) {
+                semDisplayDeviceType = SeslBaseReflector.invoke(configuration, method);
+            }
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Field field = SeslBaseReflector.getDeclaredField(mClass, "semDisplayDeviceType");
+            if (field != null) {
+                semDisplayDeviceType = SeslBaseReflector.get(configuration, field);
+            }
+        }
+
+        if (semDisplayDeviceType instanceof Integer) {
+            return (Integer) semDisplayDeviceType;
+        }
+
+        return -1;
     }
 }

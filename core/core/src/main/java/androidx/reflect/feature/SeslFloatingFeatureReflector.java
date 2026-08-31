@@ -31,6 +31,8 @@ import java.lang.reflect.Method;
 
 @RestrictTo(LIBRARY_GROUP_PREFIX)
 public class SeslFloatingFeatureReflector {
+    public static final String SURFACE_TRANSITION_FLAG = "SEC_FLOATING_FEATURE_GRAPHICS_SUPPORT_3D_SURFACE_TRANSITION_FLAG";
+
     private static String mClassName;
 
     private SeslFloatingFeatureReflector() {
@@ -74,6 +76,39 @@ public class SeslFloatingFeatureReflector {
 
         if (result instanceof String) {
             return (String) result;
+        } else {
+            return defaultValue;
+        }
+    }
+
+    //sesl9
+    /** Retrieves floating feature string value for tag. */
+    public static String getString(String tag) {
+        return getString(tag, null);
+    }
+
+    /** Retrieves floating feature boolean value for tag with default false. */
+    public static boolean getBoolean(String tag) {
+        return getBoolean(tag, false);
+    }
+
+    /** Retrieves floating feature boolean value for tag with specified default value. */
+    public static boolean getBoolean(String tag, boolean defaultValue) {
+        Object result = null;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            Method method = SeslBaseReflector.getDeclaredMethod(mClassName, "hidden_getBoolean", String.class, boolean.class);
+            result = SeslBaseReflector.invoke(null, method, tag, defaultValue);
+        } else {
+            Object semFloatingFeature = getInstance();
+            if (semFloatingFeature != null) {
+                Method method = SeslBaseReflector.getMethod(mClassName, "getBoolean", String.class, boolean.class);
+                result = SeslBaseReflector.invoke(semFloatingFeature, method, tag, defaultValue);
+            }
+        }
+
+        if (result instanceof Boolean) {
+            return (Boolean) result;
         } else {
             return defaultValue;
         }

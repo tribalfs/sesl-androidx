@@ -10,6 +10,10 @@ dependencies {
     implementation(libs.androidx.core.viewtree)
     implementation(libs.androidx.collection)
     implementation(libs.androidx.concurrent.futures)
+    // exclude upstream androidx.core: it would shadow this module's own classes
+    implementation(libs.androidx.dynamicanimation) {
+        exclude(group = "androidx.core")
+    }
     implementation(libs.androidx.interpolator)
     api(libs.kotlinStdlib)
     implementation(libs.androidx.tracing)
@@ -26,10 +30,6 @@ android {
     }
 
     defaultConfig.vectorDrawables.useSupportLibrary = true
-
-    // AccessibilityNodeInfo.Selection / SelectionPosition became public in SDK 37.1
-    @Suppress("UnstableApiUsage")
-    compileSdkMinor = 1
 
     namespace = "androidx.core"
 

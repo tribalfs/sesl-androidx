@@ -3,7 +3,6 @@ plugins {
 }
 
 android {
-    compileSdkMinor = 1
     namespace = "androidx.core.ktx"
 }
 

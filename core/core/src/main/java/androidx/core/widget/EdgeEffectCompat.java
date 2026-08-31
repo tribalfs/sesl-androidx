@@ -197,11 +197,7 @@ public final class EdgeEffectCompat {
      */
     public static void onPull(@NonNull EdgeEffect edgeEffect, float deltaDistance,
             float displacement) {
-        if (SDK_INT >= 21) {
-            Api21Impl.onPull(edgeEffect, deltaDistance, displacement);
-        } else {
-            edgeEffect.onPull(deltaDistance);
-        }
+        Api21Impl.onPull(edgeEffect, deltaDistance, displacement);
     }
 
     /**
@@ -339,7 +335,6 @@ public final class EdgeEffectCompat {
         }
     }
 
-    @RequiresApi(21)
     static class Api21Impl {
         private Api21Impl() {
             // This class is not instantiable.

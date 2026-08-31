@@ -20,15 +20,12 @@ package androidx.core.widget;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP_PREFIX;
 
-import android.animation.Animator;
-import android.animation.ValueAnimator;
-import android.annotation.SuppressLint;
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Outline;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
@@ -42,28 +39,25 @@ import android.os.Parcelable;
 import android.provider.Settings;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.util.StateSet;
 import android.util.TypedValue;
 import android.view.FocusFinder;
 import android.view.InputDevice;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.PointerIcon;
-import android.view.SoundEffectConstants;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.view.ViewGroupOverlay;
 import android.view.ViewParent;
 import android.view.accessibility.AccessibilityEvent;
-import android.view.accessibility.AccessibilityManager;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.PathInterpolator;
 import android.widget.EdgeEffect;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.OverScroller;
 import android.widget.ScrollView;
 
@@ -71,38 +65,66 @@ import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.R;
+import androidx.core.util.SeslBottomFadingEdgeOverrides;
+import androidx.core.util.SeslFadingEdgeHelper;
+import androidx.core.util.SeslFadingEdgeHelper.ScrollInfoProvider;
+import androidx.core.util.SeslFadingEdgeHelperImpl;
+import androidx.core.util.SeslTopFadingEdgeOverrides;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.DifferentialMotionFlingController;
 import androidx.core.view.DifferentialMotionFlingTarget;
 import androidx.core.view.MotionEventCompat;
 import androidx.core.view.NestedScrollingChild3;
 import androidx.core.view.NestedScrollingChildHelper;
+import androidx.core.view.NestedScrollingParent2;
 import androidx.core.view.NestedScrollingParent3;
 import androidx.core.view.NestedScrollingParentHelper;
 import androidx.core.view.ScrollFeedbackProviderCompat;
 import androidx.core.view.ScrollingView;
+import androidx.core.view.SeslPointerIconCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityRecordCompat;
+import androidx.core.widget.SeslGoToTopController.OnGoToTopClickListener;
+import androidx.reflect.os.SeslSystemPropertiesReflector;
 import androidx.reflect.provider.SeslSettingsReflector;
-import androidx.reflect.view.SeslInputDeviceReflector;
 import androidx.reflect.view.SeslPointerIconReflector;
 import androidx.reflect.view.SeslViewReflector;
-import androidx.reflect.widget.SeslOverScrollerReflector;
 
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * (SESL Modified) NestedScrollView is just like {@link ScrollView}, but it supports acting
  * as both a nested scrolling parent and child on both new and old versions of Android.
  * Nested scrolling is enabled by default.
+ *
+ * <p><strong>Samsung Extension Software Library (SESL) Features:</strong></p>
+ * <ul>
+ *   <li><b>Floating GoToTop Button:</b> Enable via {@link #seslSetGoToTopEnabled(boolean)} to display
+ *   an interactive floating "go to top" button during scrolling. Supports custom click callbacks
+ *   ({@link SeslOnGoToTopClickListener}), One UI dynamic blur backgrounds ({@link #seslSetGoToTopBlurEnabled(boolean)}),
+ *   S-Pen stylus hover gestures, and custom bottom padding/suppression.</li>
+ *   <li><b>AGSL Shader Fading Edges:</b> Enable high-quality AGSL runtime shader fading edges at the scroll
+ *   boundaries using {@link #seslSetFadingEdgeEnabled(boolean)}. Supports custom top/bottom heights,
+ *   cubic-bezier easing interpolator slot overrides ({@link SeslTopFadingEdgeOverrides}, {@link SeslBottomFadingEdgeOverrides}),
+ *   color customization, and window bottom alignment.</li>
+ *   <li><b>Hover Scrolling:</b> Automatically scrolls content when an S-Pen or mouse pointer hovers near
+ *   the top or bottom edges ({@link #seslSetHoverScrollEnabled(boolean)}). Hover trigger area padding and
+ *   AppBar coordination can be configured via {@link #seslSetHoverTopPadding(int)} and
+ *   {@link #seslSetBottomHoverScrollWithAppBar(boolean)}.</li>
+ *   <li><b>Custom Scrollbar & Padding Styling:</b> Configurable horizontal padding background fill
+ *   ({@link #seslSetFillHorizontalPaddingEnabled(boolean, int)}) and custom vertical scrollbar offsets.</li>
+ *   <li><b>SeslScrollable Interface:</b> Implements {@link SeslScrollable} to expose a standardized
+ *   contract for GoToTop, fading edge, and bounds coordination across SESL scrollable components.</li>
+ * </ul>
  */
 public class NestedScrollView extends FrameLayout implements NestedScrollingParent3,
-        NestedScrollingChild3, ScrollingView {
+        NestedScrollingChild3, ScrollingView, SeslScrollable {
     static final int ANIMATED_SCROLL_GAP = 250;
 
     static final float MAX_SCROLL_FACTOR = 0.5f;
@@ -254,6 +276,7 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
     private float mVerticalScrollFactor;
 
     private OnScrollChangeListener mOnScrollChangeListener;
+    private List<OnScrollChangeListener> mOnScrollChangeListeners;
 
     @VisibleForTesting
     final DifferentialMotionFlingTargetImpl mDifferentialMotionFlingTarget =
@@ -264,86 +287,201 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
             new DifferentialMotionFlingController(getContext(), mDifferentialMotionFlingTarget);
 
     // Sesl
-    private static final int GO_TO_TOP_HIDE = 2500;
-    private static final int GTT_STATE_NONE = 0;
-    private static final int GTT_STATE_PRESSED = 2;
-    private static final int GTT_STATE_SHOWN = 1;
-    private static final int GTT_STATE_MAINTAINED = 3;
-    public static final int SESL_GO_TO_TOP_BUTTON_STYLE_BLACK = 1;
-    public static final int SESL_GO_TO_TOP_BUTTON_STYLE_WHITE = 0;
-    private static final int HOVERSCROLL_HEIGHT_TOP_DP = 25;
-    private static final int HOVERSCROLL_HEIGHT_BOTTOM_DP = 25;
     private static final int HOVERSCROLL_UP = 1;
     private static final int HOVERSCROLL_DOWN = 2;
-    private static final int HOVERSCROLL_DELAY = 15;
-    private static final float HOVERSCROLL_SPEED = 800.0f;
+    private static final int HOVERSCROLL_DELAY = 7;//sesl9
+    private static final float HOVERSCROLL_SPEED = 10.0f;//sesl9
     private static final int MSG_HOVERSCROLL_MOVE = 1;
-    private static final int MOTION_EVENT_ACTION_PEN_DOWN = 211;
     private static final int MOTION_EVENT_ACTION_PEN_UP = 212;
-    private static final int MOTION_EVENT_ACTION_PEN_MOVE = 213;
-    private final int ON_ABSORB_VELOCITY = 10000;
+    private static final int ON_ABSORB_VELOCITY = 10000;
     private long mHoverRecognitionStartTime = 0;
     private long mHoverScrollStartTime = 0;
-    private int mGoToTopElevation;
-    private int mGoToTopLastState = GTT_STATE_NONE;
-    private int mGoToTopSize;
-    private int mGoToTopState = GTT_STATE_NONE;
     private int mHoverBottomAreaHeight = 0;
     private int mHoverScrollDirection = -1;
     private int mHoverTopAreaHeight = 0;
-    private boolean mEnableGoToTop = false;
     private boolean mHoverAreaEnter = false;
     private boolean mHoverScrollEnabled = true;
     private boolean mHoverScrollStateChanged = false;
     private boolean mIsHoverOverscrolled = false;
-    private boolean mIsSupportGoToTop = false;
     private boolean mIsSupportHoverScroll = false;
     private boolean mNeedsHoverScroll = false;
-    private boolean mPreviousTextViewScroll = false;
-    private boolean mSizeChange = false;
     private final Context mContext;
-    private ValueAnimator mGoToTopFadeInAnimator;
-    private ValueAnimator mGoToTopFadeOutAnimator;
-    private Drawable mGoToTopImage;
     private HoverScrollHandler mHoverHandler;
-    private final Rect mGoToTopRect = new Rect();
-    private final Outline mOutline = new Outline();
-    View.OnLayoutChangeListener mOnLayoutChangeListener = new OnLayoutChangeListener() {
-        @Override
-        public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-            post(mCheckGoToTopAndAutoScrollCondition);
-        }
-    };
-    private final Runnable mGoToTopFadeOutRunnable = this::playGoToTopFadeOut;
-    private final Runnable mGoToTopFadeInRunnable = this::playGoToTopFadeIn;
-    private final Runnable mAutoHide = () -> setupGoToTop(GTT_STATE_NONE);
-    private final Runnable mGoToTopEdgeEffectRunnable = new Runnable() {
-        @Override
-        public void run() {
-            mEdgeGlowTop.onAbsorb(ON_ABSORB_VELOCITY);
-            invalidate();
-        }
-    };
-    private final Runnable mCheckGoToTopAndAutoScrollCondition = () -> {
-        if (mEnableGoToTop || mHoverScrollEnabled) {
-            mIsSupportGoToTop = mIsSupportHoverScroll = checkChildScrollableForGoToTopAndAutoScroll();
-        }
-    };
     // sesl
 
     //Sesl7
-    private ImageView mGoToTopView;
-    int mShowFadeOutGTT = GTT_STATE_NONE;
-    private int mGoToTopBottomPadding;
-    private int mSeslOverlayFeatureHeight = 0;
-    public final Interpolator SINE_IN_OUT_70 = new PathInterpolator(0.33f, 0.0f, 0.3f, 1.0f);
-    public final Interpolator LINEAR_INTERPOLATOR = new LinearInterpolator();
-
-    private boolean mDrawHorizontalPadding = false;
     private int mScrollbarTopPadding = 0;
     private int mScrollbarBottomPadding = 0;
     private final Paint mRectPaint = new Paint();
     //sesl7
+
+    //Sesl9
+    private boolean mDebugDrawAvailRect = false;
+    private static final String KEY_DEBUG_AVAIL_RECT = "sesl.debug.recyclerview.avail_rect";
+    private static final int GoToTopScrollingDuration = 700;
+    private SeslNestedGoToTopController mGoToTopController;
+    final Runnable mCheckGoToTopAndAutoScrollCondition = () -> {
+        if ((mGoToTopController == null || !mGoToTopController.isEnabled()) && !mHoverScrollEnabled) {
+            return;
+        }
+        boolean isSupport = checkChildScrollableForGoToTopAndAutoScroll();
+        mIsSupportHoverScroll = isSupport;
+        if (mGoToTopController != null) {
+            mGoToTopController.setSupportGoToTop(isSupport);
+        }
+    };
+    OnLayoutChangeListener mOnLayoutChangeListener = (_, _, _, _, _, _, _, _, _) -> post(mCheckGoToTopAndAutoScrollCondition);
+    public final Interpolator SINE_IN_OUT_70 = new PathInterpolator(0.33f, 0.0f, 0.3f, 1.0f);
+    static final Interpolator LINEAR_INTERPOLATOR = new LinearInterpolator();
+    private boolean mIsBottomHoverScrollWithAppBarEnabled = false;
+    private int mRemainNestedScrollRange;
+    private int mHoverDefaultBottomAreaHeight;
+    private int mHoverDefaultTopAreaHeight;
+    private int mScrollBarTopOffset = 0;
+    private int mScrollBarBottomOffset = 0;
+    private Rect mAvailableBounds = null;
+    private SeslOnGoToTopClickListener mOnGoToTopClickListener;
+    private int mInitialTopOffsetOfScreen = 0;
+    private boolean mHasNestedScrollRange = false;
+    private final int[] mWindowOffsets = new int[2];
+    private int mNestedScrollRange = 0;
+    private boolean mDrawHorizontalPadding = false;
+
+    private long mHoverRecognitionCurrentTime;
+    private long mHoverRecognitionDurationTime;
+    private long mHoverScrollTimeInterval = 300;
+    private int mHoverScrollSpeed;
+    private final SeslFadingEdgeHelper mFadingEdgeHelper;
+    private final ScrollInfoProvider mScrollInfoProvider = new ScrollInfoProvider() {
+        @Override
+        public int computeVerticalScrollRange() {
+            return NestedScrollView.this.computeVerticalScrollRange();
+        }
+        @Override
+        public int computeVerticalScrollOffset() {
+            return NestedScrollView.this.computeVerticalScrollOffset();
+        }
+        @Override
+        public int computeVerticalScrollExtent() {
+            return NestedScrollView.this.computeVerticalScrollExtent();
+        }
+        @Override
+        public boolean shouldNormalizeFadingEdge() {
+            return false;
+        }
+        @Override
+        public boolean shouldNormalizeFadingEdgeForDistance() {
+            return true;
+        }
+    };
+
+    private final SeslGoToTopController.Host mGoToTopHost = new SeslGoToTopController.Host() {
+        @Override
+        public boolean canScrollDown() {
+            return NestedScrollView.this.canScrollDownInternal();
+        }
+        @Override
+        public boolean canScrollUp() {
+            return NestedScrollView.this.canScrollUpInternal();
+        }
+        @Override
+        public Context getContext() {
+            return NestedScrollView.this.mContext;
+        }
+        @Override
+        public int getHeight() {
+            return NestedScrollView.this.getHeight();
+        }
+        @Override
+        public void getLocationInWindow(int[] location) {
+            NestedScrollView.this.getLocationInWindow(location);
+        }
+        @Override
+        public ViewGroupOverlay getOverlay() {
+            return NestedScrollView.this.getOverlay();
+        }
+        @Override
+        public int getPaddingBottom() {
+            return NestedScrollView.this.getPaddingBottom();
+        }
+        @Override
+        public int getPaddingLeft() {
+            return NestedScrollView.this.getPaddingLeft();
+        }
+        @Override
+        public int getPaddingRight() {
+            return NestedScrollView.this.getPaddingRight();
+        }
+        @Override
+        public int getScrollY() {
+            return NestedScrollView.this.getScrollY();
+        }
+        @Override
+        public int getWidth() {
+            return NestedScrollView.this.getWidth();
+        }
+        @Override
+        public void invalidateHost() {
+            NestedScrollView.this.invalidate();
+        }
+        @Override
+        public boolean isFastScrollerEnabled() {
+            return false;
+        }
+        @Override
+        public void playSoundEffect(int effectId) {
+            NestedScrollView.this.playSoundEffect(effectId);
+        }
+        @Override
+        public void post(@NonNull Runnable runnable) {
+            NestedScrollView.this.post(runnable);
+        }
+        @Override
+        public void postDelayed(@NonNull Runnable runnable, long delayMillis) {
+            NestedScrollView.this.postDelayed(runnable, delayMillis);
+        }
+        @Override
+        public void removeCallbacks(@NonNull Runnable runnable) {
+            NestedScrollView.this.removeCallbacks(runnable);
+        }
+        @Override
+        public void showTopEdgeEffect() {
+            NestedScrollView.this.mEdgeGlowTop.onAbsorb(ON_ABSORB_VELOCITY);
+            NestedScrollView.this.invalidate();
+        }
+        @Override
+        public void smoothScrollToTop() {
+            post(() -> {
+                if (NestedScrollView.this.mGoToTopController != null) {
+                    NestedScrollView.this.mGoToTopController.setScrollRunning(true);
+                    if (Settings.System.getInt(this.getContext().getContentResolver(), "remove_animations", 0) == 1) {
+                        NestedScrollView.this.scrollTo(0, 0);
+                        return;
+                    }
+                    int scrollToTopDurationMs = NestedScrollView.this.mGoToTopController.getScrollToTopDurationMs();
+                    if (NestedScrollView.this.mAvailableBounds != null) {
+                        NestedScrollView.this.smoothScrollTo(0, 0, scrollToTopDurationMs, true);
+                    } else {
+                        NestedScrollView.this.smoothScrollTo(0, 0, scrollToTopDurationMs);
+                    }
+                }
+            });
+        }
+    };
+
+    /**
+     * Interface definition for a callback to be invoked when the GoToTop button is clicked.
+     */
+    public interface SeslOnGoToTopClickListener {
+        /**
+         * Called when the GoToTop button in a {@link NestedScrollView} is clicked.
+         *
+         * @param nestedScrollView the {@link NestedScrollView} containing the GoToTop button
+         * @return {@code true} if the click was handled, {@code false} to perform default smooth scroll to top
+         */
+        boolean onGoToTopClick(@NonNull NestedScrollView nestedScrollView);
+    }
+    //sesl9
 
     public NestedScrollView(@NonNull Context context) {
         this(context, null);
@@ -356,7 +494,21 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
     public NestedScrollView(@NonNull Context context, @Nullable AttributeSet attrs,
             int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mContext = context;//sesl
+        this.mContext = context;
+
+        //Sesl9
+        try {
+            String buildType = Build.TYPE;
+            boolean isDebug = buildType.toLowerCase().equals("eng") || buildType.toLowerCase().equals("userdebug");
+            String debugProp = SeslSystemPropertiesReflector.getStringProperties(KEY_DEBUG_AVAIL_RECT);
+            if (isDebug && debugProp != null && Integer.parseInt(debugProp) == 1) {
+                mDebugDrawAvailRect = true;
+            }
+        } catch (Exception e) {
+            Log.w(TAG, "Can't check debug condition " + e);
+        }
+        //sesl9
+
         mEdgeGlowTop = EdgeEffectCompat.create(context, attrs);
         mEdgeGlowBottom = EdgeEffectCompat.create(context, attrs);
 
@@ -382,6 +534,11 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
         setNestedScrollingEnabled(true);
 
         ViewCompat.setAccessibilityDelegate(this, ACCESSIBILITY_DELEGATE);
+
+        //Sesl9
+        mRectPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        mFadingEdgeHelper = SeslFadingEdgeHelperImpl.createSeslFadingEdgeHelper(mContext);
+        //sesl9
     }
 
     // NestedScrollingChild3
@@ -434,6 +591,9 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
             int @Nullable [] offsetInWindow,
             int type
     ) {
+        if (mGoToTopController != null) {//sesl9
+            mGoToTopController.invalidate();
+        }
         return mChildHelper.dispatchNestedPreScroll(dx, dy, consumed, offsetInWindow, type);
     }
 
@@ -484,6 +644,7 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
 
     @Override
     public boolean dispatchNestedPreFling(float velocityX, float velocityY) {
+        SeslViewReflector.setFrameContentVelocity(this, 1.0f);//sesl9
         return mChildHelper.dispatchNestedPreFling(velocityX, velocityY);
     }
 
@@ -496,8 +657,21 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
     }
 
     private void onNestedScrollInternal(int dyUnconsumed, int type, int @Nullable [] consumed) {
+        //Sesl9
+        SeslNestedGoToTopController nestedGttController = this.mGoToTopController;
+        if (nestedGttController != null && nestedGttController.isScrollRunning()
+                && !mScroller.isFinished()) {
+            return;
+        }
+        //sesl9
+
         final int oldScrollY = getScrollY();
         scrollBy(0, dyUnconsumed);
+        mLastScrollerY = getScrollY();//sesl9
+        if (mScroller.springBack(getScrollX(), getScrollY(), 0, 0, 0, getScrollRange())) {
+            postInvalidateOnAnimation();
+        }
+
         final int myConsumed = getScrollY() - oldScrollY;
 
         if (consumed != null) {
@@ -705,6 +879,21 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
         mOnScrollChangeListener = l;
     }
 
+    //Sesl9
+    public void addOnScrollChangeListener(@NonNull OnScrollChangeListener listener) {
+        if (mOnScrollChangeListeners == null) {
+            mOnScrollChangeListeners = new ArrayList<>();
+        }
+        mOnScrollChangeListeners.add(listener);
+    }
+
+    public void removeOnScrollChangeListener(@NonNull OnScrollChangeListener listener) {
+        if (mOnScrollChangeListeners != null) {
+            mOnScrollChangeListeners.remove(listener);
+        }
+    }
+    //sesl9
+
     /**
      * @return Returns true this ScrollView can be scrolled
      */
@@ -763,16 +952,23 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         super.onScrollChanged(l, t, oldl, oldt);
-
-        //Sesl
-        if (canOverScroll() && t != oldt) {
-            showGoToTop();
+        //Sesl9
+        if (canOverScroll() && t != oldt && mGoToTopController != null) {
+            mGoToTopController.showIfNeeded();
         }
-        //sesl
-
+        if (mGoToTopController != null) {
+            mGoToTopController.draw();
+        }
+        //Sesl9
         if (mOnScrollChangeListener != null) {
             mOnScrollChangeListener.onScrollChange(this, l, t, oldl, oldt);
         }
+        if (mOnScrollChangeListeners != null) {
+            for (int i = mOnScrollChangeListeners.size() - 1; i >= 0; i--) {
+                mOnScrollChangeListeners.get(i).onScrollChange(this, l, t, oldl, oldt);
+            }
+        }
+        //sesl9
     }
 
     @Override
@@ -1003,6 +1199,7 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
                  * isFinished() is correct.
                 */
                 mScroller.computeScrollOffset();
+                SeslViewReflector.setFrameContentVelocity(this, Math.abs(mScroller.getCurrVelocity()));//sesl9
                 mIsBeingDragged = stopGlowAnimations(ev) || !mScroller.isFinished();
                 startNestedScroll(ViewCompat.SCROLL_AXIS_VERTICAL, ViewCompat.TYPE_TOUCH);
                 break;
@@ -1288,7 +1485,7 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
         final int scrollYDelta = getScrollY() - initialScrollY;
         if (ev != null && scrollYDelta != 0) {
             getScrollFeedbackProvider().onScrollProgress(
-                    ev.getDeviceId(),  ev.getSource(), verticalScrollAxis, scrollYDelta);
+                    ev.getDeviceId(), ev.getSource(), verticalScrollAxis, scrollYDelta);
         }
         final int unconsumedY = verticalScrollDistance - scrollYDelta;
 
@@ -1343,11 +1540,9 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
                             /* isStart= */ false);
                 }
 
-                showGoToTop();//sesl
-                if (ev != null) {
-                    mScrollFeedbackProvider.onScrollLimit(
-                            ev.getDeviceId(), ev.getSource(), verticalScrollAxis,
-                            /* isStart= */ false);
+                //sesl9
+                if (mGoToTopController != null) {
+                    mGoToTopController.showIfNeeded();
                 }
 
                 if (!mEdgeGlowTop.isFinished()) {
@@ -1396,13 +1591,58 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
         if (velocity > 0) {
             return true;
         }
-        float distance = EdgeEffectCompat.getDistance(edgeEffect) * getHeight();
-
-        // This is flinging without the spring, so let's see if it will fling past the overscroll
-        float flingDistance = getSplineFlingDistance(-velocity);
-
-        return flingDistance < distance;
+        return getSplineFlingDistance(-velocity) < EdgeEffectCompat.getDistance(edgeEffect) * (float) getHeight();
     }
+
+    //Sesl9
+    private boolean isFloatingGoToTopScrollRequest(int i) {
+        return i == (-getScrollY()) && mAvailableBounds != null;
+    }
+
+    private boolean findSuperClass(ViewParent viewParent, String str) {
+        for (Class<?> superclass = viewParent.getClass(); superclass != null; superclass = superclass.getSuperclass()) {
+            if (superclass.getSimpleName().equals(str)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void adjustNestedScrollRangeBy(int i) {
+        if (mHasNestedScrollRange) {
+            if (canScrollUpInternal() && mRemainNestedScrollRange == 0) {
+                return;
+            }
+            int i5 = mRemainNestedScrollRange - i;
+            mRemainNestedScrollRange = i5;
+            if (i5 < 0) {
+                mRemainNestedScrollRange = 0;
+                return;
+            }
+            int i6 = mNestedScrollRange;
+            if (i5 > i6) {
+                mRemainNestedScrollRange = i6;
+            }
+        }
+    }
+
+    private boolean isLockScreenMode() {
+        KeyguardManager keyguardManager = (KeyguardManager) mContext.getSystemService(Context.KEYGUARD_SERVICE);
+        return keyguardManager.inKeyguardRestrictedInputMode();
+    }
+
+    private boolean canHoverScroll() {
+        return mIsSupportHoverScroll && mHoverScrollEnabled;
+    }
+
+    boolean canScrollUpInternal() {
+        return canScrollVertically(-1);
+    }
+
+    boolean canScrollDownInternal() {
+        return canScrollVertically(1);
+    }
+    //sesl9
 
     /**
      * If mTopGlow or mBottomGlow is currently active and the motion will remove some of the
@@ -1580,7 +1820,11 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
     @Override
     protected void onOverScrolled(int scrollX, int scrollY,
             boolean clampedX, boolean clampedY) {
-        showGoToTop();//sesl
+        //Sesl9
+        if (mGoToTopController != null) {
+            mGoToTopController.showIfNeeded();
+        }
+        //sesl9
         super.scrollTo(scrollX, scrollY);
     }
 
@@ -1865,6 +2109,7 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
             int scrollDelta = computeScrollDeltaToGetChildRectOnScreen(mTempRect);
 
             scrollBy(scrollDelta, 0, ViewCompat.TYPE_NON_TOUCH, true);
+            mLastScrollerY = getScrollY();//sesl9
             nextFocused.requestFocus(direction);
 
         } else {
@@ -1982,7 +2227,13 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
             int parentSpace = getHeight() - getPaddingTop() - getPaddingBottom();
             final int scrollY = getScrollY();
             final int maxY = Math.max(0, childSize - parentSpace);
-            dy = Math.max(0, Math.min(scrollY + dy, maxY)) - scrollY;
+            dy = Math.clamp(scrollY + dy, 0, maxY) - scrollY;
+            //Sesl9
+            final boolean isFloatingGTT = isFloatingGoToTopScrollRequest(dy);
+            if (isFloatingGTT && mAvailableBounds != null) {
+                dy -= mAvailableBounds.top;
+            }
+            //sesl9
             mScroller.startScroll(getScrollX(), scrollY, 0, dy, scrollDurationMs);
             runAnimatedScroll(withNestedScrolling);
         } else {
@@ -2200,6 +2451,8 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
         } else {
             stopNestedScroll(ViewCompat.TYPE_NON_TOUCH);
         }
+        //sesl9
+        SeslViewReflector.setFrameContentVelocity(this, Math.abs(mScroller.getCurrVelocity()));
     }
 
     /**
@@ -2299,68 +2552,39 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
      * @return The scroll delta.
      */
     protected int computeScrollDeltaToGetChildRectOnScreen(Rect rect) {
-        if (getChildCount() == 0) return 0;
-
+        int screenHeight;
+        if (getChildCount() == 0) {
+            return 0;
+        }
         int height = getHeight();
-        int screenTop = getScrollY();
-        int screenBottom = screenTop + height;
-        int actualScreenBottom = screenBottom;
-
-        int fadingEdge = getVerticalFadingEdgeLength();
-
-        // TODO: screenTop should be incremented by fadingEdge * getTopFadingEdgeStrength (but for
-        // the target scroll distance).
-        // leave room for top fading edge as long as rect isn't at very top
+        int scrollY = getScrollY();
+        Rect availBounds = mAvailableBounds;
+        if (availBounds != null) {
+            int top = availBounds.top;
+            scrollY += top;
+            int h = height - top;
+            int bottom = availBounds.bottom;
+            screenHeight = h - (height > bottom ? height - bottom : mHoverBottomAreaHeight);
+        } else {
+            screenHeight = height - mHoverBottomAreaHeight;
+        }
+        int screenBottom = screenHeight + scrollY;
+        int verticalFadingEdgeLength = getVerticalFadingEdgeLength();
         if (rect.top > 0) {
-            screenTop += fadingEdge;
+            scrollY += verticalFadingEdgeLength;
         }
-
-        // TODO: screenBottom should be decremented by fadingEdge * getBottomFadingEdgeStrength (but
-        // for the target scroll distance).
-        // leave room for bottom fading edge as long as rect isn't at very bottom
         View child = getChildAt(0);
-        final LayoutParams lp = (LayoutParams) child.getLayoutParams();
-        if (rect.bottom < child.getHeight() + lp.topMargin + lp.bottomMargin) {
-            screenBottom -= fadingEdge;
+        LayoutParams layoutParams = (LayoutParams) child.getLayoutParams();
+        if (rect.bottom < child.getHeight() + layoutParams.topMargin + layoutParams.bottomMargin) {
+            screenBottom -= verticalFadingEdgeLength;
         }
-
-        int scrollYDelta = 0;
-
-        if (rect.bottom > screenBottom && rect.top > screenTop) {
-            // need to move down to get it in view: move down just enough so
-            // that the entire rectangle is in view (or at least the first
-            // screen size chunk).
-
-            if (rect.height() > height) {
-                // just enough to get screen size chunk on
-                scrollYDelta += (rect.top - screenTop);
-            } else {
-                // get entire rect at bottom of screen
-                scrollYDelta += (rect.bottom - screenBottom);
-            }
-
-            // make sure we aren't scrolling beyond the end of our content
-            int bottom = child.getBottom() + lp.bottomMargin;
-            int distanceToBottom = bottom - actualScreenBottom;
-            scrollYDelta = Math.min(scrollYDelta, distanceToBottom);
-
-        } else if (rect.top < screenTop && rect.bottom < screenBottom) {
-            // need to move up to get it in view: move up just enough so that
-            // entire rectangle is in view (or at least the first screen
-            // size chunk of it).
-
-            if (rect.height() > height) {
-                // screen size chunk
-                scrollYDelta -= (screenBottom - rect.bottom);
-            } else {
-                // entire rect at top
-                scrollYDelta -= (screenTop - rect.top);
-            }
-
-            // make sure we aren't scrolling any further than the top our content
-            scrollYDelta = Math.max(scrollYDelta, -getScrollY());
+        if (rect.bottom > screenBottom && rect.top > scrollY) {
+            return Math.min(rect.height() > height ? rect.top - scrollY : rect.bottom - screenBottom, (child.getBottom() + layoutParams.bottomMargin) - screenBottom);
         }
-        return scrollYDelta;
+        if (rect.top >= scrollY || rect.bottom >= screenBottom) {
+            return 0;
+        }
+        return Math.max(rect.height() > height ? -(screenBottom - rect.bottom) : -(scrollY - rect.top), -getScrollY());
     }
 
     @Override
@@ -2428,6 +2652,8 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        int measuredHeight;
+        SeslNestedGoToTopController gttController;
         super.onLayout(changed, l, t, r, b);
         mIsLayoutDirty = false;
         // Give a child focus if it needs it
@@ -2436,38 +2662,74 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
         }
         mChildToScrollTo = null;
 
-        //Sesl7
-        if (changed) {
-            mSeslOverlayFeatureHeight = getResources().getDimensionPixelOffset(R.dimen.sesl_nestedscrollview_overlay_feature_hidden_height);
+        if (changed && (gttController = mGoToTopController) != null) {
+            gttController.setSizeChanged(true);
+            mGoToTopController.setOverlayFeatureHiddenHeightPx(getResources().getDimensionPixelOffset(
+                    R.dimen.sesl_nestedscrollview_overlay_feature_hidden_height));
+            mGoToTopController.onSizeChanged();
         }
-        //sesl7
 
         if (!mIsLaidOut) {
-            // If there is a saved state, scroll to the position saved in that state.
+            // If there is a saved state, restore it
             if (mSavedState != null) {
                 scrollTo(getScrollX(), mSavedState.scrollPosition);
                 mSavedState = null;
-            } // mScrollY default value is "0"
+            } // else {..}
 
-            // Make sure current scrollY position falls into the scroll range.  If it doesn't,
-            // scroll such that it does.
-            int childSize = 0;
             if (getChildCount() > 0) {
-                View child = getChildAt(0);
-                LayoutParams lp = (LayoutParams) child.getLayoutParams();
-                childSize = child.getMeasuredHeight() + lp.topMargin + lp.bottomMargin;
+                View childAt = getChildAt(0);
+                LayoutParams layoutParams = (LayoutParams) childAt.getLayoutParams();
+                measuredHeight = childAt.getMeasuredHeight() + layoutParams.topMargin + layoutParams.bottomMargin;
+            } else {
+                measuredHeight = 0;
             }
             int parentSpace = b - t - getPaddingTop() - getPaddingBottom();
-            int currentScrollY = getScrollY();
-            int newScrollY = clamp(currentScrollY, parentSpace, childSize);
-            if (newScrollY != currentScrollY) {
-                scrollTo(getScrollX(), newScrollY);
+            int scrollY = getScrollY();
+            int iClamp = clamp(scrollY, parentSpace, measuredHeight);
+            if (iClamp != scrollY) {
+                scrollTo(getScrollX(), iClamp);
             }
         }
 
-        // Calling this with the present values causes it to re-claim them
         scrollTo(getScrollX(), getScrollY());
         mIsLaidOut = true;
+
+        if (!changed || computeHorizontalScrollRange() > computeHorizontalScrollExtent()) {
+            return;
+        }
+
+        mHasNestedScrollRange = false;
+        for (ViewParent parent = getParent(); parent != null && (parent instanceof ViewGroup); parent = parent.getParent()) {
+            if ((parent instanceof NestedScrollingParent2) && findSuperClass(parent, "CoordinatorLayout")) {
+                ViewGroup viewGroup = (ViewGroup) parent;
+                viewGroup.getLocationInWindow(mWindowOffsets);
+                int height = viewGroup.getHeight() + mWindowOffsets[1];
+                getLocationInWindow(mWindowOffsets);
+                mInitialTopOffsetOfScreen = mWindowOffsets[1];
+                int h = getHeight() - (height - mInitialTopOffsetOfScreen);
+                mRemainNestedScrollRange = h;
+                if (h < 0) {
+                    mRemainNestedScrollRange = 0;
+                }
+                mNestedScrollRange = mRemainNestedScrollRange;
+                mHasNestedScrollRange = true;
+                break;
+            }
+        }
+        if (mHasNestedScrollRange) {
+            return;
+        }
+        mInitialTopOffsetOfScreen = 0;
+        mRemainNestedScrollRange = 0;
+        mNestedScrollRange = 0;
+    }
+
+    @Override
+    public void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (mGoToTopController != null) {
+            mGoToTopController.release();
+        }
     }
 
     @Override
@@ -2524,6 +2786,8 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
                     0, 0, // x
                     Integer.MIN_VALUE, Integer.MAX_VALUE, // y
                     0, 0); // overscroll
+            //sesl9
+            SeslViewReflector.setFrameContentVelocity(this, Math.abs(mScroller.getCurrVelocity()));
             runAnimatedScroll(true);
             if (Build.VERSION.SDK_INT >= 35) {
                 Api35Impl.setFrameContentVelocity(NestedScrollView.this,
@@ -2557,57 +2821,122 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
 
     @Override
     public void draw(@NonNull Canvas canvas) {
+        int paddingLeft;
         super.draw(canvas);
-        final int scrollY = getScrollY();
+        int scrollY = getScrollY();
+        int paddingLeft2 = 0;
         if (!mEdgeGlowTop.isFinished()) {
-            final int restoreCount = canvas.save();
+            int iSave = canvas.save();
             int width = getWidth();
             int height = getHeight();
-            int xTranslation = 0;
-            int yTranslation = Math.min(0, scrollY);
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP
-                    || Api21Impl.getClipToPadding(this)) {
-                width -= getPaddingLeft() + getPaddingRight();
-                xTranslation += getPaddingLeft();
+            int iMin = Math.min(0, scrollY);
+            if (Api21Impl.getClipToPadding(this)) {
+                width -= getPaddingRight() + getPaddingLeft();
+                paddingLeft = getPaddingLeft();
+            } else {
+                paddingLeft = 0;
             }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
-                    && Api21Impl.getClipToPadding(this)) {
-                height -= getPaddingTop() + getPaddingBottom();
-                yTranslation += getPaddingTop();
+            if (Api21Impl.getClipToPadding(this)) {
+                height -= getPaddingBottom() + getPaddingTop();
+                iMin += getPaddingTop();
             }
-            canvas.translate(xTranslation, yTranslation);
+            canvas.translate(paddingLeft, iMin);
             mEdgeGlowTop.setSize(width, height);
             if (mEdgeGlowTop.draw(canvas)) {
                 postInvalidateOnAnimation();
             }
-            canvas.restoreToCount(restoreCount);
+            canvas.restoreToCount(iSave);
         }
         if (!mEdgeGlowBottom.isFinished()) {
-            final int restoreCount = canvas.save();
-            int width = getWidth();
-            int height = getHeight();
-            int xTranslation = 0;
-            int yTranslation = Math.max(getScrollRange(), scrollY) + height;
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP
-                    || Api21Impl.getClipToPadding(this)) {
-                width -= getPaddingLeft() + getPaddingRight();
-                xTranslation += getPaddingLeft();
+            int iSave2 = canvas.save();
+            int width2 = getWidth();
+            int height2 = getHeight();
+            int iMax = Math.max(getScrollRange(), scrollY) + height2;
+            if (Api21Impl.getClipToPadding(this)) {
+                width2 -= getPaddingRight() + getPaddingLeft();
+                paddingLeft2 = getPaddingLeft();
             }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
-                    && Api21Impl.getClipToPadding(this)) {
-                height -= getPaddingTop() + getPaddingBottom();
-                yTranslation -= getPaddingBottom();
+            if (Api21Impl.getClipToPadding(this)) {
+                height2 -= getPaddingBottom() + getPaddingTop();
+                iMax -= getPaddingBottom();
             }
-            canvas.translate(xTranslation - width, yTranslation);
-            canvas.rotate(180, width, 0);
-            mEdgeGlowBottom.setSize(width, height);
+            canvas.translate(paddingLeft2 - width2, iMax);
+            canvas.rotate(180.0f, width2, 0.0f);
+            mEdgeGlowBottom.setSize(width2, height2);
             if (mEdgeGlowBottom.draw(canvas)) {
                 postInvalidateOnAnimation();
             }
-            canvas.restoreToCount(restoreCount);
+            canvas.restoreToCount(iSave2);
         }
+        if (mGoToTopController != null) {
+            mGoToTopController.draw();
+        }
+    }
 
-        if (canGoToTop()) drawGoToTop();//sesl
+    @Override
+    protected void onDraw(@NonNull Canvas canvas) {
+        super.onDraw(canvas);
+        if (mFadingEdgeHelper.isFadingEdgeEnabled()) {
+            Rect rect = calculateFadingEdgeBounds();
+            mFadingEdgeHelper.prepareFadingEffect(canvas, rect.left, rect.top, rect.right, rect.bottom);
+        }
+    }
+
+    private Rect calculateFadingEdgeBounds() {
+        Rect rect = new Rect(getScrollX(), getScrollY(), (getRight() + getScrollX()) - getLeft(), (getBottom() + getScrollY()) - getTop());
+        if (getClipToPadding()) {
+            rect.left = getPaddingLeft() + rect.left;
+            rect.right -= getPaddingRight();
+            rect.top = getPaddingTop() + rect.top;
+            rect.bottom -= getPaddingBottom();
+        }
+        if (isPaddingOffsetRequired()) {
+            rect.top += getTopPaddingOffset();
+            rect.bottom += getBottomPaddingOffset();
+        }
+        return rect;
+    }
+
+    @Override
+    public void dispatchDraw(@NonNull Canvas canvas) {
+        super.dispatchDraw(canvas);
+        if (mDebugDrawAvailRect && mAvailableBounds != null) {
+            int iSave = canvas.save();
+            canvas.translate(0.0f, getScrollY());
+            Paint paint = new Paint();
+            paint.setColor(Color.GREEN);
+            paint.setAlpha(64);
+            paint.setStyle(Paint.Style.FILL);
+            Rect rect = mAvailableBounds;
+            canvas.drawRect(rect.left, rect.top, rect.right, rect.bottom, paint);
+            paint.setAlpha(255);
+            paint.setStrokeWidth(HOVERSCROLL_SPEED);
+            paint.setStrokeCap(Paint.Cap.SQUARE);
+            paint.setStyle(Paint.Style.STROKE);
+            Rect bounds = mAvailableBounds;
+            canvas.drawRect(bounds.left, bounds.top, bounds.right, bounds.bottom, paint);
+            canvas.restoreToCount(iSave);
+        }
+        if (mDrawHorizontalPadding) {
+            int paddingLeft = getPaddingLeft();
+            int paddingRight = getPaddingRight();
+            int height = getHeight();
+            int width = getWidth();
+            int scrollY = getScrollY();
+            if (paddingLeft > 0) {
+                canvas.drawRect(0.0f, scrollY, paddingLeft, height + scrollY, mRectPaint);
+            }
+            if (paddingRight > 0) {
+                canvas.drawRect(width - paddingRight, scrollY, width, height + scrollY, mRectPaint);
+            }
+        }
+        if (mFadingEdgeHelper.isFadingEdgeEnabled()) {
+            seslRenderFadingEffect(canvas);
+        }
+    }
+
+    private void seslRenderFadingEffect(Canvas canvas) {
+        mFadingEdgeHelper.renderFadingEffect(canvas, mScrollInfoProvider);
     }
 
     private static int clamp(int n, int my, int child) {
@@ -2702,7 +3031,7 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
 
     static class AccessibilityDelegate extends AccessibilityDelegateCompat {
         @Override
-        public boolean performAccessibilityAction(View host, int action, Bundle arguments) {
+        public boolean performAccessibilityAction(@NonNull View host, int action, @Nullable Bundle arguments) {
             if (super.performAccessibilityAction(host, action, arguments)) {
                 return true;
             }
@@ -2746,7 +3075,7 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
         }
 
         @Override
-        public void onInitializeAccessibilityNodeInfo(View host, AccessibilityNodeInfoCompat info) {
+        public void onInitializeAccessibilityNodeInfo(@NonNull View host, @NonNull AccessibilityNodeInfoCompat info) {
             super.onInitializeAccessibilityNodeInfo(host, info);
             final NestedScrollView nsvHost = (NestedScrollView) host;
             info.setClassName(ScrollView.class.getName());
@@ -2771,7 +3100,7 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
         }
 
         @Override
-        public void onInitializeAccessibilityEvent(View host, AccessibilityEvent event) {
+        public void onInitializeAccessibilityEvent(@NonNull View host, @NonNull AccessibilityEvent event) {
             super.onInitializeAccessibilityEvent(host, event);
             final NestedScrollView nsvHost = (NestedScrollView) host;
             event.setClassName(ScrollView.class.getName());
@@ -2835,157 +3164,90 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
         }
     }
 
-    //Sesl7
-    private boolean initGoToTop(boolean enabled, boolean isWhiteStyle) {
-
-        mGoToTopImage = findAndGetDrawable(isWhiteStyle
-                ? "sesl_list_go_to_top_light" : "sesl_list_go_to_top_dark");
-
-
-        if (mGoToTopImage == null || mGoToTopSize == -1 || mGoToTopElevation == -1) {
-            Log.i(TAG, "GTT not support : maybe not contains AppCompat ");
-            mIsSupportGoToTop = false;
+    private boolean checkChildScrollableForGoToTopAndAutoScroll() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            Log.i(TAG, "GTT HSC not support : under Platform Version : " + Build.VERSION.SDK_INT);
             return false;
         }
 
-        if (mGoToTopView == null) {
-            mGoToTopView = new ImageView(mContext);
+        if (!mIsBottomHoverScrollWithAppBarEnabled && getChildCount() > 0 && (getChildAt(0) instanceof ViewGroup)) {
+            ViewGroup child = (ViewGroup) getChildAt(0);
+
+            if (getPaddingBottom() + getPaddingTop() + child.getHeight() < getHeight()) {
+                Log.i(TAG, "GTT HSC not support : Small Height child");
+                return false;
+            }
+
+            for (int i = 0; i < child.getChildCount(); i++) {
+                View view = child.getChildAt(i);
+                if (view.getVisibility() != GONE) {
+                    if (view.canScrollVertically(1) || view.canScrollVertically(-1)) {
+                        Log.i(TAG, "GTT HSC not support : Some child view can scroll index: " +
+                                i + " " + view);
+                        return false;
+                    }
+                }
+            }
         }
-        mGoToTopView.setBackground(findAndGetDrawable(
-                isWhiteStyle
-                ? "sesl_go_to_top_background_light"
-                : "sesl_go_to_top_background_dark"));
-        mGoToTopView.setElevation(mGoToTopElevation);
-        mGoToTopView.setImageDrawable(mGoToTopImage);
-
-        if (enabled) {
-            mGoToTopView.setAlpha(0.0f);
-            if (!mEnableGoToTop) {
-                getOverlay().add(mGoToTopView);
-            }
-        } else if (mEnableGoToTop) {
-            getOverlay().remove(mGoToTopView);
-        }
-
-        mEnableGoToTop = enabled;
-
-        mGoToTopFadeInAnimator = ValueAnimator.ofFloat(0.0f, 1.0f);
-        mGoToTopFadeInAnimator.setDuration(333L);
-        mGoToTopFadeInAnimator.setInterpolator(SINE_IN_OUT_70);
-        mGoToTopFadeInAnimator.addUpdateListener(valueAnimator -> {
-            try {
-                mGoToTopView.setAlpha((Float) valueAnimator.getAnimatedValue());
-            } catch (Exception ignored) {}
-        });
-
-        mGoToTopFadeOutAnimator = ValueAnimator.ofFloat(1.0f, 0.0f);
-        mGoToTopFadeOutAnimator.setDuration(150L);
-        mGoToTopFadeOutAnimator.setInterpolator(LINEAR_INTERPOLATOR);
-        mGoToTopFadeOutAnimator.addUpdateListener(valueAnimator -> {
-            try {
-                mGoToTopView.setAlpha((Float) valueAnimator.getAnimatedValue());
-            } catch (Exception ignored) {}
-        });
-
-        mGoToTopFadeOutAnimator.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationCancel(@NonNull Animator animator) {}
-
-            @Override
-            public void onAnimationEnd(@NonNull Animator animator) {
-                try {
-                    mShowFadeOutGTT = 2;
-                    setupGoToTop(0);
-                } catch (Exception ignored) {}
-            }
-
-            @Override
-            public void onAnimationRepeat(@NonNull Animator animator) {}
-
-            @Override
-            public void onAnimationStart(@NonNull Animator animator) {
-                try {
-                    mShowFadeOutGTT = 1;
-                } catch (Exception ignored) {}
-            }
-        });
 
         return true;
     }
 
+    private int findAndGetColor(String name, int failedValue) {
+        try {
+            return mContext.getColor(mContext.getResources()
+                    .getIdentifier(name, "color", mContext.getPackageName()));
+        } catch (Resources.NotFoundException e) {
+            return failedValue;
+        }
+    }
+
+    private int findAndGetDimension(String name, int failedValue) {
+        try {
+            return mContext.getResources().getDimensionPixelSize(mContext.getResources()
+                    .getIdentifier(name, "dimen", mContext.getPackageName()));
+        } catch (Resources.NotFoundException e) {
+            return failedValue;
+        }
+    }
+
+    private Drawable findAndGetDrawable(String name) {
+        try {
+            return mContext.getResources().getDrawable(mContext.getResources()
+                    .getIdentifier(name, "drawable", mContext.getPackageName()), null);
+        } catch (Resources.NotFoundException e) {
+            return null;
+        }
+    }
+
     @Override
-    public boolean dispatchTouchEvent(MotionEvent event) {
-        final int x = (int) event.getX();
-        final int y = (int) event.getY();
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        ev.getX();
+        final int y = (int) ev.getY();
         final int childCount = getChildCount();
-        int contentBottom = 0;
         final int range = getScrollRange();
-        //final boolean needToScroll = MultiSelection.isNeedToScroll();
 
         if (mHoverHandler == null) {
             mHoverHandler = new HoverScrollHandler(this);
         }
 
-        if (mHoverTopAreaHeight <= 0 || mHoverBottomAreaHeight <= 0) {
-            mHoverTopAreaHeight = (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                    HOVERSCROLL_HEIGHT_TOP_DP, mContext.getResources().getDisplayMetrics()) + 0.5f);
-            mHoverBottomAreaHeight = (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                    HOVERSCROLL_HEIGHT_BOTTOM_DP, mContext.getResources().getDisplayMetrics()) + 0.5f);
+        if (mHoverDefaultTopAreaHeight <= 0 || mHoverDefaultBottomAreaHeight <= 0) {
+            mHoverDefaultTopAreaHeight = (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                    25.0f, mContext.getResources().getDisplayMetrics()) + 0.5f);
+            mHoverDefaultBottomAreaHeight = (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                    25.0f, mContext.getResources().getDisplayMetrics()) + 0.5f);
         }
 
-        if (childCount != 0) {
-            contentBottom = getHeight();
+        final int height = childCount != 0 ? getHeight() : 0;
+        final boolean isStylus = ev.getToolType(0) == MotionEvent.TOOL_TYPE_STYLUS;
+
+        SeslNestedGoToTopController gttController = mGoToTopController;
+        if (gttController != null && gttController.onTouchEvent(ev)) {
+            return true;
         }
 
-        @SuppressLint("WrongConstant")
-        final boolean isPossibleTooltype = event.getToolType(0) == MotionEvent.BUTTON_STYLUS_PRIMARY;
-
-        final int action = event.getAction();
-        switch (action) {
-            case MotionEvent.ACTION_DOWN:
-                if (isSupportGotoTop() && mGoToTopState != GTT_STATE_PRESSED && mGoToTopRect.contains(x, y)) {
-                    setupGoToTop(GTT_STATE_PRESSED);
-                    mGoToTopImage.setHotspot(x, y);
-                    mGoToTopImage.setState(new int[] {
-                            android.R.attr.state_pressed,
-                            android.R.attr.state_enabled,
-                            android.R.attr.state_selected
-                    });
-                    return true;
-                }
-                break;
-            case MotionEvent.ACTION_UP:
-                if (isSupportGotoTop() && mGoToTopState == GTT_STATE_PRESSED) {
-                    if (canScrollUp()) {
-                        post(() -> smoothScrollTo(0, 0));
-                        postDelayed(mGoToTopEdgeEffectRunnable, 150);
-                    }
-                    mGoToTopState = GTT_STATE_SHOWN;
-                    autoHideGoToTop();
-                    mGoToTopImage.setState(StateSet.NOTHING);
-                    playSoundEffect(SoundEffectConstants.CLICK);
-                    return true;
-                }
-                break;
-            case MotionEvent.ACTION_MOVE:
-                if (isSupportGotoTop() && mGoToTopState == GTT_STATE_PRESSED) {
-                    if (!mGoToTopRect.contains(x, y)) {
-                        mGoToTopState = GTT_STATE_SHOWN;
-                        mGoToTopImage.setState(StateSet.NOTHING);
-                        autoHideGoToTop();
-                    }
-                    return true;
-                }
-                break;
-            case MotionEvent.ACTION_CANCEL:
-                if (isSupportGotoTop() && mGoToTopState != GTT_STATE_NONE) {
-                    mGoToTopImage.setState(StateSet.NOTHING);
-                }
-                break;
-        }
-
-        if ((y > mHoverTopAreaHeight && y < contentBottom - mHoverBottomAreaHeight)
-                || range == 0 || !isPossibleTooltype || event.getButtonState() != MotionEvent.BUTTON_STYLUS_PRIMARY) {
+        if ((y > mHoverTopAreaHeight + mHoverDefaultTopAreaHeight && y < height - mHoverBottomAreaHeight - mHoverDefaultBottomAreaHeight)
+                || range == 0 || !isStylus || ev.getButtonState() != MotionEvent.BUTTON_STYLUS_PRIMARY) {//sesl9
             if (mHoverHandler.hasMessages(MSG_HOVERSCROLL_MOVE)) {
                 mHoverHandler.removeMessages(MSG_HOVERSCROLL_MOVE);
             }
@@ -2993,72 +3255,41 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
             mHoverScrollStartTime = 0;
             mHoverAreaEnter = false;
             mIsHoverOverscrolled = false;
-            return super.dispatchTouchEvent(event);
+            return super.dispatchTouchEvent(ev);
         }
 
         if (!mHoverAreaEnter) {
             mHoverScrollStartTime = System.currentTimeMillis();
         }
 
-        switch (action) {
-            case MOTION_EVENT_ACTION_PEN_DOWN:
-                if (isSupportGotoTop() && mGoToTopState != GTT_STATE_PRESSED && mGoToTopRect.contains(x, y)) {
-                    setupGoToTop(GTT_STATE_PRESSED);
-                    mGoToTopImage.setHotspot(x, y);
-                    mGoToTopImage.setState(new int[] {
-                            android.R.attr.state_pressed,
-                            android.R.attr.state_enabled,
-                            android.R.attr.state_selected
-                    });
-                    return true;
-                }
-                break;
-            case MOTION_EVENT_ACTION_PEN_UP:
-                if (isSupportGotoTop() && mGoToTopState == GTT_STATE_PRESSED) {
-                    Log.d(TAG, "pen up false GOTOTOP");
-                    if (canScrollUp()) {
-                        smoothScrollTo(0, 0);
-                        mEdgeGlowTop.onAbsorb(ON_ABSORB_VELOCITY);
-                        invalidate();
-                    }
-                    setupGoToTop(GTT_STATE_NONE);
-                    mGoToTopImage.setState(StateSet.NOTHING);
-                    return true;
-                }
-
-                if (mHoverHandler.hasMessages(MSG_HOVERSCROLL_MOVE)) {
-                    mHoverHandler.removeMessages(MSG_HOVERSCROLL_MOVE);
-                }
-
-                mHoverRecognitionStartTime = 0;
-                mHoverScrollStartTime = 0;
-                mIsHoverOverscrolled = false;
-                mHoverAreaEnter = false;
-                break;
-            case MOTION_EVENT_ACTION_PEN_MOVE:
-                if (isSupportGotoTop() && mGoToTopState == GTT_STATE_PRESSED && !mGoToTopRect.contains(x, y)) {
-                    mGoToTopState = GTT_STATE_SHOWN;
-                    mGoToTopImage.setState(StateSet.NOTHING);
-                    return true;
-                }
-
-                if (mPreviousTextViewScroll && mHoverHandler.hasMessages(MSG_HOVERSCROLL_MOVE)) {
-                    mHoverHandler.removeMessages(MSG_HOVERSCROLL_MOVE);
-                }
-
-                mPreviousTextViewScroll = false;
-                break;
+        if (gttController != null && gttController.onTouchPenEvent(ev)) {
+            return true;
         }
 
-        return super.dispatchTouchEvent(event);
+        final int action = ev.getAction();
+        if (action == MOTION_EVENT_ACTION_PEN_UP) {
+            if (mHoverHandler.hasMessages(MSG_HOVERSCROLL_MOVE)) {
+                mHoverHandler.removeMessages(MSG_HOVERSCROLL_MOVE);
+            }
+            mHoverRecognitionStartTime = 0;
+            mHoverScrollStartTime = 0;
+            mIsHoverOverscrolled = false;
+            mHoverAreaEnter = false;
+        }
+
+        return super.dispatchTouchEvent(ev);
     }
 
 
     @Override
     protected boolean dispatchHoverEvent(MotionEvent ev) {
+        SeslNestedGoToTopController gttController;
         final int action = ev.getAction();
 
         if (action == MotionEvent.ACTION_HOVER_ENTER || mHoverScrollStateChanged) {
+            if (mHasNestedScrollRange) {
+                adjustNestedScrollRange();
+            }
             final int toolType = ev.getToolType(0);
 
             mNeedsHoverScroll = true;
@@ -3088,36 +3319,42 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
         final int x = (int) ev.getX();
         final int y = (int) ev.getY();
         final int childCount = getChildCount();
-        int contentBottom = 0;
-        final int range = getScrollRange();
+        int range = getScrollRange();
+
+        if (mIsBottomHoverScrollWithAppBarEnabled) {
+            range += mRemainNestedScrollRange;
+        }
 
         if (mHoverHandler == null) {
             mHoverHandler = new HoverScrollHandler(this);
         }
 
-        if (mHoverTopAreaHeight <= 0 || mHoverBottomAreaHeight <= 0) {
-            mHoverTopAreaHeight = (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                    HOVERSCROLL_HEIGHT_TOP_DP, mContext.getResources().getDisplayMetrics()) + 0.5f);
-            mHoverBottomAreaHeight = (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                    HOVERSCROLL_HEIGHT_BOTTOM_DP, mContext.getResources().getDisplayMetrics()) + 0.5f);
+        if (mHoverDefaultTopAreaHeight <= 0 || mHoverDefaultBottomAreaHeight <= 0) {
+            mHoverDefaultTopAreaHeight = (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25.0f,
+                    mContext.getResources().getDisplayMetrics()) + 0.5f);
+            mHoverDefaultBottomAreaHeight = (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25.0f,
+                    mContext.getResources().getDisplayMetrics()) + 0.5f);
         }
 
-        if (childCount != 0) {
-            contentBottom = getHeight();
-        }
+        final int height = childCount != 0 ? getHeight() : 0;
+        final boolean isStylus = ev.getToolType(0) == MotionEvent.TOOL_TYPE_STYLUS;
 
-        final boolean isPossibleTooltype = ev.getToolType(0) == MotionEvent.TOOL_TYPE_STYLUS;
-        if ((y > mHoverTopAreaHeight && y < contentBottom - mHoverBottomAreaHeight) || x <= 0 || x > getRight()
-                || range == 0 || ((y >= 0 && y <= mHoverTopAreaHeight && getScrollY() <= 0 && mIsHoverOverscrolled)
-                || ((y >= contentBottom - mHoverBottomAreaHeight && y <= contentBottom && getScrollY() >= range && mIsHoverOverscrolled)
-                || ((isPossibleTooltype && ev.getButtonState() == MotionEvent.BUTTON_STYLUS_PRIMARY) || !isPossibleTooltype || isLockScreenMode()
-                || (canGoToTop() && mGoToTopState != GTT_STATE_NONE && mGoToTopRect.contains(x, y)))))) {
+        if ((y > mHoverTopAreaHeight + mHoverDefaultTopAreaHeight && y < height - mHoverBottomAreaHeight - mHoverDefaultBottomAreaHeight - mRemainNestedScrollRange)
+                || x <= 0
+                || x > getRight()
+                || range == 0
+                || ((y >= 0 && y <= mHoverTopAreaHeight + mHoverDefaultTopAreaHeight && getScrollY() <= 0 && mIsHoverOverscrolled)
+                || ((y >= height - mHoverBottomAreaHeight && y <= height && getScrollY() >= range && mIsHoverOverscrolled)
+                || ((isStylus && ev.getButtonState() == MotionEvent.BUTTON_STYLUS_PRIMARY)
+                || !isStylus
+                || isLockScreenMode()
+                || ((gttController = mGoToTopController) != null && gttController.isAvailable() && gttController.getState() != 0 && gttController.contains(x, y)))))) {
             if (mHoverHandler.hasMessages(MSG_HOVERSCROLL_MOVE)) {
                 mHoverHandler.removeMessages(MSG_HOVERSCROLL_MOVE);
                 showPointerIcon(ev, SeslPointerIconReflector.getField_SEM_TYPE_STYLUS_DEFAULT());
             }
 
-            if ((y > mHoverTopAreaHeight && y < contentBottom - mHoverBottomAreaHeight) || x <= 0 || x > getRight()) {
+            if ((y > mHoverTopAreaHeight + mHoverDefaultTopAreaHeight && y < height - mHoverBottomAreaHeight - mHoverDefaultBottomAreaHeight) || x <= 0 || x > getRight()) {
                 mIsHoverOverscrolled = false;
             }
 
@@ -3136,51 +3373,23 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
             mHoverScrollStartTime = System.currentTimeMillis();
         }
 
-        switch (action) {
-            case MotionEvent.ACTION_HOVER_MOVE:
-                if (!mHoverAreaEnter) {
-                    mHoverAreaEnter = true;
-                    ev.setAction(MotionEvent.ACTION_HOVER_EXIT);
-                    return super.dispatchHoverEvent(ev);
-                } else if (y >= 0 && y <= mHoverTopAreaHeight) {
-                    if (!mHoverHandler.hasMessages(MSG_HOVERSCROLL_MOVE)) {
-                        mHoverRecognitionStartTime = System.currentTimeMillis();
-                        if (!mIsHoverOverscrolled || mHoverScrollDirection == HOVERSCROLL_UP) {
-                            showPointerIcon(ev, SeslPointerIconReflector.getField_SEM_TYPE_STYLUS_SCROLL_UP());
-                        }
-                        mHoverScrollDirection = HOVERSCROLL_DOWN;
-                        mHoverHandler.sendEmptyMessage(MSG_HOVERSCROLL_MOVE);
-                    }
-                } else if (y >= contentBottom - mHoverBottomAreaHeight && y <= contentBottom) {
-                    if (!mHoverHandler.hasMessages(MSG_HOVERSCROLL_MOVE)) {
-                        mHoverRecognitionStartTime = System.currentTimeMillis();
-                        if (!mIsHoverOverscrolled || mHoverScrollDirection == HOVERSCROLL_DOWN) {
-                            showPointerIcon(ev, SeslPointerIconReflector.getField_SEM_TYPE_STYLUS_SCROLL_DOWN());
-                        }
-                        mHoverScrollDirection = HOVERSCROLL_UP;
-                        mHoverHandler.sendEmptyMessage(MSG_HOVERSCROLL_MOVE);
-                    }
-                }
-                break;
-            case MotionEvent.ACTION_HOVER_ENTER:
+        if (action != MotionEvent.ACTION_HOVER_MOVE) {
+            if (action == MotionEvent.ACTION_HOVER_ENTER) {
                 mHoverAreaEnter = true;
-                if (y >= 0 && y <= mHoverTopAreaHeight) {
-                    if (!mHoverHandler.hasMessages(MSG_HOVERSCROLL_MOVE)) {
-                        mHoverRecognitionStartTime = System.currentTimeMillis();
-                        showPointerIcon(ev, SeslPointerIconReflector.getField_SEM_TYPE_STYLUS_SCROLL_UP());
-                        mHoverScrollDirection = HOVERSCROLL_DOWN;
-                        mHoverHandler.sendEmptyMessage(MSG_HOVERSCROLL_MOVE);
-                    }
-                } else if (y >= contentBottom - mHoverBottomAreaHeight && y <= contentBottom) {
-                    if (!mHoverHandler.hasMessages(MSG_HOVERSCROLL_MOVE)) {
+                if (y < 0 || y > mHoverTopAreaHeight + mHoverDefaultTopAreaHeight) {
+                    if (y >= height - mHoverBottomAreaHeight - mHoverDefaultBottomAreaHeight - mRemainNestedScrollRange && y <= height && !mHoverHandler.hasMessages(MSG_HOVERSCROLL_MOVE)) {
                         mHoverRecognitionStartTime = System.currentTimeMillis();
                         showPointerIcon(ev, SeslPointerIconReflector.getField_SEM_TYPE_STYLUS_SCROLL_DOWN());
-                        mHoverScrollDirection = HOVERSCROLL_UP;
+                        mHoverScrollDirection = 1;
                         mHoverHandler.sendEmptyMessage(MSG_HOVERSCROLL_MOVE);
                     }
+                } else if (!mHoverHandler.hasMessages(MSG_HOVERSCROLL_MOVE)) {
+                    mHoverRecognitionStartTime = System.currentTimeMillis();
+                    showPointerIcon(ev, SeslPointerIconReflector.getField_SEM_TYPE_STYLUS_SCROLL_UP());
+                    mHoverScrollDirection = 2;
+                    mHoverHandler.sendEmptyMessage(MSG_HOVERSCROLL_MOVE);
                 }
-                break;
-            case MotionEvent.ACTION_HOVER_EXIT:
+            } else if (action == MotionEvent.ACTION_HOVER_EXIT) {
                 if (mHoverHandler.hasMessages(MSG_HOVERSCROLL_MOVE)) {
                     mHoverHandler.removeMessages(MSG_HOVERSCROLL_MOVE);
                 }
@@ -3191,6 +3400,30 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
                 mHoverAreaEnter = false;
                 mScroller.forceFinished(true);
                 return super.dispatchHoverEvent(ev);
+            }
+        } else {
+            if (!mHoverAreaEnter) {
+                mHoverAreaEnter = true;
+                ev.setAction(MotionEvent.ACTION_HOVER_EXIT);
+                return super.dispatchHoverEvent(ev);
+            }
+            if (y < 0 || y > mHoverTopAreaHeight + mHoverDefaultTopAreaHeight) {
+                if (y >= height - mHoverBottomAreaHeight - mHoverDefaultBottomAreaHeight - mRemainNestedScrollRange && y <= height && !mHoverHandler.hasMessages(MSG_HOVERSCROLL_MOVE)) {
+                    mHoverRecognitionStartTime = System.currentTimeMillis();
+                    if (!mIsHoverOverscrolled || mHoverScrollDirection == 2) {
+                        showPointerIcon(ev, SeslPointerIconReflector.getField_SEM_TYPE_STYLUS_SCROLL_DOWN());
+                    }
+                    mHoverScrollDirection = 1;
+                    mHoverHandler.sendEmptyMessage(MSG_HOVERSCROLL_MOVE);
+                }
+            } else if (!mHoverHandler.hasMessages(MSG_HOVERSCROLL_MOVE)) {
+                mHoverRecognitionStartTime = System.currentTimeMillis();
+                if (!mIsHoverOverscrolled || mHoverScrollDirection == 1) {
+                    showPointerIcon(ev, SeslPointerIconReflector.getField_SEM_TYPE_STYLUS_SCROLL_UP());
+                }
+                mHoverScrollDirection = 2;
+                mHoverHandler.sendEmptyMessage(MSG_HOVERSCROLL_MOVE);
+            }
         }
 
         return true;
@@ -3214,23 +3447,26 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
     }
 
     private void handleMessage(Message msg) {
-        long mHoverScrollTimeInterval = 300;
         if (msg.what == MSG_HOVERSCROLL_MOVE) {
-            final int range = getScrollRange();
+            int range = getScrollRange();
 
-            long mHoverRecognitionCurrentTime = System.currentTimeMillis();
-            long mHoverRecognitionDurationTime = (mHoverRecognitionCurrentTime - mHoverRecognitionStartTime) / 1000;
+            if (mIsBottomHoverScrollWithAppBarEnabled) {
+                range += mRemainNestedScrollRange;//sesl9
+            }
+
+            mHoverRecognitionCurrentTime = System.currentTimeMillis();
+            mHoverRecognitionDurationTime = (mHoverRecognitionCurrentTime - mHoverRecognitionStartTime) / 1000;
 
             if (mHoverRecognitionCurrentTime - mHoverScrollStartTime < mHoverScrollTimeInterval) {
                 return;
             }
 
-            int mHoverScrollSpeed = (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+            mHoverScrollSpeed = (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                     HOVERSCROLL_SPEED, mContext.getResources().getDisplayMetrics()) + 0.5f);
 
-            if (mHoverRecognitionDurationTime == 3) {
+            if (mHoverRecognitionDurationTime > 2 && mHoverRecognitionDurationTime < 4) {
                 mHoverScrollSpeed += mHoverScrollSpeed * 0.1d;
-            } else if (mHoverRecognitionDurationTime == 4) {
+            } else if (mHoverRecognitionDurationTime >= 4 && mHoverRecognitionDurationTime < 5) {
                 mHoverScrollSpeed += mHoverScrollSpeed * 0.2d;
             } else if (mHoverRecognitionDurationTime >= 5) {
                 mHoverScrollSpeed += mHoverScrollSpeed * 0.3d;
@@ -3243,338 +3479,152 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
                 offset = mHoverScrollSpeed;
             }
 
-            if (offset < 0 && getScrollY() > 0) {
-                flingWithoutAcc(offset);
+            if ((offset < 0 && getScrollY() > 0) || (offset > 0 && getScrollY() < range)) {
+                startNestedScroll(ViewCompat.SCROLL_AXIS_VERTICAL, ViewCompat.TYPE_NON_TOUCH);
+                if (dispatchNestedPreScroll(0, offset, null, null, ViewCompat.TYPE_NON_TOUCH)) {
+                    adjustNestedScrollRangeBy(offset);
+                } else {
+                    smoothScrollBy(0, offset);
+                }
                 mHoverHandler.sendEmptyMessageDelayed(MSG_HOVERSCROLL_MOVE, HOVERSCROLL_DELAY);
-            } else if (offset > 0 && getScrollY() < range) {
-                flingWithoutAcc(offset);
-                mHoverHandler.sendEmptyMessageDelayed(MSG_HOVERSCROLL_MOVE, HOVERSCROLL_DELAY);
-            } else {
-                final int overScrollMode = getOverScrollMode();
-                final boolean canOverscroll = overScrollMode == View.OVER_SCROLL_ALWAYS
-                        || (overScrollMode == View.OVER_SCROLL_IF_CONTENT_SCROLLS && range > 0);
+                return;
+            }
 
-                if (canOverscroll && !mIsHoverOverscrolled) {
-                    if (mHoverScrollDirection == HOVERSCROLL_DOWN) {
-                        final int width = getWidth() - getPaddingLeft() - getPaddingRight();
-                        mEdgeGlowTop.setSize(width, getHeight());
-                        mEdgeGlowTop.onAbsorb(ON_ABSORB_VELOCITY);
-                        if (!mEdgeGlowBottom.isFinished()) {
-                            mEdgeGlowBottom.onRelease();
-                        }
-                    } else if (mHoverScrollDirection == HOVERSCROLL_UP) {
-                        final int width = getWidth() - getPaddingLeft() - getPaddingRight();
-                        mEdgeGlowBottom.setSize(width, getHeight());
-                        mEdgeGlowBottom.onAbsorb(ON_ABSORB_VELOCITY);
-                        showGoToTop();//sesl
-                        if (!mEdgeGlowTop.isFinished()) {
-                            mEdgeGlowTop.onRelease();
-                        }
+            final int overScrollMode = getOverScrollMode();
+            final boolean canOverscroll = overScrollMode == View.OVER_SCROLL_ALWAYS
+                    || (overScrollMode == View.OVER_SCROLL_IF_CONTENT_SCROLLS && range > 0);
+
+            if (canOverscroll && !mIsHoverOverscrolled) {
+                if (mHoverScrollDirection == HOVERSCROLL_DOWN) {
+                    final int width = getWidth() - getPaddingLeft() - getPaddingRight();
+                    mEdgeGlowTop.setSize(width, getHeight());
+                    mEdgeGlowTop.onAbsorb(ON_ABSORB_VELOCITY);
+                    if (!mEdgeGlowBottom.isFinished()) {
+                        mEdgeGlowBottom.onRelease();
                     }
-
-                    if (!mEdgeGlowTop.isFinished() || !mEdgeGlowBottom.isFinished()) {
-                        invalidate();
+                } else if (mHoverScrollDirection == HOVERSCROLL_UP) {
+                    final int width = getWidth() - getPaddingLeft() - getPaddingRight();
+                    mEdgeGlowBottom.setSize(width, getHeight());
+                    mEdgeGlowBottom.onAbsorb(ON_ABSORB_VELOCITY);
+                    if (mGoToTopController != null) {
+                        mGoToTopController.showIfNeeded();
                     }
-
-                    mIsHoverOverscrolled = true;
+                    if (!mEdgeGlowTop.isFinished()) {
+                        mEdgeGlowTop.onRelease();
+                    }
                 }
 
-                if (!canOverscroll && !mIsHoverOverscrolled) {
-                    mIsHoverOverscrolled = true;
+                if (!mEdgeGlowTop.isFinished() || !mEdgeGlowBottom.isFinished()) {
+                    invalidate();
                 }
+
+                mIsHoverOverscrolled = true;
+            }
+
+            if (!canOverscroll && !mIsHoverOverscrolled) {
+                mIsHoverOverscrolled = true;
             }
         }
     }
 
     private void showPointerIcon(MotionEvent ev, int iconId) {
         if (Build.VERSION.SDK_INT >= 24) {
-            //Sesl7
-            SeslViewReflector.semSetPointerIcon(this,
-                    ev.getToolType(0),
-                    iconId == 20001 ? null : PointerIcon.getSystemIcon(mContext, iconId)
-            );
-            //sesl7
-        }else{
-            InputDevice inputDevice = ev.getDevice();
-            if (inputDevice != null) {
-                SeslInputDeviceReflector.semSetPointerType(inputDevice, iconId);
-            } else {
-                Log.e(TAG, "Failed to change PointerIcon to " + iconId);
-            }
+            SeslViewReflector.semSetPointerIcon(this, ev.getToolType(0),
+                    SeslPointerIconCompat.isSemStylusDefault(iconId) ? null : PointerIcon.getSystemIcon(mContext, iconId));
         }
     }
 
-    //Sesl7
-    void setupGoToTop(int where) {
-        if (isTalkBackIsRunning() || !mEnableGoToTop) {
-            return;
-        }
-
-        removeCallbacks(mAutoHide);
-        if (where == GTT_STATE_SHOWN && !canScrollUp()) {
-            where = GTT_STATE_NONE;
-        }
-
-        if (where == -1 && mSizeChange) {
-            where = (canScrollUp() || canScrollDown()) ? mGoToTopLastState : GTT_STATE_NONE;
-        } else if (where == -1 && (canScrollUp() || canScrollDown())) {
-            where = GTT_STATE_SHOWN;
-        }
-
-        if (where != GTT_STATE_NONE) {
-            removeCallbacks(mGoToTopFadeOutRunnable);
-        }
-        if (where != 1) {
-            removeCallbacks(mGoToTopFadeInRunnable);
-        }
-        if (mShowFadeOutGTT == GTT_STATE_NONE && where == GTT_STATE_NONE && mGoToTopLastState != GTT_STATE_NONE) {
-            post(mGoToTopFadeOutRunnable);
-        }
-
-        if (where != GTT_STATE_PRESSED) {
-            mGoToTopView.setPressed(false);
-        }
-
-        mGoToTopState = where;
-
-        int paddingLeft = getPaddingLeft();
-        int width = (((getWidth() - paddingLeft) - getPaddingRight()) / 2) + paddingLeft;
-
-        if (where == GTT_STATE_NONE) {
-            if (mShowFadeOutGTT == GTT_STATE_PRESSED){
-                mGoToTopRect.set(0, 0, 0, 0);
-            }
-        }else {
-            if (where == GTT_STATE_SHOWN || where == GTT_STATE_PRESSED) {
-                removeCallbacks(mGoToTopFadeOutRunnable);
-                int height = getHeight();
-                mGoToTopRect.set(
-                        width - (mGoToTopSize / 2),
-                        (height - mGoToTopSize) - mGoToTopBottomPadding,
-                        (mGoToTopSize / 2) + width,
-                        height - mGoToTopBottomPadding);
-            }
-        }
-
-        if (mShowFadeOutGTT == GTT_STATE_PRESSED) {
-            mShowFadeOutGTT = GTT_STATE_NONE;
-        }
-
-        mGoToTopView.layout(mGoToTopRect.left, mGoToTopRect.top, mGoToTopRect.right, mGoToTopRect.bottom);
-
-        if (where == GTT_STATE_SHOWN){
-            if (mGoToTopLastState == GTT_STATE_NONE || mGoToTopView.getAlpha() == 0.0f || mSizeChange) {
-                post(mGoToTopFadeInRunnable);
-            }
-        }
-
-        mSizeChange = false;
-        mGoToTopLastState = mGoToTopState;
-    }
-
-    private void playGoToTopFadeOut() {
-        if (mGoToTopFadeOutAnimator.isRunning()) {
-            return;
-        }
-
-        if (mGoToTopFadeInAnimator.isRunning()) {
-            mGoToTopFadeOutAnimator.cancel();
-        }
-
-        mGoToTopFadeOutAnimator.setFloatValues(mGoToTopView.getAlpha(), 0.0f);
-        mGoToTopFadeOutAnimator.start();
-    }
-
-    private void playGoToTopFadeIn() {
-        if (mGoToTopFadeInAnimator.isRunning()) {
-            return;
-        }
-
-        if (mGoToTopFadeOutAnimator.isRunning()) {
-            mGoToTopFadeOutAnimator.cancel();
-        }
-
-        if (mGoToTopImage.getAlpha() < 255) {
-            mGoToTopImage.setAlpha(255);
-        }
-
-        mGoToTopFadeInAnimator.setFloatValues(mGoToTopView.getAlpha(), 1.0f);
-        mGoToTopFadeInAnimator.start();
-    }
-    //sesl7
-
+    /**
+     * Enables or disables hover scrolling when an S-Pen or mouse pointer hovers near the top or bottom edges.
+     */
     public void seslSetHoverScrollEnabled(boolean enabled) {
         mHoverScrollEnabled = enabled;
     }
 
+    /**
+     * Enables or disables the floating GoToTop button using default theme light check.
+     */
     public void seslSetGoToTopEnabled(boolean enabled) {
-        seslSetGoToTopEnabled(enabled, isLightTheme(mContext)
-                ? SESL_GO_TO_TOP_BUTTON_STYLE_WHITE : SESL_GO_TO_TOP_BUTTON_STYLE_BLACK);
+        seslSetGoToTopEnabled(enabled, isLightTheme(mContext));//sesl9
     }
 
-    //Sesl7
-    public void seslSetGoToTopEnabled(boolean enabled, int buttonStyle) {
-        mGoToTopBottomPadding = findAndGetDimension("sesl_go_to_top_scrollable_view_gap", 0);
-        mGoToTopSize = findAndGetDimension("sesl_go_to_top_scrollable_view_size", 0);
-        mGoToTopElevation = findAndGetDimension("sesl_go_to_top_elevation", 0);
-
+    //Sesl9
+    /**
+     * Enables or disables the floating GoToTop button.
+     *
+     * @param enabled {@code true} to enable GoToTop button, {@code false} to disable
+     * @param isLightTheme {@code true} if current theme is light mode
+     */
+    public void seslSetGoToTopEnabled(boolean enabled, boolean isLightTheme) {
+        ensureGoToTopController();
         post(mCheckGoToTopAndAutoScrollCondition);
-
-        if (!initGoToTop(enabled, buttonStyle == SESL_GO_TO_TOP_BUTTON_STYLE_WHITE)) {
-            mEnableGoToTop = false;
-        }
-    }
-
-    void autoHideGoToTop() {
-        if (canGoToTop()) {
-            removeCallbacks(mAutoHide);
-            postDelayed(mAutoHide, GO_TO_TOP_HIDE);
-        }
-    }
-
-    private void showGoToTop() {
-        if (canGoToTop() && mGoToTopState != GTT_STATE_PRESSED && canScrollUp() && getHeight() > mSeslOverlayFeatureHeight) {
-            setupGoToTop(GTT_STATE_SHOWN);
-            autoHideGoToTop();
-        }
-    }
-
-    private boolean canScrollUp() {
-        return canScrollVertically(-1);
-    }
-
-    private boolean isLockScreenMode() {
-        KeyguardManager keyguardManager = (KeyguardManager) mContext.getSystemService(Context.KEYGUARD_SERVICE);
-        return keyguardManager.inKeyguardRestrictedInputMode();
-    }
-
-    public void flingWithoutAcc(int velocityY) {
-        if (getChildCount() > 0) {
-            final int height = getHeight() - getPaddingBottom() - getPaddingTop();
-            final int bottom = getChildAt(0).getHeight();
-
-            SeslOverScrollerReflector.fling2(mScroller, getScrollX(), mScroller.getCurrY(),
-                    0, velocityY,
-                    0, 0,
-                    0, Math.max(0, bottom - height), true);
-
-            if (Build.VERSION.SDK_INT >= 29) {
-                postInvalidateOnAnimation();
-            }
-        }
-    }
-
-    private boolean canGoToTop() {
-        return mIsSupportGoToTop && mEnableGoToTop;
-    }
-
-    private boolean canHoverScroll() {
-        return mIsSupportHoverScroll && mHoverScrollEnabled;
-    }
-
-    private boolean isSupportGotoTop() {
-        return mIsSupportGoToTop;
-    }
-
-    private void drawGoToTop() {
-        mGoToTopView.setTranslationY(getScrollY());
-        if (mGoToTopState != GTT_STATE_NONE && !canScrollUp()) {
-            setupGoToTop(GTT_STATE_NONE);
-        }
-    }
-
-    private int findAndGetDimension(String name, int failedValue) {
-        try {
-            final Resources res = mContext.getResources();
-            return res.getDimensionPixelSize(mContext.getResources()
-                    .getIdentifier(name, "dimen", mContext.getPackageName()));
-        } catch (Resources.NotFoundException e) {
-            return failedValue;
-        }
-    }
-
-    private Drawable findAndGetDrawable(String name) {
-        try {
-            final Resources res = mContext.getResources();
-            return res.getDrawable(mContext.getResources()
-                    .getIdentifier(name, "drawable", mContext.getPackageName()), null);
-        } catch (Resources.NotFoundException e) {
-            return null;
-        }
-    }
-
-    private boolean checkChildScrollableForGoToTopAndAutoScroll() {
-        /*if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-            Log.i(TAG, "GTT HSC not support : under Platform Version : " + Build.VERSION.SDK_INT);
-            return false;
-        }*/
-
-        if (getChildCount() > 0 && (getChildAt(0) instanceof ViewGroup)) {
-            ViewGroup child = (ViewGroup) getChildAt(0);
-
-            if (child.getHeight() < getHeight()) {
-                Log.i(TAG, "GTT HSC not support : Small Height child");
-                return false;
-            }
-
-            for (int i = 0; i < child.getChildCount(); i++) {
-                View view = child.getChildAt(i);
-                if (view.getVisibility() != GONE) {
-                    if (view.canScrollVertically(1) || view.canScrollVertically(-1)) {
-                        Log.i(TAG, "GTT HSC not support : Some child view can scroll index: " +
-                                i + " " + view);
+        SeslNestedGoToTopController gttController = mGoToTopController;
+        if (gttController != null) {
+            gttController.setEnabled(enabled, isLightTheme);
+            if (enabled) {
+                mGoToTopController.setOnGoToTopClickListener(new OnGoToTopClickListener() {
+                    @Override
+                    public boolean onGoToTopClick() {
+                        SeslOnGoToTopClickListener gttClickListener = mOnGoToTopClickListener;
+                        if (gttClickListener != null) {
+                            return gttClickListener.onGoToTopClick(NestedScrollView.this);
+                        }
                         return false;
                     }
-                }
+                });
+            } else {
+                mGoToTopController.setOnGoToTopClickListener(null);
             }
         }
+    }
 
-        return true;
+    private void ensureGoToTopController() {
+        if (mGoToTopController == null) {
+            mGoToTopController = (SeslNestedGoToTopController) SeslGoToTopControllerFactory.createController(
+                SeslGoToTopControllerFactory.ControllerType.NESTEDSCROLLVIEW,
+                updateGoToTopConfig(),
+                mGoToTopHost,
+                TAG
+            );
+        }
+    }
+
+    private SeslGoToTopConfig updateGoToTopConfig() {
+        int paddingBottom = findAndGetDimension("sesl_go_to_top_scrollable_view_gap", 0);
+        int size = findAndGetDimension("sesl_go_to_top_scrollable_view_size", -1);
+        int elevation = findAndGetDimension("sesl_go_to_top_elevation", -1);
+        Drawable iconLight = findAndGetDrawable("sesl_list_go_to_top_light");
+        Drawable iconDark = findAndGetDrawable("sesl_list_go_to_top_dark");
+        Drawable bgLight = findAndGetDrawable("sesl_go_to_top_background_light");
+        Drawable bgDark = findAndGetDrawable("sesl_go_to_top_background_dark");
+        Drawable bgBlur = findAndGetDrawable("sesl_go_to_top_background_blur");
+        int bgBlurColor = findAndGetColor("sesl_figma_floating_component_blur_background_dark", -1);
+        return new SeslGoToTopConfig.Builder()
+                .setIconLight(iconLight)
+                .setIconDark(iconDark)
+                .setBackgroundLight(bgLight)
+                .setBackgroundDark(bgDark)
+                .setBackgroundBlur(bgBlur)
+                .setBackgroundColorBlur(bgBlurColor)
+                .setPaddingBottom(paddingBottom)
+                .setPaddingLeft(0)
+                .setPaddingRight(0)
+                .setSize(size)
+                .setElevation(elevation)
+                .setOverlayFeatureHiddenHeightPx(0)
+                .setScrollToTopDurationMs(GoToTopScrollingDuration)
+                .setFadeInInterpolator(SINE_IN_OUT_70)
+                .setFadeOutInterpolator(LINEAR_INTERPOLATOR)
+                .build();
     }
 
     private boolean isLightTheme(Context context) {
         TypedValue outValue = new TypedValue();
-        if (context.getTheme().resolveAttribute(android.R.attr.isLightTheme, outValue, true)
-                && outValue.data == 0) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-    //sesl
-
-    //Sesl7
-    private boolean isTalkBackIsRunning() {
-        String string;
-        AccessibilityManager accessibilityManager = (AccessibilityManager) getContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
-        if (accessibilityManager == null || !accessibilityManager.isEnabled() || (string = Settings.Secure.getString(getContext().getContentResolver(), "enabled_accessibility_services")) == null) {
-            return false;
-        }
-        return string.matches("(?i).*com.samsung.accessibility/com.samsung.android.app.talkback.TalkBackService.*") || string.matches("(?i).*com.samsung.android.accessibility.talkback/com.samsung.android.marvin.talkback.TalkBackService.*") || string.matches("(?i).*com.google.android.marvin.talkback.TalkBackService.*") || string.matches("(?i).*com.samsung.accessibility/com.samsung.accessibility.universalswitch.UniversalSwitchService.*");
+        return context.getTheme().resolveAttribute(android.R.attr.isLightTheme, outValue, true)
+                && outValue.data != 0;
     }
 
-    private boolean canScrollDown() {
-        return canScrollVertically(1);
-    }
-
-    @Override
-    public void dispatchDraw(@NonNull Canvas canvas) {
-        super.dispatchDraw(canvas);
-        if (mDrawHorizontalPadding) {
-            int paddingLeft = getPaddingLeft();
-            int paddingRight = getPaddingRight();
-            int height = getHeight();
-            int width = getWidth();
-            int scrollY = getScrollY();
-            if (paddingLeft > 0) {
-                canvas.drawRect(0.0f, scrollY, paddingLeft, height + scrollY, mRectPaint);
-            }
-            if (paddingRight > 0) {
-                canvas.drawRect(width - paddingRight, scrollY, width, height + scrollY, mRectPaint);
-            }
-        }
-    }
-
+    /** Enables or disables filling horizontal padding background with specified color. */
     public void seslSetFillHorizontalPaddingEnabled(boolean enabled, int color) {
         mDrawHorizontalPadding = enabled;
         mScrollbarBottomPadding = mScrollbarTopPadding = enabled
@@ -3584,16 +3634,299 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
         mRectPaint.setColor(color);
     }
 
+    /** Sets top and bottom vertical padding for the scrollbar. */
     public void seslSetScrollbarVerticalPadding(int topPadding, int bottomPadding) {
         mScrollbarTopPadding = topPadding;
         mScrollbarBottomPadding = bottomPadding;
         updateScrollbarVerticalPadding();
     }
 
-
     private void updateScrollbarVerticalPadding() {
-        SeslViewReflector.semSetScrollBarTopPadding(this, mScrollbarTopPadding);
-        SeslViewReflector.semSetScrollBarBottomPadding(this, mScrollbarBottomPadding);
+        SeslViewReflector.semSetScrollBarTopPadding(this, mScrollbarTopPadding + mScrollBarTopOffset);
+        SeslViewReflector.semSetScrollBarBottomPadding(this, mScrollbarBottomPadding + mScrollBarBottomOffset);
     }
+
+    private void adjustNestedScrollRange() {
+        getLocationInWindow(mWindowOffsets);
+        int initialTopOffsetOfScreen = mInitialTopOffsetOfScreen;
+        int windowOffset = mWindowOffsets[1];
+        int remaining = mNestedScrollRange - (initialTopOffsetOfScreen - windowOffset);
+        mRemainNestedScrollRange = remaining;
+        if (initialTopOffsetOfScreen - windowOffset < 0) {
+            mNestedScrollRange = remaining;
+            mInitialTopOffsetOfScreen = windowOffset;
+        }
+    }
+
+    /** Returns top padding height in pixels for hover scroll trigger area. */
+    public int seslGetHoverTopPadding() {
+        return mHoverTopAreaHeight;
+    }
+
+    /** Returns bottom padding height in pixels for hover scroll trigger area. */
+    public int seslGetHoverBottomPadding() {
+        return mHoverBottomAreaHeight;
+    }
+
+    /** Sets top padding height in pixels for hover scroll trigger area. */
+    public void seslSetHoverTopPadding(int padding) {
+        final int newPadding = Math.max(0, padding);
+        if (mHoverTopAreaHeight != newPadding) {
+            mHoverTopAreaHeight = newPadding;
+        }
+    }
+
+    /** Sets bottom padding height in pixels for hover scroll trigger area. */
+    public void seslSetHoverBottomPadding(int padding) {
+        final int newPadding = Math.max(0, padding);
+        if (mHoverBottomAreaHeight != newPadding) {
+            mHoverBottomAreaHeight = newPadding;
+        }
+    }
+
+    /** Sets whether bottom hover scrolling coordinates with an AppBarLayout. */
+    public void seslSetBottomHoverScrollWithAppBar(boolean enabled) {
+        mIsBottomHoverScrollWithAppBarEnabled = enabled;
+    }
+
+    @Override
+    public void seslForceTopFadingEdgeClamped(int clamped) {
+        mFadingEdgeHelper.forceTopFadingEdgeClamped(clamped);
+    }
+
+    @Override
+    public void seslForceBottomFadingEdgeClamped(int clamped) {
+        mFadingEdgeHelper.forceBottomFadingEdgeClamped(clamped);
+    }
+
+    @Nullable
+    @Override
+    public Rect seslGetAvailableBounds() {
+        return mAvailableBounds;
+    }
+
+    @Override
+    public int seslGetGoToTopBottomPadding() {
+        SeslNestedGoToTopController gttController = mGoToTopController;
+        if (gttController != null) {
+            return gttController.getBottomPadding();
+        }
+        return 0;
+    }
+
+    @Override
+    public int seslGetGoToTopDefaultBottomPadding() {
+        SeslNestedGoToTopController gttController = mGoToTopController;
+        if (gttController != null) {
+            return gttController.getDefaultBottomPadding();
+        }
+        return 0;
+    }
+
+    @Override
+    public void seslHideGoToTop() {
+        SeslNestedGoToTopController gttController = mGoToTopController;
+        if (gttController != null) {
+            gttController.hideIfNeeded();
+        }
+    }
+
+    @Override
+    public void seslSetAvailableBounds(Rect bounds) {
+        mAvailableBounds = bounds;
+    }
+
+    @Override
+    public void seslSetAvailableBounds(Rect bounds, boolean dispatchFakeScroll) {
+        mAvailableBounds = bounds;
+    }
+
+    @Override
+    public void seslSetBottomScrollOffset(int offset) {
+        if (mFadingEdgeHelper.getFadingEdgeBottomOffset() != offset) {
+            mFadingEdgeHelper.setFadingEdgeBottomOffset(offset);
+            invalidate();
+        }
+    }
+
+    @Override
+    public void seslSetGoToTopBottomPadding(int padding) {
+        SeslNestedGoToTopController gttController = mGoToTopController;
+        if (gttController != null) {
+            gttController.setBottomPadding(padding);
+        }
+    }
+
+    @Override
+    public void seslSetGoToTopSuppressed(boolean suppressed) {
+        SeslNestedGoToTopController gttController = mGoToTopController;
+        if (gttController != null) {
+            gttController.setSuppressed(suppressed);
+        }
+    }
+
+    @Override
+    public void seslSetScrollBarTopOffset(int offset) {
+        if (mScrollBarTopOffset != offset) {
+            mScrollBarTopOffset = Math.max(0, offset);
+            updateScrollbarVerticalPadding();
+        }
+    }
+
+    @Override
+    public void seslShowGoToTop() {
+        SeslNestedGoToTopController gttController = mGoToTopController;
+        if (gttController != null) {
+            gttController.showIfNeeded();
+        }
+    }
+
+    @Override
+    public void seslSetScrollBarBottomOffset(int offset) {
+        final int newOffset = offset - mScrollBarTopOffset;
+        if (mScrollBarBottomOffset != newOffset) {
+            mScrollBarBottomOffset = Math.max(0, newOffset);
+            updateScrollbarVerticalPadding();
+        }
+    }
+
+    /** Smoothly scrolls to target coordinates while dispatching nested scroll events. */
+    public void seslSmoothScrollToWithNestedScrolling(int x, int y) {
+        smoothScrollTo(x, y, true);
+    }
+
+    /** Updates blur effect on the GoToTop button. */
+    public void seslUpdateGoToTopBlur() {
+        SeslNestedGoToTopController gttController = mGoToTopController;
+        if (gttController != null) {
+            gttController.invalidate();
+        }
+    }
+
+    /** Sets listener for GoToTop button click events. */
+    public void seslSetOnGoToTopClickListener(@Nullable SeslOnGoToTopClickListener seslOnGoToTopClickListener) {
+        mOnGoToTopClickListener = seslOnGoToTopClickListener;
+    }
+
+    /** Enables or disables AGSL fading edge effect. */
+    public void seslSetFadingEdgeEnabled(boolean enable) {
+        applyFadingEdge(enable, new Runnable() {
+            @Override
+            public void run() {
+               mFadingEdgeHelper.setFadingEdgeEnabled(enable);
+            }
+        });
+    }
+
+    /** Enables or disables fading edge effect, optionally extending bottom edge. */
+    public void seslSetFadingEdgeEnabled(boolean enable, boolean extendBottom) {
+        applyFadingEdge(enable, new Runnable() {
+            @Override
+            public void run() {
+                mFadingEdgeHelper.setFadingEdgeEnabled(enable, false, extendBottom);
+            }
+        });
+    }
+
+    /** Enables or disables fading edge effect, optionally extending top and bottom edges. */
+    public void seslSetFadingEdgeEnabled(boolean enable, boolean extendTop, boolean extendBottom) {
+        applyFadingEdge(enable, new Runnable() {
+            @Override
+            public void run() {
+                mFadingEdgeHelper.setFadingEdgeEnabled(enable, extendTop, extendBottom);
+            }
+        });
+    }
+
+    /** Enables or disables fading edge effect with specific top and bottom heights in pixels. */
+    public void seslSetFadingEdgeEnabled(boolean enable, int topHeight, int bottomHeight) {
+        applyFadingEdge(enable, new Runnable() {
+            @Override
+            public void run() {
+                mFadingEdgeHelper.setFadingEdgeEnabled(enable, topHeight, bottomHeight);
+            }
+        });
+    }
+
+    /** Returns whether fading edge rendering is currently enabled. */
+    public boolean seslIsFadingEdgeEnabled() {
+        return mFadingEdgeHelper.isFadingEdgeEnabled();
+    }
+
+    /** Sets the color for fading edge rendering. */
+    public void seslSetFadingEdgeColor(int i) {
+        mFadingEdgeHelper.setFadingEdgeColor(i, NestedScrollView.this::invalidate);
+        invalidate();
+    }
+
+    /** Hides or shows the top fading edge. */
+    public void seslHideTopFadingEdge(boolean z) {
+        mFadingEdgeHelper.hideTopFadingEdge(z);
+    }
+
+    /** Sets whether top fading edge is allowed without edge-to-edge mode. */
+    public void seslSetAllowTopFadingEdgeWithoutEdgeToEdge(boolean z) {
+        mFadingEdgeHelper.setAllowTopFadingEdgeWithoutEdgeToEdge(z);
+    }
+
+    /** Enables or disables blur background on the GoToTop button. */
+    public void seslSetGoToTopBlurEnabled(boolean enable) {
+        if (mGoToTopController != null) {
+            mGoToTopController.setBlurEnabled(enable, isLightTheme(mContext));
+        }
+    }
+
+    /** Hides or shows the bottom fading edge. */
+    public void seslHideBottomFadingEdge(boolean hide) {
+        mFadingEdgeHelper.hideBottomFadingEdge(hide);
+    }
+
+    /** Clears top fading edge height and interpolator overrides. */
+    public void seslClearTopFadingEdgeOverrides() {
+        seslSetTopFadingEdgeOverrides(null);
+    }
+
+    /** Clears bottom fading edge height and interpolator overrides. */
+    public void seslClearBottomFadingEdgeOverrides() {
+        seslSetBottomFadingEdgeOverrides(null);
+    }
+
+    /** Sets top fading edge height and interpolator overrides. */
+    public void seslSetTopFadingEdgeOverrides(@Nullable SeslTopFadingEdgeOverrides overrides) {
+        mFadingEdgeHelper.setTopFadingEdgeOverrides(overrides);
+        invalidate();
+    }
+
+    /** Sets bottom fading edge height and interpolator overrides. */
+    public void seslSetBottomFadingEdgeOverrides(@Nullable SeslBottomFadingEdgeOverrides overrides) {
+        mFadingEdgeHelper.setBottomFadingEdgeOverrides(overrides);
+        invalidate();
+    }
+
+    /** Sets whether bottom fading edge aligns to the window bottom. */
+    public void seslSetFadingEdgeWindowBottomAlignment(boolean align) {
+        mFadingEdgeHelper.setWindowBottomAlignment(align);
+    }
+
+    /** Sets whether legacy transfer mode should be forced for fading edges. */
+    public void seslSetForceLegacyFadingEdgeXfermode(boolean force) {
+        mFadingEdgeHelper.setForceLegacyXfermode(force);
+    }
+
+    /** Returns bottom scroll offset for fading edges in pixels. */
+    public int seslGetBottomScrollOffset() {
+        return mFadingEdgeHelper.getFadingEdgeBottomOffset();
+    }
+
+    private void applyFadingEdge(boolean apply, Runnable runnable) {
+        if (apply) {
+            mFadingEdgeHelper.setTargetView(this);
+        }
+        if (runnable != null) {
+            runnable.run();
+        }
+        invalidate();
+    }
+    //sesl9
 
 }
