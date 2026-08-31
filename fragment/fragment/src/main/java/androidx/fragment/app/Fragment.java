@@ -30,6 +30,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -37,6 +38,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.transition.Transition;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.SparseArray;
@@ -52,6 +54,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.widget.AdapterView;
 
+import androidx.activity.ComponentActivity;
 import androidx.activity.contextaware.ContextAware;
 import androidx.activity.contextaware.ContextAwareHelper;
 import androidx.activity.contextaware.OnContextAvailableListener;
@@ -69,8 +72,7 @@ import androidx.annotation.CallSuper;
 import androidx.annotation.ContentView;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.MainThread;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.annotation.OptIn;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.annotation.UiThread;
@@ -97,12 +99,19 @@ import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.lifecycle.ViewTreeLifecycleOwner;
 import androidx.lifecycle.ViewTreeViewModelStoreOwner;
 import androidx.lifecycle.viewmodel.CreationExtras;
+import androidx.core.oneui.OneUI;
+import androidx.core.os.SeslConfigurationCompat;
 import androidx.lifecycle.viewmodel.MutableCreationExtras;
 import androidx.loader.app.LoaderManager;
+import androidx.reflect.app.SeslWindowConfigurationReflector;
+import androidx.reflect.content.res.SeslConfigurationReflector;
 import androidx.savedstate.SavedStateRegistry;
 import androidx.savedstate.SavedStateRegistryController;
 import androidx.savedstate.SavedStateRegistryOwner;
 import androidx.savedstate.ViewTreeSavedStateRegistryOwner;
+
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -349,8 +358,70 @@ public class Fragment implements ComponentCallbacks, OnCreateContextMenuListener
         }
     };
 
+    //Sesl9
+    private static final String NAVIGATION_MODE = "navigation_mode";
+    private static final int NAV_BAR_MODE_3BUTTON = 0;
+    private static final int NAV_BAR_MODE_GESTURAL = 2;
+    private static final String PREDICTIVE_BACK_SYSTEM_ANIMATION = "predictive_back_system_animation";
+
     @Nullable
-    DisposableHandle mDisposableHandle = null;//sesl7
+    DisposableHandle mDisposableHandle = null;
+    private boolean mIsBgCustomized = false;
+    private boolean isPredictiveBackEnabled = false;
+    //custom to handle predictive request before to
+    //Fragment's view is created.
+    @Nullable
+    private Boolean mRequestedPredictiveBackEnabled = null;
+    @Nullable
+    SeslFragmentTransitionHelper mFragmentTransitionHelper;
+    @Nullable
+    private SeslOnTransitionCallback mSeslOnTransitionCallback;
+
+    /**
+     * Callback interface for monitoring SESL fragment transition lifecycle events.
+     */
+    public interface SeslOnTransitionCallback {
+        /** Holds progress and state information for a fragment transition. */
+        public static class TransitionInfo {
+            private final boolean isEnter;
+            private final boolean isPop;
+            private final float progress;
+
+            public TransitionInfo(boolean isEnter, boolean isPop, float progress) {
+                this.isEnter = isEnter;
+                this.isPop = isPop;
+                this.progress = progress;
+            }
+
+            /** Returns predictive back transition progress from 0.0 to 1.0. */
+            public float getProgress() {
+                return this.progress;
+            }
+
+            /** Returns whether the transition is an enter transition. */
+            public boolean isEnter() {
+                return this.isEnter;
+            }
+
+            /** Returns whether the transition is a pop transition. */
+            public boolean isPop() {
+                return this.isPop;
+            }
+        }
+
+        /** Called when a fragment transition is cancelled. */
+        void onTransitionCancelled(@NonNull TransitionInfo transitionInfo);
+
+        /** Called when a fragment transition is committed. */
+        void onTransitionCommitted(@NonNull TransitionInfo transitionInfo);
+
+        /** Called when predictive back gesture transition progress advances. */
+        void onTransitionProgressed(@NonNull TransitionInfo transitionInfo);
+
+        /** Called when a fragment transition starts. */
+        void onTransitionStarted(@NonNull TransitionInfo transitionInfo);
+    }
+    //sesl9
 
     private final OnPreAttachedListener mContextAwareAttachListener = new OnPreAttachedListener() {
         @Override
@@ -466,9 +537,8 @@ public class Fragment implements ComponentCallbacks, OnCreateContextMenuListener
         return Math.min(mMaxState.ordinal(), mParentFragment.getMinimumMaxLifecycleState());
     }
 
-    @NonNull
     @Override
-    public ViewModelProvider.Factory getDefaultViewModelProviderFactory() {
+    public ViewModelProvider.@NonNull Factory getDefaultViewModelProviderFactory() {
         if (mFragmentManager == null) {
             throw new IllegalStateException("Can't access ViewModels from detached fragment");
         }
@@ -570,8 +640,7 @@ public class Fragment implements ComponentCallbacks, OnCreateContextMenuListener
             dest.writeBundle(mState);
         }
 
-        @NonNull
-        public static final Parcelable.Creator<SavedState> CREATOR =
+        public static final Parcelable.@NonNull Creator<SavedState> CREATOR =
                 new Parcelable.ClassLoaderCreator<SavedState>() {
             @Override
             public SavedState createFromParcel(Parcel in) {
@@ -1720,7 +1789,7 @@ public class Fragment implements ComponentCallbacks, OnCreateContextMenuListener
     @SuppressWarnings({"DeprecatedIsStillUsed", "unused"})
     @Deprecated
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-            @NonNull int[] grantResults) {
+            int @NonNull [] grantResults) {
         /* callback - do nothing */
     }
 
@@ -1985,17 +2054,16 @@ public class Fragment implements ComponentCallbacks, OnCreateContextMenuListener
             if (v != null){
                 Animation anim = v.getAnimation();
                 if (anim != null && !anim.hasEnded()) {
-                Log.d(FragmentManager.TAG, "Fragment Animation was canceled by back press");
+                    Log.d(FragmentManager.TAG, "Fragment Animation was canceled by back press");
                     v.clearAnimation();
-            }
                 }
+            }
             mDisposableHandle = null;
         };
 
         return null;
         //sesl7
     }
-
 
     /**
      * Called when a fragment loads an animator. This will be called when
@@ -2018,6 +2086,172 @@ public class Fragment implements ComponentCallbacks, OnCreateContextMenuListener
     public Animator onCreateAnimator(int transit, boolean enter, int nextAnim) {
         return null;
     }
+
+    //Sesl9
+    /**
+     * Creates an animator for SESL fragment transitions, accounting for predictive back and pop-over window states.
+     *
+     * @param nextAnim animation resource ID
+     * @param enter {@code true} if fragment is entering
+     * @param isPop {@code true} if transition is a back stack pop
+     * @return the created {@link Animator}, or {@code null} if default handling should be used
+     */
+    @Nullable
+    public Animator onCreateAnimator(int nextAnim, boolean enter, boolean isPop) {
+        if (this.mFragmentTransitionHelper == null) {
+            initFragmentTransition(true);
+        }
+        SeslFragmentTransitionHelper helper = this.mFragmentTransitionHelper;
+        if (helper == null) {
+            return null;
+        }
+        helper.update(this.mView);
+        Context context = getContext();
+        return helper.createAnimator(nextAnim, enter, isPop, context != null && isPopOver(context));
+    }
+
+    /** Maps and clamps gesture progress for predictive back fragment transitions. */
+    public float getProgress(float progress) {
+        SeslFragmentTransitionHelper helper = this.mFragmentTransitionHelper;
+        return helper != null ? helper.getProgress(progress) : progress;
+    }
+
+    /** Resets view translation properties at the start of a fragment transition. */
+    public void initTransition() {
+        SeslFragmentTransitionHelper helper = this.mFragmentTransitionHelper;
+        if (helper != null) {
+            helper.initTransition();
+        }
+    }
+
+    /** Returns the registered {@link SeslOnTransitionCallback}, or {@code null} if none is set. */
+    @Nullable
+    public SeslOnTransitionCallback seslGetOnTransitionCallback() {
+        return this.mSeslOnTransitionCallback;
+    }
+
+    /** Registers a {@link SeslOnTransitionCallback} to receive transition lifecycle events. */
+    public void seslSetOnTransitionCallback(@Nullable SeslOnTransitionCallback callback) {
+        if (this.mSeslOnTransitionCallback != callback) {
+            this.mSeslOnTransitionCallback = callback;
+        }
+    }
+
+    /** Returns whether predictive back transitions are enabled for this fragment. */
+    public boolean seslIsPredictiveBackEnabled() {
+        return this.isPredictiveBackEnabled || FragmentManager.USE_PREDICTIVE_BACK;
+    }
+
+    /** Returns whether the fragment transition helper is initialized for predictive back. */
+    public boolean seslIsPredictiveBackTransitionEnabled() {
+        return this.mFragmentTransitionHelper != null;
+    }
+
+    /**
+     * Enables or disables predictive back transitions after checking system and gesture navigation prerequisites.
+     *
+     * @param enabled {@code true} to enable predictive back transitions, {@code false} to disable
+     */
+    @OptIn(markerClass = PredictiveBackControl.class)
+    public void seslSetPredictiveBackEnabled(boolean enabled) {
+        this.mRequestedPredictiveBackEnabled = enabled;//custom
+        Context context = getContext();
+        if (hasPredictiveBackPrerequisites(context)) {
+            applyPredictiveBackEnabled(enabled && canEnablePredictiveBack(context));
+        }
+    }
+
+    /**
+     * Enables or disables predictive back transitions with custom background flag.
+     *
+     * @param enabled {@code true} to enable predictive back transitions
+     * @param isBgCustomized {@code true} if custom background styling is used
+     */
+    public void seslSetPredictiveBackEnabled(boolean enabled, boolean isBgCustomized) {
+        this.mIsBgCustomized = isBgCustomized;
+        seslSetPredictiveBackEnabled(enabled);
+    }
+
+    @OptIn(markerClass = PredictiveBackControl.class)
+    private void applyPredictiveBackEnabled(boolean enabled) {
+        FragmentManager.enablePredictiveBack(enabled);
+        this.isPredictiveBackEnabled = enabled;
+        initFragmentTransition(enabled);
+    }
+
+    private boolean canEnablePredictiveBack(Context context) {
+        return !isPopOver(context) && isSystemPredictiveBackAnimationEnabled(context)
+                && isGestureNavigationEnabled(context) && isWindowModeCompatible(context);
+    }
+
+    private boolean hasPredictiveBackPrerequisites(Context context) {
+        if (this.mView == null) {
+            Log.e(FragmentManager.TAG, this + " View is null");
+            return false;
+        }
+        if (this.mFragmentManager == null) {
+            Log.e(FragmentManager.TAG, this + " ParentFragmentManager is null");
+            return false;
+        }
+        if (context != null) {
+            return true;
+        }
+        Log.e(FragmentManager.TAG, this + " getContext() is null");
+        return false;
+    }
+
+    private void initFragmentTransition(boolean enabled) {
+        if (!enabled) {
+            this.mFragmentTransitionHelper = null;
+        } else if (this.mFragmentTransitionHelper == null) {
+            this.mFragmentTransitionHelper = new SeslFragmentTransitionHelper(this.mView);
+        }
+    }
+
+    private boolean isSystemPredictiveBackAnimationEnabled(Context context) {
+        if (OneUI.isGreaterOrEqual(OneUI.Version.ONEUI_8_5)) {
+            return true;
+        }
+        if (OneUI.isGreaterOrEqual(OneUI.Version.ONEUI_8_0)) {
+            try {
+                return Settings.Global.getInt(context.getContentResolver(), PREDICTIVE_BACK_SYSTEM_ANIMATION, 1) != 0;
+            } catch (RuntimeException e) {
+                Log.e(FragmentManager.TAG, "Failed to get PREDICTIVE_BACK_SYSTEM_ANIMATION.", e);
+                return false;
+            }
+        }
+        return Build.VERSION.SDK_INT >= 34;
+    }
+
+    private boolean isGestureNavigationEnabled(Context context) {
+        return Settings.Secure.getInt(context.getContentResolver(), NAVIGATION_MODE, 0) == NAV_BAR_MODE_GESTURAL;
+    }
+
+    private boolean isWindowModeCompatible(Context context) {
+        Activity activity = findActivity(context);
+        return activity == null || Build.VERSION.SDK_INT < 24 || !activity.isInMultiWindowMode() || isEmbedded(context);
+    }
+
+    private Activity findActivity(Context context) {
+        Context c = context;
+        while (c instanceof ContextWrapper) {
+            if (c instanceof Activity) {
+                return (Activity) c;
+            }
+            c = ((ContextWrapper) c).getBaseContext();
+        }
+        return null;
+    }
+
+    private boolean isEmbedded(Context context) {
+        Object windowConfig = SeslConfigurationReflector.getField_windowConfiguration(context.getResources().getConfiguration());
+        return windowConfig != null && SeslWindowConfigurationReflector.isEmbedded(windowConfig);
+    }
+
+    private boolean isPopOver(Context context) {
+        return SeslConfigurationCompat.semIsPopOver(context.getResources().getConfiguration());
+    }
+    //sesl9
 
     /**
      * Called to do initial creation of a fragment.  This is called after
@@ -3162,7 +3396,7 @@ public class Fragment implements ComponentCallbacks, OnCreateContextMenuListener
         mLifecycleRegistry.addObserver(new LifecycleEventObserver() {
             @Override
             public void onStateChanged(@NonNull LifecycleOwner source,
-                    @NonNull Lifecycle.Event event) {
+                    Lifecycle.@NonNull Event event) {
                 if (event == Lifecycle.Event.ON_STOP) {
                     if (mView != null) {
                         mView.cancelPendingInputEvents();
@@ -3218,6 +3452,10 @@ public class Fragment implements ComponentCallbacks, OnCreateContextMenuListener
     }
 
     void performViewCreated() {
+        //custom
+        if (mRequestedPredictiveBackEnabled != null) {
+            seslSetPredictiveBackEnabled(mRequestedPredictiveBackEnabled);
+        }
         // since calling super.onViewCreated() is not required, we do not need to set and check the
         // `mCalled` flag
         final Bundle savedInstanceState;

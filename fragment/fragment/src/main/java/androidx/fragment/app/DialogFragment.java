@@ -17,7 +17,6 @@
 package androidx.fragment.app;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP_PREFIX;
-import static androidx.fragment.app.FragmentManager.TAG;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -337,6 +336,7 @@ public class DialogFragment extends Fragment
      */
     public static final int STYLE_NO_INPUT = 3;
 
+    private static final String TAG = "SeslDialogFragment";
     private static final String SAVED_DIALOG_STATE_TAG = "android:savedDialogState";
     private static final String SAVED_STYLE = "android:style";
     private static final String SAVED_THEME = "android:theme";

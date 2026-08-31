@@ -18,23 +18,25 @@ package androidx.fragment.app
 import android.content.Context
 import android.provider.Settings
 import android.text.TextUtils
+import android.view.View.LAYOUT_DIRECTION_RTL
 import androidx.annotation.RequiresApi
+import java.io.File
 
-@RequiresApi(23)
 fun FragmentTransaction.seslSetAnimations(context: Context): FragmentTransaction {
     if (isDefaultTheme(context)) {
-        val isRtl = context.resources.configuration.layoutDirection == 1
+        val isRtl = context.resources.configuration.layoutDirection == LAYOUT_DIRECTION_RTL
         return seslSetAnimations(isRtl)
     }
     return this
 }
 
-@Deprecated("Use seslSetAnimations(context) instead")
-@RequiresApi(23)
+@Deprecated(
+    message = "This api was deprecated. please use with context",
+    replaceWith = ReplaceWith("this.seslSetAnimations(context)")
+)
 fun FragmentTransaction.seslSetAnimations(): FragmentTransaction =
     seslSetAnimations(false)
 
-@RequiresApi(23)
 private fun FragmentTransaction.seslSetAnimations(isRtl: Boolean): FragmentTransaction {
     val animationSet = if (isRtl) {
         SeslFragmentTransactionAnimationSet.HorizontalForRTL
@@ -51,4 +53,8 @@ private fun FragmentTransaction.seslSetAnimations(isRtl: Boolean): FragmentTrans
 }
 
 private fun isDefaultTheme(context: Context): Boolean =
-    TextUtils.isEmpty(Settings.System.getString(context.contentResolver, "current_sec_active_themepackage"))
+    TextUtils.isEmpty(Settings.System.getString(context.contentResolver, "current_sec_active_themepackage")) &&
+        !themeParkApplied()
+
+private fun themeParkApplied(): Boolean =
+    File("/data/overlays/themepark/state_applied.txt").exists()

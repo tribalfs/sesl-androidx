@@ -16,15 +16,12 @@
 
 package androidx.fragment.app;
 
-import android.content.Context;
-import android.provider.Settings;
-import android.text.TextUtils;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.R;
 import androidx.lifecycle.Lifecycle;
+
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -259,7 +256,7 @@ final class BackStackRecord extends FragmentTransaction implements
     @NonNull
     @Override
     public FragmentTransaction setMaxLifecycle(@NonNull Fragment fragment,
-            @NonNull Lifecycle.State state) {
+            Lifecycle.@NonNull State state) {
         if (fragment.mFragmentManager != mManager) {
             throw new IllegalArgumentException("Cannot setMaxLifecycle for Fragment not attached to"
                     + " FragmentManager " + mManager);
@@ -671,18 +668,11 @@ final class BackStackRecord extends FragmentTransaction implements
     @NonNull
     @Override
     public FragmentTransaction setAnimations() {
-        if (isDefaultTheme(mManager.getHost().getContext())) {
-            mEnterAnim = R.anim.sesl_fragment_open_enter;
-            mExitAnim = R.anim.sesl_fragment_open_exit;
-            mPopEnterAnim = R.anim.sesl_fragment_close_enter;
-            mPopExitAnim = R.anim.sesl_fragment_close_exit;
+        if (mManager.getHost() != null) {
+            SeslFragmentTransactionKt.seslSetAnimations(this, mManager.getHost().getContext());
+            return this;
         }
+        Log.d(TAG, "FragmentManager has been destroyed " + mManager.isDestroyed() + ", or FragmentManager has not been attached to a host.");
         return this;
     }
-
-    private static boolean isDefaultTheme(Context context) {
-        return TextUtils.isEmpty(Settings.System.getString(context.getContentResolver(),
-                "current_sec_active_themepackage"));
-    }
-    //sesl
 }

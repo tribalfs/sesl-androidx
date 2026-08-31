@@ -519,6 +519,29 @@ public abstract class FragmentManager implements FragmentResultOwner {
     // signal to indicate whether execPendingAction is coming from handleOnBackPressed
     // or cancelBackStackTransition that prevents the mTransitioningOp from being recommited.
     boolean mHandlingTransitioningOp = false;
+
+    //Sesl9
+    private boolean mUseAutoClearOnLastStack = true;
+    @Nullable SeslOnBackPressedCallback mSeslOnBackPressedCallback;
+
+    /**
+     * Callback interface for intercepting predictive back events on {@link FragmentManager}.
+     */
+    public interface SeslOnBackPressedCallback {
+        /** Called when a predictive back gesture is cancelled. */
+        void handleOnBackCancelled();
+
+        /** Called when a back gesture or back button press is committed. */
+        void handleOnBackPressed();
+
+        /** Called when a predictive back gesture advances progress. */
+        void handleOnBackProgressed(@NonNull BackEventCompat backEventCompat);
+
+        /** Called when a predictive back gesture starts. */
+        void handleOnBackStarted(@NonNull BackEventCompat backEventCompat);
+    }
+    //sesl9
+
     private final OnBackPressedCallback mOnBackPressedCallback =
             new OnBackPressedCallback(false) {
 
@@ -533,6 +556,10 @@ public abstract class FragmentManager implements FragmentResultOwner {
                     if (USE_PREDICTIVE_BACK) {
                         endAnimatingAwayFragments();
                         prepareBackStackTransition();
+                    }
+                    //sesl9
+                    if (mSeslOnBackPressedCallback != null) {
+                        mSeslOnBackPressedCallback.handleOnBackStarted(backEvent);
                     }
                 }
 
@@ -558,6 +585,10 @@ public abstract class FragmentManager implements FragmentResultOwner {
                         for (OnBackStackChangedListener listener : mBackStackChangeListeners) {
                             listener.onBackStackChangeProgressed(backEvent);
                         }
+                        //sesl9
+                        if (mSeslOnBackPressedCallback != null) {
+                            mSeslOnBackPressedCallback.handleOnBackProgressed(backEvent);
+                        }
                     }
                 }
 
@@ -570,6 +601,10 @@ public abstract class FragmentManager implements FragmentResultOwner {
                         );
                     }
                     FragmentManager.this.handleOnBackPressed();
+                    //sesl9
+                    if (mSeslOnBackPressedCallback != null) {
+                        mSeslOnBackPressedCallback.handleOnBackPressed();
+                    }
                 }
 
                 @Override
@@ -582,6 +617,10 @@ public abstract class FragmentManager implements FragmentResultOwner {
                     }
                     if (USE_PREDICTIVE_BACK) {
                         cancelBackStackTransition();
+                    }
+                    //sesl9
+                    if (mSeslOnBackPressedCallback != null) {
+                       mSeslOnBackPressedCallback.handleOnBackCancelled();
                     }
                 }
             };

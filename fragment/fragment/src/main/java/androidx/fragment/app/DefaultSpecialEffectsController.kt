@@ -32,6 +32,7 @@ import androidx.collection.ArrayMap
 import androidx.core.view.OneShotPreDrawListener
 import androidx.core.view.ViewCompat
 import androidx.core.view.ViewGroupCompat
+import androidx.fragment.R
 import androidx.fragment.app.FragmentTransition.callSharedElementStartEnd
 import androidx.fragment.app.FragmentTransition.findKeyForValue
 import androidx.fragment.app.FragmentTransition.retainValues
@@ -429,7 +430,7 @@ internal class DefaultSpecialEffectsController(container: ViewGroup) :
             }
     }
 
-    private class AnimationInfo(operation: Operation, private val isPop: Boolean) :
+    private class AnimationInfo(operation: Operation, val isPop: Boolean) :
         SpecialEffectsInfo(operation) {
         private var isAnimLoaded = false
         private var animation: FragmentAnim.AnimationOrAnimator? = null
@@ -622,6 +623,7 @@ internal class DefaultSpecialEffectsController(container: ViewGroup) :
             get() = true
 
         var animator: AnimatorSet? = null
+        var animatorForCommit: AnimatorSet? = null//sesl9
 
         override fun onStart(container: ViewGroup) {
             if (animatorInfo.isVisibilityUnchanged) {
@@ -629,13 +631,29 @@ internal class DefaultSpecialEffectsController(container: ViewGroup) :
                 return
             }
             val context = container.context
-            animator = animatorInfo.getAnimation(context)?.animator
+            val animation = animatorInfo.getAnimation(context)
+            animator = animation?.animator
             val operation: Operation = animatorInfo.operation
             val fragment = operation.fragment
 
             // Okay, let's run the Animator!
             val isHideOperation = operation.finalState === Operation.State.GONE
             val viewToAnimate = fragment.mView
+
+            //Sesl9
+            if (animation?.isFragmentAnimationRes == true && operation.finalState == Operation.State.VISIBLE) {
+                viewToAnimate.alpha = 1.0f
+            }
+
+            val callback = fragment.seslGetOnTransitionCallback()
+            callback?.onTransitionStarted(
+                Fragment.SeslOnTransitionCallback.TransitionInfo(
+                    operation.finalState == Operation.State.VISIBLE,
+                    animatorInfo.isPop,
+                    0.0f
+                )
+            )
+            //sesl9
             container.startViewTransition(viewToAnimate)
             animator?.addListener(
                 object : AnimatorListenerAdapter() {
@@ -668,7 +686,8 @@ internal class DefaultSpecialEffectsController(container: ViewGroup) :
                 return
             }
 
-            if (Build.VERSION.SDK_INT >= 34 && operation.fragment.mTransitioning) {
+            if (Build.VERSION.SDK_INT >= 34 && operation.fragment.mTransitioning
+                && operation.fragment.seslIsPredictiveBackEnabled() /*sesl9*/) {
                 if (FragmentManager.isLoggingEnabled(Log.VERBOSE)) {
                     Log.v(
                         FragmentManager.TAG,
@@ -676,7 +695,24 @@ internal class DefaultSpecialEffectsController(container: ViewGroup) :
                     )
                 }
                 val totalDuration = Api24Impl.totalDuration(animatorSet)
-                var time = (backEvent.progress * totalDuration).toLong()
+                //Sesl9
+                val view = operation.fragment.mView
+                var progress = backEvent.progress
+                val context = view.context
+                val animation = animatorInfo.getAnimation(context)
+                if (animation?.isFragmentAnimationRes == true) {
+                    progress = operation.fragment.getProgress(backEvent.progress)
+                }
+                val callback = operation.fragment.seslGetOnTransitionCallback()
+                callback?.onTransitionProgressed(
+                    Fragment.SeslOnTransitionCallback.TransitionInfo(
+                        operation.finalState == Operation.State.VISIBLE,
+                        animatorInfo.isPop,
+                        backEvent.progress
+                    )
+                )
+                //sesl9
+                var time = (progress * totalDuration).toLong()
                 // We cannot let the time get to 0 or the totalDuration to avoid
                 // completing the operation accidentally.
                 if (time == 0L) {
@@ -704,6 +740,68 @@ internal class DefaultSpecialEffectsController(container: ViewGroup) :
                 animatorInfo.operation.completeEffect(this)
                 return
             }
+            //Sesl9
+            val fragment = operation.fragment
+            val view = fragment.mView
+            val isSeeking = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                Api26Impl.getCurrentPlayTime(animatorSet) != 0L
+            } else {
+                false
+            }
+
+            val callback = fragment.seslGetOnTransitionCallback()
+            callback?.onTransitionCommitted(
+                Fragment.SeslOnTransitionCallback.TransitionInfo(
+                    operation.finalState == Operation.State.VISIBLE,
+                    animatorInfo.isPop,
+                    1.0f
+                )
+            )
+
+            val context = view.context
+            val animation = animatorInfo.getAnimation(context)
+            if (animation?.isFragmentAnimationRes == true && animatorInfo.isPop) {
+                val isGone = operation.finalState == Operation.State.GONE
+                val customCommitAnimator = if (isSeeking) {
+                    val isRtl = view.context.resources.configuration.layoutDirection == 1
+                    if (operation.finalState == Operation.State.REMOVED) {
+                        fragment.onCreateAnimator(
+                            if (isRtl) R.animator.sesl_fragment_close_exit_rtl else R.animator.sesl_fragment_close_exit,
+                            true,
+                            true
+                        ) as? AnimatorSet
+                    } else {
+                        fragment.onCreateAnimator(
+                            if (isRtl) R.animator.sesl_fragment_close_enter_rtl else R.animator.sesl_fragment_close_enter,
+                            true,
+                            true
+                        ) as? AnimatorSet
+                    }
+                } else {
+                    animation.animatorForCommit
+                }
+                animatorForCommit = customCommitAnimator
+                if (customCommitAnimator != null) {
+                    customCommitAnimator.addListener(object : AnimatorListenerAdapter() {
+                        override fun onAnimationEnd(anim: Animator) {
+                            container.endViewTransition(view)
+                            if (isGone) {
+                                operation.finalState.applyState(view, container)
+                            }
+                            animatorInfo.operation.completeEffect(this@AnimatorEffect)
+                            if (FragmentManager.isLoggingEnabled(Log.VERBOSE)) {
+                                Log.v(FragmentManager.TAG, "Animator from operation $operation has ended.")
+                            }
+                        }
+                    })
+                    animatorSet.removeAllListeners()
+                    animatorSet.cancel()
+                    customCommitAnimator.setTarget(view)
+                    customCommitAnimator.start()
+                    return
+                }
+            }
+            //sesl9
             animatorSet.start()
             if (FragmentManager.isLoggingEnabled(Log.VERBOSE)) {
                 Log.v(FragmentManager.TAG, "Animator from operation $operation has started.")
@@ -715,22 +813,46 @@ internal class DefaultSpecialEffectsController(container: ViewGroup) :
             if (animator == null) {
                 // No change in visibility, so we can go ahead and complete the effect
                 animatorInfo.operation.completeEffect(this)
+                return
+            }
+            val operation = animatorInfo.operation
+            if (operation.isSeeking) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    Api26Impl.reverse(animator)
+                }
             } else {
-                val operation = animatorInfo.operation
-                if (operation.isSeeking) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        Api26Impl.reverse(animator)
-                    }
-                } else {
-                    animator.end()
+                animator.end()
+                animatorForCommit?.end()
+            }
+
+            //Sesl9
+            val context = container.context
+            val animation = animatorInfo.getAnimation(context)
+            if (animation?.isFragmentAnimationRes == true) {
+                val view = operation.fragment.mView
+                if (view != null && operation.finalState == Operation.State.GONE) {
+                    operation.finalState.applyState(view, container)
                 }
-                if (FragmentManager.isLoggingEnabled(Log.VERBOSE)) {
-                    Log.v(
-                        FragmentManager.TAG,
-                        "Animator from operation $operation has been canceled" +
-                            "${if (operation.isSeeking) " with seeking." else "."} "
-                    )
+                if (animatorInfo.isPop && operation.finalState == Operation.State.VISIBLE) {
+                    operation.fragment.initTransition()
                 }
+            }
+            val callback = operation.fragment.seslGetOnTransitionCallback()
+            callback?.onTransitionCancelled(
+                Fragment.SeslOnTransitionCallback.TransitionInfo(
+                    operation.finalState == Operation.State.VISIBLE,
+                    animatorInfo.isPop,
+                    0.0f
+                )
+            )
+            //sesl9
+
+            if (FragmentManager.isLoggingEnabled(Log.VERBOSE)) {
+                Log.v(
+                    FragmentManager.TAG,
+                    "Animator from operation $operation has been canceled" +
+                        "${if (operation.isSeeking) " with seeking." else "."} "
+                )
             }
         }
     }
@@ -1267,6 +1389,10 @@ internal class DefaultSpecialEffectsController(container: ViewGroup) :
 
         fun setCurrentPlayTime(animatorSet: AnimatorSet, time: Long) {
             animatorSet.currentPlayTime = time
+        }
+
+        fun getCurrentPlayTime(animatorSet: AnimatorSet): Long {
+            return animatorSet.currentPlayTime
         }
     }
 }
