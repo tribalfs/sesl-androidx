@@ -1,6 +1,4 @@
 import com.android.build.api.dsl.LibraryExtension
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("com.android.library")
@@ -18,7 +16,7 @@ android {
     val versionInfoKey = "androidx." + project.projectDir.name
     val artifactInfo = moduleInfo[versionInfoKey]
         ?: throw GradleException("No version info found for module: $versionInfoKey")
-    
+
     val stockVersion = artifactInfo[0] as String
     val seslVersion = artifactInfo[1] as String
     val revision = artifactInfo[2] as String
@@ -27,23 +25,9 @@ android {
     compileSdk = artifactInfo[4] as Int
     defaultConfig.minSdk = artifactInfo[3] as Int
 
-    when (compileSdk) {
-        35 -> buildToolsVersion = "35.0.1"
-        36 -> buildToolsVersion = "36.0.0"
-        37 -> {
-            buildToolsVersion = "37.0.0"
-            compileSdkMinor = 1
-        }
-    }
-
     compileOptions {
-        if (project.name in listOf("recyclerview")) {
-            sourceCompatibility = JavaVersion.VERSION_1_8
-            targetCompatibility = JavaVersion.VERSION_1_8
-        } else {
-            sourceCompatibility = JavaVersion.VERSION_21
-            targetCompatibility = JavaVersion.VERSION_21
-        }
+        sourceCompatibility = JavaVersion.VERSION_24
+        targetCompatibility = JavaVersion.VERSION_24
     }
 
     project.version = versionName
@@ -64,14 +48,6 @@ android {
         singleVariant("release") {
             withSourcesJar()
             withJavadocJar()
-        }
-    }
-}
-
-tasks.withType<KotlinCompile>().configureEach {
-    compilerOptions {
-        if (project.name in listOf("recyclerview")) {
-            jvmTarget.set(JvmTarget.JVM_1_8)
         }
     }
 }
@@ -128,8 +104,10 @@ val writeVersionFile = tasks.register("writeVersionFile") {
 }
 
 // Hook into resource processing
-tasks.matching { it.name.startsWith("process") && it.name.endsWith("JavaRes") }.configureEach {
-    dependsOn(writeVersionFile)
+tasks.configureEach {
+    if (name.startsWith("process") && name.endsWith("JavaRes")) {
+        dependsOn(writeVersionFile)
+    }
 }
 
 publishing {

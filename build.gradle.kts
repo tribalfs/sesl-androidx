@@ -87,6 +87,19 @@ afterEvaluate {
     }
 }
 
+val useLocalModules = providers.gradleProperty("useLocalModules")
+    .map { it.toBoolean() }
+    .orElse(true)
+
+val localSubstitutions: Map<String, String> by lazy {
+    rootProject.subprojects
+        .filter { !it.name.endsWith("-lint") }
+        .associate { proj ->
+            val groupName = "sesl.androidx." + proj.projectDir.parentFile.name
+            "$groupName:${proj.name}" to proj.path
+        }
+}
+
 subprojects {
     plugins.withId("com.android.library") {
         if (!project.name.endsWith("-lint")) {
@@ -100,6 +113,13 @@ subprojects {
                 all {
                     if (candidate.version.matches(".*-sesl[67].*".toRegex())) {
                         reject("Rejecting sesl6 and sesl7 versions")
+                    }
+                }
+            }
+            if (useLocalModules.get()) {
+                dependencySubstitution {
+                    localSubstitutions.forEach { (moduleCoordinate, projectPath) ->
+                        substitute(module(moduleCoordinate)).using(project(projectPath))
                     }
                 }
             }
