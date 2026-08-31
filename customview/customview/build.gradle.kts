@@ -27,4 +27,3 @@ extra.set(
             "Compatible on devices running API 19 or later."
     )
 )
-

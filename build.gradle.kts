@@ -4,6 +4,7 @@ import java.util.Properties
 
 plugins {
     alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.kotlinParcelize) apply false
     id("org.jetbrains.dokka")
 }
 
