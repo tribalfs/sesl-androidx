@@ -1,7 +1,6 @@
 import com.android.build.api.dsl.LibraryExtension
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import java.util.regex.Pattern
 
 plugins {
     id("com.android.library")
