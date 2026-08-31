@@ -223,7 +223,7 @@ public class SwitchCompat extends CompoundButton implements EmojiCompatConfigura
     private static final int THUMB_ANIMATION_DURATION_ABOVE_M = 300;
     private static final int MIN_FLING_VELOCITY = 500;
     private static final int CHANGE_FLING_VELOCITY = 2000;
-    private static final float THUMB_TRACK_WIDTH_RATIO = 0.5714286f;
+    private static final float THUMB_TRACK_WIDTH_RATIO = 0.625f;
     private Drawable mTrackOnDrawable;
     private Drawable mTrackOffDrawable;
     ThumbAnimation mPositionAnimator;
@@ -992,23 +992,13 @@ public class SwitchCompat extends CompoundButton implements EmojiCompatConfigura
             trackHeight = 0;
         }
 
-        // Adjust left and right padding to ensure there's enough room for the
-        // thumb's padding (when present).
-        int paddingLeft = padding.left;
-        int paddingRight = padding.right;
-        if (mThumbDrawable != null) {
-            final Rect inset = DrawableUtils.getOpticalBounds(mThumbDrawable);
-            paddingLeft = Math.max(paddingLeft, inset.left);
-            paddingRight = Math.max(paddingRight, inset.right);
-        }
-
-//        final int switchWidth =
-//                mEnforceSwitchWidth
-//                        ? Math.max(mSwitchMinWidth, 2 * mThumbWidth + paddingLeft + paddingRight)
-//                        : mSwitchMinWidth;
         final int switchHeight = Math.max(trackHeight, thumbHeight);
-//        mSwitchWidth = switchWidth;
         mSwitchHeight = switchHeight;
+
+        mTrackMargin = 0;
+        if (((float) mThumbWidth) / ((float) mSwitchWidth) > THUMB_TRACK_WIDTH_RATIO) {
+            mTrackMargin = (int) Math.ceil(mThumbWidth - (mSwitchWidth * THUMB_TRACK_WIDTH_RATIO));
+        }
 
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
@@ -1022,7 +1012,7 @@ public class SwitchCompat extends CompoundButton implements EmojiCompatConfigura
     public void onPopulateAccessibilityEvent(AccessibilityEvent event) {
         super.onPopulateAccessibilityEvent(event);
 
-        final CharSequence text = isChecked() ? mTextOn : mTextOff;
+        final CharSequence text = isChecked() ? mAccessibilityTextOn : mAccessibilityTextOff;
         if (text != null) {
             event.getText().add(text);
         }
@@ -1294,10 +1284,10 @@ public class SwitchCompat extends CompoundButton implements EmojiCompatConfigura
         final int switchLeft;
         if (ViewUtils.isLayoutRtl(this)) {
             switchLeft = getPaddingLeft() + opticalInsetLeft;
-            switchRight = switchLeft + mSwitchWidth - opticalInsetLeft - opticalInsetRight;
+            switchRight = switchLeft + mSwitchWidth + mTrackMargin - opticalInsetLeft - opticalInsetRight;
         } else {
             switchRight = getWidth() - getPaddingRight() - opticalInsetRight;
-            switchLeft = switchRight - mSwitchWidth + opticalInsetLeft + opticalInsetRight;
+            switchLeft = switchRight - mSwitchWidth - mTrackMargin + opticalInsetLeft + opticalInsetRight;
         }
 
         final int switchTop;
@@ -1478,7 +1468,7 @@ public class SwitchCompat extends CompoundButton implements EmojiCompatConfigura
         if (!ViewUtils.isLayoutRtl(this)) {
             return super.getCompoundPaddingLeft();
         }
-        int padding = super.getCompoundPaddingLeft() + mSwitchWidth;
+        int padding = super.getCompoundPaddingLeft() + mSwitchWidth + mTrackMargin;
         if (!TextUtils.isEmpty(getText())) {
             padding += mSwitchPadding;
         }
@@ -1490,7 +1480,7 @@ public class SwitchCompat extends CompoundButton implements EmojiCompatConfigura
         if (ViewUtils.isLayoutRtl(this)) {
             return super.getCompoundPaddingRight();
         }
-        int padding = super.getCompoundPaddingRight() + mSwitchWidth;
+        int padding = super.getCompoundPaddingRight() + mSwitchWidth + mTrackMargin;
         if (!TextUtils.isEmpty(getText())) {
             padding += mSwitchPadding;
         }
@@ -1608,7 +1598,7 @@ public class SwitchCompat extends CompoundButton implements EmojiCompatConfigura
         super.onInitializeAccessibilityNodeInfo(info);
         info.setClassName(ACCESSIBILITY_EVENT_CLASS_NAME);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
-            CharSequence switchText = isChecked() ? mTextOn : mTextOff;
+            CharSequence switchText = isChecked() ? mAccessibilityTextOn : mAccessibilityTextOff;
             if (!TextUtils.isEmpty(switchText)) {
                 CharSequence oldText = info.getText();
                 if (TextUtils.isEmpty(oldText)) {
@@ -1661,7 +1651,7 @@ public class SwitchCompat extends CompoundButton implements EmojiCompatConfigura
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             ViewCompat.setStateDescription(
                     this,
-                    mTextOn == null ? getResources().getString(R.string.abc_capital_on) : mTextOn
+                    mAccessibilityTextOn == null ? getResources().getString(R.string.abc_capital_on) : mAccessibilityTextOn
             );
         }
     }
@@ -1670,7 +1660,7 @@ public class SwitchCompat extends CompoundButton implements EmojiCompatConfigura
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             ViewCompat.setStateDescription(
                     this,
-                    mTextOff == null ? getResources().getString(R.string.abc_capital_off) : mTextOff
+                    mAccessibilityTextOff == null ? getResources().getString(R.string.abc_capital_off) : mAccessibilityTextOff
             );
         }
     }
@@ -1820,17 +1810,29 @@ public class SwitchCompat extends CompoundButton implements EmojiCompatConfigura
     }
 
     public void seslSetTrackStrokeColor(@ColorInt int color) {
-        DrawableContainer.DrawableContainerState containerState = (DrawableContainer.DrawableContainerState) mTrackDrawable.getConstantState();
-        LayerDrawable switchDrawable = (LayerDrawable) containerState.getChildren()[2];
-        GradientDrawable trackDrawable = (GradientDrawable) switchDrawable.findDrawableByLayerId(R.id.sesl_switch_track_on);
-        trackDrawable.setStroke(4, color);
+        Drawable.ConstantState constantState = mTrackDrawable.getConstantState();
+        if (constantState instanceof DrawableContainer.DrawableContainerState containerState) {
+            Drawable[] children = containerState.getChildren();
+            if (children.length > 2 && children[2] instanceof LayerDrawable layerDrawable) {
+                Drawable trackDrawable = layerDrawable.findDrawableByLayerId(R.id.sesl_switch_track_on);
+                if (trackDrawable instanceof GradientDrawable gradientDrawable) {
+                    gradientDrawable.setStroke(4, color);
+                }
+            }
+        }
     }
 
     public void seslSetThumbStrokeColor(@ColorInt int color) {
-        DrawableContainer.DrawableContainerState containerState = (DrawableContainer.DrawableContainerState) mThumbDrawable.getConstantState();
-        LayerDrawable switchDrawable = (LayerDrawable) containerState.getChildren()[2];
-        GradientDrawable thumbDrawable = (GradientDrawable) switchDrawable.findDrawableByLayerId(R.id.sesl_switch_thumb_on);
-        thumbDrawable.setStroke(4, color);
+        Drawable.ConstantState constantState = mThumbDrawable.getConstantState();
+        if (constantState instanceof DrawableContainer.DrawableContainerState containerState) {
+            Drawable[] children = containerState.getChildren();
+            if (children.length > 2 && children[2] instanceof LayerDrawable layerDrawable) {
+                Drawable thumbDrawable = layerDrawable.findDrawableByLayerId(R.id.sesl_switch_thumb_on);
+                if (thumbDrawable instanceof GradientDrawable gradientDrawable) {
+                    gradientDrawable.setStroke(4, color);
+                }
+            }
+        }
     }
     //sesl
 }

@@ -20,8 +20,10 @@ import static android.os.Build.VERSION.SDK_INT;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP_PREFIX;
 import static androidx.core.view.SemBlurCompat.BLUR_MODE_WINDOW;
-import static androidx.core.view.SemBlurCompat.BLUR_UI_MEDIUM_ULTRA_THICK_DARK;
-import static androidx.core.view.SemBlurCompat.BLUR_UI_MEDIUM_ULTRA_THICK_LIGHT;
+import static androidx.core.view.SemBlurCompat.BLUR_UI_LOW_ULTRA_THICK_DARK;
+import static androidx.core.view.SemBlurCompat.CANVAS_BLUR_USE_TYPE_STATIC;
+import static androidx.appcompat.oneui.common.internal.semblurinfo.SemBlurInfoStateKtKt.getFIGMA_BLUR_COMPONENT_DARK_XS;
+import static androidx.appcompat.oneui.common.internal.semblurinfo.SemBlurInfoStateKtKt.getFIGMA_BLUR_COMPONENT_LIGHT_XS;
 
 import android.app.Activity;
 import android.content.Context;
@@ -1653,18 +1655,11 @@ public class ListPopupWindow implements ShowableListMenu {
 
         return SemBlurCompat.setBlurEffect(
                 contentView,
-                ResourcesCompat.getColor(res, blurBgColorRes, mContext.getTheme()),
-                120,
                 BLUR_MODE_WINDOW,
+                ResourcesCompat.getColor(res, blurBgColorRes, mContext.getTheme()),
+                BLUR_UI_LOW_ULTRA_THICK_DARK,
                 res.getDimensionPixelSize(R.dimen.sesl_menu_popup_corner_radius));
 
-    }
-
-    private boolean isReduceTransparencySettingsEnabled() {
-        final String accessibility_reduce_transparency = SeslSettingsReflector.SeslSystemReflector
-                .getField_SEM_ACCESSIBILITY_REDUCE_TRANSPARENCY();
-        return !accessibility_reduce_transparency.equals("not_supported")
-                && Settings.System.getInt(mContext.getContentResolver(), accessibility_reduce_transparency, 0) == 1;
     }
 
     @RestrictTo(LIBRARY_GROUP_PREFIX)
@@ -1698,7 +1693,7 @@ public class ListPopupWindow implements ShowableListMenu {
     }
     //sesl7
 
-    //sesl8
+    //sesl8/9
     @RequiresApi(35)
     public static class Api35Impl {
         private Api35Impl() {
@@ -1706,10 +1701,9 @@ public class ListPopupWindow implements ShowableListMenu {
 
         public static boolean setBlurEffectPreset(@NonNull Context context, @NonNull View view) {
             boolean isLightTheme = SeslMisc.isLightTheme(context);
-            int colorCurve = isLightTheme ? BLUR_UI_MEDIUM_ULTRA_THICK_LIGHT : BLUR_UI_MEDIUM_ULTRA_THICK_DARK;
-            Integer color = isLightTheme ? null : context.getResources().getColor(R.color.sesl_popup_menu_blur_background_dark, context.getTheme());
+            SemBlurCompat.CurveParameter colorCurve =  isLightTheme ? getFIGMA_BLUR_COMPONENT_LIGHT_XS() : getFIGMA_BLUR_COMPONENT_DARK_XS();
             float radius = context.getResources().getDimension(R.dimen.sesl_menu_popup_corner_radius);
-            return SemBlurCompat.setBlurEffectPreset(view, BLUR_MODE_WINDOW, colorCurve, color, radius);
+            return SemBlurCompat.setBlurEffectPreset(view, BLUR_MODE_WINDOW, colorCurve, null, radius, CANVAS_BLUR_USE_TYPE_STATIC);
         }
     }
 

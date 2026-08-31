@@ -17,8 +17,8 @@ package androidx.appcompat.util;
 
 import android.util.Pair;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -129,6 +129,10 @@ public class SeslKoreanGeneralizer {
             put((char) 13206, new Pair<>(false, false));
             put((char) 8467, new Pair<>(false, false));
             put((char) 13256, new Pair<>(true, true));
+            put((char) 13189, new Pair<>(false, false));
+            put((char) 13190, new Pair<>(false, false));
+            put((char) 13191, new Pair<>(false, false));
+            put((char) 13268, new Pair<>(false, false));
         }
     };
 
@@ -162,16 +166,11 @@ public class SeslKoreanGeneralizer {
             }
 
             if (josaPattern == null) {
-                sb.append(str.charAt(i));
-                previousChar = str.charAt(i);
-                i++;
-                continue;
-            }
-
-            // Check if the previous character is non-pronounceable
-            if (NON_PRONOUNCEABLE_CHARACTERS.indexOf(previousChar) >= 0) {
-                sb.append(str.charAt(i));
-                previousChar = str.charAt(i);
+                char c = str.charAt(i);
+                sb.append(c);
+                if (NON_PRONOUNCEABLE_CHARACTERS.indexOf(c) < 0) {
+                    previousChar = c;
+                }
                 i++;
                 continue;
             }
@@ -182,18 +181,24 @@ public class SeslKoreanGeneralizer {
                 endsWithJongSung = checkIfEndsWithPronounceableSymbols(previousChar, isEulRo);
             }
 
-            if (endsWithJongSung == null) {
-                throw new IllegalArgumentException("Invalid character: " + previousChar);
+            char lastAppended = str.charAt(i);
+            if (endsWithJongSung != null) {
+                String josaFirst = JOSA_KOREAN_MAP.get(josaPattern).first;
+                String josaSecond = JOSA_KOREAN_MAP.get(josaPattern).second;
+
+                String josaToAppend = endsWithJongSung ? josaFirst : josaSecond;
+                sb.append(josaToAppend);
+
+                lastAppended = josaToAppend.charAt(josaToAppend.length() - 1);
+                i += josaPattern.length();
+            } else {
+                sb.append(lastAppended);
+                i++;
             }
 
-            String josaFirst = JOSA_KOREAN_MAP.get(josaPattern).first;
-            String josaSecond = JOSA_KOREAN_MAP.get(josaPattern).second;
-
-            String josaToAppend = endsWithJongSung ? josaFirst : josaSecond;
-            sb.append(josaToAppend);
-
-            previousChar = josaToAppend.charAt(josaToAppend.length() - 1);
-            i += josaPattern.length();
+            if (NON_PRONOUNCEABLE_CHARACTERS.indexOf(lastAppended) < 0) {
+                previousChar = lastAppended;
+            }
         }
 
         return sb.toString();

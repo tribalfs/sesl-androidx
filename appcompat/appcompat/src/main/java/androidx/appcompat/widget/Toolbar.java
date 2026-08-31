@@ -46,6 +46,7 @@ import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.window.OnBackInvokedCallback;
 import android.window.OnBackInvokedDispatcher;
@@ -63,11 +64,13 @@ import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.R;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.view.CollapsibleActionView;
 import androidx.appcompat.view.SupportMenuInflater;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuItemImpl;
+import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.appcompat.view.menu.MenuPresenter;
 import androidx.appcompat.view.menu.MenuView;
 import androidx.appcompat.view.menu.SubMenuBuilder;
@@ -181,6 +184,12 @@ public class Toolbar extends ViewGroup implements MenuHost {
     private boolean mAllowEatingTouch = true;//sesl8
     private View.OnClickListener mNavButtonViewListener = null;//sesl8
     //sesl
+
+    //Sesl9
+    private int mDensity;
+    private float mTitleViewAlpha = 1.0f;
+    private boolean mForceNotEatingHover = false;
+    //sesl9
 
     ActionMenuView mMenuView;
     private TextView mTitleTextView;
@@ -304,6 +313,7 @@ public class Toolbar extends ViewGroup implements MenuHost {
         mBackground = a.getDrawable(R.styleable.Toolbar_background);
         mNavTooltipText = a.getText(R.styleable.Toolbar_tooltipText);
         setBackground(mBackground);
+        setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
         //sesl
 
         // First read the correct attribute
@@ -336,6 +346,8 @@ public class Toolbar extends ViewGroup implements MenuHost {
         }
 
         mMaxButtonHeight = a.getDimensionPixelSize(R.styleable.Toolbar_maxButtonHeight, -1);
+        mDensity = getResources().getConfiguration().densityDpi;//sesl
+
 
         final int contentInsetStart =
                 a.getDimensionPixelOffset(R.styleable.Toolbar_contentInsetStart,
@@ -870,6 +882,7 @@ public class Toolbar extends ViewGroup implements MenuHost {
                 if (mTitleTextColor != null) {
                     mTitleTextView.setTextColor(mTitleTextColor);
                 }
+                mTitleTextView.setAlpha(mTitleViewAlpha);//sesl
             }
             if (!isChildOrHidden(mTitleTextView)) {
                 addSystemView(mTitleTextView, true);
@@ -1276,6 +1289,7 @@ public class Toolbar extends ViewGroup implements MenuHost {
     private void ensureMenuView() {
         if (mMenuView == null) {
             mMenuView = new ActionMenuView(getContext());
+            updateMenuViewPadding();
             mMenuView.setPopupTheme(mPopupTheme);
             mMenuView.setOnMenuItemClickListener(mMenuViewItemClickListener);
             mMenuView.setMenuCallbacks(mActionMenuPresenterCallback,
@@ -1801,6 +1815,11 @@ public class Toolbar extends ViewGroup implements MenuHost {
 
     @Override
     public boolean onHoverEvent(MotionEvent ev) {
+        //sesl9
+        if (mForceNotEatingHover) {
+            return false;
+        }
+
         // Same deal as onTouchEvent() above. Eat all hover events, but still
         // respect the touch event dispatch contract.
 
@@ -1908,6 +1927,11 @@ public class Toolbar extends ViewGroup implements MenuHost {
 
         int navWidth = 0;
         if (shouldLayout(mNavButtonView)) {
+            //Sesl9
+            if (getLayoutDirection() == LAYOUT_DIRECTION_RTL && mNavButtonView.getPaddingLeft() != 0) {
+                mNavButtonView.setPadding(0, 0, mNavButtonView.getPaddingLeft(), 0);
+            }
+            //sesl9
             measureChildConstrained(mNavButtonView, widthMeasureSpec, width, heightMeasureSpec, 0,
                     mMaxButtonHeight);
             navWidth = mNavButtonView.getMeasuredWidth() + getHorizontalMargins(mNavButtonView);
@@ -1922,6 +1946,8 @@ public class Toolbar extends ViewGroup implements MenuHost {
             if (navButtonDrawable != null && navButtonBackground != null) {
                 final int offsetX = mNavButtonView.getPaddingLeft() - mNavButtonView.getPaddingRight();
                 final int halfOffsetX = offsetX / 2;
+                mNavButtonView.setPivotX(((navWidth - offsetX) / 2.0f) + offsetX);
+                mNavButtonView.setPivotY(height / 2.0f);
                 DrawableCompat.setHotspotBounds(navButtonBackground, halfOffsetX, 0,
                         halfOffsetX + navWidth, height);
             }
@@ -2003,7 +2029,7 @@ public class Toolbar extends ViewGroup implements MenuHost {
             if (!TextUtils.isEmpty(mSubtitleText)) {
                 titleTextSize = getResources().getDimensionPixelSize(R.dimen.sesl_toolbar_title_text_size_with_subtitle);
             }
-            if (currentTitleTextSize != null) {
+            if (currentTitleTextSize != null && TextUtils.isEmpty(mSubtitleText)/*sesl9*/) {
                 titleTextSize = TypedValue.complexToFloat(currentTitleTextSize.data);
             }
             a.recycle();
@@ -2016,14 +2042,15 @@ public class Toolbar extends ViewGroup implements MenuHost {
             }
             a2.recycle();
 
+            float fontScale = getContext().getResources().getConfiguration().fontScale;
+            if (fontScale > MAX_FONT_SCALE) {
+                fontScale = MAX_FONT_SCALE;
+            }
+
             if (titleTextSize == -1.0f || !TextUtils.isEmpty(mSubtitleText)) {
-                mTitleTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, titleTextSize);
-                mSubtitleTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, subtitleTextSize);
+                mTitleTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, titleTextSize * fontScale);
+                mSubtitleTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, subtitleTextSize * fontScale);
             } else {
-                float fontScale = getContext().getResources().getConfiguration().fontScale;
-                if (fontScale > MAX_FONT_SCALE) {
-                    fontScale = 1.2f;
-                }
                 mTitleTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, titleTextSize * fontScale);
             }
             //sesl
@@ -2550,6 +2577,11 @@ public class Toolbar extends ViewGroup implements MenuHost {
         return mSubtitleTextView;
     }
 
+    @RestrictTo(LIBRARY_GROUP_PREFIX)
+    public final @Nullable TextView getSubTitleTextView() {
+        return mSubtitleTextView;
+    }
+
     /**
      * Accessor to enable LayoutLib to get ActionMenuPresenter directly.
      */
@@ -2958,6 +2990,7 @@ public class Toolbar extends ViewGroup implements MenuHost {
         TypedArray a = context.obtainStyledAttributes(R.styleable.AppCompatTheme);
         final int actionBarSize = a.getDimensionPixelSize(R.styleable.AppCompatTheme_actionBarSize, 0);
         if (mNavButtonView != null) {
+            a.recycle();
             a = context.obtainStyledAttributes(null, R.styleable.View, R.attr.actionOverflowButtonStyle, 0);
             mNavButtonView.setMinimumHeight(a.getDimensionPixelSize(R.styleable.View_android_minHeight, 0));
         }
@@ -2966,6 +2999,12 @@ public class Toolbar extends ViewGroup implements MenuHost {
                 ? mUserTopPadding
                 : getResources().getDimensionPixelSize(R.dimen.sesl_action_bar_top_padding);
         setPadding(0, topPadding, 0, 0);
+
+        if (mDensity != newConfig.densityDpi) {
+            mDensity = newConfig.densityDpi;
+            seslUpdateChildViewsSizeSpec();
+        }
+
         ViewGroup.LayoutParams lp = getLayoutParams();
         lp.height = actionBarSize + topPadding;
         setLayoutParams(lp);
@@ -2991,16 +3030,20 @@ public class Toolbar extends ViewGroup implements MenuHost {
         if (enabled) {
             if (mTitleTextView != null) {
                 mTitleTextView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
+                mTitleTextView.setFocusable(true);
             }
             if (mSubtitleTextView != null) {
                 mSubtitleTextView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
+                mSubtitleTextView.setFocusable(true);
             }
         } else {
             if (mTitleTextView != null) {
                 mTitleTextView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+                mTitleTextView.setFocusable(false);
             }
             if (mSubtitleTextView != null) {
                 mSubtitleTextView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+                mSubtitleTextView.setFocusable(false);
             }
         }
     }
@@ -3128,6 +3171,7 @@ public class Toolbar extends ViewGroup implements MenuHost {
     }
 
     public void seslSetTitleAlpha(@FloatRange(from = 0.0f, to = 1.0f) float alpha) {
+        mTitleViewAlpha = alpha;
         if (mTitleTextView != null) {
             mTitleTextView.setAlpha(alpha);
         }
@@ -3138,15 +3182,144 @@ public class Toolbar extends ViewGroup implements MenuHost {
     public void seslSetEatingTouch(boolean allow) {
         if (mAllowEatingTouch == allow) return;
         mAllowEatingTouch = allow;
-        if (allow) {
-            mNavButtonView.setOnClickListener(mNavButtonViewListener);
-            mNavButtonView.setClickable(true);
-            seslSetTouchDelegateForToolbar();
-        } else {
-            mNavButtonView.setOnClickListener(null);
-            mNavButtonView.setClickable(false);
-            seslRemoveListenerForTouchDelegate();
+        if (mNavButtonView != null) {
+            if (allow) {
+                mNavButtonView.setOnClickListener(mNavButtonViewListener);
+                mNavButtonView.setClickable(true);
+                seslSetTouchDelegateForToolbar();
+            } else {
+                mNavButtonView.setOnClickListener(null);
+                mNavButtonView.setClickable(false);
+                seslRemoveListenerForTouchDelegate();
+            }
         }
     }
+
+    private static boolean isCustomView(View view) {
+        return ((LayoutParams) view.getLayoutParams()).mViewType == LayoutParams.CUSTOM;
+    }
+
+    private void startCustomViewAddAnimation(View view) {
+    }
+
+    @Override
+    public void addView(View view) {
+        super.addView(view);
+        startCustomViewAddAnimation(view);
+    }
+
+    @Override
+    public void addView(View view, ViewGroup.LayoutParams layoutParams) {
+        super.addView(view, layoutParams);
+        startCustomViewAddAnimation(view);
+    }
+
+    @Override
+    public void removeView(View view) {
+        super.removeView(view);
+    }
+
+    //Sesl9
+    /** Returns the child custom view added to this toolbar, or {@code null} if none is set. */
+    public View seslGetCustomView() {
+        for (int i = 0, count = getChildCount(); i < count; i++) {
+            final View child = getChildAt(i);
+            if (((LayoutParams) child.getLayoutParams()).mViewType == LayoutParams.CUSTOM) {
+                return child;
+            }
+        }
+        return null;
+    }
+
+    /** Returns the background view of the overflow menu popup window, or {@code null} if not showing. */
+    public View seslGetMenuPopupBackgroundView() {
+        if (mMenuView == null) {
+            return null;
+        }
+        final ActionMenuPresenter presenter = mMenuView.seslGetActionMenuPresenter();
+        if (presenter == null) {
+            return null;
+        }
+        final MenuPopupHelper popup = presenter.seslGetOverflowPopup();
+        if (popup == null) {
+            return null;
+        }
+        return popup.seslGetBackgroundView();
+    }
+
+    /** Returns the overflow {@link PopupWindow} instance, or {@code null} if not showing. */
+    public PopupWindow seslGetMenuPopupWindow() {
+        if (mMenuView == null) {
+            return null;
+        }
+        final ActionMenuPresenter presenter = mMenuView.seslGetActionMenuPresenter();
+        if (presenter == null) {
+            return null;
+        }
+        final MenuPopupHelper popup = presenter.seslGetOverflowPopup();
+        if (popup == null) {
+            return null;
+        }
+        return popup.seslGetPopupWindow();
+    }
+
+    /** Sets whether hover events should be forced not to be eaten by the toolbar. */
+    public void seslSetEatingHover(boolean eat) {
+        mForceNotEatingHover = !eat;
+    }
+
+    /** Sets whether touch events are allowed to be eaten by the toolbar without resetting touch delegates. */
+    public void seslSetEatingTouchOnly(boolean eat) {
+        if (mAllowEatingTouch == eat) {
+            return;
+        }
+        mAllowEatingTouch = eat;
+    }
+
+    /** Updates padding and size specifications for child navigation button and action menu views when density changes. */
+    public void seslUpdateChildViewsSizeSpec() {
+        reloadNavigationIcon();
+        updateNavButtonViewPaddingAndMinSize();
+        updateMenuViewPadding();
+    }
+
+    private void reloadNavigationIcon() {
+        if (getNavigationIcon() != null) {
+            setNavigationIcon(isNightMode(getContext())
+                    ? getContext().getDrawable(R.drawable.sesl_ic_ab_back_dark)
+                    : getContext().getDrawable(R.drawable.sesl_ic_ab_back_light));
+        }
+    }
+
+    private void updateNavButtonViewPaddingAndMinSize() {
+        ensureNavButtonView();
+        final int[] paddingAttr = new int[]{android.R.attr.paddingStart};
+        TypedArray a = getContext().obtainStyledAttributes(null, paddingAttr,
+                R.attr.toolbarNavigationButtonStyle, 0);
+        mNavButtonView.setPaddingRelative(a.getDimensionPixelSize(0, 0), 0, 0, 0);
+        a.recycle();
+
+        a = getContext().obtainStyledAttributes(null, R.styleable.View,
+                R.attr.toolbarNavigationButtonStyle, 0);
+        mNavButtonView.setMinimumWidth(a.getDimensionPixelSize(R.styleable.View_android_minWidth, 0));
+        mNavButtonView.setMinimumHeight(a.getDimensionPixelSize(R.styleable.View_android_minHeight, 0));
+        a.recycle();
+    }
+
+    private void updateMenuViewPadding() {
+        if (mMenuView != null) {
+            mMenuView.setPaddingRelative(
+                    getResources().getDimensionPixelSize(R.dimen.sesl_action_menu_view_padding_start),
+                    0,
+                    getResources().getDimensionPixelSize(R.dimen.sesl_action_menu_view_padding_end),
+                    0);
+        }
+    }
+
+    private boolean isNightMode(Context context) {
+        return (context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK)
+                == Configuration.UI_MODE_NIGHT_YES;
+    }
+    //sesl9
 
 }

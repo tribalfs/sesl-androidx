@@ -26,9 +26,10 @@ import android.view.View;
 import android.view.ViewParent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -43,8 +44,7 @@ public class SeslTouchTargetDelegate extends TouchDelegate {
     final View mAnchorView;
     @NonNull
     final ArrayList<CapturedTouchDelegate> mTouchDelegateList = new ArrayList<>();
-    @Nullable
-    AccessibilityNodeInfo.TouchDelegateInfo mTouchDelegateInfo = null;
+    AccessibilityNodeInfo.@Nullable TouchDelegateInfo mTouchDelegateInfo = null;
 
     public SeslTouchTargetDelegate(@NonNull View anchorView) {
         super(new Rect(), anchorView);
@@ -123,9 +123,8 @@ public class SeslTouchTargetDelegate extends TouchDelegate {
     }
 
     @Override
-    @NonNull
     @RequiresApi(29)
-    public AccessibilityNodeInfo.TouchDelegateInfo getTouchDelegateInfo() {
+    public AccessibilityNodeInfo.@NonNull TouchDelegateInfo getTouchDelegateInfo() {
         if (mTouchDelegateList.isEmpty()) {
             Log.w(TAG, "getTouchDelegateInfo was called with empty delegateViewList");
             ArrayMap<Region, View> map = new ArrayMap<>(1);

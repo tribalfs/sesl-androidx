@@ -636,6 +636,12 @@ public class AppCompatActivity extends FragmentActivity implements AppCompatCall
         }
     }
 
+    //sesl9
+    @Nullable
+    public ActionMode seslStartSupportActionModeForChild(@NonNull View view, ActionMode.@NonNull Callback callback) {
+        return getDelegate().seslStartSupportActionModeForChild(view, callback);
+    }
+
     /**
      * Called when the night mode has changed. See {@link AppCompatDelegate#applyDayNight()} for
      * more information.

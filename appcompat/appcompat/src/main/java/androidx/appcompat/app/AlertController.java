@@ -18,9 +18,11 @@ package androidx.appcompat.app;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
+import static androidx.appcompat.oneui.common.internal.semblurinfo.SemBlurInfoStateKtKt.getFIGMA_BLUR_COMPONENT_DARK_XS;
+import static androidx.appcompat.oneui.common.internal.semblurinfo.SemBlurInfoStateKtKt.getFIGMA_BLUR_COMPONENT_LIGHT_XS;
 import static androidx.core.view.SemBlurCompat.BLUR_MODE_WINDOW;
-import static androidx.core.view.SemBlurCompat.BLUR_UI_HIGH_ULTRA_THICK_D;
-import static androidx.core.view.SemBlurCompat.BLUR_UI_HIGH_ULTRA_THICK_LIGHT;
+import static androidx.core.view.SemBlurCompat.CANVAS_BLUR_USE_TYPE_STATIC;
+import static androidx.reflect.feature.SeslFloatingFeatureReflector.SURFACE_TRANSITION_FLAG;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -50,9 +52,18 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.CheckedTextView;
 import android.widget.CursorAdapter;
 import android.widget.FrameLayout;
+
+import androidx.core.view.SemBlurCompat.CurveParameter;
+import androidx.core.view.SeslTouchDelegateFactory;
+import androidx.core.view.SeslTouchTargetDelegate;
+
+import java.util.ArrayList;
+import java.util.Collections;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
@@ -63,6 +74,7 @@ import android.widget.TextView;
 import androidx.appcompat.R;
 import androidx.appcompat.util.SeslMisc;
 import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.core.util.Consumer;
 import androidx.core.view.SemBlurCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.NestedScrollView;
@@ -132,6 +144,13 @@ class AlertController {
     int mMultiChoiceItemLayout;
     int mSingleChoiceItemLayout;
     int mListItemLayout;
+
+    //Sesl9
+    private CharSequence mSingleChoiceOptionLabel;
+    private boolean mSingleChoiceChecked;
+    private CompoundButton.OnCheckedChangeListener mSingleChoiceListener;
+    private Consumer<ViewGroup> mDefaultButtonPanelJob;
+    //sesl9
 
     private boolean mShowTitle;
 
@@ -287,6 +306,20 @@ class AlertController {
         if (mMessageView != null) {
             mMessageView.setText(message);
         }
+    }
+
+    //sesl9
+    /**
+     * Configures a single choice checkbox option above the alert dialog message content.
+     *
+     * @param label the text label to display next to the single choice checkbox
+     * @param isChecked initial checked state of the single choice checkbox
+     * @param listener listener invoked when the single choice checkbox state changes
+     */
+    public void setSingleChoiceOption(CharSequence label, boolean isChecked, CompoundButton.OnCheckedChangeListener listener) {
+        mSingleChoiceOptionLabel = label;
+        mSingleChoiceChecked = isChecked;
+        mSingleChoiceListener = listener;
     }
 
     /**
@@ -496,8 +529,8 @@ class AlertController {
         final View defaultButtonPanel = parentPanel.findViewById(R.id.buttonPanel);
 
         //sesl
-        parentPanel.addOnLayoutChangeListener(
-                (v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> v.post(() -> {
+        parentPanel.addOnLayoutChangeListener((v, _, _, _, _, _, _, _, _)
+                -> v.post(() -> {
                     if (mContext.getResources().getConfiguration().orientation != mLastOrientation) {
                         setupPaddings();
                         parentPanel.requestLayout();
@@ -518,6 +551,9 @@ class AlertController {
         final ViewGroup topPanel = resolvePanel(customTopPanel, defaultTopPanel);
         final ViewGroup contentPanel = resolvePanel(customContentPanel, defaultContentPanel);
         final ViewGroup buttonPanel = resolvePanel(customButtonPanel, defaultButtonPanel);
+
+        //sesl9
+        mDefaultButtonPanelJob = (buttonPanel == defaultButtonPanel) ? this::seslExpandTouchTarget : null;
 
         setupContent(contentPanel);
         setupButtons(buttonPanel);
@@ -592,11 +628,11 @@ class AlertController {
         if (Build.VERSION.SDK_INT >= 36) {
             boolean isDefaultBackground = true;
 
-            String SUPPORT_3D_SURFACE_TRANSITION_FLAG = SeslFloatingFeatureReflector.getString("SEC_FLOATING_FEATURE_GRAPHICS_SUPPORT_3D_SURFACE_TRANSITION_FLAG", "FALSE");
+            String SUPPORT_3D_SURFACE_TRANSITION_FLAG = SeslFloatingFeatureReflector.getString(SURFACE_TRANSITION_FLAG, "FALSE");
             boolean isLightTheme = SeslMisc.isLightTheme(mContext);
             boolean isCustomTheme = Settings.System.getString(mContext.getContentResolver(), "current_sec_active_themepackage") != null;
             boolean isBlurEnabledForCurrentPanel = hasCustomPanel ? mIsBlurEnabled : mIsDefaultBlurEnabled;
-            Drawable insetBackground = mContext.getResources().getDrawable(androidx.appcompat.R.drawable.sesl_dialog_inset_background, this.mContext.getTheme());
+            Drawable insetBackground = mContext.getResources().getDrawable(R.drawable.sesl_dialog_inset_background, this.mContext.getTheme());
             View decorView = mWindow.getDecorView();
             if (decorView.getBackground() != null && insetBackground.getConstantState() != null
                     && !insetBackground.getConstantState().equals(decorView.getBackground().getConstantState())) {
@@ -608,10 +644,10 @@ class AlertController {
             if (middlePanel != null && middlePanel.getBackground() == null && !isLightTheme) {
                 middlePanel.setBackground(mContext.getDrawable(R.drawable.sesl_dialog_middle_panel_background));
             }
-            int colorCurve =  isLightTheme ? BLUR_UI_HIGH_ULTRA_THICK_LIGHT : BLUR_UI_HIGH_ULTRA_THICK_D;
+            CurveParameter colorCurve =  isLightTheme ? getFIGMA_BLUR_COMPONENT_LIGHT_XS() : getFIGMA_BLUR_COMPONENT_DARK_XS();
             int blurColor = mContext.getColor(R.color.sesl_dialog_blur_background_color);
             float blurRadius = (float) mContext.getResources().getDimensionPixelSize(R.dimen.sesl_dialog_background_corner_radius);
-            SemBlurCompat.setBlurEffectPreset(parentPanel, BLUR_MODE_WINDOW, colorCurve, blurColor, blurRadius);
+            SemBlurCompat.setBlurEffectPreset(parentPanel, BLUR_MODE_WINDOW, colorCurve, blurColor, blurRadius, CANVAS_BLUR_USE_TYPE_STATIC);
         }
         //sesl8
     }
@@ -733,6 +769,19 @@ class AlertController {
         if (mMessage != null) {
             mMessageView.setText(mMessage);
             checkMaxFontScale(mMessageView, mContext.getResources().getDimensionPixelSize(R.dimen.sesl_dialog_body_text_size));
+            //Sesl9
+            CheckBox checkBox = contentPanel.findViewById(R.id.single_choice_option);
+            if (checkBox != null) {
+                if (mSingleChoiceOptionLabel == null) {
+                    checkBox.setVisibility(View.GONE);
+                } else {
+                    checkBox.setText(mSingleChoiceOptionLabel);
+                    checkBox.setChecked(mSingleChoiceChecked);
+                    checkBox.setVisibility(View.VISIBLE);
+                    checkBox.setOnCheckedChangeListener(mSingleChoiceListener);
+                }
+            }
+            //sesl9
         } else {
             mMessageView.setVisibility(View.GONE);
             mScrollView.removeView(mMessageView);
@@ -755,7 +804,7 @@ class AlertController {
         int BIT_BUTTON_NEUTRAL = 4;
         int whichButtons = 0;
 
-        //sesl
+        //Sesl
         boolean isEnabledShowBtnBg = Settings.Global.getInt(mContext.getContentResolver(), "show_button_background", 0) == 1;
         boolean isThemeApplied = Settings.System.getString(mContext.getContentResolver(), "current_sec_active_themepackage") != null;
 
@@ -810,7 +859,7 @@ class AlertController {
         mButtonNeutral.setOnClickListener(mButtonHandler);
 
 
-        //sesl
+        //Sesl
         if (isThemeApplied) {
             mButtonPositive.setTextColor(buttonTextColor);
             mButtonNegative.setTextColor(buttonTextColor);
@@ -865,7 +914,7 @@ class AlertController {
             buttonPanel.setVisibility(View.GONE);
         }
 
-        //sesl
+        //Sesl
         boolean buttonNeutralVisible = mButtonNeutral.getVisibility() == View.VISIBLE;
         boolean buttonPositiveVisible = mButtonPositive.getVisibility() == View.VISIBLE;
         boolean buttonNegativeVisible = mButtonNegative.getVisibility() == View.VISIBLE;
@@ -878,7 +927,37 @@ class AlertController {
         if (divider1 != null && buttonPositiveVisible && buttonNegativeVisible) {
             divider1.setVisibility(View.VISIBLE);
         }
-        //sesl
+        //sesl9
+        if (mDefaultButtonPanelJob != null) {
+            ViewGroup buttonBarLayout = (ViewGroup) buttonPanel.findViewById(R.id.buttonBarLayout);
+            if (buttonBarLayout != null) {
+                mDefaultButtonPanelJob.accept(buttonBarLayout);
+            }
+        }
+    }
+
+    //sesl9
+    private void seslExpandTouchTarget(ViewGroup buttonPanel) {
+        if (buttonPanel == null) return;
+        LinearLayout buttonBarLayout = buttonPanel.findViewById(R.id.buttonBarLayout);
+        if (buttonBarLayout == null) return;
+        buttonBarLayout.post(() -> {
+            ArrayList<View> list = new ArrayList<>();
+            int count = buttonBarLayout.getChildCount();
+            for (int i = 0; i < count; i++) {
+                View child = buttonBarLayout.getChildAt(i);
+                if (child instanceof Button && child.getVisibility() != View.GONE) {
+                    list.add(child);
+                }
+            }
+            if (buttonBarLayout.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL && buttonBarLayout.getOrientation() == LinearLayout.HORIZONTAL) {
+                Collections.reverse(list);
+            }
+            SeslTouchTargetDelegate.Builder builder = SeslTouchDelegateFactory.make(buttonBarLayout, list);
+            if (builder != null) {
+                builder.apply();
+            }
+        });
     }
 
     private void centerButton(Button button) {
@@ -954,6 +1033,8 @@ class AlertController {
         public boolean[] mCheckedItems;
         public boolean mIsMultiChoice;
         public boolean mIsSingleChoice;
+        public CharSequence mSingleChoiceOptionLabel;
+        public CompoundButton.OnCheckedChangeListener mSingleChoiceListener;
         public int mCheckedItem = -1;
         public DialogInterface.OnMultiChoiceClickListener mOnCheckboxClickListener;
         public Cursor mCursor;
@@ -963,6 +1044,9 @@ class AlertController {
         public AdapterView.OnItemSelectedListener mOnItemSelectedListener;
         public OnPrepareListViewListener mOnPrepareListViewListener;
         public boolean mRecycleOnMeasure = true;
+        //sesl9
+        public boolean isSingleChoiceOption = false;
+        public boolean mSingleChoiceChecked = false;
 
         /**
          * Interface definition for a callback to be invoked before the ListView
@@ -1002,6 +1086,10 @@ class AlertController {
             }
             if (mMessage != null) {
                 dialog.setMessage(mMessage);
+            }
+            //sesl9
+            if (mSingleChoiceOptionLabel != null) {
+                dialog.setSingleChoiceOption(mSingleChoiceOptionLabel, mSingleChoiceChecked, mSingleChoiceListener);
             }
             if (mPositiveButtonText != null || mPositiveButtonIcon != null) {
                 dialog.setButton(DialogInterface.BUTTON_POSITIVE, mPositiveButtonText,

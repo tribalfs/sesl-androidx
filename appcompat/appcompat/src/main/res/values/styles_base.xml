@@ -572,6 +572,8 @@
     </style>
 
     <style name="Base.Widget.AppCompat.ProgressBar.Horizontal" parent="@android:style/Widget.ProgressBar.Horizontal">
+        <item name="android:maxHeight">32dp</item>
+        <item name="android:minHeight">32dp</item>
         <item name="android:indeterminateDrawable">
             @drawable/sesl_progress_bar_indeterminate_xlarge_transition
         </item>
@@ -635,6 +637,7 @@
     <style name="Base.Widget.AppCompat.SeekBar" parent="android:Widget">
         <item name="android:background">@drawable/sesl_seek_bar_background_borderless</item>
         <item name="android:focusable">true</item>
+        <item name="android:indeterminateDrawable">@drawable/sesl_scrubber_progress_horizontal</item>
         <item name="android:maxHeight">@dimen/sesl_progress_bar_min_height</item>
         <item name="android:indeterminateOnly">false</item>
         <item name="android:progressDrawable">@drawable/sesl_scrubber_progress_horizontal</item>
@@ -757,4 +760,29 @@
 
     <!--sesl7-->
 
+    <!--Sesl9-->
+    <style name="Base.Widget.AppCompat.TextView.SeslListCaption" parent="@android:style/Widget.TextView">
+        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.SeslFontRegular</item>
+        <item name="android:textSize">@dimen/sesl_list_caption_text_size</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/sesl_list_subheader_text_color_dark</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:background">?attr/roundedCornerColor</item>
+        <item name="android:paddingTop">@dimen/sesl_list_caption_padding_top</item>
+        <item name="android:paddingBottom">@dimen/sesl_list_caption_padding_bottom</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textDirection">locale</item>
+        <item name="android:paddingStart">?attr/listPreferredItemPaddingStart</item>
+        <item name="android:paddingEnd">?android:attr/listPreferredItemPaddingEnd</item>
+    </style>
+
+    <style name="Base.Widget.AppCompat.Light.TextView.SeslListCaption" parent="@style/Base.Widget.AppCompat.TextView.SeslListCaption">
+        <item name="android:textColor">@color/sesl_list_subheader_text_color</item>
+    </style>
+
+    <style name="Widget.AppCompat.TextView.SeslListCaption" parent="@style/Base.Widget.AppCompat.TextView.SeslListCaption"/>
+    <style name="Widget.AppCompat.Light.TextView.SeslListCaption" parent="@style/Base.Widget.AppCompat.Light.TextView.SeslListCaption"/>
+    <!--sesl9-->
 </resources>

@@ -72,15 +72,30 @@
                 android:scrollbarStyle="outsideOverlay"
                 android:scrollbars="vertical">
 
-                <TextView
-                    android:id="@android:id/message"
+                <LinearLayout
+                    android:id="@+id/scrollViewChild"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/sesl_dialog_body_text_margin_end"
-                    android:layout_marginStart="@dimen/sesl_dialog_body_text_margin_start"
                     android:layout_width="match_parent"
-                    android:lineSpacingExtra="@dimen/sesl_dialog_body_text_line_spacing_extra"
-                    android:textAlignment="viewStart"
-                    style="?android:textAppearance" />
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@android:id/message"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/sesl_dialog_body_text_margin_end"
+                        android:layout_marginStart="@dimen/sesl_dialog_body_text_margin_start"
+                        android:layout_width="match_parent"
+                        android:lineSpacingExtra="@dimen/sesl_dialog_body_text_line_spacing_extra"
+                        android:textAlignment="viewStart"
+                        style="?android:textAppearance" />
+
+                    <CheckBox
+                        android:id="@+id/single_choice_option"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_width="match_parent"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:visibility="gone" />
+                </LinearLayout>
             </androidx.core.widget.NestedScrollView>
 
             <View

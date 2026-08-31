@@ -18,7 +18,9 @@
 package androidx.appcompat.widget
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
@@ -26,10 +28,9 @@ import android.view.accessibility.AccessibilityNodeInfo
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
-import androidx.annotation.RequiresApi
 import androidx.appcompat.R
-import androidx.appcompat.util.theme.resource.SeslThemeResourceColor
 import androidx.appcompat.util.theme.SeslThemeResourceHelper.getColorInt
+import androidx.appcompat.util.theme.resource.SeslThemeResourceColor
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 
 /**
@@ -43,19 +44,14 @@ import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
  * @param context The Context the view is running in, through which it can
  *        access the current theme, resources, etc.
  * @param attrs The attributes of the XML tag that is inflating the view.
- * @param defStyleAttr An attribute in the current theme that contains a
- *        reference to a style resource that supplies default values for
- *        the view. Can be 0 to not look for defaults.
  *///Added in sesl7
-@RequiresApi(23)
 class SeslIndicator @JvmOverloads constructor(
     context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
-) : LinearLayout(context, attrs, defStyleAttr) {
+    attrs: AttributeSet? = null
+) : LinearLayout(context, attrs) {
 
     fun interface OnItemClickListener {
-        fun onItemClick(view: View?, i: Int)
+        fun onItemClick(view: View?, position: Int)
     }
 
     var defaultCircle: Drawable? = null
@@ -88,29 +84,27 @@ class SeslIndicator @JvmOverloads constructor(
             invalidateIndicator()
         }
 
-
     private var itemClickListener: OnItemClickListener? = null
 
     fun setOnItemClickListener(itemClickListener: OnItemClickListener) {
         this.itemClickListener = itemClickListener
         val it = indicator.iterator()
         while (it.hasNext()) {
-            it.next().setOnClickListener { view: View? ->
-                val list: List<PageIndicatorMarker> = indicator
-                itemClickListener.onItemClick(this, list.indexOf(view))
+            it.next().setOnClickListener { view ->
+                itemClickListener.onItemClick(view, indicator.indexOf(view))
             }
         }
     }
 
     private val indicator: MutableList<PageIndicatorMarker> = ArrayList()
 
-    fun removeIndicator(i: Int) {
-        if (i < 0 || i >= indicator.size) {
+    fun removeIndicator(position: Int) {
+        if (position < 0 || position >= indicator.size) {
             return
         }
-        removeView(indicator.removeAt(i))
+        removeView(indicator.removeAt(position))
         if (this.selectedPosition >= indicator.size) {
-            selectedPosition -= 1
+            selectedPosition = this.selectedPosition - 1
         } else {
             invalidateIndicator()
         }
@@ -119,9 +113,8 @@ class SeslIndicator @JvmOverloads constructor(
     val size: Int
         get() = indicator.size
 
-    private fun generateDotIndicator(): PageIndicatorMarker {
-        val context = context
-        return PageIndicatorMarker(context).apply {
+    private fun generateDotIndicator(sizeType: Int? = SIZE_TYPE_SMALL): PageIndicatorMarker {
+        return PageIndicatorMarker(context, sizeType).apply {
             this.defaultCircle = this@SeslIndicator.defaultCircle
             this.selectCircle = this@SeslIndicator.selectCircle
         }
@@ -136,32 +129,37 @@ class SeslIndicator @JvmOverloads constructor(
         }
     }
 
-    fun addIndicator() {
-        val dotIndicator = generateDotIndicator().apply{
-            this.setOnClickListener { view: View? ->
-                itemClickListener?.onItemClick(view, indicator.indexOf(view))
-            }
-            this.accessibilityDelegate = object : AccessibilityDelegate() {
-                override fun onInitializeAccessibilityNodeInfo(
-                    host: View,
-                    info: AccessibilityNodeInfo
-                ) {
-                    super.onInitializeAccessibilityNodeInfo(host, info)
-                    val infoCompat = AccessibilityNodeInfoCompat.wrap(info)
-                    infoCompat.contentDescription = resources.getString(
-                        R.string.sesl_appbar_suggest_pagination,
-                        indicator.indexOf(this@apply) + 1,
-                        size
-                    )
-                }
-            }
+    @JvmOverloads
+    fun addIndicator(sizeType: Int? = SIZE_TYPE_SMALL) {
+        val dotIndicator = generateDotIndicator(sizeType)
+        dotIndicator.setOnClickListener { view ->
+            itemClickListener?.onItemClick(view, indicator.indexOf(view))
         }
         indicator.add(dotIndicator)
 
-        val lp = LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply {
-            val sidePadding = context.resources.getDimensionPixelSize(R.dimen.sesl_viewpager_indicator_horizontal_padding)
-            setMargins(sidePadding, 0, sidePadding, 0)
+        dotIndicator.accessibilityDelegate = object : AccessibilityDelegate() {
+            override fun onInitializeAccessibilityNodeInfo(
+                host: View,
+                info: AccessibilityNodeInfo
+            ) {
+                super.onInitializeAccessibilityNodeInfo(host, info)
+                val infoCompat = AccessibilityNodeInfoCompat.wrap(info)
+                infoCompat.contentDescription = resources.getString(
+                    R.string.sesl_appbar_suggest_pagination,
+                    indicator.indexOf(dotIndicator) + 1,
+                    size
+                )
+            }
         }
+
+        val lp = LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
+        val paddingRes = if (sizeType == SIZE_TYPE_LARGE) {
+            R.dimen.sesl_viewpager_indicator_horizontal_padding_lg
+        } else {
+            R.dimen.sesl_viewpager_indicator_horizontal_padding_sm
+        }
+        val margin = context.resources.getDimensionPixelSize(paddingRes) / 2
+        lp.setMargins(margin, 0, margin, 0)
         addView(dotIndicator, lp)
 
         if (this.selectedPosition == -1) {
@@ -169,12 +167,18 @@ class SeslIndicator @JvmOverloads constructor(
         }
     }
 
-
     init {
-        this.defaultCircle = context.getDrawable(R.drawable.sesl_viewpager_indicator_on_off)?.mutate()
-            ?.apply { setTint(getAppBarViewPagerIndicatorOffColor(context)) }
-        this.selectCircle = context.getDrawable(R.drawable.sesl_viewpager_indicator_on_off)?.mutate()
-            ?.apply { setTint(getAppBarViewPagerIndicatorOnColor(context)) }
+        val defaultDrawable = context.getDrawable(R.drawable.sesl_viewpager_indicator_on_off)?.mutate()
+        (defaultDrawable as? GradientDrawable)?.setColor(
+            ColorStateList.valueOf(getAppBarViewPagerIndicatorOffColor(context))
+        )
+        this.defaultCircle = defaultDrawable
+
+        val selectDrawable = context.getDrawable(R.drawable.sesl_viewpager_indicator_on_off)?.mutate()
+        (selectDrawable as? GradientDrawable)?.setColor(
+            ColorStateList.valueOf(getAppBarViewPagerIndicatorOnColor(context))
+        )
+        this.selectCircle = selectDrawable
 
         this.selectedPosition = -1
     }
@@ -207,8 +211,11 @@ class SeslIndicator @JvmOverloads constructor(
 
     class PageIndicatorMarker @JvmOverloads constructor(
         context: Context,
-        attributeSet: AttributeSet? = null
-    ) : FrameLayout(context, attributeSet) {
+        sizeType: Int? = SIZE_TYPE_SMALL,
+        attrs: AttributeSet? = null
+    ) : FrameLayout(context, attrs) {
+
+        private val imageView: ImageView = ImageView(context)
 
         var isActive: Boolean = false
             set(value) {
@@ -229,11 +236,21 @@ class SeslIndicator @JvmOverloads constructor(
                 isActive = isActive
             }
 
-        private val imageView: ImageView = ImageView(context)
-
         init {
             imageView.setImageDrawable(selectCircle)
             addView(imageView)
+
+            if (sizeType == SIZE_TYPE_LARGE) {
+                val size = context.resources.getDimensionPixelSize(R.dimen.sesl_viewpager_indicator_size_lg)
+                val lp = imageView.layoutParams
+                lp.width = size
+                lp.height = size
+            }
         }
+    }
+
+    companion object {
+        const val SIZE_TYPE_SMALL: Int = 0
+        const val SIZE_TYPE_LARGE: Int = 1
     }
 }

@@ -26,6 +26,10 @@ import android.util.TypedValue;
 import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 import androidx.appcompat.R;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.AssetManagerCompat;
+
+import java.io.File;
 
 /*
  * Original code by Samsung, all rights reserved to the original author.
@@ -36,6 +40,9 @@ import androidx.appcompat.R;
  */
 @RestrictTo(LIBRARY_GROUP_PREFIX)
 public class SeslMisc {
+
+    private static final int EXTRA_BUILT_IN_DISPLAY = 1;
+
     /**
      * Returns whether the current theme is the default theme.
      *
@@ -47,9 +54,34 @@ public class SeslMisc {
         return TextUtils.isEmpty(Settings.System.getString(context.getContentResolver(), "current_sec_active_themepackage"));
     }
 
+    public static boolean isColorPaletteApplied(@NonNull Context context) {
+        return Settings.System.getInt(context.getContentResolver(), "wallpapertheme_state", 0) == 1;
+    }
+
+    public static boolean isFlipCoverScreen(@NonNull Context context) {
+        return ContextCompat.getDisplayOrDefault(context).getDisplayId() == EXTRA_BUILT_IN_DISPLAY;
+    }
+
     public static boolean isLightTheme(@NonNull Context context) {
         TypedValue typedValue = new TypedValue();
         context.getTheme().resolveAttribute(R.attr.isLightTheme, typedValue, true);
         return typedValue.data != 0;
+    }
+
+    public static boolean isOpenThemeApplied(@NonNull Context context) {
+        return !TextUtils.isEmpty(Settings.System.getString(context.getContentResolver(), "current_sec_active_themepackage"));
+    }
+
+    public static boolean isOpenThemeAppliedAndThemeOverlay(@NonNull Context context) {
+        return AssetManagerCompat.hasSamsungThemeOverlays(context.getResources())
+                && isOpenThemeApplied(context);
+    }
+
+    public static boolean isOverlayThemeApplied(@NonNull Context context) {
+        return isOpenThemeApplied(context) || isColorPaletteApplied(context);
+    }
+
+    private static boolean isThemeParkApplied(@NonNull Context context) {
+        return new File("/data/overlays/themepark/state_applied.txt").exists();
     }
 }

@@ -24,6 +24,7 @@ import static androidx.core.graphics.PathParser.nodesToPath;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
@@ -36,25 +37,27 @@ import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+
 import androidx.annotation.ColorInt;
 import androidx.annotation.IntRange;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.appcompat.R;
 import androidx.core.graphics.Insets;
 import androidx.core.graphics.PathParser;
-import java.util.Locale;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
+import java.util.Locale;
 
 /*
  * Original code by Samsung, all rights reserved to the original author.
  */
 
 /**
- * Utility class for managing and drawing rounded corners.
+ * Utility class for managing and drawing rounded corners in SESL widgets.
  * This class provides methods to set which corners should be rounded,
- * the color of the rounded corners, and to draw these corners on a Canvas.
+ * the color of the rounded corners, and to draw these corners on a {@link Canvas}.
  *
  * <p>It defines constants for specifying different combinations of rounded corners:
  * <ul>
@@ -67,12 +70,19 @@ import java.util.Locale;
  * </ul>
  * </p>
  *
- * <p>The class also includes a nested {@link SeslRoundedChunkingDrawable} class,
- * which is a {@link Drawable} responsible for rendering a single rounded corner.
+ * <p>Starting with SESL9 (One UI 8.5), corner rounding supports:
+ * <ul>
+ *   <li>Selective corner path generation via {@link #getSmoothCornerRectPath(float, float, float, float, float, int)},
+ *       allowing specific corners to remain sharp while others are smooth-rounded.
+ *   <li>Color filtering via {@link PorterDuffColorFilter} applied directly to the individual corner drawables
+ *       ({@link #mTopLeftRound}, {@link #mTopRightRound}, {@link #mBottomLeftRound}, {@link #mBottomRightRound}).
+ *   <li>Path node caching in {@link SeslRoundedChunkingDrawable} to eliminate string parsing overhead
+ *       on repeated draw operations.
+ * </ul>
  * </p>
  *
- * <p><b>Note:</b> The implementation details of how the rounded corners are drawn,
- * including the use of Bezier curves and scaling factors, are handled internally.
+ * <p>The class also includes a nested {@link SeslRoundedChunkingDrawable} class,
+ * which is a {@link Drawable} responsible for rendering a single rounded corner.
  * </p>
  */
 public class SeslRoundedCorner {
@@ -84,7 +94,7 @@ public class SeslRoundedCorner {
     public static final int ROUNDED_CORNER_TOP_RIGHT = 2;
     private static final String TAG = "SeslRoundedCorner";
 
-    private static final Locale LOCALE = Locale.ENGLISH;
+    static final Locale LOCALE = Locale.ENGLISH;
     private static final String CUBIC_BEZIER_CURVE_FORMAT = "C %f %f %f %f %f %f ";
     private static final String LINE_TO_FORMAT = "L %f %f ";
     private static final String PATH_SEGMENT_CLOSE = "Z";
@@ -105,14 +115,16 @@ public class SeslRoundedCorner {
     private static final float SCALE_FACTOR_DENOMINATOR = 0.3f;
     private static final float SCALE_FACTOR_MULTIPLIER = 0.042454004f;
 
+    //Sesl9
     @NonNull
-    final SeslRoundedChunkingDrawable mTopLeftRound;
+    protected final SeslRoundedChunkingDrawable mTopLeftRound;
     @NonNull
-    final SeslRoundedChunkingDrawable mTopRightRound;
+    protected final SeslRoundedChunkingDrawable mTopRightRound;
     @NonNull
-    final SeslRoundedChunkingDrawable mBottomLeftRound;
+    protected final SeslRoundedChunkingDrawable mBottomLeftRound;
+    //sesl9
     @NonNull
-    final SeslRoundedChunkingDrawable mBottomRightRound;
+    protected final SeslRoundedChunkingDrawable mBottomRightRound;
     @ColorInt
     private int mTopLeftRoundColor;
     @ColorInt
@@ -121,17 +133,30 @@ public class SeslRoundedCorner {
     private int mBottomLeftRoundColor;
     @ColorInt
     private int mBottomRightRoundColor;
-   
-    final Rect mRoundedCornerBounds= new Rect();
+
+    final Rect mRoundedCornerBounds = new Rect();
     final int mRoundRadius;
     int mRoundedCornerMode;
     @Nullable
-    private Insets mInsets= null;
+    private Insets mInsets = null;
 
+    /**
+     * Creates a {@link SeslRoundedCorner} instance with theme-aware rounded corner colors and radius.
+     * The corner color is automatically resolved from {@code R.attr.roundedCornerColor} or falls back
+     * to light/dark theme defaults.
+     *
+     * @param context The context used to retrieve resources and theme attributes.
+     */
     public SeslRoundedCorner(@NonNull Context context) {
         this(context, false);
     }
-    
+
+    /**
+     * Creates a {@link SeslRoundedCorner} instance with theme-aware rounded corner colors and radius.
+     *
+     * @param context The context used to retrieve resources and theme attributes.
+     * @param unused  Unused compatibility parameter.
+     */
     public SeslRoundedCorner(@NonNull Context context, boolean unused) {
         Resources resources = context.getResources();
 
@@ -148,7 +173,7 @@ public class SeslRoundedCorner {
             roundColor = resources.getColor(typedValue.resourceId);
         } else if (typedValue.data > 0 && isColorType(typedValue.type)) {
             roundColor = typedValue.data;
-        } else{
+        } else {
             if (isDarkMode) {
                 roundColor = resources.getColor(R.color.sesl_round_and_bgcolor_dark);
             } else {
@@ -162,12 +187,21 @@ public class SeslRoundedCorner {
 
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.FILL);
-        paint.setColor(mTopLeftRoundColor);
+        paint.setColor(Color.WHITE);
+
+        PorterDuffColorFilter colorFilter = new PorterDuffColorFilter(roundColor,
+                PorterDuff.Mode.SRC_IN);
 
         mTopLeftRound = new SeslRoundedChunkingDrawable(mRoundRadius, paint, 0f);
         mTopRightRound = new SeslRoundedChunkingDrawable(mRoundRadius, paint, 90f);
         mBottomLeftRound = new SeslRoundedChunkingDrawable(mRoundRadius, paint, 270f);
         mBottomRightRound = new SeslRoundedChunkingDrawable(mRoundRadius, paint, 180f);
+        //Sesl9
+        mTopLeftRound.setColorFilter(colorFilter);
+        mTopRightRound.setColorFilter(colorFilter);
+        mBottomLeftRound.setColorFilter(colorFilter);
+        mBottomRightRound.setColorFilter(colorFilter);
+        //sesl9
     }
 
     /**
@@ -184,7 +218,7 @@ public class SeslRoundedCorner {
      * @throws IllegalArgumentException if an invalid corner value is provided.
      */
     public void setRoundedCorners(int corners) {
-        if ((corners & (-16 )) == 0) {
+        if ((corners & (-16)) == 0) {
             mRoundedCornerMode = corners;
         } else {
             throw new IllegalArgumentException("Use wrong rounded corners to the param, corners ="
@@ -195,7 +229,7 @@ public class SeslRoundedCorner {
     /**
      * Returns the current rounded corner mode.
      *
-     * @return The current rounded corner mode, which can be one of
+     * @return The current rounded corner mode, which can be a bitmask of
      *         {@link #ROUNDED_CORNER_NONE}, {@link #ROUNDED_CORNER_TOP_LEFT},
      *         {@link #ROUNDED_CORNER_TOP_RIGHT}, {@link #ROUNDED_CORNER_BOTTOM_LEFT},
      *         {@link #ROUNDED_CORNER_BOTTOM_RIGHT}, or {@link #ROUNDED_CORNER_ALL}.
@@ -205,7 +239,7 @@ public class SeslRoundedCorner {
     }
 
     /**
-     * Sets the color for the specified rounded corners.
+     * Sets the color for the specified rounded corners using a {@link PorterDuffColorFilter}.
      *
      * @param corners A bitmask of the corners to set the color for.
      *                Use constants like {@link #ROUNDED_CORNER_TOP_LEFT},
@@ -347,6 +381,15 @@ public class SeslRoundedCorner {
         }
     }
 
+    /**
+     * Deprecated method for generating a smooth corner rectangle path starting from (0, 0).
+     *
+     * @param cornerRadius The desired smooth corner radius.
+     * @param rectWidth    The width of the rectangle.
+     * @param rectHeight   The height of the rectangle.
+     * @return A {@link Path} representing the smooth-rounded rectangle.
+     * @deprecated Use {@link #getSmoothCornerRectPath(float, float, float, float, float)} instead.
+     */
     @NonNull
     @Deprecated
     public static Path getSmoothCornerRectPath(float cornerRadius, float rectWidth, float rectHeight) {
@@ -354,126 +397,143 @@ public class SeslRoundedCorner {
         return getSmoothCornerRectPath(cornerRadius, 0f, 0f, rectWidth, rectHeight);
     }
 
+    /**
+     * Builds a smooth-rounded rectangle path where all corners are rounded according to the specified radius.
+     *
+     * @param cornerRadius The desired smooth corner radius in pixels.
+     * @param left         The left coordinate of the rectangle.
+     * @param top          The top coordinate of the rectangle.
+     * @param width        The width of the rectangle.
+     * @param height       The height of the rectangle.
+     * @return A {@link Path} representing the smooth-rounded rectangle.
+     */
     @NonNull
-    private static Path getSmoothCornerRectPath(float cornerRadius, float left, float top, float width, float height) {
+    public static Path getSmoothCornerRectPath(float cornerRadius, float left, float top,
+            float width, float height) {
+        return getSmoothCornerRectPath(cornerRadius, left, top, width, height,
+                ROUNDED_CORNER_ALL);
+    }
+
+    /**
+     * Builds a smooth-rounded rectangle path where only the corners selected by the
+     * {@code corners} bitmask are rounded; unselected corners remain sharp.
+     *
+     * @param cornerRadius The desired smooth corner radius in pixels.
+     * @param left         The left coordinate of the rectangle.
+     * @param top          The top coordinate of the rectangle.
+     * @param width        The width of the rectangle.
+     * @param height       The height of the rectangle.
+     * @param corners      A bitmask specifying which corners to round. Combination of
+     *                     {@link #ROUNDED_CORNER_TOP_LEFT}, {@link #ROUNDED_CORNER_TOP_RIGHT},
+     *                     {@link #ROUNDED_CORNER_BOTTOM_LEFT}, {@link #ROUNDED_CORNER_BOTTOM_RIGHT},
+     *                     {@link #ROUNDED_CORNER_ALL}, or {@link #ROUNDED_CORNER_NONE}.
+     * @return A {@link Path} representing the selectively smooth-rounded rectangle.
+     */
+    @NonNull
+    public static Path getSmoothCornerRectPath(float cornerRadius, float left, float top,
+            float width, float height, int corners) {
         Path path = new Path();
 
-        if (width > 0f && height > 0f) {
-            // Calculate center points and smallest dimension
-            final float recCenterX = width / 2f;
-            final float recCenterY = height / 2f;
-            final float smallestHalfDimension = Math.min(recCenterX, recCenterY);
+        if (width <= 0f || height <= 0f) {
+            return new Path();
+        }
 
-            // Clamp the corner radius to a valid range
-            final float clampedCornerRadius = Math.min(Math.max(cornerRadius, 0f), smallestHalfDimension);
-            final float cornerScaleFactor = clampedCornerRadius / smallestHalfDimension;
-
-            // Calculate smoothing factors based on the corner scale factor
-            final float smoothingFactor1 = cornerScaleFactor > 0.5f
-                    ? 1f - (Math.min(1f, (cornerScaleFactor - 0.5f) / 0.4f) * 0.13877845f)
-                    : 1f;
-            final float smoothingFactor2 = cornerScaleFactor > 0.6f
-                    ? 1f + (Math.min(1f, (cornerScaleFactor - 0.6f) / 0.3f) * 0.042454004f)
-                    : 1f;
-
-            // Move to the starting point at the top middle of the rectangle
-            path.moveTo(left + recCenterX, top);
-
-            final float radiusFactor = clampedCornerRadius / 100f;
-
-            // Calculate parameters for cubic bezier curves
-            final float scaledCornerRadius = 128.19f * radiusFactor * smoothingFactor1;
-            final float controlPointDistance = 83.62f * radiusFactor * smoothingFactor2;
-            final float arcRadius = radiusFactor * 67.45f;
-            final float controlPointOffsetY = radiusFactor * 4.64f;
-            final float startControlPointX = radiusFactor * 51.16f;
-            final float startControlPointY = radiusFactor * 13.36f;
-            final float endControlPointX = radiusFactor * 34.86f;
-            final float endControlPointY = radiusFactor * 22.07f;
-
-            // Draw top right corner
-            final float topRightCornerX = width - scaledCornerRadius;
-            path.lineTo(Math.max(recCenterX, topRightCornerX) + left, top);
-
-            // Draw top right side of the rectangle
-            final float endX = left + width;
-            final float topRightControlX1 = endX - controlPointDistance;
-            final float topRightControlX2 = endX - arcRadius;
-            final float topRightControlY2 = top + controlPointOffsetY;
-            final float topRightControlX3 = endX - startControlPointX;
-            final float topRightControlY3 = top + startControlPointY;
-            path.cubicTo(topRightControlX1, top, topRightControlX2, topRightControlY2, topRightControlX3, topRightControlY3);
-
-            final float topRightEndControlX1 = endX - endControlPointX;
-            final float topRightEndControlY1 = top + endControlPointY;
-            final float topRightEndControlX2 = endX - endControlPointY;
-            final float topRightEndControlY2 = top + endControlPointX;
-            final float topRightEndControlX3 = endX - startControlPointY;
-            final float topRightEndControlY3 = top + startControlPointX;
-            path.cubicTo(topRightEndControlX1, topRightEndControlY1, topRightEndControlX2,
-                    topRightEndControlY2, topRightEndControlX3, topRightEndControlY3);
-
-            // Draw right edge of the rectangle
-            final float rightEdgeControlX1 = endX - controlPointOffsetY;
-            final float rightEdgeControlY1 = top + arcRadius;
-            final float rightEdgeControlY2 = top + controlPointDistance;
-            path.cubicTo(rightEdgeControlX1, rightEdgeControlY1, endX,
-                    rightEdgeControlY2, endX, Math.min(recCenterY, scaledCornerRadius) + top);
-
-            // Draw bottom right of the rectangle
-            final float bottomRightCornerY = height - scaledCornerRadius;
-            path.lineTo(endX, Math.max(recCenterY, bottomRightCornerY) + top);
-
-            final float bottomY = top + height;
-            final float bottomRightControlY1 = bottomY - controlPointDistance;
-            final float bottomRightControlY2 = bottomY - arcRadius;
-            final float bottomRightControlY3 = bottomY - startControlPointX;
-            path.cubicTo(endX, bottomRightControlY1, rightEdgeControlX1,
-                    bottomRightControlY2, topRightEndControlX3, bottomRightControlY3);
-
-            // Draw left edge of the rectangle
-            final float leftEdgeYFull = bottomY - endControlPointX;
-            final float leftEdgeY2 = bottomY - endControlPointY;
-            final float leftEdgeY3 = bottomY - startControlPointY;
-            path.cubicTo(topRightEndControlX2, leftEdgeYFull, topRightEndControlX1,
-                    leftEdgeY2, topRightControlX3, leftEdgeY3);
-
-            // Draw bottom edge with control points
-            final float bottomEdgeControlY = bottomY - controlPointOffsetY;
-            path.cubicTo(topRightControlX2, bottomEdgeControlY, topRightControlX1, bottomY, Math.max(recCenterX, topRightCornerX) + left, bottomY);
-
-            // Draw left side
-            path.lineTo(Math.min(recCenterX, scaledCornerRadius) + left, bottomY);
-
-            final float leftControlX1 = left + controlPointDistance;
-            final float leftControlX2 = left + arcRadius;
-            final float leftControlX3 = left + startControlPointX;
-            path.cubicTo(leftControlX1, bottomY, leftControlX2, bottomEdgeControlY, leftControlX3, leftEdgeY3);
-
-            final float leftControlX4 = left + endControlPointX;
-            final float leftControlY1 = endControlPointY + left;
-            final float leftControlY2 = left + startControlPointY;
-            path.cubicTo(leftControlX4, leftEdgeY2, leftControlY1,
-                    leftEdgeYFull, leftControlY2, bottomRightControlY3);
-
-            // Draw top left edge
-            final float leftEdgeControlX1 = left + controlPointOffsetY;
-            path.cubicTo(leftEdgeControlX1, bottomRightControlY2, left,
-                    bottomRightControlY1, left, Math.max(recCenterY, bottomRightCornerY) + top);
-
-            path.lineTo(left, Math.min(recCenterY, scaledCornerRadius) + top);
-            path.cubicTo(left, rightEdgeControlY2, leftEdgeControlX1,
-                    rightEdgeControlY1, leftControlY2, topRightEndControlY3);
-            path.cubicTo(leftControlY1, topRightEndControlY2, leftControlX4,
-                    topRightEndControlY1, leftControlX3, topRightControlY3);
-            path.cubicTo(leftControlX2, topRightControlY2, leftControlX1,
-                    top, Math.min(recCenterX, scaledCornerRadius) + left, top);
-
-            // Close the path to form the rectangle with smooth corners
-            path.close();
+        if (corners == ROUNDED_CORNER_NONE) {
+            path.addRect(left, top, left + width, top + height, Path.Direction.CW);
             return path;
         }
-        return new Path();
+
+        final float recCenterX = width / 2f;
+        final float recCenterY = height / 2f;
+        final float smallestHalfDimension = Math.min(recCenterX, recCenterY);
+
+        final float clampedCornerRadius = Math.clamp(smallestHalfDimension, 0f, cornerRadius);
+        final float cornerScaleFactor = clampedCornerRadius / smallestHalfDimension;
+
+        final float smoothingFactor1 = cornerScaleFactor > SHRINK_FACTOR_THRESHOLD
+                ? 1f - (Math.min(1f, (cornerScaleFactor - SHRINK_FACTOR_THRESHOLD)
+                        / SHRINK_FACTOR_DENOMINATOR) * SHRINK_FACTOR_MULTIPLIER)
+                : 1f;
+        final float smoothingFactor2 = cornerScaleFactor > SCALE_FACTOR_THRESHOLD
+                ? 1f + (Math.min(1f, (cornerScaleFactor - SCALE_FACTOR_THRESHOLD)
+                        / SCALE_FACTOR_DENOMINATOR) * SCALE_FACTOR_MULTIPLIER)
+                : 1f;
+
+        final float radiusFactor = clampedCornerRadius / 100f;
+        final float scaledCornerRadius = 128.19f * radiusFactor * smoothingFactor1;
+        final float controlPointDistance = 83.62f * radiusFactor * smoothingFactor2;
+        final float arcRadius = radiusFactor * 67.45f;
+        final float controlPointOffsetY = radiusFactor * 4.64f;
+        final float startControlPointX = radiusFactor * 51.16f;
+        final float startControlPointY = radiusFactor * 13.36f;
+        final float endControlPointX = radiusFactor * 34.86f;
+        final float endControlPointY = radiusFactor * 22.07f;
+
+        final float right = left + width;
+        final float bottom = top + height;
+
+        path.moveTo(left + recCenterX, top);
+
+        if ((corners & ROUNDED_CORNER_TOP_RIGHT) != 0) {
+            path.lineTo(Math.max(recCenterX, width - scaledCornerRadius) + left, top);
+            path.cubicTo(right - controlPointDistance, top, right - arcRadius,
+                    top + controlPointOffsetY, right - startControlPointX,
+                    top + startControlPointY);
+            path.cubicTo(right - endControlPointX, top + endControlPointY,
+                    right - endControlPointY, top + endControlPointX,
+                    right - startControlPointY, top + startControlPointX);
+            path.cubicTo(right - controlPointOffsetY, top + arcRadius, right,
+                    top + controlPointDistance, right,
+                    Math.min(recCenterY, scaledCornerRadius) + top);
+        } else {
+            path.lineTo(right, top);
+        }
+
+        if ((corners & ROUNDED_CORNER_BOTTOM_RIGHT) != 0) {
+            path.lineTo(right, Math.max(recCenterY, height - scaledCornerRadius) + top);
+            path.cubicTo(right, bottom - controlPointDistance, right - controlPointOffsetY,
+                    bottom - arcRadius, right - startControlPointY, bottom - startControlPointX);
+            path.cubicTo(right - endControlPointY, bottom - endControlPointX,
+                    right - endControlPointX, bottom - endControlPointY,
+                    right - startControlPointX, bottom - startControlPointY);
+            path.cubicTo(right - arcRadius, bottom - controlPointOffsetY,
+                    right - controlPointDistance, bottom,
+                    Math.max(recCenterX, width - scaledCornerRadius) + left, bottom);
+        } else {
+            path.lineTo(right, bottom);
+        }
+
+        if ((corners & ROUNDED_CORNER_BOTTOM_LEFT) != 0) {
+            path.lineTo(Math.min(recCenterX, scaledCornerRadius) + left, bottom);
+            path.cubicTo(left + controlPointDistance, bottom, left + arcRadius,
+                    bottom - controlPointOffsetY, left + startControlPointX,
+                    bottom - startControlPointY);
+            path.cubicTo(left + endControlPointX, bottom - endControlPointY,
+                    left + endControlPointY, bottom - endControlPointX,
+                    left + startControlPointY, bottom - startControlPointX);
+            path.cubicTo(left + controlPointOffsetY, bottom - arcRadius, left,
+                    bottom - controlPointDistance, left,
+                    Math.max(recCenterY, height - scaledCornerRadius) + top);
+        } else {
+            path.lineTo(left, bottom);
+        }
+
+        if ((corners & ROUNDED_CORNER_TOP_LEFT) != 0) {
+            path.lineTo(left, Math.min(recCenterY, scaledCornerRadius) + top);
+            path.cubicTo(left, top + controlPointDistance, left + controlPointOffsetY,
+                    top + arcRadius, left + startControlPointY, top + startControlPointX);
+            path.cubicTo(left + endControlPointX, top + endControlPointY,
+                    left + endControlPointX, top + endControlPointY,
+                    left + startControlPointX, top + startControlPointY);
+            path.cubicTo(left + arcRadius, top + controlPointOffsetY,
+                    left + controlPointDistance, top,
+                    Math.min(recCenterX, scaledCornerRadius) + left, top);
+        } else {
+            path.lineTo(left, top);
+        }
+
+        path.close();
+        return path;
     }
 
     private boolean isColorType(int i) {
@@ -481,10 +541,11 @@ public class SeslRoundedCorner {
     }
 
     /**
-     * Draws the rounded corners for the given view.
+     * Draws the rounded corners for the specified view onto the given canvas.
+     * Translates the canvas if the view has a non-zero translation Y.
      *
-     * @param view The view to draw the rounded corners for.
-     * @param canvas The canvas to draw on.
+     * @param view   The view to draw the rounded corners for. Must not be null.
+     * @param canvas The canvas to draw on. Must not be null.
      */
     public void drawRoundedCorner(@NonNull View view, @NonNull Canvas canvas) {
         int left;
@@ -507,26 +568,23 @@ public class SeslRoundedCorner {
      * paint, and rotation angle. It utilizes path manipulation to create smooth corner
      * effects.
      *
-     * <p>The drawable can be configured with a specific corner radius, a {@link Paint} object
-     * to define its appearance (color, style, etc.), and an angle to rotate the corner.
-     * This allows for drawing individual rounded corners at different orientations, which can
-     * then be combined to form more complex rounded shapes.
-     *
-     * <p>Key functionalities include:
+     * <p>In SESL9, key performance and functional enhancements include:
      * <ul>
-     *     <li>Generating a {@link Path} for a smooth rounded rectangle corner.
-     *     <li>Drawing the rounded corner onto a {@link Canvas}.
-     *     <li>Handling opacity, alpha, and color filter changes.
-     *     <li>Calculating and applying appropriate scaling and transformations to the corner path.
+     *   <li>Path node caching via {@link PathParser.PathDataNode} arrays, avoiding redundant SVG path string parsing.
+     *   <li>Color filter support via {@link PorterDuffColorFilter} for theme-aware dynamic tinting.
+     *   <li>Reusable {@link Path} and {@link Matrix} instances for unit-space corner scaling and rotation.
      * </ul>
-     *
-     * <p>This class is typically used internally by {@link SeslRoundedCorner} to manage
-     * and draw the individual corners of a rounded rectangle.
+     * </p>
      */
     public static class SeslRoundedChunkingDrawable extends Drawable {
         private final float mAngle;
         private final Paint mPaint;
         private final int mRoundRadius;
+
+        //Sesl9
+        private ColorFilter mColorFilter;
+        private PathParser.PathDataNode[] mPathDataNodes = null;
+        private final Path mPath = new Path();
 
         public SeslRoundedChunkingDrawable(int radius, @NonNull Paint paint, float angle) {
             mRoundRadius = radius;
@@ -549,7 +607,7 @@ public class SeslRoundedCorner {
                     float fractionExcess = cornerRadiusFraction - SHRINK_FACTOR_THRESHOLD;
                     float normalizedExcess = Math.min(1f, fractionExcess / SHRINK_FACTOR_DENOMINATOR);
                     shrinkageFactor = 1f - (normalizedExcess * SHRINK_FACTOR_MULTIPLIER);
-                }else{
+                } else {
                     shrinkageFactor = 1f;
                 }
 
@@ -558,7 +616,7 @@ public class SeslRoundedCorner {
                     float fractionExcess = cornerRadiusFraction - SCALE_FACTOR_THRESHOLD;
                     float normalizedExcess = Math.min(1f, fractionExcess / SCALE_FACTOR_DENOMINATOR);
                     scaleFactor = 1f + (normalizedExcess * SCALE_FACTOR_MULTIPLIER);
-                }else{
+                } else {
                     scaleFactor = 1f;
                 }
 
@@ -573,56 +631,53 @@ public class SeslRoundedCorner {
             return new Path();
         }
 
-
         private Path getTopLeftSmoothCornerPath(float cornerRadius, float width, float height, float adjustScale, float scale) {
-            final float horizontalRadiusFraction = ((width / 2f) / cornerRadius) * 100f;
+            if (mPathDataNodes == null) {
+                final float horizontalRadiusFraction = ((width / 2f) / cornerRadius) * 100f;
 
-            final float maxRadiusFraction = adjustScale * 128.19f;
+                final float maxRadiusFraction = adjustScale * 128.19f;
 
-            final String pathSegmentTop = String.format(LOCALE, LINE_TO_FORMAT, 0f,
-                    Math.min(((height / 2f) / cornerRadius) * 100f, maxRadiusFraction));
+                final String pathSegmentTop = String.format(LOCALE, LINE_TO_FORMAT, 0f,
+                        Math.min(((height / 2f) / cornerRadius) * 100f, maxRadiusFraction));
 
-            final Float controlPointOffsetY = scale * 83.62f;
+                final Float controlPointOffsetY = scale * 83.62f;
 
-            final String pathSegmentCurve1 = String.format(LOCALE, CUBIC_BEZIER_CURVE_FORMAT, 0f,
-                    controlPointOffsetY,
-                    CONTROL_POINT_X_1, CONTROL_POINT_Y_1, CURVE_END_X, CURVE_END_Y);
+                final String pathSegmentCurve1 = String.format(LOCALE, CUBIC_BEZIER_CURVE_FORMAT, 0f,
+                        controlPointOffsetY,
+                        CONTROL_POINT_X_1, CONTROL_POINT_Y_1, CURVE_END_X, CURVE_END_Y);
 
-            final String pathSegmentCurve2 = String.format(LOCALE, CUBIC_BEZIER_CURVE_FORMAT,
-                    TANGENT_X_1, TANGENT_Y_1,
-                    TANGENT_Y_1, TANGENT_X_1, CURVE_END_Y, CURVE_END_X);
+                final String pathSegmentCurve2 = String.format(LOCALE, CUBIC_BEZIER_CURVE_FORMAT,
+                        TANGENT_X_1, TANGENT_Y_1,
+                        TANGENT_Y_1, TANGENT_X_1, CURVE_END_Y, CURVE_END_X);
 
-            final String pathSegmentBottom = String.format(LOCALE, CUBIC_BEZIER_CURVE_FORMAT,
-                    CONTROL_POINT_Y_1,
-                    CONTROL_POINT_X_1,
-                    controlPointOffsetY, 0f, Math.min(horizontalRadiusFraction, maxRadiusFraction), 0f);
+                final String pathSegmentBottom = String.format(LOCALE, CUBIC_BEZIER_CURVE_FORMAT,
+                        CONTROL_POINT_Y_1,
+                        CONTROL_POINT_X_1,
+                        controlPointOffsetY, 0f, Math.min(horizontalRadiusFraction, maxRadiusFraction), 0f);
 
-            final String pathSegmentEnd = String.format(
-                    LOCALE, LINE_TO_FORMAT, Math.min(horizontalRadiusFraction, maxRadiusFraction), 0f);
+                final String pathSegmentEnd = String.format(
+                        LOCALE, LINE_TO_FORMAT, Math.min(horizontalRadiusFraction, maxRadiusFraction), 0f);
 
-            final String pathData = MOVE_TO_START
-                    + pathSegmentTop
-                    + pathSegmentCurve1
-                    + pathSegmentCurve2
-                    + pathSegmentBottom
-                    + pathSegmentEnd
-                    + PATH_SEGMENT_CLOSE;
+                final String pathData = MOVE_TO_START
+                        + pathSegmentTop
+                        + pathSegmentCurve1
+                        + pathSegmentCurve2
+                        + pathSegmentBottom
+                        + pathSegmentEnd
+                        + PATH_SEGMENT_CLOSE;
 
-            PathParser.PathDataNode[] pathNodes = PathParser.createNodesFromPathData(pathData);
+                mPathDataNodes = PathParser.createNodesFromPathData(pathData);
+            }
 
-            Path smoothCornerPath = new Path();
-            nodesToPath(pathNodes, smoothCornerPath);
+            mPath.reset();
+            nodesToPath(mPathDataNodes, mPath);
 
-            final Matrix scaleMatrix = new Matrix();
-            final float scaleFactor = cornerRadius / 100.0f;
-            scaleMatrix.setScale(scaleFactor, scaleFactor);
-            smoothCornerPath.transform(scaleMatrix);
-
-            return smoothCornerPath;
+            return mPath;
         }
 
         @Override
         public void draw(@NonNull Canvas canvas) {
+            mPaint.setColorFilter(mColorFilter);
             canvas.drawPath(getSmoothCornerRectPath(mRoundRadius, canvas.getWidth(), canvas.getHeight()), mPaint);
         }
 
@@ -637,14 +692,27 @@ public class SeslRoundedCorner {
         }
 
         @Override
+        public ColorFilter getColorFilter() {
+            return mColorFilter;
+        }
+
+        @Override
         public void setColorFilter(@Nullable ColorFilter colorFilter) {
-            mPaint.setColorFilter(colorFilter);
+            mColorFilter = colorFilter;
         }
 
         @NonNull
         public Path getSmoothCornerRectPath(float cornerRadius, float width, float height, float adjustScale, float scale) {
             // Get the path for the top-left smooth corner of the rectangle
             final Path topLeftCornerPath = getTopLeftSmoothCornerPath(cornerRadius, width, height, adjustScale, scale);
+
+            //Sesl9
+            // Scale the unit-space corner path to the requested radius
+            final Matrix scaleMatrix = new Matrix();
+            final float scaleFactor = cornerRadius / 100.0f;
+            scaleMatrix.setScale(scaleFactor, scaleFactor);
+            topLeftCornerPath.transform(scaleMatrix);
+            //sesl9
 
             // Get the bounding rectangle for transformations
             final Rect boundingRect = getBounds();
@@ -682,7 +750,7 @@ public class SeslRoundedCorner {
      * Draws the rounded corners onto the provided canvas.
      * The corners are drawn within the bounds specified by the rect parameter.
      *
-     * @param rect The rectangular bounds within which the rounded corners will be drawn.
+     * @param rect   The rectangular bounds within which the rounded corners will be drawn.
      * @param canvas The canvas on which to draw the rounded corners.
      */
     public void drawRoundedCorner(@NonNull Rect rect, @NonNull Canvas canvas) {

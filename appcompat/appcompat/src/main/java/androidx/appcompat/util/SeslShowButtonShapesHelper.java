@@ -20,14 +20,15 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP_PREFIX;
 
 import android.content.ContentResolver;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
-import androidx.core.view.ViewCompat;
+
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 /*
  * Original code by Samsung, all rights reserved to the original author.
@@ -58,7 +59,7 @@ import androidx.core.view.ViewCompat;
  *     }
  * };
  * getContentResolver().registerContentObserver(
- *     Settings.Global.getUriFor("show_button_background"),
+ *     Settings.System.getUriFor("show_button_background"),
  *     false,
  *     observer
  * );
@@ -94,7 +95,12 @@ public class SeslShowButtonShapesHelper {
     }
 
     public void updateButtonBackground() {
-        final boolean show = Settings.Global.getInt(mContentResolver, "show_button_background", 0) == 1;
+        final boolean show;
+        if (Build.VERSION.SDK_INT < 33) {
+            show = Settings.System.getInt(mContentResolver, "show_button_background", 0) == 1;
+        } else {
+            show = Settings.Global.getInt(mContentResolver, "show_button_background", 0) == 1;
+        }
         mView.setBackground(show ? mBackgroundOn : mBackgroundOff);
     }
 

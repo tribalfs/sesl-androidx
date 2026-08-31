@@ -33,11 +33,12 @@ import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.PathInterpolator;
 import androidx.annotation.ColorInt;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.R;
 import androidx.core.graphics.ColorUtils;
+
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -60,11 +61,21 @@ public class SeslRecoilDrawable extends LayerDrawable {
     private float mHotspotPointY;
     private boolean mIsActive;
     private boolean mIsPressed;
+    private SeslRecoilDrawableListener mListener;
     private Drawable mMask;
     private long mPressDuration;
     private int mRadius;
     private long mReleaseDuration;
     private int mTintColor;
+
+    //sesl9
+    /**
+     * Listener interface for receiving callbacks during recoil release animation events.
+     */
+    public interface SeslRecoilDrawableListener {
+        /** Called when the recoil release animation begins. */
+        void onReleaseAnimationStart();
+    }
 
     public SeslRecoilDrawable() {
         super(new Drawable[0]);
@@ -94,17 +105,19 @@ public class SeslRecoilDrawable extends LayerDrawable {
     }
 
     private void drawHotspot(Canvas canvas) {
+        float x = mHotspotPointX;
+        float y = mHotspotPointY;
         Rect rect = new Rect();
         getHotspotBounds(rect);
         if (rect.height() > 0) {
-            mHotspotPointX = rect.centerX();
-            mHotspotPointY = rect.centerY();
+            x = rect.centerX();
+            y = rect.centerY();
         }
-        canvas.translate(mHotspotPointX, mHotspotPointY);
+        canvas.translate(x, y);
         Paint paint = new Paint();
         paint.setColor(getAnimatingTintColor());
         canvas.drawCircle(0.0f, 0.0f, getRadius(), paint);
-        canvas.translate(-mHotspotPointX, -mHotspotPointY);
+        canvas.translate(-x, -y);
     }
 
     private int getAnimatingTintColor() {
@@ -120,7 +133,7 @@ public class SeslRecoilDrawable extends LayerDrawable {
         Rect rect = new Rect();
         getHotspotBounds(rect);
         int height = rect.height() / 2;
-        return height > 0 ? height : getBounds().height() / 2f;
+        return height > 0 ? height : getBounds().height() / 2;
     }
 
     private void init() {
@@ -141,14 +154,14 @@ public class SeslRecoilDrawable extends LayerDrawable {
         return getNumberOfLayers() <= 0;
     }
 
-    private void setActive(boolean isLongPressed, boolean isFocused, boolean isPressed) {
-        boolean isActive = isLongPressed || isFocused || isPressed;
+    private void setActive(boolean isFocused, boolean isHovered, boolean isPressed) {
+        boolean isActive = isFocused || isHovered || isPressed;
         if (isPressed) {
             mIsPressed = true;
             startEnterAnimation(1.0f);
-        } else if (isFocused) {
+        } else if (isHovered) {
             startEnterAnimation(0.6f);
-        } else if (isLongPressed) {
+        } else if (isFocused) {
             startEnterAnimation(0.8f);
         } else if (mIsActive && !isActive) {
             startExitAnimation();
@@ -188,6 +201,22 @@ public class SeslRecoilDrawable extends LayerDrawable {
         mAnimator.setInterpolator(RELEASE_INTERPOLATOR);
         mAnimator.setDuration(this.mReleaseDuration);
         mAnimator.start();
+        if (mListener != null) {
+            mListener.onReleaseAnimationStart();
+        }
+    }
+
+    public void removeListener() {
+        if (mListener != null) {
+            mListener = null;
+        }
+    }
+
+    //sesl9
+    public void setListener(SeslRecoilDrawableListener listener) {
+        if (mListener == null) {
+            mListener = listener;
+        }
     }
 
     private void updateMaskLayer() {
@@ -220,9 +249,8 @@ public class SeslRecoilDrawable extends LayerDrawable {
         canvas.restoreToCount(saveCount);
     }
 
-    @Nullable
     @Override
-    public Drawable.ConstantState getConstantState() {
+    public Drawable.@Nullable ConstantState getConstantState() {
         return null;
     }
 
@@ -232,7 +260,7 @@ public class SeslRecoilDrawable extends LayerDrawable {
     }
 
     @Override
-    public void inflate(@NonNull Resources resources, @NonNull XmlPullParser xmlPullParser, @NonNull AttributeSet attributeSet, @Nullable Resources.Theme theme) {
+    public void inflate(@NonNull Resources resources, @NonNull XmlPullParser xmlPullParser, @NonNull AttributeSet attributeSet, Resources.@Nullable Theme theme) {
         TypedArray ta = resources.obtainAttributes(attributeSet, R.styleable.SeslRecoil);
         try {
             updateStateFromTypedArray(ta);
@@ -265,7 +293,7 @@ public class SeslRecoilDrawable extends LayerDrawable {
     }
 
     @Override
-    public boolean onStateChange(@NonNull int[] state) {
+    public boolean onStateChange(int @NonNull [] state) {
         boolean isPressed = false;
         boolean isFocused = false;
         boolean isHovered = false;
@@ -285,7 +313,7 @@ public class SeslRecoilDrawable extends LayerDrawable {
                     break;
             }
         }
-        setActive(isPressed, isFocused, isHovered);
+        setActive(isFocused, isHovered, isPressed);
         return super.onStateChange(state);
     }
 

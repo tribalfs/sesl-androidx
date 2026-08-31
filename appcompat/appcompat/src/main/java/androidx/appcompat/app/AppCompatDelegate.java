@@ -529,6 +529,19 @@ public abstract class AppCompatDelegate {
     public abstract @Nullable ActionMode startSupportActionMode(
             ActionMode.@NonNull Callback callback);
 
+    //sesl9
+    /**
+     * Start an action mode targeting a specific child view for SESL floating toolbar support.
+     *
+     * @param view the target view requesting the action mode
+     * @param callback callback to manage the lifecycle of the action mode
+     * @return the started action mode, or {@code null} if cancelled
+     */
+    @Nullable
+    public ActionMode seslStartSupportActionModeForChild(@NonNull View view, ActionMode.@NonNull Callback callback) {
+        return null;
+    }
+
     /**
      * Installs AppCompat's {@link android.view.LayoutInflater} Factory so that it can replace
      * the framework widgets with compatible tinted versions. This should be called before
@@ -1086,9 +1099,9 @@ public abstract class AppCompatDelegate {
                     // the locales will be persisted there.
                     Object localeManager = context.getSystemService(Context.LOCALE_SERVICE);
                     if (localeManager != null) {
-                        AppCompatDelegate.Api33Impl.localeManagerSetApplicationLocales(
+                        Api33Impl.localeManagerSetApplicationLocales(
                                 localeManager,
-                                AppCompatDelegate.Api24Impl.localeListForLanguageTags(appLocales));
+                                Api24Impl.localeListForLanguageTags(appLocales));
                     }
                 }
                 // setting ComponentEnabledSetting for app component using

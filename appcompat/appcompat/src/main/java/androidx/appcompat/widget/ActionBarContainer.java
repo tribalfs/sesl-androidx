@@ -131,7 +131,7 @@ public class ActionBarContainer extends FrameLayout {
         if (bg != null) {
             bg.setCallback(this);
             if (mIsSplit && mSplitBackground != null) {
-                mSplitBackground.setBounds(0, 0, getMeasuredWidth(), getMeasuredHeight());
+                mSplitBackground.setBounds(0, 0, getMeasuredWidth(), getMeasuredHeight() + getPaddingBottom() /*sesl9*/);
             }
         }
         setWillNotDraw(mIsSplit ? mSplitBackground == null :

@@ -20,7 +20,7 @@ package androidx.appcompat.view.menu;
  * Original code by Samsung, all rights reserved to the original author.
  */
 
-import androidx.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public interface SeslMenuItem {
 

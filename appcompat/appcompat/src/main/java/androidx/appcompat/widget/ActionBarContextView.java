@@ -26,6 +26,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
@@ -73,6 +74,7 @@ public class ActionBarContextView extends AbsActionBarView {
     private static float MAX_FONT_SCALE = 1.2f;
     private boolean mIsActionModeAccessibilityOn;
     private boolean mCheckActionModeOn;
+    private boolean mAllowEatingTouch = true;//sesl9
     //sesl
 
     public ActionBarContextView(@NonNull Context context) {
@@ -126,16 +128,19 @@ public class ActionBarContextView extends AbsActionBarView {
 
         // Action bar can change size on configuration changes.
         // Reread the desired height from the theme-specified style.
+        //Sesl9
         final TypedArray a = getContext().obtainStyledAttributes(null, R.styleable.ActionMode,
-                R.attr.actionModeStyle, 0);
-        setContentHeight(a.getLayoutDimension(R.styleable.ActionMode_height, 0));
-        a.recycle();
-
-        //sesl
+                android.R.attr.actionModeStyle, 0);
+        final int height = a.getDimensionPixelSize(R.styleable.ActionMode_height, -1);
+        if (height >= 0) {
+            setContentHeight(height);
+        }
         setPadding(0,
                 getResources().getDimensionPixelSize(R.dimen.sesl_action_bar_top_padding),
                 0,
                 0);
+        a.recycle();
+        //sesl9
     }
 
     @Override
@@ -161,6 +166,7 @@ public class ActionBarContextView extends AbsActionBarView {
     public void setTitle(CharSequence title) {
         mTitle = title;
         initTitle();
+        ViewCompat.setAccessibilityPaneTitle(this, title);//sesl9
     }
 
     public void setSubtitle(CharSequence subtitle) {
@@ -234,7 +240,18 @@ public class ActionBarContextView extends AbsActionBarView {
         menu.addMenuPresenter(mActionMenuPresenter, mPopupContext);
         mMenuView = (ActionMenuView) mActionMenuPresenter.getMenuView(this);
         mMenuView.setBackground(null);
+        ensureMenuView();//sesl9
         addView(mMenuView, layoutParams);
+    }
+
+    private void ensureMenuView() {
+        if (mMenuView != null) {
+            mMenuView.setPadding(//sesl9
+                    getResources().getDimensionPixelSize(R.dimen.sesl_action_menu_view_padding_start),
+                    0,
+                    getResources().getDimensionPixelSize(R.dimen.sesl_action_menu_view_padding_end),
+                    0);
+        }
     }
 
     public void closeMode() {
@@ -365,7 +382,8 @@ public class ActionBarContextView extends AbsActionBarView {
 
         final int verticalPadding = getPaddingTop() + getPaddingBottom();
         final int maxHeight = mContentHeight > 0
-                ? mContentHeight + mInsetsPaddingTop + mInsetsPaddingBottom + topPadding //sesl
+                //Note: vanilla sesl doesn't account mInsetsPaddingTop and mInsetsPaddingBottom
+                ? mContentHeight + mInsetsPaddingTop + mInsetsPaddingBottom + topPadding
                 : MeasureSpec.getSize(heightMeasureSpec);
         final int height = maxHeight - verticalPadding;
         final int childSpecHeight = MeasureSpec.makeMeasureSpec(height, MeasureSpec.AT_MOST);
@@ -376,7 +394,7 @@ public class ActionBarContextView extends AbsActionBarView {
             availableWidth -= lp.leftMargin + lp.rightMargin;
         }
 
-        if (mMenuView != null && mMenuView.getParent() == this) {
+        if (mMenuView != null && mMenuView.getParent() == this && mMenuView.getChildCount() != 0 /*sesl9*/) {
             availableWidth = measureChildView(mMenuView, availableWidth,
                     childSpecHeight, 0);
         }
@@ -404,7 +422,7 @@ public class ActionBarContextView extends AbsActionBarView {
                 final int contentInsetStart =
                         (int) context.getResources().getDimension(R.dimen.sesl_toolbar_content_inset);
                 boolean isRtl =
-                        ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_LTR;
+                        getLayoutDirection() == LAYOUT_DIRECTION_LTR;
                 if (mTitleView != null && mTitleView.getVisibility() == View.VISIBLE) {
                     LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mTitleView.getLayoutParams();
                     if (isRtl) {
@@ -563,4 +581,31 @@ public class ActionBarContextView extends AbsActionBarView {
         return mIsActionModeAccessibilityOn;
     }
     //sesl
+
+    //Sesl9
+    public View seslGetCloseButton() {
+        return mCloseButton;
+    }
+
+    public View seslGetCustomView() {
+        return mCustomView;
+    }
+
+    public ActionMenuView seslGetMenuView() {
+        return mMenuView;
+    }
+
+    public void seslSetEatingTouchOnly(boolean allow) {
+        if (mAllowEatingTouch == allow) {
+            return;
+        }
+        mAllowEatingTouch = allow;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        //super.onTouchEvent(event);//sesl
+        return mAllowEatingTouch;
+    }
+    //sesl9
 }
