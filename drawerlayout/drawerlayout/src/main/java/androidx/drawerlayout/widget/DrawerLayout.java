@@ -18,12 +18,17 @@
 package androidx.drawerlayout.widget;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP_PREFIX;
+import static androidx.core.view.SemBlurCompat.BLUR_UI_HIGH_ULTRA_THICK_DARK;
+import static androidx.core.view.SemBlurCompat.BLUR_UI_HIGH_ULTRA_THICK_LIGHT;
 import static androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_DISMISS;
 
 import android.annotation.SuppressLint;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
@@ -37,6 +42,7 @@ import android.os.SystemClock;
 import android.provider.Settings;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.InputDevice;
 import android.view.KeyEvent;
@@ -61,6 +67,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.GravityCompat;
+import androidx.core.view.SemBlurCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
@@ -79,6 +86,18 @@ import java.util.List;
 /**
  * (SESL modified) DrawerLayout acts as a top-level container for window content that allows for
  * interactive "drawer" views to be pulled out from one or both vertical edges of the window.
+ *
+ * <p><strong>Samsung Extension Software Library (SESL) Features:</strong></p>
+ * <ul>
+ *   <li><b>Floating Drawer View:</b> By default, SESL DrawerLayout uses a floating drawer style where
+ *   the main content view remains stationary rather than shifting horizontally as the drawer slides open.
+ *   The background scrim opacity is reduced to a minimal translucency (near-zero opacity) for a clean floating appearance.</li>
+ *   <li><b>Dynamic Canvas Blur:</b> Call {@link #seslSetDrawerViewFloatingBlur(Context, View)} to enable
+ *   One UI high-density ultra-thick canvas blur effects on the drawer view via {@link SemBlurCompat}, with automatic
+ *   theme tinting (transparent in light mode, subtle white overlay in dark mode) and background alpha fallback.</li>
+ *   <li><b>One UI Styling & Elevation:</b> Uses One UI default drawer elevation ({@code @dimen/sesl_drawer_elevation})
+ *   and minimum drawer edge margin (56dp).</li>
+ * </ul>
  *
  * <p>Drawer positioning and layout is controlled using the <code>android:layout_gravity</code>
  * attribute on child views corresponding to which side of the view you want the drawer
@@ -170,6 +189,10 @@ public class DrawerLayout extends ViewGroup implements Openable {
 
     private static final int MIN_DRAWER_MARGIN = 56; // dp //sesl
     View mContentView;//sesl
+    //Sesl9
+    boolean mIsFloatingDrawerView = true;
+    boolean mIsShowingCanvasBlur;
+    //sesl9
 
     private static final int DEFAULT_SCRIM_COLOR = 0x99000000;
 
@@ -368,25 +391,21 @@ public class DrawerLayout extends ViewGroup implements Openable {
         ViewCompat.setAccessibilityDelegate(this, new AccessibilityDelegate());
         setMotionEventSplittingEnabled(false);
         if (ViewCompat.getFitsSystemWindows(this)) {
-            if (Build.VERSION.SDK_INT >= 21) {
-                ViewCompat.setOnApplyWindowInsetsListener(this,
-                        (view, insets) -> {
-                            final DrawerLayout drawerLayout = (DrawerLayout) view;
-                            drawerLayout.setChildInsets(insets,
-                                    insets.getSystemWindowInsets().top > 0);
-                            return insets.consumeSystemWindowInsets();
-                        });
-                setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-                @SuppressLint("ResourceType")
-                final TypedArray a = context.obtainStyledAttributes(THEME_ATTRS);
-                try {
-                    mStatusBarBackground = a.getDrawable(0);
-                } finally {
-                    a.recycle();
-                }
-            } else {
-                mStatusBarBackground = null;
+            ViewCompat.setOnApplyWindowInsetsListener(this,
+                    (view, insets) -> {
+                        final DrawerLayout drawerLayout = (DrawerLayout) view;
+                        drawerLayout.setChildInsets(insets,
+                                insets.getSystemWindowInsets().top > 0);
+                        return insets.consumeSystemWindowInsets();
+                    });
+            setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+            @SuppressLint("ResourceType")
+            final TypedArray a = context.obtainStyledAttributes(THEME_ATTRS);
+            try {
+                mStatusBarBackground = a.getDrawable(0);
+            } finally {
+                a.recycle();
             }
         }
 
@@ -396,7 +415,7 @@ public class DrawerLayout extends ViewGroup implements Openable {
             if (a.hasValue(R.styleable.DrawerLayout_elevation)) {
                 mDrawerElevation = a.getDimension(R.styleable.DrawerLayout_elevation, 0);
             } else {
-                mDrawerElevation = getResources().getDimension(R.dimen.def_drawer_elevation);
+                mDrawerElevation = getResources().getDimension(R.dimen.sesl_drawer_elevation);//sesl9
             }
         } finally {
             a.recycle();
@@ -955,6 +974,10 @@ public class DrawerLayout extends ViewGroup implements Openable {
     }
 
     void dispatchOnDrawerSlide(View drawerView, float slideOffset) {
+        if (mIsShowingCanvasBlur && drawerView != null) {//sesl9
+            drawerView.invalidate();
+        }
+
         if (mListeners != null) {
             // Notify the listeners. Do that from the end of the list so that if a listener
             // removes itself as the result of being called, it won't mess up with our iteration
@@ -1017,7 +1040,7 @@ public class DrawerLayout extends ViewGroup implements Openable {
         setDrawerViewOffset(drawerView, slideOffset);
 
         //Sesl
-        if (mContentView != null) {
+        if (!mIsFloatingDrawerView/*sesl9*/ && mContentView != null) {
             final int left = drawerView.getLeft();
             if (ViewCompat.getLayoutDirection(this)
                     == ViewCompat.LAYOUT_DIRECTION_RTL) {
@@ -1381,7 +1404,12 @@ public class DrawerLayout extends ViewGroup implements Openable {
             final float onscreen = ((LayoutParams) getChildAt(i).getLayoutParams()).onScreen;
             scrimOpacity = Math.max(scrimOpacity, onscreen);
         }
-        mScrimOpacity = scrimOpacity;
+        //sesl9
+        if (mIsFloatingDrawerView) {
+            mScrimOpacity = scrimOpacity > 0 ? (float) 1e-4 : 0;
+        } else {
+            mScrimOpacity = scrimOpacity;
+        }
 
         boolean leftDraggerSettling = mLeftDragger.continueSettling(true);
         boolean rightDraggerSettling = mRightDragger.continueSettling(true);
@@ -1530,7 +1558,7 @@ public class DrawerLayout extends ViewGroup implements Openable {
 
     boolean isContentView(View child) {
         return ((LayoutParams) child.getLayoutParams()).gravity == Gravity.NO_GRAVITY
-                || child == mContentView;//sesl
+                || (!mIsFloatingDrawerView/*sesl9*/&& child == mContentView);//sesl
     }
 
     boolean isDrawerView(View child) {
@@ -2321,7 +2349,7 @@ public class DrawerLayout extends ViewGroup implements Openable {
             setDrawerViewOffset(changedView, offset);
 
             //Sesl
-            if (mContentView != null) {
+            if (!mIsFloatingDrawerView/*sesl9*/ && mContentView != null) {
                 final int l = changedView.getLeft();
                 if (getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) {
                     mContentView.setLeft(l - mContentView.getWidth());
@@ -2648,8 +2676,66 @@ public class DrawerLayout extends ViewGroup implements Openable {
     }
 
     private boolean shouldSkipScroll() {
-        return Settings.Global.getInt(getContext().getContentResolver(),
-                "remove_animations", 0) == 1;
+        final ContentResolver cr = getContext().getContentResolver();
+        if (Build.VERSION.SDK_INT < 33) {//sesl
+            return Settings.System.getInt(cr, "remove_animations", 0) == 1;
+        }
+        return Settings.Global.getInt(cr, "remove_animations", 0) == 1;
     }
     //sesl
+
+    //Sesl9
+    /**
+     * Applies a floating canvas blur effect onto the specified drawer view on One UI devices.
+     * <p>
+     * On supported One UI devices, this function configures a dynamic canvas blur on the drawer view via
+     * {@link SemBlurCompat} (using high-density ultra-thick presets matching light/dark theme)
+     * and sets appropriate transparent or semi-transparent background tinting.
+     * If canvas blur is unsupported, it falls back to adjusting the drawer background's opacity.
+     *
+     * @param context the {@link Context} used to resolve theme resources and blur presets
+     * @param drawerView the drawer view to apply the floating canvas blur effect to, or {@code null}
+     */
+    public void seslSetDrawerViewFloatingBlur(@NonNull Context context, @Nullable View drawerView) {
+        mIsShowingCanvasBlur = false;
+        if (drawerView == null) {
+            return;
+        }
+
+        if (!SemBlurCompat.setBlurEffectPreset(
+                drawerView,
+                SemBlurCompat.BLUR_MODE_CANVAS,
+                isLightTheme(context) ? BLUR_UI_HIGH_ULTRA_THICK_LIGHT : BLUR_UI_HIGH_ULTRA_THICK_DARK,
+                null,
+                null,
+                SemBlurCompat.CANVAS_BLUR_USE_TYPE_DYNAMIC)) {
+            Drawable background = drawerView.getBackground();
+            if (background != null) {
+                background.mutate().setAlpha(244);
+            }
+        } else {
+            drawerView.setClipToOutline(true);
+
+            if (isLightTheme(context)) {
+                drawerView.setBackgroundTintList(ColorStateList.valueOf(
+                        getResources().getColor(android.R.color.transparent)));
+            } else {
+                drawerView.setBackgroundTintList(ColorStateList.valueOf(getColorWithAlpha(
+                        getResources().getColor(android.R.color.white), 0.1f)));
+            }
+            mIsShowingCanvasBlur = true;
+        }
+    }
+
+    private boolean isLightTheme(@NonNull Context context) {
+        TypedValue outValue = new TypedValue();
+        context.getTheme().resolveAttribute(android.R.attr.isLightTheme, outValue, true);
+        return outValue.data != 0;
+    }
+
+    private int getColorWithAlpha(@ColorInt int color, float ratio) {
+        return Color.argb(Math.round(Color.alpha(color) * ratio), Color.red(color),
+                Color.green(color), Color.blue(color));
+    }
+    //sesl9
 }

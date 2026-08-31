@@ -23,7 +23,7 @@ object SeslManifest {
         "androidx.core" to listOf("1.19.0", "1.0.29-sesl9", "rev0", 23, 37),
         "androidx.core-ktx" to listOf("1.19.0", "1.0.0-sesl8", "rev1", 23, 37),
         "androidx.customview" to listOf("1.2.0-rc01", "1.0.1-sesl9", "rev0", 23, 37),
-        "androidx.drawerlayout" to listOf("1.2.0", "1.0.0-sesl8", "rev0", 21, 35),
+        "androidx.drawerlayout" to listOf("1.2.0", "1.0.5-sesl9", "rev0", 23, 37),
         "androidx.viewpager" to listOf("1.1.0-beta01", "1.0.0-sesl8", "rev0", 21, 35),
         "androidx.coordinatorlayout" to listOf("1.3.0", "1.0.0-sesl8", "rev0", 21, 35),
         "androidx.appcompat" to listOf("1.8.0", "1.0.21-sesl8", "rev3", 23, 37),
