@@ -79,7 +79,7 @@ public class CircularProgressDrawable extends Drawable implements Animatable {
     /** Maps to ProgressBar default style. */
     public static final int DEFAULT = 1;
 
-    private static final float CENTER_RADIUS = 14f/*sesl*/;
+    private static final float CENTER_RADIUS = 14.5f/*sesl*/;
 
     /** The duration of a single progress spin in milliseconds. */
     private static final int ANIMATION_DURATION = 200/*sesl*/;
@@ -131,6 +131,7 @@ public class CircularProgressDrawable extends Drawable implements Animatable {
                         context.getResources().getColor(R.color.sesl_swipe_refresh_color2))
         };
         mFourDot.setColors(COLORS);
+        a.recycle();
 
         mDotAnimation = contextThemeWrapper.getResources().getDrawable(R.drawable.sesl_swipe_refresh_animated,
                 contextThemeWrapper.getTheme());
@@ -143,10 +144,11 @@ public class CircularProgressDrawable extends Drawable implements Animatable {
         setupAnimators();
     }
 
+    //sesl
     /** Sets all parameters at once in dp. */
     private void setSizeParameters(float centerRadius) {
-        mFourDot.setDotRadius(mScreenDensity * 2.25f);//sesl
-        mFourDot.setCenterRadius(centerRadius * mScreenDensity);//sesl
+        mFourDot.setDotRadius(mScreenDensity * 2.5f);
+        mFourDot.setCenterRadius(centerRadius * mScreenDensity);
     }
 
     /**
@@ -313,7 +315,7 @@ public class CircularProgressDrawable extends Drawable implements Animatable {
         final ValueAnimator rotateAnimator = ValueAnimator.ofInt(0, 90);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
+            public void onAnimationUpdate(@NonNull ValueAnimator animation) {
                 float interpolatedTime = (float) animation.getAnimatedValue();
                 fourDot.setPosition(mScreenDensity * interpolatedTime);
                 fourDot.setScale((mScreenDensity * 11.0f) + (interpolatedTime * 0.75f * mScreenDensity / 10.0f));
@@ -322,7 +324,7 @@ public class CircularProgressDrawable extends Drawable implements Animatable {
         });
         rotateAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+            public void onAnimationUpdate(@NonNull ValueAnimator valueAnimator) {
                 int interpolatedTime = (int) valueAnimator.getAnimatedValue();
                 fourDot.setRotation(interpolatedTime);
                 invalidateSelf();
@@ -331,22 +333,22 @@ public class CircularProgressDrawable extends Drawable implements Animatable {
         rotateAnimator.addListener(new Animator.AnimatorListener() {
 
             @Override
-            public void onAnimationStart(Animator animator) {
+            public void onAnimationStart(@NonNull Animator animator) {
                 // do nothing
             }
 
             @Override
-            public void onAnimationEnd(Animator animator) {
+            public void onAnimationEnd(@NonNull Animator animator) {
                 fourDot.setRotation(0.0f);
             }
 
             @Override
-            public void onAnimationCancel(Animator animator) {
+            public void onAnimationCancel(@NonNull Animator animator) {
                 // do nothing
             }
 
             @Override
-            public void onAnimationRepeat(Animator animator) {
+            public void onAnimationRepeat(@NonNull Animator animator) {
                 // do nothing
             }
         });
@@ -354,12 +356,12 @@ public class CircularProgressDrawable extends Drawable implements Animatable {
         animator.addListener(new Animator.AnimatorListener() {
 
             @Override
-            public void onAnimationStart(Animator animator) {
+            public void onAnimationStart(@NonNull Animator animator) {
                 mRotationCount = 0;
             }
 
             @Override
-            public void onAnimationEnd(Animator animator) {
+            public void onAnimationEnd(@NonNull Animator animator) {
                 //Sesl
                 fourDot.setRotation(0);
                 fourDot.setIsRunning(true);
@@ -370,12 +372,12 @@ public class CircularProgressDrawable extends Drawable implements Animatable {
             }
 
             @Override
-            public void onAnimationCancel(Animator animation) {
+            public void onAnimationCancel(@NonNull Animator animation) {
                 // do nothing
             }
 
             @Override
-            public void onAnimationRepeat(Animator animator) {
+            public void onAnimationRepeat(@NonNull Animator animator) {
                 // do nothing //sesl
             }
         });
