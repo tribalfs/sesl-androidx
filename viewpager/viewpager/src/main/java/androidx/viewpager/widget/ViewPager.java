@@ -20,7 +20,6 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP_PREFIX;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.database.DataSetObserver;
@@ -54,7 +53,6 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
-import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.content.ContextCompat;
@@ -212,7 +210,6 @@ public class ViewPager extends ViewGroup {
     private static final int MAX_SCROLL_X = 0x1000000;
 
     private int mLeftIncr = -1;
-    private int mOrientation;
     private int mScaledTouchSlop = 0;
     private int mPagingTouchSlop = 0;
     private float mTouchSlopRatio = DEFAULT_TOUCH_SLOP_RATE;
@@ -441,7 +438,6 @@ public class ViewPager extends ViewGroup {
         final float density = context.getResources().getDisplayMetrics().density;
 
         //Sesl
-        mOrientation = context.getResources().getConfiguration().orientation;
         mScaledTouchSlop = configuration.getScaledTouchSlop();
         mPagingTouchSlop = configuration.getScaledPagingTouchSlop();
         //sesl
@@ -845,9 +841,7 @@ public class ViewPager extends ViewGroup {
     @Override
     protected int getChildDrawingOrder(int childCount, int i) {
         final int index = mDrawingOrder == DRAW_ORDER_REVERSE ? childCount - 1 - i : i;
-        final int result =
-                ((LayoutParams) mDrawingOrderedChildren.get(index).getLayoutParams()).childIndex;
-        return result;
+        return ((LayoutParams) mDrawingOrderedChildren.get(index).getLayoutParams()).childIndex;
     }
 
     /**
@@ -1032,10 +1026,11 @@ public class ViewPager extends ViewGroup {
         }
         duration = Math.min(duration, MAX_SETTLE_DURATION);
 
-        // Reset the "scroll started" flag. It will be flipped to true in all places
-        // where we call computeScrollOffset().
-        mIsScrollStarted = false;
-        mScroller.startScroll(sx, sy, dx, dy, duration);
+        //sesl
+        if (mScroller != null) {
+            mScroller.startScroll(sx, sy, dx, dy, duration);
+        }
+        //sesl
         postInvalidateOnAnimation();
     }
 
@@ -1673,20 +1668,6 @@ public class ViewPager extends ViewGroup {
                             (int) (childWidthSize * lp.widthFactor), MeasureSpec.EXACTLY);
                     child.measure(widthSpec, childHeightMeasureSpec);
                 }
-            }
-        }
-    }
-
-    //sesl
-    @Override
-    protected void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-
-        final int orientation = newConfig.orientation;
-        if (mOrientation != orientation) {
-            mOrientation = orientation;
-            if (mPageMargin > 0) {
-                setCurrentItemInternal(mCurItem, false, true, 0);
             }
         }
     }
