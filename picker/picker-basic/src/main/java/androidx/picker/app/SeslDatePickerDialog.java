@@ -68,7 +68,16 @@ public class SeslDatePickerDialog extends AlertDialog
                             int year,
                             int monthOfYear,
                             int dayOfMonth) {
-        this(context, 0, callBack, year, monthOfYear, dayOfMonth);
+        this(context, 0, callBack, year, monthOfYear, dayOfMonth, true);
+    }
+
+    public SeslDatePickerDialog(@NonNull Context context,
+                            @Nullable OnDateSetListener callBack,
+                            int year,
+                            int monthOfYear,
+                            int dayOfMonth,
+                            boolean showButtons) {
+        this(context, 0, callBack, year, monthOfYear, dayOfMonth, showButtons);
     }
 
     public SeslDatePickerDialog(@NonNull Context context,
@@ -77,6 +86,16 @@ public class SeslDatePickerDialog extends AlertDialog
                             int year,
                             int monthOfYear,
                             int dayOfMonth) {
+        this(context, theme, callBack, year, monthOfYear, dayOfMonth, true);
+    }
+
+    public SeslDatePickerDialog(@NonNull Context context,
+                            @StyleRes int theme,
+                            @Nullable OnDateSetListener callBack,
+                            int year,
+                            int monthOfYear,
+                            int dayOfMonth,
+                            boolean showButtons) {
         super(context, resolveDialogTheme(context, theme));
 
         Context themeContext = getContext();
@@ -84,9 +103,11 @@ public class SeslDatePickerDialog extends AlertDialog
         LayoutInflater inflater = LayoutInflater.from(themeContext);
         View view = inflater.inflate(R.layout.sesl_date_picker_dialog, null);
         setView(view);
-        setButton(BUTTON_POSITIVE, themeContext.getString(R.string.sesl_picker_done), this);
-        setButton(BUTTON_NEGATIVE, themeContext.getString(R.string.sesl_picker_cancel), this);
-        seslSetBackgroundBlurEnabled();
+        if (showButtons) {
+            setButton(BUTTON_POSITIVE, themeContext.getString(R.string.sesl_picker_done), this);
+            setButton(BUTTON_NEGATIVE, themeContext.getString(R.string.sesl_picker_cancel), this);
+        }
+        seslSetBackgroundBlurEnabled(true);
         mDatePicker = view.findViewById(R.id.sesl_datePicker);
 
         mDatePicker.init(year, monthOfYear, dayOfMonth, this);
@@ -98,9 +119,22 @@ public class SeslDatePickerDialog extends AlertDialog
         };
         mDatePicker.setValidationCallback(validationCallback);
         mDatePicker.setDialogWindow(getWindow());
-        mDatePicker.setDialogPaddingVertical(view.getPaddingTop() + view.getPaddingBottom());
 
         mDateSetListener = callBack;
+        if (!showButtons) {
+            mDatePicker.disableSpinnerView();
+            view.setPadding(view.getPaddingLeft(), view.getPaddingTop(),
+                    view.getPaddingRight(),
+                    context.getResources().getDimensionPixelSize(R.dimen.sesl_date_picker_dialog_padding_top));
+            mDatePicker.setOnSimpleMonthViewDayClickListener((yearClicked, monthClicked, dayClicked) -> {
+                if (mDateSetListener != null) {
+                    mDateSetListener.onDateSet(mDatePicker, yearClicked, monthClicked, dayClicked);
+                }
+                dismiss();
+            });
+        }
+        mDatePicker.setDialogPaddingVertical(view.getPaddingBottom() + view.getPaddingTop());
+
         mImm = (InputMethodManager) themeContext.getSystemService(Context.INPUT_METHOD_SERVICE);
     }
 
@@ -116,8 +150,14 @@ public class SeslDatePickerDialog extends AlertDialog
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getButton(BUTTON_POSITIVE).setOnFocusChangeListener(mBtnFocusChangeListener);
-        getButton(BUTTON_NEGATIVE).setOnFocusChangeListener(mBtnFocusChangeListener);
+        Button positive = getButton(BUTTON_POSITIVE);
+        Button negative = getButton(BUTTON_NEGATIVE);
+        if (positive != null) {
+            positive.setOnFocusChangeListener(mBtnFocusChangeListener);
+        }
+        if (negative != null) {
+            negative.setOnFocusChangeListener(mBtnFocusChangeListener);
+        }
     }
 
     /**

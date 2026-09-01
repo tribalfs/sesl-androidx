@@ -182,6 +182,14 @@ public class SeslTimePicker extends FrameLayout {
         mDelegate.set5MinuteInterval(interval);
     }
 
+    public void setCustomTimePickerIdleColor(int color) {
+        mDelegate.setCustomTimePickerIdleColor(color);
+    }
+
+    public void setCustomTimePickerScrollColor(int color) {
+        mDelegate.setCustomTimePickerScrollColor(color);
+    }
+
     public void setOnTimeChangedListener(OnTimeChangedListener onTimeChangedListener) {
         mDelegate.setOnTimeChangedListener(onTimeChangedListener);
     }
@@ -266,6 +274,10 @@ public class SeslTimePicker extends FrameLayout {
         return mDelegate.getNumberPicker(picker);
     }
 
+    public void setNumberPickerSubTextTypeface(int picker, Typeface typeface) {
+        mDelegate.setNumberPickerSubTextTypeface(picker, typeface);
+    }
+
     public void setNumberPickerTextSize(int picker, float size) {
         mDelegate.setNumberPickerTextSize(picker, size);
     }
@@ -323,6 +335,10 @@ public class SeslTimePicker extends FrameLayout {
 
         void setCurrentLocale(Locale locale);
 
+        void setCustomTimePickerIdleColor(int color);
+
+        void setCustomTimePickerScrollColor(int color);
+
         void setEditTextMode(boolean editTextMode);
 
         void setEnabled(boolean enabled);
@@ -332,6 +348,8 @@ public class SeslTimePicker extends FrameLayout {
         void setIs24Hour(boolean is24Hour);
 
         void setMinute(@IntRange(from = 0, to = 59) int minute);
+
+        void setNumberPickerSubTextTypeface(int picker, Typeface typeface);
 
         void setNumberPickerTextSize(int picker, float size);
 

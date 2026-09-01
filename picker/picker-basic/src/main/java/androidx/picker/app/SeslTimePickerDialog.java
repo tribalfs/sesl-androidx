@@ -48,6 +48,8 @@ public class SeslTimePickerDialog extends AlertDialog
     private static final String MINUTE = "minute";
 
     private final InputMethodManager mImm;
+    private final int mInitialHourOfDay;
+    private final int mInitialMinute;
     final SeslTimePicker mTimePicker;
     private final OnTimeSetListener mTimeSetListener;
 
@@ -82,6 +84,8 @@ public class SeslTimePickerDialog extends AlertDialog
                                 int hourOfDay, int minute, boolean is24HourView) {
         super(context, resolveDialogTheme(context, theme));
         mTimeSetListener = callBack;
+        mInitialHourOfDay = hourOfDay;
+        mInitialMinute = minute;
 
         Context themeContext = getContext();
 
@@ -90,7 +94,7 @@ public class SeslTimePickerDialog extends AlertDialog
         setView(view);
         setButton(BUTTON_POSITIVE, themeContext.getString(R.string.sesl_picker_done), this);
         setButton(BUTTON_NEGATIVE, themeContext.getString(R.string.sesl_picker_cancel), this);
-        seslSetBackgroundBlurEnabled();
+        seslSetBackgroundBlurEnabled(true);
         mTimePicker = view.findViewById(R.id.timePicker);
 
         mTimePicker.setIs24HourView(is24HourView);

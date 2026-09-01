@@ -20,7 +20,6 @@ import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
@@ -87,8 +86,8 @@ public class SeslSleepTimePickerUtil {
         if (textView != null) {
             float scalingFactor = context.getResources().getConfiguration().fontScale;
             float scaleMultiplier = defaultTextSize / scalingFactor;
-            Log.d(TAG, "setTextSize fontScale : " + scalingFactor + ", " + defaultTextSize + ", " + scaleMultiplier);
-            if (scalingFactor < scale) {
+            Log.d(TAG, "setLargeTextSize fontScale : " + scalingFactor + ", " + defaultTextSize + ", " + scaleMultiplier);
+            if (scalingFactor <= scale) {
                 scale = scalingFactor;
             }
             setTextSize(textView, scaleMultiplier * scale);
@@ -154,10 +153,6 @@ public class SeslSleepTimePickerUtil {
     }
 
     public static void performHapticFeedback(View view, int i) {
-        if (Build.VERSION.SDK_INT > 28) {
-            view.performHapticFeedback(i + INTERNAL_INDEX_OFFSET);
-        } else {
-            view.performHapticFeedback(1 + INTERNAL_INDEX_OFFSET);
-        }
+        view.performHapticFeedback(i + INTERNAL_INDEX_OFFSET);
     }
 }

@@ -20,8 +20,6 @@ import org.jspecify.annotations.NonNull;
 import static android.view.View.IMPORTANT_FOR_ACCESSIBILITY_AUTO;
 import static android.view.View.IMPORTANT_FOR_ACCESSIBILITY_YES;
 
-import static androidx.picker.util.SeslDatePickerFontUtil.getRegularFontTypeface;
-
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -33,7 +31,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.provider.Settings;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -59,6 +56,7 @@ import android.widget.TextView;
 
 import androidx.picker.R;
 import androidx.picker.util.SeslAnimationListener;
+import androidx.picker.util.SeslPickerBasicUtils;
 import androidx.reflect.icu.SeslLocaleDataReflector;
 
 import java.io.File;
@@ -404,18 +402,21 @@ class SeslTimePickerSpinnerDelegate extends SeslTimePicker.AbsTimePickerDelegate
 
         Typeface defaultTypeface = Typeface.defaultFromStyle(Typeface.NORMAL);
         Typeface legacyTypeface = Typeface.create("sec-roboto-condensed-light", Typeface.NORMAL);
-        Typeface pickerTypeface = getRegularFontTypeface();
+        Typeface pickerTypeface = Build.VERSION.SDK_INT >= 33
+                ? Typeface.create(Typeface.create("sec", Typeface.NORMAL), 400, false)
+                : Typeface.create("sec-roboto-light", Typeface.NORMAL);
         if (!defaultTypeface.equals(pickerTypeface)) {
             legacyTypeface = pickerTypeface;
         } else if (legacyTypeface.equals(pickerTypeface)) {
             legacyTypeface = Typeface.create("sans-serif-thin", Typeface.NORMAL);
         }
 
-        final String themeTypeFace = Settings.System.getString(mContext.getContentResolver(), "theme_font_clock");
-        if (themeTypeFace != null && !themeTypeFace.equals("")) {
-            mDivider.setTypeface(getFontTypeface(themeTypeFace));
-        }
         mDivider.setTypeface(legacyTypeface);
+
+        final Typeface openThemeTypeface = SeslPickerBasicUtils.getOpenThemeTypeface(mContext);
+        if (openThemeTypeface != null) {
+            mDivider.setTypeface(openThemeTypeface);
+        }
     }
 
     private static String getHourMinSeparatorFromPattern(String dateTimePattern) {
@@ -794,6 +795,33 @@ class SeslTimePickerSpinnerDelegate extends SeslTimePicker.AbsTimePickerDelegate
         mTempCalendar = Calendar.getInstance(locale);
     }
 
+    @Override
+    public void setCustomTimePickerIdleColor(int color) {
+        mHourSpinner.setCustomNumberPickerIdleColor(color);
+        mMinuteSpinner.setCustomNumberPickerIdleColor(color);
+        mAmPmSpinner.setCustomNumberPickerIdleColor(color);
+
+        if (mDivider != null) {
+            mDivider.setTextColor(color);
+        }
+
+        mDelegator.invalidate();
+    }
+
+    @Override
+    public void setCustomTimePickerScrollColor(int color) {
+        mHourSpinner.setCustomNumberPickerScrollColor(color);
+        mMinuteSpinner.setCustomNumberPickerScrollColor(color);
+        mAmPmSpinner.setCustomNumberPickerScrollColor(color);
+
+        if (mDivider != null) {
+            mDivider.setTextColor(mContext.getResources()
+                    .getColor(R.color.sesl_number_picker_text_color_appwidget));
+        }
+
+        mDelegator.invalidate();
+    }
+
     void onTimeChanged() {
         if (mOnTimeChangedListener != null) {
             mOnTimeChangedListener.onTimeChanged(mDelegator, getHour(), getMinute());
@@ -1017,6 +1045,22 @@ class SeslTimePickerSpinnerDelegate extends SeslTimePicker.AbsTimePickerDelegate
                 return mMinuteSpinner;
             case SeslTimePicker.PICKER_AMPM:
                 return mAmPmSpinner;
+        }
+    }
+
+    @Override
+    public void setNumberPickerSubTextTypeface(int picker, Typeface typeface) {
+        switch (picker) {
+            case SeslTimePicker.PICKER_HOUR:
+                mHourSpinner.setSubTextTypeface(typeface);
+                break;
+            case SeslTimePicker.PICKER_AMPM:
+                mAmPmSpinner.setSubTextTypeface(typeface);
+                break;
+            case SeslTimePicker.PICKER_MINUTE:
+            default:
+                mMinuteSpinner.setSubTextTypeface(typeface);
+                break;
         }
     }
 

@@ -19,7 +19,6 @@ package androidx.picker.widget;
 import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY;
-import static androidx.picker.util.SeslDatePickerFontUtil.getBoldFontTypeface;
 
 import android.content.Context;
 import android.content.res.Configuration;
@@ -305,7 +304,14 @@ public class SeslDatePickerSpinnerLayout extends LinearLayout {
         mYearSpinner.setMaxInputLength(4);
         mYearSpinner.setYearDateTimeInputMode();
 
-        Typeface datePickerTypeface = getBoldFontTypeface();
+        Typeface datePickerTypeface;
+
+        if (Build.VERSION.SDK_INT >= 33) {
+            datePickerTypeface = Typeface.create(Typeface.create("sec", Typeface.NORMAL), 600,
+                    false);
+        } else {
+            datePickerTypeface = Typeface.create("sec-roboto-light", Typeface.BOLD);
+        }
         mDaySpinner.setTextTypeface(datePickerTypeface);
         mMonthSpinner.setTextTypeface(datePickerTypeface);
         mYearSpinner.setTextTypeface(datePickerTypeface);

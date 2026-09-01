@@ -18,8 +18,6 @@ package androidx.picker.widget;
 
 import org.jspecify.annotations.NonNull;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY;
-import static androidx.picker.util.SeslDatePickerFontUtil.getBoldFontTypeface;
-import static androidx.picker.util.SeslDatePickerFontUtil.getRegularFontTypeface;
 import static androidx.picker.widget.SeslDatePicker.DATE_MODE_NONE;
 
 import android.content.Context;
@@ -27,8 +25,12 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Rect;
+import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.format.DateUtils;
@@ -75,6 +77,9 @@ public class SeslSimpleMonthView extends View {
 
     private static final float DIVISOR_FOR_CIRCLE_POSITION_Y = 2.7f;
 
+    private static final int FONT_WEIGHT_REGULAR = 400;
+    private static final int FONT_WEIGHT_SEMIBOLD = 600;
+
     private static final int SIZE_UNSPECIFIED = -1;
 
     private static final int LEAP_MONTH = 1;
@@ -89,8 +94,25 @@ public class SeslSimpleMonthView extends View {
     private Paint mAbnormalSelectedDayPaint;
     private final Calendar mCalendar = Calendar.getInstance();
     Context mContext;
+
+    Paint mCustomConfigDayBgPaint;
+    Paint mCustomConfigDayNumberPaint;
+    Paint mCustomConfigRangePaint;
+
+    private final SeslDatePicker.CustomDateConfig mCustomDateConfig =
+            new SeslDatePicker.CustomDateConfig();
+    private SeslDatePicker.OnCustomDateConfigListener mCustomDateConfigListener;
+
+    private final Path mCustomRangePath = new Path();
+
+    SeslDatePicker.DateValidator mDateValidator;
     private Paint mDayNumberPaint;
     private Paint mDayNumberSelectedPaint;
+
+    protected Typeface mRegularTypeface;
+    protected Typeface mSemiboldTypeface;
+    protected Typeface mHcfFocusedSemiboldTypeface;
+
     private Paint mHcfEnabledDayNumberPaint;
     private Calendar mMaxDate = Calendar.getInstance();
     private Calendar mMinDate = Calendar.getInstance();
@@ -178,6 +200,17 @@ public class SeslSimpleMonthView extends View {
         } else {
             mSelectedDayColor = outValue.data;
         }
+
+        if (Build.VERSION.SDK_INT >= 33) {
+            Typeface secTypeface = Typeface.create("sec", Typeface.NORMAL);
+            mRegularTypeface = Typeface.create(secTypeface, FONT_WEIGHT_REGULAR, false);
+            mSemiboldTypeface = Typeface.create(secTypeface, FONT_WEIGHT_SEMIBOLD, false);
+        } else {
+            mRegularTypeface = Typeface.create("sec-roboto-light", Typeface.NORMAL);
+            mSemiboldTypeface = Typeface.create("sec-roboto-light", Typeface.BOLD);
+        }
+        mHcfFocusedSemiboldTypeface = Typeface.create(mSemiboldTypeface, Typeface.BOLD);
+
         mSundayTextColor = res.getColor(R.color.sesl_date_picker_sunday_number_text_color_light);
         mSaturdayTextColor = res.getColor(R.color.sesl_date_picker_saturday_text_color_light);
 
@@ -263,6 +296,14 @@ public class SeslSimpleMonthView extends View {
         mOnDeactivatedDayClickListener = listener;
     }
 
+    void setDisableDates(SeslDatePicker.DateValidator validator) {
+        mDateValidator = validator;
+    }
+
+    void setOnCustomDateConfigListener(SeslDatePicker.OnCustomDateConfigListener listener) {
+        mCustomDateConfigListener = listener;
+    }
+
     @Override
     public boolean dispatchHoverEvent(MotionEvent event) {
         return mTouchHelper.dispatchHoverEvent(event)
@@ -276,6 +317,15 @@ public class SeslSimpleMonthView extends View {
             if (mIsFirstMonth && day < mEnabledDayStart
                     || mIsLastMonth && day > mEnabledDayEnd) {
                 return true;
+            }
+
+            if (mDateValidator != null) {
+                mTempDate.clear();
+                mTempDate.set(mYear, mMonth, day);
+
+                if (!mDateValidator.isValid(mTempDate.getTime())) {
+                    return true;
+                }
             }
 
             if (day > 0) {
@@ -343,12 +393,18 @@ public class SeslSimpleMonthView extends View {
         mDayNumberPaint = new Paint();
         mDayNumberPaint.setAntiAlias(true);
         mDayNumberPaint.setTextSize((float) mMiniDayNumberTextSize);
-        mDayNumberPaint.setTypeface(getRegularFontTypeface());
+        mDayNumberPaint.setTypeface(mRegularTypeface);
         mDayNumberPaint.setTextAlign(Paint.Align.CENTER);
         mDayNumberPaint.setStyle(Paint.Style.FILL);
         mDayNumberPaint.setFakeBoldText(false);
         mHcfEnabledDayNumberPaint = new Paint(mDayNumberPaint);
-        mHcfEnabledDayNumberPaint.setTypeface(getBoldFontTypeface());
+        mHcfEnabledDayNumberPaint.setTypeface(mSemiboldTypeface);
+
+        mCustomConfigDayBgPaint = new Paint(mDayNumberSelectedPaint);
+        mCustomConfigDayNumberPaint = new Paint(mDayNumberPaint);
+        mCustomConfigRangePaint = new Paint(mDayNumberSelectedPaint);
+
+        resetCustomDateConfigPaintColor();
     }
 
     @Override
@@ -446,7 +502,7 @@ public class SeslSimpleMonthView extends View {
         }
     }
 
-    private static int getDaysInMonth(int month, int year) {
+    static int getDaysInMonth(int month, int year) {
         switch (month) {
             case Calendar.JANUARY:
             case Calendar.MARCH:
@@ -523,6 +579,97 @@ public class SeslSimpleMonthView extends View {
 
     // TODO rework this method
     // kang
+    private boolean applyCustomDateConfig(int year, int month, int day, int alphaOverride) {
+        if (mCustomDateConfigListener == null) {
+            return false;
+        }
+
+        mCustomDateConfig.reset();
+
+        mTempDate.clear();
+        mTempDate.set(year, month, day);
+
+        if (!mCustomDateConfigListener.onUpdateDateConfig(mTempDate.getTime(),
+                mCustomDateConfig)) {
+            return false;
+        }
+
+        if (mCustomDateConfig.isMarked()) {
+            int alpha = alphaOverride != -1 ? alphaOverride
+                    : Color.alpha(mCustomDateConfig.getDayBackgroundColor());
+            mCustomConfigDayBgPaint.setColor(mCustomDateConfig.getDayBackgroundColor());
+            mCustomConfigDayBgPaint.setAlpha(alpha);
+        }
+
+        if (mCustomDateConfig.isRangeMode()) {
+            int alpha = alphaOverride != -1 ? alphaOverride
+                    : Color.alpha(mCustomDateConfig.getRangeColor());
+            mCustomConfigRangePaint.setColor(mCustomDateConfig.getRangeColor());
+            mCustomConfigRangePaint.setAlpha(alpha);
+        }
+
+        if (mCustomDateConfig.getDayColor() == 0) {
+            return true;
+        }
+
+        if (alphaOverride == -1) {
+            alphaOverride = Color.alpha(mCustomDateConfig.getDayColor());
+        }
+
+        mCustomConfigDayNumberPaint.setColor(mCustomDateConfig.getDayColor());
+
+        Typeface typeface;
+        if (mCustomDateConfig.isMarked()) {
+            typeface = mIsHcfEnabled ? mHcfFocusedSemiboldTypeface : mSemiboldTypeface;
+        } else {
+            typeface = mIsHcfEnabled ? mSemiboldTypeface : mRegularTypeface;
+        }
+
+        mCustomConfigDayNumberPaint.setTypeface(typeface);
+        mCustomConfigDayNumberPaint.setAlpha(alphaOverride);
+
+        return true;
+    }
+
+    private void drawCustomDateMarkers(Canvas canvas, int xCenter, float baselineY,
+            float centerOffset) {
+        if (mCustomDateConfig.isRangeMode()) {
+            int halfCell = mCalendarWidth / 14;
+
+            float centerY = baselineY - centerOffset;
+            int radius = mDaySelectedCircleSize;
+
+            float rectTop = centerY - radius;
+            float rectBottom = rectTop + (radius * 2);
+
+            mCustomRangePath.reset();
+
+            int rangePosition = mCustomDateConfig.getRangePosition();
+
+            if (rangePosition == SeslDatePicker.CustomDateConfig.RANGE_POS_START) {
+                float rectLeft = mIsRTL ? xCenter - halfCell : xCenter;
+                mCustomRangePath.addRect(rectLeft, rectTop, rectLeft + halfCell, rectBottom,
+                        Path.Direction.CW);
+                mCustomRangePath.addCircle(xCenter, centerY, radius, Path.Direction.CW);
+                canvas.drawPath(mCustomRangePath, mCustomConfigRangePaint);
+            } else if (rangePosition == SeslDatePicker.CustomDateConfig.RANGE_POS_END) {
+                float rectLeft = mIsRTL ? xCenter : xCenter - halfCell;
+                mCustomRangePath.addRect(rectLeft, rectTop, rectLeft + halfCell, rectBottom,
+                        Path.Direction.CW);
+                mCustomRangePath.addCircle(xCenter, centerY, radius, Path.Direction.CW);
+                canvas.drawPath(mCustomRangePath, mCustomConfigRangePaint);
+            } else if (rangePosition == SeslDatePicker.CustomDateConfig.RANGE_POS_MIDDLE) {
+                canvas.drawRect(xCenter - halfCell, rectTop, xCenter + halfCell, rectBottom,
+                        mCustomConfigRangePaint);
+            }
+        }
+
+        if (mCustomDateConfig.isMarked()) {
+            canvas.drawCircle(xCenter, baselineY - centerOffset, mDaySelectedCircleSize,
+                    mCustomConfigDayBgPaint);
+        }
+    }
+
     private void drawDays(Canvas var1) {
         /* var1 = canvas */
         int var2 = this.mWeekHeight * 2 / 3;
@@ -647,6 +794,15 @@ public class SeslSimpleMonthView extends View {
                 this.mDayNumberPaint.setAlpha(this.mDayNumberDisabledAlpha);
             }
 
+            if (mDateValidator != null) {
+                mTempDate.clear();
+                mTempDate.set(mYear, mMonth, var2);
+
+                if (!mDateValidator.isValid(mTempDate.getTime())) {
+                    mDayNumberPaint.setAlpha(mDayNumberDisabledAlpha);
+                }
+            }
+
             var25 = this.mDayNumberPaint;
             var26 = var25;
             if (this.mIsHcfEnabled) {
@@ -655,6 +811,17 @@ public class SeslSimpleMonthView extends View {
                     this.mHcfEnabledDayNumberPaint.setColor(this.mDayNumberPaint.getColor());
                     var26 = this.mHcfEnabledDayNumberPaint;
                 }
+            }
+
+            resetCustomDateConfigPaintColor();
+
+            int configAlpha = (var2 < this.mEnabledDayStart || var2 > this.mEnabledDayEnd) ?
+                    this.mDayNumberDisabledAlpha : -1;
+
+            boolean customConfigApplied = applyCustomDateConfig(mYear, mMonth, var2, configAlpha);
+
+            if (customConfigApplied) {
+                drawCustomDateMarkers(var1, var24, var11, var13);
             }
 
             if (var20) {
@@ -757,6 +924,10 @@ public class SeslSimpleMonthView extends View {
                 var26.setColor(this.mSelectedDayNumberTextColor);
             }
 
+            if (customConfigApplied && mCustomDateConfig.getDayColor() != 0) {
+                var26 = mCustomConfigDayNumberPaint;
+            }
+
             var1.drawText(String.format("%d", var2), (float)var24, (float)var11, var26);
             ++var16;
 
@@ -772,6 +943,15 @@ public class SeslSimpleMonthView extends View {
         var31 = var31;
         int var32;
         if (!this.mIsLastMonth) {
+            int nextYear = this.mYear;
+            int nextMonth = this.mIsLunar ? this.mMonth + (this.mIsNextMonthLeap ? 0 : 1)
+                    : this.mMonth + 1;
+
+            if (nextMonth > Calendar.DECEMBER) {
+                nextYear++;
+                nextMonth = Calendar.JANUARY;
+            }
+
             byte var34 = 1;
             var32 = var16;
             var16 = var2;
@@ -844,8 +1024,21 @@ public class SeslSimpleMonthView extends View {
                     }
                 }
 
+                resetCustomDateConfigPaintColor();
+
+                boolean customConfigApplied = applyCustomDateConfig(nextYear, nextMonth, var2,
+                        mPrevNextMonthDayNumberAlpha);
+
+                if (customConfigApplied) {
+                    drawCustomDateMarkers(var1, var31, var16, var13);
+                }
+
                 if (this.mMode != DATE_MODE_NONE && var17 == this.mNumCells + 1 && (var2 <= this.mEndDay || !this.isNextMonthEndMonth())) {
                     var26.setColor(this.mSelectedDayNumberTextColor);
+                }
+
+                if (customConfigApplied && mCustomDateConfig.getDayColor() != 0) {
+                    var26 = mCustomConfigDayNumberPaint;
                 }
 
                 var1.drawText(String.format("%d", var2), (float)var31, (float)var16, var26);
@@ -881,6 +1074,15 @@ public class SeslSimpleMonthView extends View {
             }
 
             var17 = var11;
+
+            int prevYear = this.mYear;
+            int prevMonth = this.mIsLunar ? this.mMonth - (this.mIsLeapMonth ? 0 : 1)
+                    : this.mMonth - 1;
+
+            if (prevMonth < Calendar.JANUARY) {
+                prevYear--;
+                prevMonth = Calendar.DECEMBER;
+            }
 
             for(var11 = 0; var11 < var4; ++var11) {
                 if (this.mIsRTL) {
@@ -952,8 +1154,21 @@ public class SeslSimpleMonthView extends View {
                     }
                 }
 
+                resetCustomDateConfigPaintColor();
+
+                boolean customConfigApplied = applyCustomDateConfig(prevYear, prevMonth, var17,
+                        mPrevNextMonthDayNumberAlpha);
+
+                if (customConfigApplied) {
+                    drawCustomDateMarkers(var1, var9, var8, var13);
+                }
+
                 if (this.mMode != DATE_MODE_NONE && var31 == 0 && (var17 >= this.mStartDay || !this.isPrevMonthStartMonth())) {
                     var26.setColor(this.mSelectedDayNumberTextColor);
+                }
+
+                if (customConfigApplied && mCustomDateConfig.getDayColor() != 0) {
+                    var26 = mCustomConfigDayNumberPaint;
                 }
 
                 var1.drawText(String.format("%d", var17), (float)var9, (float)var8, var26);
@@ -963,6 +1178,12 @@ public class SeslSimpleMonthView extends View {
 
     }
     // kang
+
+    private void resetCustomDateConfigPaintColor() {
+        mCustomConfigDayBgPaint.setColor(0);
+        mCustomConfigDayNumberPaint.setColor(0);
+        mCustomConfigRangePaint.setColor(0);
+    }
 
     private boolean isPrevMonthStartMonth() {
         if (mIsLunar) {
@@ -1123,6 +1344,15 @@ public class SeslSimpleMonthView extends View {
                 return ExploreByTouchHelper.INVALID_ID;
             }
             if (!mIsLastMonth || day <= mEnabledDayEnd) {
+                if (mDateValidator != null) {
+                    mTempDate.clear();
+                    mTempDate.set(mYear, mMonth, day);
+
+                    if (!mDateValidator.isValid(mTempDate.getTime())) {
+                        return ExploreByTouchHelper.INVALID_ID;
+                    }
+                }
+
                 return day + findDayOffset();
             }
             return ExploreByTouchHelper.INVALID_ID;
@@ -1136,7 +1366,16 @@ public class SeslSimpleMonthView extends View {
                 final int day = viewId - dayOffset;
                 if ((!mIsFirstMonth || day >= mEnabledDayStart)
                         && (!mIsLastMonth || day <= mEnabledDayEnd)) {
-                    virtualViewIds.add(viewId);
+                    if (mDateValidator != null) {
+                        mTempDate.clear();
+                        mTempDate.set(mYear, mMonth, day);
+
+                        if (mDateValidator.isValid(mTempDate.getTime())) {
+                            virtualViewIds.add(viewId);
+                        }
+                    } else {
+                        virtualViewIds.add(viewId);
+                    }
                 }
             }
         }

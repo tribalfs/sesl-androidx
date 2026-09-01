@@ -20,8 +20,6 @@ import org.jspecify.annotations.NonNull;
 import static android.view.View.IMPORTANT_FOR_ACCESSIBILITY_AUTO;
 import static android.view.View.IMPORTANT_FOR_ACCESSIBILITY_YES;
 
-import static androidx.picker.util.SeslDatePickerFontUtil.getBoldFontTypeface;
-
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -40,7 +38,6 @@ import android.os.Build;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -74,6 +71,7 @@ import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
 import androidx.picker.R;
 import androidx.picker.util.SeslAnimationListener;
+import androidx.picker.util.SeslPickerBasicUtils;
 import androidx.picker.widget.SeslSpinningDatePickerSpinner.OnScrollListener;
 import androidx.reflect.content.res.SeslCompatibilityInfoReflector;
 import androidx.reflect.content.res.SeslConfigurationReflector;
@@ -102,6 +100,8 @@ import java.util.concurrent.TimeUnit;
  */
 class SeslSpinningDatePickerSpinnerDelegate extends SeslSpinningDatePickerSpinner.AbsDatePickerDelegate {
     private static final int DEFAULT_CHANGE_VALUE_BY = 1;
+
+    private static final int FONT_WEIGHT_SEMIBOLD = 600;
 
     private static final int DECREASE_BUTTON = 1;
     private static final int INCREASE_BUTTON = 3;
@@ -362,7 +362,12 @@ class SeslSpinningDatePickerSpinnerDelegate extends SeslSpinningDatePickerSpinne
 
         mDefaultTypeface = Typeface.defaultFromStyle(Typeface.BOLD);
         mLegacyTypeface = Typeface.create("sec-roboto-condensed-light", Typeface.BOLD);
-        mPickerTypeface = getBoldFontTypeface();
+        if (Build.VERSION.SDK_INT >= 33) {
+            mPickerTypeface = Typeface.create(
+                    Typeface.create("sec", Typeface.NORMAL), FONT_WEIGHT_SEMIBOLD, false);
+        } else {
+            mPickerTypeface = Typeface.create("sec-roboto-light", Typeface.BOLD);
+        }
 
         if (mDefaultTypeface.equals(mPickerTypeface)) {
             if (!mLegacyTypeface.equals(mPickerTypeface)) {
@@ -373,18 +378,15 @@ class SeslSpinningDatePickerSpinnerDelegate extends SeslSpinningDatePickerSpinne
         }
         mPickerSubTypeface = Typeface.create(mPickerTypeface, Typeface.NORMAL);
 
-        final boolean isDexMode = SeslConfigurationReflector
-                .isDexEnabled(resources.getConfiguration());
-        if (!isDexMode) {
-            final String themeTypeFace = Settings.System.getString(mContext.getContentResolver(),
-                    "theme_font_clock");
-            if (themeTypeFace != null && !themeTypeFace.isEmpty()) {
-                mPickerTypeface = getFontTypeface(themeTypeFace);
-                mPickerSubTypeface = Typeface.create(mPickerTypeface, Typeface.NORMAL);
-            }
-        } else {
+        if (SeslConfigurationReflector.isDexEnabled(resources.getConfiguration())) {
             mIdleAlpha = 0.2f;
             mAlpha = 0.2f;
+        } else {
+            Typeface openThemeTypeface = SeslPickerBasicUtils.getOpenThemeTypeface(mContext);
+            if (openThemeTypeface != null) {
+                mPickerTypeface = openThemeTypeface;
+                mPickerSubTypeface = Typeface.create(openThemeTypeface, Typeface.NORMAL);
+            }
         }
 
         if (isCharacterNumberLanguage()) {

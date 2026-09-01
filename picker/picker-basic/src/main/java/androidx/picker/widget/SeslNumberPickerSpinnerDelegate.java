@@ -21,12 +21,13 @@ import static android.view.View.IMPORTANT_FOR_ACCESSIBILITY_AUTO;
 import static android.view.View.IMPORTANT_FOR_ACCESSIBILITY_YES;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY;
-import static androidx.picker.util.SeslDatePickerFontUtil.getBoldFontTypeface;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -75,6 +76,8 @@ import android.widget.OverScroller;
 import android.widget.Scroller;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.window.OnBackInvokedCallback;
+import android.window.OnBackInvokedDispatcher;
 
 import androidx.annotation.RestrictTo;
 import androidx.appcompat.util.SeslMisc;
@@ -86,6 +89,7 @@ import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
 import androidx.picker.R;
 import androidx.picker.util.SeslAnimationListener;
+import androidx.picker.util.SeslPickerBasicUtils;
 import androidx.picker.widget.SeslNumberPicker.OnScrollListener;
 import androidx.reflect.content.res.SeslCompatibilityInfoReflector;
 import androidx.reflect.content.res.SeslConfigurationReflector;
@@ -161,7 +165,10 @@ class SeslNumberPickerSpinnerDelegate extends SeslNumberPicker.AbsNumberPickerDe
     private final ValueAnimator mFadeInAnimator;
     private final ValueAnimator mFadeOutAnimator;
     Scroller mFlingScroller;
+    protected int mCustomTextColorScrolling;
     private SeslNumberPicker.Formatter mFormatter;
+
+    private SeslNumberPicker.CustomTalkbackFormatter mCustomTalkbackFormatter;
     OverScroller mGravityScroller;
     private final HapticPreDrawListener mHapticPreDrawListener;
     private Typeface mHcfFocusedTypefaceBold;
@@ -169,6 +176,7 @@ class SeslNumberPickerSpinnerDelegate extends SeslNumberPicker.AbsNumberPickerDe
     final EditText mInputText;
     private final Typeface mLegacyTypeface;
     final Scroller mLinearScroller;
+    private OnBackInvokedCallback mOnBackInvokedCallback;
     private SeslNumberPicker.OnEditTextModeChangedListener mOnEditTextModeChangedListener;
     private SeslNumberPicker.OnScrollListener mOnScrollListener;
     private SeslNumberPicker.OnValueChangeListener mOnValueChangeListener;
@@ -208,8 +216,8 @@ class SeslNumberPickerSpinnerDelegate extends SeslNumberPicker.AbsNumberPickerDe
     int mSelectorElementHeight;
     private int mSelectorTextGapHeight;
     int mTextColor;
-    private final int mTextColorIdle;
-    private final int mTextColorScrolling;
+    private int mTextColorIdle;
+    private int mTextColorScrolling;
     private int mTextSize;
     int mTopSelectionDividerTop;
     private int mTouchSlop;
@@ -239,6 +247,7 @@ class SeslNumberPickerSpinnerDelegate extends SeslNumberPicker.AbsNumberPickerDe
     boolean mIncrementVirtualButtonPressed;
     boolean mIsAmPm;
     private boolean mIsBoldTextEnabled;
+    protected boolean mIsCustomScrollColorForPicker = false;
     boolean mIsEditTextMode;
     private boolean mIsHcfEnabled;
     private boolean mPerformClickOnTap;
@@ -390,7 +399,11 @@ class SeslNumberPickerSpinnerDelegate extends SeslNumberPicker.AbsNumberPickerDe
 
         mDefaultTypeface = Typeface.defaultFromStyle(Typeface.BOLD);
         mLegacyTypeface = Typeface.create("sec-roboto-condensed-light", Typeface.BOLD);
-        mPickerTypeface = getBoldFontTypeface();
+        if (Build.VERSION.SDK_INT >= 33) {
+            mPickerTypeface = Typeface.create(Typeface.create("sec", Typeface.NORMAL), 600, false);
+        } else {
+            mPickerTypeface = Typeface.create("sec-roboto-light", Typeface.BOLD);
+        }
 
         if (mDefaultTypeface.equals(mPickerTypeface)) {
             if (!mLegacyTypeface.equals(mPickerTypeface)) {
@@ -401,18 +414,15 @@ class SeslNumberPickerSpinnerDelegate extends SeslNumberPicker.AbsNumberPickerDe
         }
         mPickerSubTypeface = Typeface.create(mPickerTypeface, Typeface.NORMAL);
 
-        final boolean isDexMode = SeslConfigurationReflector
-                .isDexEnabled(resources.getConfiguration());
-        if (!isDexMode) {
-            final String themeTypeFace = Settings.System.getString(mContext.getContentResolver(),
-                    "theme_font_clock");
-            if (themeTypeFace != null && !themeTypeFace.isEmpty()) {
-                mPickerTypeface = getFontTypeface(themeTypeFace);
-                mPickerSubTypeface = Typeface.create(mPickerTypeface, Typeface.NORMAL);
-            }
-        } else {
+        if (SeslConfigurationReflector.isDexEnabled(resources.getConfiguration())) {
             mIdleAlpha = 0.2f;
             mAlpha = 0.2f;
+        } else {
+            final Typeface openThemeTypeface = SeslPickerBasicUtils.getOpenThemeTypeface(mContext);
+            if (openThemeTypeface != null) {
+                mPickerTypeface = openThemeTypeface;
+                mPickerSubTypeface = Typeface.create(openThemeTypeface, Typeface.NORMAL);
+            }
         }
 
         if (isCharacterNumberLanguage()) {
@@ -425,22 +435,7 @@ class SeslNumberPickerSpinnerDelegate extends SeslNumberPicker.AbsNumberPickerDe
         mHcfFocusedTypefaceBold = Typeface.create(mPickerTypeface, Typeface.BOLD);
         setInputTextTypeface();
 
-        mTextColorScrolling = ResourcesCompat.getColor(resources,
-                R.color.sesl_number_picker_text_color_scroll, context.getTheme());
-
-        final ColorStateList colors = mInputText.getTextColors();
-        final int[] enabledStateSet = mDelegator.getEnableStateSet();
-
-        if (Build.VERSION.SDK_INT > 29) {
-            mTextColorIdle = colors.getColorForState(enabledStateSet, Color.WHITE);
-            selectedPickerColor = ResourcesCompat
-                    .getColor(resources, R.color.sesl_number_picker_text_highlight_color, context.getTheme());
-        } else {
-            mTextColorIdle = ResourcesCompat
-                    .getColor(resources, R.color.sesl_number_picker_text_color_scroll, context.getTheme());
-            selectedPickerColor = (mTextColorScrolling & 0xffffff) | 0x33000000;
-        }
-        mTextColor = mTextColorIdle;
+        initPickerTextColor(context);
 
         mVirtualButtonFocusedDrawable = new ColorDrawable(selectedPickerColor);
 
@@ -625,6 +620,8 @@ class SeslNumberPickerSpinnerDelegate extends SeslNumberPicker.AbsNumberPickerDe
             mIsEditTextMode = isEditTextMode;
 
             if (isEditTextMode) {
+                registerBackInvokeCallback();
+
                 tryComputeMaxWidth();
                 removeAllCallbacks();
 
@@ -649,6 +646,8 @@ class SeslNumberPickerSpinnerDelegate extends SeslNumberPicker.AbsNumberPickerDe
                     }
                 }
             } else {
+                unregisterBackInvokeCallback();
+
                 if (mWheelInterval != DEFAULT_WHEEL_INTERVAL && mCustomWheelIntervalMode
                         && mValue % mWheelInterval != 0) {
                     applyWheelCustomInterval(false);
@@ -685,6 +684,35 @@ class SeslNumberPickerSpinnerDelegate extends SeslNumberPicker.AbsNumberPickerDe
     @Override
     public void setCustomIntervalValue(int interval) {
         mWheelInterval = interval;
+    }
+
+    @Override
+    public void setCustomNumberPickerIdleColor(int color) {
+        mInputText.setTextColor(color);
+        initPickerTextColor(mContext);
+
+        mSelectorWheelPaint.setColor(mTextColor);
+        mColorInAnimator.setIntValues(mTextColorIdle, mTextColorScrolling);
+        mColorOutAnimator.setIntValues(mTextColorScrolling, mTextColorIdle);
+
+        mDelegator.invalidate();
+    }
+
+    @Override
+    public void setCustomNumberPickerScrollColor(int color) {
+        mIsCustomScrollColorForPicker = true;
+        mCustomTextColorScrolling = color;
+
+        initPickerTextColor(mContext);
+        mColorInAnimator.setIntValues(mTextColorIdle, mTextColorScrolling);
+        mColorOutAnimator.setIntValues(mTextColorScrolling, mTextColorIdle);
+
+        mDelegator.invalidate();
+    }
+
+    @Override
+    public void setCustomTalkbackFormatter(SeslNumberPicker.CustomTalkbackFormatter formatter) {
+        mCustomTalkbackFormatter = formatter;
     }
 
     @Override
@@ -1751,6 +1779,17 @@ class SeslNumberPickerSpinnerDelegate extends SeslNumberPicker.AbsNumberPickerDe
     }
 
     @Override
+    public void setSubTextTypeface(Typeface typeface) {
+        mCustomTypefaceSet = true;
+        mPickerSubTypeface = typeface;
+
+        mSelectorWheelPaint.setTypeface(mPickerTypeface);
+        mHcfFocusedTypefaceBold = Typeface.create(mPickerTypeface, Typeface.BOLD);
+        setInputTextTypeface();
+        tryComputeMaxWidth();
+    }
+
+    @Override
     public void setTextTypeface(Typeface typeface) {
         mCustomTypefaceSet = true;
         mPickerTypeface = typeface;
@@ -1766,6 +1805,111 @@ class SeslNumberPickerSpinnerDelegate extends SeslNumberPicker.AbsNumberPickerDe
             mInputText.setTypeface(mHcfFocusedTypefaceBold);
         } else {
             mInputText.setTypeface(mPickerTypeface);
+        }
+    }
+
+    private void initPickerTextColor(Context context) {
+        if (mIsCustomScrollColorForPicker) {
+            mTextColorScrolling = mCustomTextColorScrolling;
+            mTextColorIdle = ResourcesCompat.getColor(context.getResources(),
+                    R.color.sesl_number_picker_text_color_appwidget, context.getTheme());
+            selectedPickerColor = ResourcesCompat.getColor(context.getResources(),
+                    R.color.sesl_number_picker_text_highlight_color_appwidget, context.getTheme());
+
+            mTextColor = mTextColorIdle;
+            mSelectorWheelPaint.setColor(mTextColor);
+            mInputText.setHighlightColor(selectedPickerColor);
+            mInputText.setTextColor(mContext.getResources()
+                    .getColor(R.color.sesl_number_picker_text_color_appwidget));
+            return;
+        }
+
+        mTextColorScrolling = ResourcesCompat.getColor(context.getResources(),
+                R.color.sesl_number_picker_text_color_scroll, context.getTheme());
+
+        final ColorStateList colors = mInputText.getTextColors();
+        final int[] enabledStateSet = mDelegator.getEnableStateSet();
+
+        if (Build.VERSION.SDK_INT > 29) {
+            mTextColorIdle = colors.getColorForState(enabledStateSet, Color.WHITE);
+            selectedPickerColor = ResourcesCompat
+                    .getColor(context.getResources(), R.color.sesl_number_picker_text_highlight_color, context.getTheme());
+        } else {
+            mTextColorIdle = ResourcesCompat.getColor(context.getResources(),
+                    R.color.sesl_number_picker_text_color_scroll, context.getTheme());
+            selectedPickerColor = (mTextColorScrolling & 0xffffff) | 0x33000000;
+        }
+
+        mTextColor = mTextColorIdle;
+
+        mInputText.setHighlightColor(selectedPickerColor);
+        if (Build.VERSION.SDK_INT <= 29) {
+            mInputText.setTextColor(mTextColorScrolling);
+        }
+    }
+
+    private Activity findActivity(Context context) {
+        while (context instanceof ContextWrapper) {
+            if (context instanceof Activity) {
+                return (Activity) context;
+            }
+            context = ((ContextWrapper) context).getBaseContext();
+        }
+        return null;
+    }
+
+    private OnBackInvokedDispatcher getBackInvokeDispatcher() {
+        if (Build.VERSION.SDK_INT < 33) {
+            return null;
+        }
+
+        OnBackInvokedDispatcher dispatcher = mDelegator.findOnBackInvokedDispatcher();
+        if (dispatcher != null) {
+            return dispatcher;
+        }
+
+        Activity activity = findActivity(mContext);
+        if (activity != null) {
+            return activity.getOnBackInvokedDispatcher();
+        }
+
+        return null;
+    }
+
+    private void registerBackInvokeCallback() {
+        if (Build.VERSION.SDK_INT < 33) {
+            return;
+        }
+
+        OnBackInvokedDispatcher dispatcher = getBackInvokeDispatcher();
+        if (dispatcher == null) {
+            return;
+        }
+
+        if (mOnBackInvokedCallback == null) {
+            mOnBackInvokedCallback = () -> {
+                if (!mIsEditTextModeEnabled || !mIsEditTextMode) {
+                    mIsPressedBackKey = false;
+                    unregisterBackInvokeCallback();
+                } else {
+                    mIsPressedBackKey = true;
+                    hideSoftInput();
+                    setEditTextMode(false);
+                }
+            };
+        }
+
+        dispatcher.registerOnBackInvokedCallback(1000000, mOnBackInvokedCallback);
+    }
+
+    private void unregisterBackInvokeCallback() {
+        if (Build.VERSION.SDK_INT < 33 || mOnBackInvokedCallback == null) {
+            return;
+        }
+
+        OnBackInvokedDispatcher dispatcher = getBackInvokeDispatcher();
+        if (dispatcher != null) {
+            dispatcher.unregisterOnBackInvokedCallback(mOnBackInvokedCallback);
         }
     }
 
@@ -1943,6 +2087,7 @@ class SeslNumberPickerSpinnerDelegate extends SeslNumberPicker.AbsNumberPickerDe
         mSpringFlingRunning = false;
         removeAllCallbacks();
         mDelegator.getViewTreeObserver().removeOnPreDrawListener(mHapticPreDrawListener);
+        unregisterBackInvokeCallback();
     }
 
     @Override
@@ -2945,6 +3090,8 @@ class SeslNumberPickerSpinnerDelegate extends SeslNumberPicker.AbsNumberPickerDe
                 AccessibilityNodeInfoCompat.wrap(info).setTooltipText(mPickerContentDescription);
                 info.setSelected(true);
                 info.setAccessibilityFocused(false);
+            } else if (mCustomTalkbackFormatter != null) {
+                info.setText(getVirtualCurrentButtonText(false));
             }
             Rect boundsInParent = mTempRect;
             boundsInParent.set(left, top, right, bottom);
@@ -3070,6 +3217,10 @@ class SeslNumberPickerSpinnerDelegate extends SeslNumberPicker.AbsNumberPickerDe
                 value = getWrappedSelectorIndex(value);
             }
             if (value >= mMinValue) {
+                if (mCustomTalkbackFormatter != null) {
+                    return mCustomTalkbackFormatter.format(value);
+                }
+
                 return (mDisplayedValues == null)
                         ? formatNumber(value) : mDisplayedValues[value - mMinValue];
             }
@@ -3085,6 +3236,10 @@ class SeslNumberPickerSpinnerDelegate extends SeslNumberPicker.AbsNumberPickerDe
                 value = getWrappedSelectorIndex(value);
             }
             if (value <= mMaxValue) {
+                if (mCustomTalkbackFormatter != null) {
+                    return mCustomTalkbackFormatter.format(value);
+                }
+
                 return (mDisplayedValues == null)
                         ? formatNumber(value) : mDisplayedValues[value - mMinValue];
             }
@@ -3098,8 +3253,12 @@ class SeslNumberPickerSpinnerDelegate extends SeslNumberPicker.AbsNumberPickerDe
             }
             String text = null;
             if (value <= mMaxValue) {
-                text = (mDisplayedValues == null)
-                        ? formatNumber(value) : mDisplayedValues[value - mMinValue];
+                if (mCustomTalkbackFormatter != null) {
+                    text = mCustomTalkbackFormatter.format(value);
+                } else {
+                    text = (mDisplayedValues == null)
+                            ? formatNumber(value) : mDisplayedValues[value - mMinValue];
+                }
             }
             return text != null && showContentDescription
                     ? text + ", " + mPickerContentDescription : text;
