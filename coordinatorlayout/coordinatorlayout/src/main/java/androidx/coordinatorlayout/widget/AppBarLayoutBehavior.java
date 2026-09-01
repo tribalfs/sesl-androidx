@@ -21,6 +21,12 @@ package androidx.coordinatorlayout.widget;
  */
 
 public interface AppBarLayoutBehavior {
+
+    public static final int SESL_STATE_IDLE = 0;
+    public static final int SESL_STATE_EXPANDED = 1;
+    public static final int SESL_STATE_COLLAPSED = 2;
+    public static final int SESL_STATE_HIDE = 4;
+
     /**
      * Returns whether the {@link com.google.android.material.appbar.AppBarLayout} is collapsed.
      */
@@ -40,4 +46,31 @@ public interface AppBarLayoutBehavior {
      * @param isMouse {@code true} if the interaction is from a mouse, {@code false} otherwise.
      */
     void seslSetIsMouse(boolean isMouse);
+
+    //Sesl9
+    /**
+     * Returns whether the AppBarLayout can change to hide state.
+     */
+    boolean seslCanChangeToHideState();
+
+    /**
+     * Returns the current state of the AppBarLayout.
+     */
+    int seslGetCurrentAppBarState();
+
+    /**
+     * Returns whether the AppBarLayout is hidden.
+     */
+    boolean seslIsHided();
+
+    /**
+     * Hides the AppBarLayout.
+     */
+    void seslSetHide();
+
+    /**
+     * Returns whether the floating toolbar behavior is enabled.
+     */
+    boolean useFloatingToolbar();
+    //sesl9
 }
