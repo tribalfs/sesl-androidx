@@ -248,6 +248,9 @@ class SeslRecyclerViewFastScroller {
     /** Whether the fast scroller is enabled. */
     private boolean mEnabled;
 
+    private int mScrollBarTopOffset = 0;
+    private int mScrollBarBottomOffset = 0;
+
     /** Whether the scrollbar and decorations should always be shown. */
     private boolean mAlwaysShow;
 
@@ -307,6 +310,13 @@ class SeslRecyclerViewFastScroller {
 
 
     public static class SeslFastScrollThumbAnimator implements DisposableHandle {
+        public void setDefaultColor(int color) {
+            if (color == 0) {
+                color = mDefaultColor;
+            }
+            mColorAnimator.tryAnimateTo(color);
+        }
+
         private static final float DEFAULT_SCROLL_BAR_VALUE = 0.0f;
         private static final float FAST_SCROLL_BAR_VALUE = 1.0f;
         private final int mActivatedColor;
@@ -637,6 +647,24 @@ class SeslRecyclerViewFastScroller {
      */
     public void stop() {
         setState(STATE_NONE);
+    }
+
+    public void setScrollBarBottomOffset(int offset) {
+        if (offset < 0) {
+            offset = 0;
+        }
+        mScrollBarBottomOffset = offset;
+        resetScrollDatas();
+        updateLayout();
+    }
+
+    public void setScrollBarTopOffset(int offset) {
+        if (offset < 0) {
+            offset = 0;
+        }
+        mScrollBarTopOffset = offset;
+        resetScrollDatas();
+        updateLayout();
     }
 
     public void setScrollbarPosition(int position) {
@@ -1006,12 +1034,13 @@ class SeslRecyclerViewFastScroller {
            bounds.left = 0;
        }
        bounds.top = 0;
-       bounds.bottom = getThumbLength(
-               mRecyclerView.getHeight(),
+       int height = ((((mRecyclerView.getHeight() - (mTrackVerticalPadding * 2)) - mAdditionalTopPadding) - mAdditionalBottomPadding) - mScrollBarTopOffset) - mScrollBarBottomOffset;
+       bounds.bottom = Math.min(getThumbLength(
+               height,
                mContext.getResources().getDimensionPixelOffset(R.dimen.sesl_fast_scroll_thumb_min_height),
                mListScrollExtent,
                mListScrollRange
-       );
+       ), height);
    }
 
     private int getThumbLength(int height, int minHeight, int scrollExtent, int scrollRange) {
@@ -1037,12 +1066,12 @@ class SeslRecyclerViewFastScroller {
         final int top;
         int bottom;
         if (mThumbPosition == THUMB_POSITION_INSIDE) {
-            top = container.top + mTrackVerticalPadding + mAdditionalTopPadding;
-            bottom = container.bottom - mTrackVerticalPadding - mAdditionalBottomPadding;
+            top = container.top + mTrackVerticalPadding + mAdditionalTopPadding + mScrollBarTopOffset;
+            bottom = container.bottom - mTrackVerticalPadding - mAdditionalBottomPadding - mScrollBarBottomOffset;
         } else {
             final int thumbHalfHeight = thumb.getHeight() / 2;
-            top = container.top + thumbHalfHeight + mTrackVerticalPadding + mAdditionalTopPadding;
-            bottom = container.bottom - thumbHalfHeight - mTrackVerticalPadding - mAdditionalBottomPadding;
+            top = container.top + thumbHalfHeight + mTrackVerticalPadding + mAdditionalTopPadding + mScrollBarTopOffset;
+            bottom = container.bottom - thumbHalfHeight - mTrackVerticalPadding - mAdditionalBottomPadding - mScrollBarBottomOffset;
         }
 
         if (bottom < top) {
@@ -1551,126 +1580,85 @@ class SeslRecyclerViewFastScroller {
             getSectionsFromIndexer();
         }
 
-        RecyclerView.LayoutManager layoutManager = this.mRecyclerView.getLayoutManager();
-
-        float percentage = 0.0F;
+        float pos = 0.0f;
         if (visibleItemCount != 0 && totalItemCount != 0) {
             SectionIndexer sectionIndexer = mSectionIndexer;
             int topPadding = mRecyclerView.getPaddingTop();
+            RecyclerView.LayoutManager layoutManager = mRecyclerView.getLayoutManager();
             int startPosition = firstVisibleItem;
-            if (topPadding > 0) {
-                if (layoutManager instanceof LinearLayoutManager) {
-                    while(startPosition > 0 && layoutManager.findViewByPosition(startPosition - 1) != null) {
-                        startPosition--;
+            if (topPadding > 0 && (layoutManager instanceof LinearLayoutManager)) {
+                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) layoutManager;
+                while (startPosition > 0) {
+                    int prev = startPosition - 1;
+                    if (linearLayoutManager.findViewByPosition(prev) == null) {
+                        break;
                     }
+                    startPosition = prev;
                 }
             }
 
-            View firstChild = mRecyclerView.getChildAt(0);
-            float position;
-            int firstChildHeight;
-            if (firstChild != null && (firstChildHeight = firstChild.getHeight()) != 0) {
-                if (startPosition == 0) {
-                    position = (float)(topPadding - firstChild.getTop()) / (float)(firstChildHeight + topPadding);
-                } else {
-                    position = (float)(-firstChild.getTop()) / (float)firstChildHeight;
+            int childAdapterPosition = startPosition - mRecyclerView.getChildAdapterPosition(mRecyclerView.getChildAt(0));
+            if (childAdapterPosition < 0) {
+                childAdapterPosition = 0;
+            }
+            View childAt = mRecyclerView.getChildAt(childAdapterPosition);
+            float top;
+            if (childAt == null || childAt.getHeight() == 0) {
+                top = 0.0f;
+            } else {
+                top = startPosition == 0
+                        ? (float) (topPadding - childAt.getTop()) / (float) (childAt.getHeight() + topPadding)
+                        : (float) (-childAt.getTop()) / (float) childAt.getHeight();
+            }
+
+            if (sectionIndexer == null || mSections == null || mSections.length <= 0 || !mMatchDragPosition) {
+                if (visibleItemCount != totalItemCount || (startPosition != 0 && !(layoutManager instanceof StaggeredGridLayoutManager))) {
+                    int spanCount;
+                    if (layoutManager instanceof GridLayoutManager) {
+                        GridLayoutManager gridLayoutManager = (GridLayoutManager) layoutManager;
+                        spanCount = gridLayoutManager.getSpanCount() / gridLayoutManager.getSpanSizeLookup().getSpanSize(startPosition);
+                    } else if (layoutManager instanceof StaggeredGridLayoutManager) {
+                        spanCount = ((StaggeredGridLayoutManager) layoutManager).getSpanCount();
+                    } else {
+                        spanCount = 1;
+                    }
+                    pos = ((top * spanCount) + startPosition) / totalItemCount;
+                } else if ((layoutManager instanceof StaggeredGridLayoutManager) && startPosition != 0 && childAt != null
+                        && ((StaggeredGridLayoutManager.LayoutParams) childAt.getLayoutParams()).isFullSpan()) {
+                    return 1.0f;
                 }
             } else {
-                position = 0.0F;
-            }
-
-            boolean hasSections;
-            checkHasSections: {
-                if (sectionIndexer != null) {
-                    Object[] sections = mSections;
-                    if (sections != null && sections.length > 0) {
-                        hasSections = true;
-                        break checkHasSections;
-                    }
-                }
-
-                hasSections = false;
-            }
-
-            if (hasSections && mMatchDragPosition) {
                 if (startPosition < 0) {
-                    return 0.0F;
+                    return 0.0f;
                 }
-
                 int section = sectionIndexer.getSectionForPosition(startPosition);
                 int sectionStartPosition = sectionIndexer.getPositionForSection(section);
                 int sectionCount = mSections.length;
+                int positionForSection;
                 if (section < sectionCount - 1) {
-                    firstVisibleItem = section + 1;
-                    if (firstVisibleItem < sectionCount) {
-                        firstVisibleItem = sectionIndexer.getPositionForSection(firstVisibleItem);
-                    } else {
-                        firstVisibleItem = totalItemCount - 1;
-                    }
-
-                    firstVisibleItem -= sectionStartPosition;
+                    int nextSection = section + 1;
+                    positionForSection = (nextSection < sectionCount ? sectionIndexer.getPositionForSection(nextSection) : totalItemCount - 1) - sectionStartPosition;
                 } else {
-                    firstVisibleItem = totalItemCount - sectionStartPosition;
+                    positionForSection = totalItemCount - sectionStartPosition;
                 }
-
-                if (firstVisibleItem == 0) {
-                    position = percentage;
-                } else {
-                    position = ((float)startPosition + position - (float)sectionStartPosition) / (float)firstVisibleItem;
-                }
-
-                percentage = (float)section + position;
-                position = (float)sectionCount;
-            } else {
-                if (visibleItemCount == totalItemCount) {
-                    if (layoutManager instanceof StaggeredGridLayoutManager
-                            && startPosition != 0 && firstChild != null
-                            && ((StaggeredGridLayoutManager.LayoutParams)firstChild.getLayoutParams()).isFullSpan()
-                    ) {
-                        return 1.0F;
-                    }
-
-                    return 0.0F;
-                }
-
-                int spanCount;
-                if (layoutManager instanceof GridLayoutManager) {
-                    spanCount = ((GridLayoutManager)layoutManager).getSpanCount();
-                    int spanSize = ((GridLayoutManager)layoutManager).getSpanSizeLookup().getSpanSize(startPosition);
-                    firstVisibleItem = spanCount / spanSize;
-                } else if (layoutManager instanceof StaggeredGridLayoutManager) {
-                    spanCount = ((StaggeredGridLayoutManager)layoutManager).getSpanCount();
-                    firstVisibleItem = spanCount;
-                } else {
-                    firstVisibleItem = 1;
-                }
-
-                percentage = (float)startPosition + position * (float)firstVisibleItem;
-                position = (float)totalItemCount;
+                pos = (section + (positionForSection != 0 ? ((startPosition + top) - sectionStartPosition) / positionForSection : 0.0f)) / sectionCount;
             }
 
-            float itemSize = percentage / position;
             if (startPosition + visibleItemCount == totalItemCount) {
                 View lastChild = mRecyclerView.getChildAt(visibleItemCount - 1);
-                View firstVisibleChild = mRecyclerView.getChildAt(0);
-                int visibleHeight = lastChild.getBottom() - mRecyclerView.getHeight() + mRecyclerView.getPaddingBottom();
-                int firstVisibleItemHeight = visibleHeight - (firstVisibleChild.getTop() - mRecyclerView.getPaddingTop());
+                View firstChild = mRecyclerView.getChildAt(0);
+                int paddingBottom = mRecyclerView.getPaddingBottom() + (lastChild.getBottom() - mRecyclerView.getHeight());
+                int firstVisibleItemHeight = paddingBottom - (firstChild.getTop() - mRecyclerView.getPaddingTop());
                 if (firstVisibleItemHeight > lastChild.getHeight() || startPosition > 0) {
                     firstVisibleItemHeight = lastChild.getHeight();
                 }
-
-                visibleHeight = firstVisibleItemHeight - visibleHeight;
+                int visibleHeight = firstVisibleItemHeight - paddingBottom;
                 if (visibleHeight > 0 && firstVisibleItemHeight > 0) {
-                    position = itemSize + (1.0F - itemSize) * ((float)visibleHeight / (float)firstVisibleItemHeight);
+                    return ((visibleHeight / (float) firstVisibleItemHeight) * (1.0f - pos)) + pos;
                 }
-            }else{
-                position = itemSize;
             }
-
-            return position;
-        } else {
-            return 0.0F;
         }
+        return pos;
     }
 
     /**
@@ -2102,4 +2090,10 @@ class SeslRecyclerViewFastScroller {
             }
         }
     }
+    public void setDefaultColor(int color) {
+        if (mThumbWidthAnimator != null) {
+            mThumbWidthAnimator.setDefaultColor(color);
+        }
+    }
+
 }

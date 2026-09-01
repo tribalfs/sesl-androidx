@@ -25,7 +25,6 @@ import android.graphics.Rect;
 import android.os.Build;
 import android.util.Log;
 import android.view.GestureDetector;
-import android.view.HapticFeedbackConstants;
 import android.view.InputDevice;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -33,15 +32,17 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewParent;
 import android.view.animation.Interpolator;
+import android.view.animation.PathInterpolator;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
-import androidx.core.view.GestureDetectorCompat;
+import androidx.core.view.HapticFeedbackConstantsCompat;
 import androidx.core.view.ViewCompat;
 import androidx.recyclerview.R;
 import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
+import androidx.reflect.view.SeslHapticFeedbackConstantsReflector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -409,6 +410,12 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
             }
             switch (action) {
                 case MotionEvent.ACTION_MOVE: {
+                    //sesl9
+                    if (event.getButtonState() == MotionEvent.BUTTON_STYLUS_PRIMARY) {
+                        select(null, ACTION_STATE_IDLE);
+                        mActivePointerId = ACTIVE_POINTER_ID_NONE;
+                        return;
+                    }
                     // Find the index of the active pointer and fetch its position
                     if (activePointerIndex >= 0) {
                         updateDxDy(event, mSelectedFlags, activePointerIndex);
@@ -629,9 +636,9 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
         int actionStateMask = (1 << (DIRECTION_FLAG_COUNT + DIRECTION_FLAG_COUNT * actionState))
                 - 1;
         boolean preventLayout = false;
+        final ViewHolder prevSelected = mSelected;
 
         if (mSelected != null) {
-            final ViewHolder prevSelected = mSelected;
             if (prevSelected.itemView.getParent() != null) {
                 final int swipeDir = prevActionState == ACTION_STATE_DRAG ? 0
                         : swipeIfNecessary(prevSelected);
@@ -724,20 +731,8 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
             mSelectedStartX = selected.itemView.getLeft();
             mSelectedStartY = selected.itemView.getTop();
             mSelected = selected;
-
-            if (actionState == ACTION_STATE_DRAG) {
-                mSelected.itemView.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
-                //Sesl
-                if (mStartDraggingText != null && !mStartDraggingText.isEmpty()) {
-                    mSelected.itemView.announceForAccessibility(mStartDraggingText);
-                } else {
-                    mSelected.itemView.announceForAccessibility(mRecyclerView.getContext()
-                            .getString(R.string.dragndroplist_drag_start,
-                                    mSelected.getLayoutPosition() + 1));
-                }
-                //sesl
-            }
         }
+        //Sesl9
         final ViewParent rvParent = mRecyclerView.getParent();
         if (rvParent != null) {
             rvParent.requestDisallowInterceptTouchEvent(mSelected != null);
@@ -745,7 +740,24 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
         if (!preventLayout) {
             mRecyclerView.getLayoutManager().requestSimpleAnimationsInNextLayout();
         }
-        mCallback.onSelectedChanged(mSelected, mActionState);
+        // When returning to IDLE, report the previously selected holder (not null) so
+        // onSelectedChanged can identify which item was just deselected.
+        if (mActionState == ACTION_STATE_IDLE) {
+            mCallback.onSelectedChanged(prevSelected, 0);
+        } else {
+            mCallback.onSelectedChanged(mSelected, mActionState);
+        }
+        if (actionState == ACTION_STATE_DRAG) {
+            mSelected.itemView.performHapticFeedback(HapticFeedbackConstantsCompat.DRAG_START);
+            if (mStartDraggingText != null && !mStartDraggingText.isEmpty()) {
+                mSelected.itemView.announceForAccessibility(mStartDraggingText);
+            } else {
+                mSelected.itemView.announceForAccessibility(mRecyclerView.getContext()
+                        .getString(R.string.dragndroplist_drag_start,
+                                mSelected.getLayoutPosition() + 1));
+            }
+        }
+        //ses9
         mRecyclerView.invalidate();
     }
 
@@ -834,7 +846,7 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
                 scrollY = topDiff;
             } else if (mDy > 0) {
                 final int bottomDiff = curY + mSelected.itemView.getHeight() + mTmpRect.bottom
-                        - (mRecyclerView.getHeight() - mRecyclerView.getPaddingBottom());
+                        - (mRecyclerView.getHeight() - mRecyclerView.seslGetBottomScrollOffset()/*sesl9*/ - mRecyclerView.getPaddingBottom());
                 if (bottomDiff > 0) {
                     scrollY = bottomDiff;
                 }
@@ -878,15 +890,52 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
         final int centerY = (top + bottom) / 2;
         final RecyclerView.LayoutManager lm = mRecyclerView.getLayoutManager();
         final int childCount = lm.getChildCount();
+        //Sesl9: clamp the selected item's bounding box to the visible viewport for vertical
+        // LinearLayoutManager so partially off-screen items are still considered as targets.
+        final Rect rvBounds = new Rect(0, 0, mRecyclerView.getWidth(), mRecyclerView.getHeight());
+        final Rect selectedBox = new Rect(left, top, right, bottom);
+        boolean unclamped = true;
+        if (lm instanceof LinearLayoutManager && lm.canScrollVertically()) {
+            if (left < 0) {
+                selectedBox.right -= left;
+                selectedBox.left = 0;
+                unclamped = false;
+            }
+            if (right > mRecyclerView.getWidth()) {
+                selectedBox.left -= right - mRecyclerView.getWidth();
+                selectedBox.right = mRecyclerView.getWidth();
+                unclamped = false;
+            }
+            if (top < 0) {
+                selectedBox.bottom -= top;
+                selectedBox.top = 0;
+                unclamped = false;
+            }
+            if (bottom > mRecyclerView.getHeight()) {
+                selectedBox.top -= bottom - mRecyclerView.getHeight();
+                selectedBox.bottom = mRecyclerView.getHeight();
+                unclamped = false;
+            }
+        }
+        //sesl9
         for (int i = 0; i < childCount; i++) {
             View other = lm.getChildAt(i);
+            //Sesl9
+            if (other == null) {
+                continue; //recycled
+            }
             if (other == viewHolder.itemView) {
                 continue; //myself!
             }
-            if (other.getBottom() < top || other.getTop() > bottom
-                    || other.getRight() < left || other.getLeft() > right) {
+            final Rect otherBox = new Rect(other.getLeft(), other.getTop(),
+                    other.getRight(), other.getBottom());
+            if (!Rect.intersects(selectedBox, otherBox)) {
                 continue;
             }
+            if (!unclamped && !rvBounds.contains(otherBox)) {
+                continue;
+            }
+            //sesl9
             final ViewHolder otherVh = mRecyclerView.getChildViewHolder(other);
             if (mCallback.canDropOver(mRecyclerView, mSelected, otherVh)) {
                 // find the index to add
@@ -948,6 +997,8 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
             mCallback.onMoved(mRecyclerView, viewHolder, fromPosition,
                     target, toPosition, x, y);
             //Sesl
+            viewHolder.itemView.performHapticFeedback(
+                    SeslHapticFeedbackConstantsReflector.semGetVibrationIndex(41));//sesl9
             if (mMoveDraggingText != null && !mMoveDraggingText.isEmpty()) {
                 mSelected.itemView.announceForAccessibility(mMoveDraggingText);
             } else {
@@ -2499,6 +2550,7 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
             mTargetX = targetX;
             mTargetY = targetY;
             mValueAnimator = ValueAnimator.ofFloat(0f, 1f);
+            mValueAnimator.setInterpolator(new PathInterpolator(0.22f, 0.25f, 0f, 1f));//sesl9
             mValueAnimator.addUpdateListener(
                     new ValueAnimator.AnimatorUpdateListener() {
                         @Override

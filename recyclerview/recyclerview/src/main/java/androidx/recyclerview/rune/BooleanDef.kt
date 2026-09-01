@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 The Android Open Source Project
+ * Copyright 2026 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package androidx.recyclerview.sesl.drawable
+
+package androidx.recyclerview.rune
 
 import androidx.annotation.RestrictTo
 
-//Added in sesl7
+//sesl9
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP_PREFIX)
-interface SeslAutowiredDrawable<T> {
-    var value: T
-
-    fun invalidateSelf()
-}
+@Retention(AnnotationRetention.RUNTIME)
+internal annotation class BooleanDef(vararg val value: Boolean = [])

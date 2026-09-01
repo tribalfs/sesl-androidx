@@ -29,12 +29,15 @@ import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.text.TextPaint;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.reflect.view.SeslHapticFeedbackConstantsReflector;
+
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 /*
  * Original code by Samsung, all rights reserved to the original author.
@@ -63,7 +66,7 @@ public class SeslSwipeListAnimator {
     private Bitmap mSwipeBitmap = null;
     private SwipeConfiguration mSwipeConfiguration;
     private Rect mSwipeRect = null;
-    private Paint mTextPaint = null;
+    private TextPaint mTextPaint = null;
     public float mLastRectAlpha = 0.0f;
 
     public static class SwipeConfiguration {
@@ -136,8 +139,8 @@ public class SeslSwipeListAnimator {
 
     }
 
-    private Paint initPaintWithAlphaAntiAliasing(int color) {
-        Paint paint = new Paint();
+    private TextPaint initPaintWithAlphaAntiAliasing(int color) {
+        TextPaint paint = new TextPaint();
         paint.setColor(color);
         paint.setAntiAlias(true);
         return paint;
@@ -289,6 +292,7 @@ public class SeslSwipeListAnimator {
         canvas.drawRect(destinationRect, paint);
 
         if (drawable != null) {
+            drawable.setAlpha(alpha);
             drawable.setBounds(sourceRect);
             drawable.draw(canvas);
         }
@@ -298,11 +302,19 @@ public class SeslSwipeListAnimator {
     }
 
 
-    private void drawSwipeText(Canvas canvas, Paint textPaint, String text, int direction, Rect bounds) {
+    private void drawSwipeText(Canvas canvas, TextPaint textPaint, String text, int direction, Rect bounds) {
+        int maxAvailableWidth;
+        if (direction == DIRECTION_LTR) {
+            maxAvailableWidth = canvas.getWidth() - bounds.right - mSwipeConfiguration.drawablePadding;
+        } else {
+            maxAvailableWidth = bounds.left - mSwipeConfiguration.drawablePadding;
+        }
+
+        String ellipsizedText = TextUtils.ellipsize(text, textPaint, maxAvailableWidth, TextUtils.TruncateAt.END).toString();
         Rect textBounds = new Rect();
 
         textPaint.setTextAlign(Paint.Align.LEFT);
-        textPaint.getTextBounds(text, 0, text.length(), textBounds);
+        textPaint.getTextBounds(ellipsizedText, 0, ellipsizedText.length(), textBounds);
 
         Paint.FontMetrics fontMetrics = textPaint.getFontMetrics();
 
@@ -316,9 +328,8 @@ public class SeslSwipeListAnimator {
             x = bounds.right + mSwipeConfiguration.drawablePadding;
         } else {
             x = (bounds.left - mSwipeConfiguration.drawablePadding) - textBounds.right;
-
         }
-        canvas.drawText(text, x, y, textPaint);
+        canvas.drawText(ellipsizedText, x, y, textPaint);
     }
 
 

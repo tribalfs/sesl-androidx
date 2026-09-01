@@ -28,7 +28,7 @@ object SeslManifest {
         "androidx.coordinatorlayout" to listOf("1.3.0", "1.0.6-sesl9", "rev0", 23, 37),
         "androidx.appcompat" to listOf("1.8.0", "1.0.38-sesl9", "rev0", 23, 37),
         "androidx.fragment" to listOf("1.9.0", "1.0.6-sesl9", "rev0", 23, 37),
-        "androidx.recyclerview" to listOf("1.4.0", "1.0.12-sesl8", "rev3", 21, 35),
+        "androidx.recyclerview" to listOf("1.4.0", "1.0.25-sesl9", "rev0", 23, 37),
         "androidx.preference" to listOf("1.2.1", "1.0.0-sesl8", "rev1", 21, 35),
         "androidx.slidingpanelayout" to listOf("1.2.0", "1.0.4-sesl8", "rev1", 21, 35),
         "androidx.viewpager2" to listOf("1.1.0", "1.0.0-sesl8", "rev0", 21, 35),

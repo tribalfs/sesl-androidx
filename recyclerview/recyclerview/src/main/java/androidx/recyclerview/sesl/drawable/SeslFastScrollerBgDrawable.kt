@@ -25,12 +25,12 @@ import androidx.annotation.RestrictTo
 import androidx.core.graphics.ColorUtils
 
 //Added in sesl7
-@RestrictTo(RestrictTo.Scope.LIBRARY)
+@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP_PREFIX)
 class SeslFastScrollerBgDrawable : Drawable(), SeslAutowiredDrawable<Float> {
 
     override var value: Float = 0f
 
-    private val paint = Paint(1).apply {
+    private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         strokeCap = Paint.Cap.ROUND
         style = Paint.Style.STROKE
         alpha = 8
@@ -39,24 +39,18 @@ class SeslFastScrollerBgDrawable : Drawable(), SeslAutowiredDrawable<Float> {
 
     override fun draw(canvas: Canvas) {
         paint.strokeWidth = value
-        canvas.drawLine(
-            canvas.width / 2f,
-            paint.strokeWidth / 2f,
-            canvas.width / 2f,
-            canvas.height - (paint.strokeWidth / 2f),
-            paint
-        )
+        val halfWidth = canvas.width / 2.0f
+        val strokeHalf = paint.strokeWidth / 2.0f
+        canvas.drawLine(halfWidth, strokeHalf, halfWidth, canvas.height - strokeHalf, paint)
     }
 
-    @Deprecated("Deprecated in Java",
-        ReplaceWith("PixelFormat.TRANSPARENT", "android.graphics.PixelFormat")
-    )
-    override fun getOpacity(): Int = PixelFormat.TRANSPARENT
+    @Deprecated("Deprecated from Drawable#getOpacity")
+    override fun getOpacity(): Int = PixelFormat.TRANSLUCENT
 
     override fun setAlpha(alpha: Int) {}
 
     override fun setColorFilter(colorFilter: ColorFilter?) {
-        paint.setColorFilter(colorFilter)
+        paint.colorFilter = colorFilter
     }
 
     fun setArgb(argb: Int) { paint.color = argb }

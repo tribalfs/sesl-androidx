@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 The Android Open Source Project
+ * Copyright 2026 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package androidx.recyclerview.sesl.drawable
 
-import androidx.annotation.RestrictTo
+package androidx.recyclerview.widget;
 
-//Added in sesl7
-@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP_PREFIX)
-interface SeslAutowiredDrawable<T> {
-    var value: T
+interface SeslIndexTipScrollContext {
+    boolean canScrollUp();
 
-    fun invalidateSelf()
+    void consumeNestedScrollRange();
+
+    int getFirstVisibleItemPosition();
+
+    boolean isNestedScrollSuppressed(int dx, int dy);
 }

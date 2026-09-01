@@ -190,6 +190,37 @@ class ViewBoundsCheck {
         }
     };
 
+    //sesl9
+    View findOneViewWithinAvailableBoundFlags(int fromIndex, int toIndex,
+            @ViewBounds int preferredBoundFlags,
+            @ViewBounds int acceptableBoundFlags) {
+        final int start = mCallback.getAvailableStart();
+        final int end = mCallback.getAvailableEnd();
+        final int next = toIndex > fromIndex ? 1 : -1;
+        View acceptableMatch = null;
+        for (int i = fromIndex; i != toIndex; i += next) {
+            final View child = mCallback.getChildAt(i);
+            final int childStart = mCallback.getChildStart(child);
+            final int childEnd = mCallback.getChildEnd(child);
+            mBoundFlags.setBounds(start, end, childStart, childEnd);
+            if (preferredBoundFlags != 0) {
+                mBoundFlags.resetFlags();
+                mBoundFlags.addFlags(preferredBoundFlags);
+                if (mBoundFlags.boundsMatch()) {
+                    return child;
+                }
+            }
+            if (acceptableBoundFlags != 0) {
+                mBoundFlags.resetFlags();
+                mBoundFlags.addFlags(acceptableBoundFlags);
+                if (mBoundFlags.boundsMatch()) {
+                    acceptableMatch = child;
+                }
+            }
+        }
+        return acceptableMatch;
+    }
+
     /**
      * Returns the first view starting from fromIndex to toIndex in views whose bounds lie within
      * its parent bounds based on the provided preferredBoundFlags. If no match is found based on
@@ -265,5 +296,9 @@ class ViewBoundsCheck {
         int getParentEnd();
         int getChildStart(View view);
         int getChildEnd(View view);
+        //Sesl9
+        int getAvailableStart();
+        int getAvailableEnd();
+        //sesl9
     }
 }
