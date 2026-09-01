@@ -31,7 +31,7 @@ object SeslManifest {
         "androidx.recyclerview" to listOf("1.4.0", "1.0.25-sesl9", "rev0", 23, 37),
         "androidx.preference" to listOf("1.2.1", "1.0.5-sesl9", "rev0", 23, 37),
         "androidx.slidingpanelayout" to listOf("1.2.0", "1.0.4-sesl8", "rev1", 21, 35),
-        "androidx.viewpager2" to listOf("1.1.0", "1.0.0-sesl8", "rev0", 21, 35),
+        "androidx.viewpager2" to listOf("1.1.0", "1.0.5-sesl9", "rev0", 23, 37),
         "androidx.swiperefreshlayout" to listOf("1.2.0-alpha01", "1.0.2-sesl9", "rev0", 23, 37),
         "androidx.indexscroll" to listOf("1.0.0", "1.0.0-sesl8", "rev0", 21, 35),
         "androidx.picker-basic" to listOf("1.0.7", "1.0.7-sesl8", "rev2", 21, 35),

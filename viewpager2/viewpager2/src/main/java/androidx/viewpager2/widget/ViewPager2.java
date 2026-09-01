@@ -24,6 +24,7 @@ import static androidx.recyclerview.widget.RecyclerView.NO_POSITION;
 
 import static java.lang.annotation.RetentionPolicy.SOURCE;
 
+import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -45,8 +46,6 @@ import android.view.animation.PathInterpolator;
 
 import androidx.annotation.IntDef;
 import androidx.annotation.IntRange;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
@@ -62,6 +61,9 @@ import androidx.recyclerview.widget.RecyclerView.Adapter;
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration;
 import androidx.viewpager2.R;
 import androidx.viewpager2.adapter.StatefulAdapter;
+
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.lang.annotation.Retention;
 
@@ -165,6 +167,8 @@ public final class ViewPager2 extends ViewGroup {
     private @OffscreenPageLimit int mOffscreenPageLimit = OFFSCREEN_PAGE_LIMIT_DEFAULT;
     AccessibilityProvider mAccessibilityProvider; // to avoid creation of a synthetic accessor
 
+    private static final float CONTAINER_ROTATE_MIN_VALUE = 0.0f;//sesl9
+
     //Ses7
     private static final int CONTAINER_SCALE_DURATION = 400;
     private static final PathInterpolator CONTAINER_SCALE_INTERPOLATOR = new PathInterpolator(0.22f, 0.25f, 0.0f, 1.0f);
@@ -195,7 +199,6 @@ public final class ViewPager2 extends ViewGroup {
         initialize(context, attrs);
     }
 
-    @RequiresApi(21)
     @SuppressLint("ClassVerificationFailure")
     public ViewPager2(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr,
             int defStyleRes) {
@@ -231,6 +234,7 @@ public final class ViewPager2 extends ViewGroup {
         // Add mScrollEventAdapter after attaching mPagerSnapHelper to mRecyclerView, because we
         // don't want to respond on the events sent out during the attach process
         mRecyclerView.addOnScrollListener(mScrollEventAdapter);
+        mRecyclerView.setOverScrollMode(getOverScrollMode()); //sesl9
 
         mPageChangeEventDispatcher = new CompositeOnPageChangeCallback(3);
         mScrollEventAdapter.setOnPageChangeCallback(mPageChangeEventDispatcher);
@@ -257,7 +261,9 @@ public final class ViewPager2 extends ViewGroup {
                     mScrollState = newState;
                 }
 
-                if (mIsSuggestionPagingEnabled && newState == SCROLL_STATE_DRAGGING) {
+                if (isSuggestionPagingEnabled() && newState == SCROLL_STATE_DRAGGING) {
+                    getParent().requestDisallowInterceptTouchEvent(true); //sesl9
+
                     if (mSuggestionStartDragAnimator.isRunning()) {
                         mSuggestionStartDragAnimator.cancel();
                     }
@@ -326,7 +332,6 @@ public final class ViewPager2 extends ViewGroup {
         };
     }
 
-    @RequiresApi(23)
     @Override
     public CharSequence getAccessibilityClassName() {
         if (mAccessibilityProvider.handlesGetAccessibilityClassName()) {
@@ -371,12 +376,11 @@ public final class ViewPager2 extends ViewGroup {
 
     @Override
     protected void onRestoreInstanceState(Parcelable state) {
-        if (!(state instanceof SavedState)) {
+        if (!(state instanceof SavedState ss)) {
             super.onRestoreInstanceState(state);
             return;
         }
 
-        SavedState ss = (SavedState) state;
         super.onRestoreInstanceState(ss.getSuperState());
         mPendingCurrentItem = ss.mCurrentItem;
         mPendingAdapterState = ss.mAdapterState;
@@ -613,7 +617,9 @@ public final class ViewPager2 extends ViewGroup {
      * @param orientation {@link #ORIENTATION_HORIZONTAL} or {@link #ORIENTATION_VERTICAL}
      */
     public void setOrientation(@Orientation int orientation) {
-        mLayoutManager.setOrientation(orientation);
+        mLayoutManager.setOrientation(
+                (orientation == ViewPager2.ORIENTATION_VERTICAL) ? ORIENTATION_VERTICAL
+                        : ORIENTATION_HORIZONTAL);
         mAccessibilityProvider.onSetOrientation();
     }
 
@@ -907,6 +913,15 @@ public final class ViewPager2 extends ViewGroup {
         return mRecyclerView.canScrollVertically(direction);
     }
 
+    //sesl9
+    @Override
+    public void setOverScrollMode(int mode) {
+        if (mRecyclerView != null) {
+            mRecyclerView.setOverScrollMode(mode);
+        }
+        super.setOverScrollMode(mode);
+    }
+
     /**
      * Add a callback that will be invoked whenever the page changes or is incrementally
      * scrolled. See {@link OnPageChangeCallback}.
@@ -1013,7 +1028,6 @@ public final class ViewPager2 extends ViewGroup {
             super(context);
         }
 
-        @RequiresApi(23)
         @Override
         public CharSequence getAccessibilityClassName() {
             if (mAccessibilityProvider.handlesRvGetAccessibilityClassName()) {
@@ -1035,7 +1049,7 @@ public final class ViewPager2 extends ViewGroup {
         public boolean onTouchEvent(MotionEvent event) {
             //Sesl7
             int actionMasked;
-            if (mIsSuggestionPagingEnabled
+            if (isSuggestionPagingEnabled()
                     && (((actionMasked = event.getActionMasked()) == ACTION_UP || actionMasked == ACTION_CANCEL)
                     && mScrollState == SCROLL_STATE_DRAGGING)) {
                 mSuggestionReleaseAnimator.setFloatValues(CONTAINER_SCALE_MIN_VALUE, CONTAINER_SCALE_MAX_VALUE);
@@ -1067,8 +1081,8 @@ public final class ViewPager2 extends ViewGroup {
         }
 
         @Override
-        public boolean performAccessibilityAction(@NonNull RecyclerView.Recycler recycler,
-                @NonNull RecyclerView.State state, int action, @Nullable Bundle args) {
+        public boolean performAccessibilityAction(RecyclerView.@NonNull Recycler recycler,
+                RecyclerView.@NonNull State state, int action, @Nullable Bundle args) {
             if (mAccessibilityProvider.handlesLmPerformAccessibilityAction(action)) {
                 return mAccessibilityProvider.onLmPerformAccessibilityAction(action);
             }
@@ -1076,23 +1090,23 @@ public final class ViewPager2 extends ViewGroup {
         }
 
         @Override
-        public void onInitializeAccessibilityNodeInfo(@NonNull RecyclerView.Recycler recycler,
-                @NonNull RecyclerView.State state, @NonNull AccessibilityNodeInfoCompat info) {
+        public void onInitializeAccessibilityNodeInfo(RecyclerView.@NonNull Recycler recycler,
+                RecyclerView.@NonNull State state, @NonNull AccessibilityNodeInfoCompat info) {
             super.onInitializeAccessibilityNodeInfo(recycler, state, info);
             mAccessibilityProvider.onLmInitializeAccessibilityNodeInfo(info);
         }
 
         @Override
         public void onInitializeAccessibilityNodeInfoForItem(
-                @NonNull RecyclerView.Recycler recycler,
-                @NonNull RecyclerView.State state, @NonNull View host,
+                RecyclerView.@NonNull Recycler recycler,
+                RecyclerView.@NonNull State state, @NonNull View host,
                 @NonNull AccessibilityNodeInfoCompat info) {
             mAccessibilityProvider.onLmInitializeAccessibilityNodeInfoForItem(host, info);
         }
 
         @Override
-        protected void calculateExtraLayoutSpace(@NonNull RecyclerView.State state,
-                @NonNull int[] extraLayoutSpace) {
+        protected void calculateExtraLayoutSpace(RecyclerView.@NonNull State state,
+                int @NonNull [] extraLayoutSpace) {
             int pageLimit = getOffscreenPageLimit();
             if (pageLimit == OFFSCREEN_PAGE_LIMIT_DEFAULT) {
                 // Only do custom prefetching of offscreen pages if requested
@@ -1113,7 +1127,7 @@ public final class ViewPager2 extends ViewGroup {
 
         //Sesl7
         @Override
-        public int scrollHorizontallyBy(int i, @NonNull RecyclerView.Recycler recycler, @NonNull RecyclerView.State state) {
+        public int scrollHorizontallyBy(int i, RecyclerView.@NonNull Recycler recycler, RecyclerView.@NonNull State state) {
             if (mIsSuggestionPagingEnabled) {
                 setSuggestionPagingVI();
             }
@@ -1138,20 +1152,15 @@ public final class ViewPager2 extends ViewGroup {
         }
     }
 
-    private static class SmoothScrollToPosition implements Runnable {
-        private final int mPosition;
-        private final RecyclerView mRecyclerView;
-
-        SmoothScrollToPosition(int position, RecyclerView recyclerView) {
-            mPosition = position;
-            mRecyclerView = recyclerView; // to avoid a synthetic accessor
-        }
+    private record SmoothScrollToPosition(int mPosition, RecyclerView mRecyclerView) implements
+            Runnable {
+        // to avoid a synthetic accessor
 
         @Override
-        public void run() {
-            mRecyclerView.smoothScrollToPosition(mPosition);
+            public void run() {
+                mRecyclerView.smoothScrollToPosition(mPosition);
+            }
         }
-    }
 
     /**
      * Callback interface for responding to changing state of the selected page.
@@ -1501,9 +1510,6 @@ public final class ViewPager2 extends ViewGroup {
         @Override
         public void onSetUserInputEnabled() {
             updatePageAccessibilityActions();
-            if (Build.VERSION.SDK_INT < 21) {
-                sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED);
-            }
         }
 
         @Override
@@ -1723,6 +1729,8 @@ public final class ViewPager2 extends ViewGroup {
             return;
         }
 
+        mRecyclerView.setEdgeEffectEnabled(false); //sesl9
+
         mSuggestionStartDragAnimator = ValueAnimator.ofFloat(CONTAINER_SCALE_MAX_VALUE, CONTAINER_SCALE_MIN_VALUE)
                 .setDuration(CONTAINER_SCALE_DURATION);
         mSuggestionStartDragAnimator.setInterpolator(CONTAINER_SCALE_INTERPOLATOR);
@@ -1737,7 +1745,21 @@ public final class ViewPager2 extends ViewGroup {
             mContainerScaleValue = (Float) valueAnimator.getAnimatedValue();
             setSuggestionPagingVI();
         });
-        mPrevIsClipChildren = mRecyclerView.getClipChildren();;
+        //sesl9
+        mSuggestionReleaseAnimator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(@NonNull Animator animation) {}
+
+            @Override
+            public void onAnimationCancel(@NonNull Animator animation) {}
+
+            @Override
+            public void onAnimationRepeat(@NonNull Animator animation) {}
+
+            @Override
+            public void onAnimationEnd(@NonNull Animator animation) {initPagingVI();}
+        });
+        mPrevIsClipChildren = mRecyclerView.getClipChildren();
         if (mPrevIsClipChildren) {
             mRecyclerView.setClipChildren(false);
         }
@@ -1770,7 +1792,7 @@ public final class ViewPager2 extends ViewGroup {
     }
 
     @NonNull
-    private OrientationHelper getHorizontalHelper(@NonNull RecyclerView.LayoutManager layoutManager) {
+    private OrientationHelper getHorizontalHelper(RecyclerView.@NonNull LayoutManager layoutManager) {
         OrientationHelper orientationHelper = mHorizontalHelper;
         if (orientationHelper == null || orientationHelper.getLayoutManager() != layoutManager) {
             mHorizontalHelper = OrientationHelper.createHorizontalHelper(layoutManager);
@@ -1778,4 +1800,28 @@ public final class ViewPager2 extends ViewGroup {
         return mHorizontalHelper;
     }
     //sesl7
+
+    //Sesl9
+    public RecyclerView seslGetListView() {
+        return mRecyclerView;
+    }
+
+    boolean isSuggestionPagingEnabled() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            return mIsSuggestionPagingEnabled && ValueAnimator.areAnimatorsEnabled();
+        } else {
+            return false;
+        }
+    }
+
+    void initPagingVI() {
+        View child;
+        if (mPagerSnapHelper == null || (child = mRecyclerView.getChildAt(0)) == null) {
+            return;
+        }
+        child.setScaleX(CONTAINER_SCALE_MAX_VALUE);
+        child.setScaleY(CONTAINER_SCALE_MAX_VALUE);
+        child.setRotationY(CONTAINER_ROTATE_MIN_VALUE);
+    }
+    //sesl9
 }
