@@ -82,9 +82,10 @@ class SeslColorSpectrumView extends View {
     private float mCurrentXPos;
     boolean mFromSwatchTouch;
     float mCurrentYPos;
+    boolean mAllowCursorPositionUpdate = true;
 
     private final int[] HUE_COLORS = {
-            -65281, -16776961, -16711681, -16711936, -256, -65536
+            -65536, -65281, -16776961, -16711681, -16711936, -256, -65536
     };
 
     final int mStartMargin;
@@ -168,64 +169,31 @@ class SeslColorSpectrumView extends View {
         mBackgroundPaint.setColor(mResources.getColor(R.color.sesl_color_picker_transparent));
     }
 
+    public void clampCursorPosition() {
+        if (mSpectrumRect != null) {
+            mCursorPosX = MathUtils.clamp(mCursorPosX, mSpectrumRect.left, mSpectrumRect.right);
+            mCursorPosY = MathUtils.clamp(mCursorPosY, mSpectrumRect.top, mSpectrumRect.bottom);
+        }
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        final float distance
-                = (float) Math.sqrt(Math.pow(event.getX(), 2.0d) + Math.pow(event.getY(), 2.0d));
-
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                playSoundEffect(SoundEffectConstants.CLICK);
-                break;
-            case MotionEvent.ACTION_MOVE:
-                if (getParent() != null) {
-                    getParent().requestDisallowInterceptTouchEvent(true);
-                }
-                break;
+        if (event.getAction() == MotionEvent.ACTION_MOVE && getParent() != null) {
+            getParent().requestDisallowInterceptTouchEvent(true);
         }
 
-        float posX = event.getX();
-        float posY = event.getY();
-        mCurrentXPos = posX;
+        mCursorPosX = event.getX();
+        mCursorPosY = event.getY();
+        clampCursorPosition();
 
-        int spectrumRectWidth = mSpectrumRect.width();
-        int spectrumRectHeight = mSpectrumRect.width();
-
-        int posXMax = spectrumRectWidth + mStartMargin;
-
-        if (posX > posXMax) {
-            mCurrentXPos = posXMax;
-            posX = posXMax;
-        }
-
-        int posYMax = spectrumRectHeight + mTopMargin;
-
-        mCurrentYPos = posY;
-        if (posY > posYMax) {
-            mCurrentYPos = posYMax;
-            posY = posYMax;
-        }
-
-        if (posX < 0.0f) {
-            posX = 0.0f;
-        }
-        if (posY < 0.0f) {
-            posY = 0.0f;
-        }
-
-        mCursorPosX = posX;
-        mCursorPosY = posY;
-
-        final float hue = ((posX - mSpectrumRect.left) / spectrumRectWidth) * 300.0f;
-        final float saturation = (mCursorPosY - mSpectrumRect.top) / spectrumRectHeight;
-
-        final float[] hsv = new float[3];
-        hsv[0] = hue >= 0 ? hue : 0;
-        hsv[1] = saturation;
+        float hue = ((mCursorPosX - mSpectrumRect.left) / mSpectrumRect.width()) * 350.0f;
+        float saturation = (mCursorPosY - mSpectrumRect.top) / mSpectrumRect.height();
 
         if (mListener != null) {
-            mListener.onSpectrumColorChanged(hsv[0], hsv[1]);
+            mAllowCursorPositionUpdate = false;
+            mListener.onSpectrumColorChanged(Math.max(hue, 0.0f), saturation);
+            mAllowCursorPositionUpdate = true;
         } else {
             Log.d(TAG, "Listener is not set.");
         }
@@ -311,22 +279,7 @@ class SeslColorSpectrumView extends View {
                 mStrokePaint
         );
 
-
-        if (mCursorPosX < mSpectrumRect.left) {
-            mCursorPosX = mSpectrumRect.left;
-        }
-
-        if (mCursorPosY < mSpectrumRect.top ) {
-            mCursorPosY = mSpectrumRect.top;
-        }
-
-        if (mCursorPosX > mSpectrumRect.right + mStartMargin) {
-            mCursorPosX = mSpectrumRect.right + mStartMargin;
-        }
-
-        if (mCursorPosY > mSpectrumRect.bottom + mTopMargin) {
-            mCursorPosY = mSpectrumRect.bottom + mTopMargin;
-        }
+        clampCursorPosition();
 
         canvas.drawCircle(mCursorPosX, mCursorPosY, mCursorPaintSize / 2.0f, mCursorPaint);
         cursorDrawable.setBounds(
@@ -342,52 +295,27 @@ class SeslColorSpectrumView extends View {
     }
 
     void setColor(int color) {
-        final float[] hsv = new float[3];
-        Color.colorToHSV(color, hsv);
-        updateCursorPosition(color, hsv);
+        if (mAllowCursorPositionUpdate) {
+            final float[] hsv = new float[3];
+            Color.colorToHSV(color, hsv);
+            if (mSpectrumRect != null) {
+                mCursorPosX = ((mSpectrumRect.width() * hsv[0]) / 350.0f) + mSpectrumRect.left;
+                mCursorPosY = (mSpectrumRect.height() * hsv[1]) + mSpectrumRect.top;
+                clampCursorPosition();
+                Log.d(TAG, "updateCursorPosition() HSV[" + hsv[0] + ", " + hsv[1] + ", " + hsv[1]
+                        + "] mCursorPosX=" + mCursorPosX + " mCursorPosY=" + mCursorPosY);
+            }
+            invalidate();
+        }
     }
 
     void setProgress(int saturationProgress) {
         mSaturationProgress = saturationProgress;
     }
 
-
     public void updateCursorPosition(int color, float[] hsv) {
-        if (mSpectrumRect != null) {
-            String substring = String.format("%08x", color).substring(2);
-            String string = getResources().getString(R.string.sesl_color_white_ffffff);
-
-            if (mFromSwatchTouch && substring.equals(string)) {
-                mCursorPosY = 0.0f;
-                mCursorPosX = 0.0f;
-            } else if (substring.equals(string)) {
-                mCursorPosY = 0.0f;
-                mCursorPosX = mCurrentXPos;
-            } else {
-                int spectrumRectHeight = mSpectrumRect.height();
-                int spectrumRectWidth = mSpectrumRect.width();
-
-                mCursorPosX = mSpectrumRect.left + ((spectrumRectWidth * hsv[0]) / 300.0f);
-                mCursorPosY = mSpectrumRect.top + (spectrumRectHeight * hsv[1]);
-
-                int curPosXMax = spectrumRectWidth + mStartMargin;
-                if (mCursorPosX > curPosXMax) {
-                    mCursorPosX = curPosXMax;
-                }
-
-                int curPosYMax = spectrumRectHeight + mTopMargin;
-                if (mCursorPosY > curPosYMax) {
-                    mCursorPosY = curPosYMax;
-                }
-            }
-
-            Log.d(TAG, "updateCursorPosition() " +
-                    "HSV[" + hsv[0] + ", " + hsv[1] + ", " + hsv[1]
-                    + "] mCursorPosX=" + mCursorPosX + " mCursorPosY=" + mCursorPosY);
-        }
-        invalidate();
+        setColor(color);
     }
-
 
     void updateCursorColor(int color) {
         Log.i("SeslColorSpectrumView", "updateCursorColor color " + color);
@@ -402,6 +330,37 @@ class SeslColorSpectrumView extends View {
         return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
     }
 
+    public StringBuilder getTalkbackDescription(int hue, int saturation, int brightness, int val) {
+        StringBuilder sb = new StringBuilder();
+        String strVal = String.valueOf(val);
+        String name;
+        if (val <= 1) {
+            name = mResources.getString(R.string.sesl_color_picker_black);
+        } else if (val >= 99) {
+            name = mResources.getString(R.string.sesl_color_picker_white);
+        } else if (saturation <= 3) {
+            if (val <= 35) {
+                name = mResources.getString(R.string.sesl_color_picker_dark_gray);
+            } else if (val <= 80) {
+                name = mResources.getString(R.string.sesl_color_picker_gray);
+            } else {
+                name = mResources.getString(R.string.sesl_color_picker_light_gray);
+            }
+        } else {
+            String hueName;
+            if (hue >= 343) {
+                hueName = mResources.getString(R.string.sesl_color_picker_red);
+            } else {
+                hueName = mTouchHelper.mColorName[mTouchHelper.getIndex(mTouchHelper.mHueNumber, hue)];
+            }
+            String sbPattern = mTouchHelper.mSBTable[mTouchHelper.getIndex(mTouchHelper.mSaturationNumber, saturation)][mTouchHelper.getIndex(mTouchHelper.mBrightnessNumber, brightness)];
+            name = sbPattern.equals(mResources.getString(R.string.sesl_color_picker_hue_name))
+                    ? hueName : String.format(sbPattern, hueName);
+        }
+        sb.append(name).append(" ").append(strVal);
+        return sb;
+    }
+
     @Override
     public boolean dispatchHoverEvent(MotionEvent motionEvent) {
         return this.mTouchHelper.dispatchHoverEvent(motionEvent) || super.dispatchHoverEvent(motionEvent);
@@ -409,11 +368,11 @@ class SeslColorSpectrumView extends View {
 
 
     private class SeslColorSpectrumViewTouchHelper extends ExploreByTouchHelper {
-        private final Integer[] mBrightnessNumber;
-        private final String[] mColorName;
-        private final Integer[] mHueNumber;
-        private final String[][] mSBTable;
-        private final Integer[] mSaturationNumber;
+        final Integer[] mBrightnessNumber;
+        final String[] mColorName;
+        final Integer[] mHueNumber;
+        final String[][] mSBTable;
+        final Integer[] mSaturationNumber;
         private float mVirtualBrightness;
         float mVirtualCurrentCursorX;
         float mVirtualCurrentCursorY;
@@ -517,7 +476,7 @@ class SeslColorSpectrumView extends View {
             mVirtualCurrentCursorY = MathUtils.clamp(y, 0.0f, mSpectrumRect.height());
             mVirtualCursorPosX = (int) (mVirtualCurrentCursorX / mVirtualItemWidth);
             mVirtualCursorPosY = (int) (mVirtualCurrentCursorY / mVirtualItemHeight);
-            float width = (((mVirtualCurrentCursorX - mSpectrumRect.left) + mStartMargin) / mSpectrumRect.width()) * 300.0f;
+            float width = (((mVirtualCurrentCursorX - mSpectrumRect.left) + mStartMargin) / mSpectrumRect.width()) * 350.0f;
             mVirtualSaturation = ((mVirtualCurrentCursorY - mSpectrumRect.top) + mTopMargin) / mSpectrumRect.height();
             mVirtualHue = Math.max(width, 0.0f);
             mVirtualBrightness = mSaturationProgress;
@@ -542,60 +501,9 @@ class SeslColorSpectrumView extends View {
             );
         }
 
-        private StringBuilder getItemDescription(int virtualViewId) {
+        StringBuilder getItemDescription(int virtualViewId) {
             setVirtualCursorIndexAt(virtualViewId);
-
-            StringBuilder sb = new StringBuilder();
-
-            int saturationIndex = getIndex(mSaturationNumber, (int) mVirtualSaturation);
-
-            int brightnessIndex = getIndex(mBrightnessNumber, (int) mVirtualBrightness);
-
-            String str;
-            if (mVirtualHue >= 343) {
-                str = mResources.getString(R.string.sesl_color_picker_red);
-            } else {
-                str = mColorName[getIndex(mHueNumber, (int) mVirtualHue)];
-            }
-
-            String virtualValueStr = Integer.toString((int) mVirtualValue);
-            String str2 = mSBTable[saturationIndex][brightnessIndex];
-
-            if (mVirtualValue == 0 || mVirtualValue == 1) {
-                sb.append(mResources.getString(R.string.sesl_color_picker_black))
-                        .append(" ")
-                        .append(virtualValueStr);
-            } else if (mVirtualValue >= 95 && mVirtualValue <= 100) {
-                sb.append(mResources.getString(R.string.sesl_color_picker_white))
-                        .append(" ")
-                        .append(virtualValueStr);
-            } else if (mVirtualSaturation <= 3) {
-                if (mVirtualValue >= 2 && mVirtualValue <= 35) {
-                    sb.append(mResources.getString(R.string.sesl_color_picker_dark_gray))
-                            .append(" ")
-                            .append(virtualValueStr);
-                } else if (mVirtualValue >= 36 && mVirtualValue <= 80) {
-                    sb.append(mResources.getString(R.string.sesl_color_picker_gray))
-                            .append(" ")
-                            .append(virtualValueStr);
-                } else if (mVirtualValue >= 81 && mVirtualValue <= 98) {
-                    sb.append(mResources.getString(R.string.sesl_color_picker_light_gray))
-                            .append(" ")
-                            .append(virtualValueStr);
-                }
-            } else if (mVirtualSaturation > 3) {
-                if (str2.equals(mResources.getString(R.string.sesl_color_picker_hue_name))) {
-                    sb.append(str)
-                            .append(" ")
-                            .append(virtualValueStr);
-                } else {
-                    String format = String.format(str2, str);
-                    sb.append(format)
-                            .append(" ")
-                            .append(virtualValueStr);
-                }
-            }
-            return sb;
+            return getTalkbackDescription((int) mVirtualHue, (int) mVirtualSaturation, (int) mVirtualBrightness, (int) mVirtualValue);
         }
 
         private void onVirtualViewClick(float x, float y) {
@@ -605,7 +513,7 @@ class SeslColorSpectrumView extends View {
             mTouchHelper.sendEventForVirtualView(mSelectedVirtualViewId, MotionEvent.TOOL_TYPE_FINGER);
         }
 
-        private int getIndex(Integer[] colorArr, int color) {
+        int getIndex(Integer[] colorArr, int color) {
             int lastIndex = colorArr.length - 1;
             int index = 0;
             int i = 0;

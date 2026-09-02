@@ -18,10 +18,6 @@ dependencies {
     api(libs.sesl.androidx.appcompat)
     api(libs.sesl.androidx.core)
     api(libs.sesl.androidx.fragment)
-    constraints {
-        implementation(libs.sesl.androidx.coreKtx)
-    }
-
     api(libs.jspecify)
 }
 

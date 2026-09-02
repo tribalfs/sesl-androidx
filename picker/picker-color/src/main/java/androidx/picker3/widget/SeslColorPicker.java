@@ -25,6 +25,7 @@ import static android.view.MotionEvent.ACTION_CANCEL;
 import static android.view.MotionEvent.ACTION_DOWN;
 import static android.view.MotionEvent.ACTION_UP;
 
+import android.animation.AnimatorInflater;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -34,6 +35,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -238,6 +240,10 @@ public class SeslColorPicker extends LinearLayout {
 
         mTabLayoutContainer = findViewById(R.id.sesl_color_picker_tab_layout);
         mTabLayoutContainer.seslSetSubTabStyle();
+        if (Settings.System.getString(context.getContentResolver(), "current_sec_active_themepackage") == null) {
+            int color = ContextCompat.getColor(context, R.color.sesl_color_picker_selected_tab_color);
+            mTabLayoutContainer.setSelectedTabIndicatorColor(color);
+        }
         setPickerMode(MODE_SPECTRUM);
 
         mOnTabSelectListener = new TabLayout.OnTabSelectedListener() {
@@ -411,6 +417,13 @@ public class SeslColorPicker extends LinearLayout {
         }
 
         mCurrentColorBackground = (GradientDrawable) mCurrentColorView.getBackground();
+
+        if (!mIsLightTheme) {
+            final int strokeWidth = mResources.getDimensionPixelSize(R.dimen.sesl_color_picker_oneui_3_current_view_stroke);
+            final int strokeColor = ContextCompat.getColor(mContext, R.color.sesl_color_picker_stroke_color_dark);
+            mSelectedColorBackground.setStroke(strokeWidth, strokeColor);
+            mCurrentColorBackground.setStroke(strokeWidth, strokeColor);
+        }
         mTabLayoutContainer.addOnTabSelectedListener(mOnTabSelectListener);
         mColorPickerOpacityEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -974,9 +987,6 @@ public class SeslColorPicker extends LinearLayout {
         final int size = mRecentColorValues != null
                 ? mRecentColorValues.size() : 0;
 
-        final String str = ", "
-                + mResources.getString(R.string.sesl_color_picker_option);
-
         if (mResources.getConfiguration().orientation == ORIENTATION_LANDSCAPE) {
             RECENT_COLOR_SLOT_COUNT = 7;
         } else {
@@ -984,15 +994,24 @@ public class SeslColorPicker extends LinearLayout {
         }
         for (int i = 0; i < RECENT_COLOR_SLOT_COUNT; i++) {
             View recentColorSlot = mRecentColorListLayout.getChildAt(i);
-            if (i < size) {
+            if (recentColorSlot != null && i < size) {
                 final int color = mRecentColorValues.get(i);
                 setImageColor(recentColorSlot, color);
 
+                float[] hsv = new float[3];
+                Color.colorToHSV(color, hsv);
+                int hue = Math.round(hsv[0]);
+                int saturation = Math.round(hsv[1] * 100.0f);
+                int brightness = Math.round(hsv[2] * 100.0f);
+                int val = (int) (brightness / (hsv[1] + 1.0f));
+
                 StringBuilder recentDescription = new StringBuilder();
-                recentDescription.append(
-                        mColorSwatchView.getColorSwatchDescriptionAt(color));
-                recentDescription.insert(0,
-                        mColorDescription[i] + str + ", ");
+                if (mColorSpectrumView != null) {
+                    recentDescription.append(mColorSpectrumView.getTalkbackDescription(hue, saturation, brightness, val));
+                } else {
+                    recentDescription.append(mColorSwatchView.getColorSwatchDescriptionAt(color));
+                }
+                recentDescription.insert(0, mColorDescription[i] + ", ");
                 recentColorSlot.setContentDescription(recentDescription);
 
                 recentColorSlot.setFocusable(true);
@@ -1088,13 +1107,30 @@ public class SeslColorPicker extends LinearLayout {
                 mIsLightTheme
                         ? R.drawable.sesl_color_picker_used_color_item_slot_light
                         : R.drawable.sesl_color_picker_used_color_item_slot_dark);
-        if (color != null) {
+        if (gradientDrawable != null && color != null) {
             gradientDrawable.setColor(color);
         }
 
-        final int rippleColor = Color.argb(RIPPLE_EFFECT_OPACITY, 0, 0, 0);
-        ColorStateList myList = new ColorStateList(new int[][]{new int[0]}, new int[]{rippleColor});
-        button.setBackground(new RippleDrawable(myList, gradientDrawable, null));
+        final int rippleColor = ContextCompat.getColor(mContext,
+                mIsLightTheme ? androidx.appcompat.R.color.sesl_ripple_color_light
+                        : androidx.appcompat.R.color.sesl_ripple_color_dark);
+
+        Drawable background;
+        if (Build.VERSION.SDK_INT >= 29) {
+            SeslShapeDrawable shapeDrawable = new SeslShapeDrawable();
+            shapeDrawable.setShape(GradientDrawable.OVAL);
+            background = new SeslRecoilDrawable(rippleColor, new Drawable[]{gradientDrawable}, shapeDrawable);
+        } else {
+            ColorStateList myList = new ColorStateList(new int[][]{new int[0]}, new int[]{rippleColor});
+            background = new RippleDrawable(myList, gradientDrawable, null);
+        }
+
+        try {
+            button.setStateListAnimator(AnimatorInflater.loadStateListAnimator(mContext, androidx.appcompat.R.animator.sesl_recoil_button_selector));
+        } catch (Exception e) {
+            // ignore
+        }
+        button.setBackground(background);
         button.setOnClickListener(mImageButtonClickListener);
     }
 
