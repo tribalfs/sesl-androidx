@@ -68,7 +68,7 @@ internal class SlidingPaneRoundedCorner (private val mContext: Context) {
     }
 
     private fun initRoundedCorner() {
-        val roundRadius = TypedValue.applyDimension(
+        mRoundRadius = TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
             RADIUS,
             mRes.displayMetrics
@@ -97,10 +97,10 @@ internal class SlidingPaneRoundedCorner (private val mContext: Context) {
             this.color = roundColor
         }
 
-        mStartTopDrawable = SeslRoundedCorner.SeslRoundedChunkingDrawable(roundRadius, paint, 90.0f)
-        mStartBottomDrawable = SeslRoundedCorner.SeslRoundedChunkingDrawable(roundRadius, paint, 180.0f)
-        mEndTopDrawable = SeslRoundedCorner.SeslRoundedChunkingDrawable(roundRadius, paint, 0.0f)//Note: incorrectly set to 180f in vanilla sesl
-        mEndBottomDrawable = SeslRoundedCorner.SeslRoundedChunkingDrawable(roundRadius, paint, 270.0f)
+        mStartTopDrawable = SeslRoundedCorner.SeslRoundedChunkingDrawable(mRoundRadius, paint, 90.0f)
+        mStartBottomDrawable = SeslRoundedCorner.SeslRoundedChunkingDrawable(mRoundRadius, paint, 180.0f)
+        mEndTopDrawable = SeslRoundedCorner.SeslRoundedChunkingDrawable(mRoundRadius, paint, 0.0f)
+        mEndBottomDrawable = SeslRoundedCorner.SeslRoundedChunkingDrawable(mRoundRadius, paint, 270.0f)
 
         mStartBottomDrawableColor = roundColor
         mStartTopDrawableColor = roundColor
@@ -202,7 +202,7 @@ internal class SlidingPaneRoundedCorner (private val mContext: Context) {
         }
     }
 
-    private inline fun ensureInited(){
+    private fun ensureInited(){
         if (mStartTopDrawable == null || mStartBottomDrawable == null || mEndTopDrawable == null || mEndBottomDrawable == null) {
             initRoundedCorner()
         }
@@ -225,7 +225,7 @@ internal class SlidingPaneRoundedCorner (private val mContext: Context) {
         }
 
     companion object {
-        private const val RADIUS = 16f
+        private const val RADIUS = 22f
         const val MODE_START = 0
         const val MODE_END = 1
         const val TAG = "SeslPaneRoundedCorner"

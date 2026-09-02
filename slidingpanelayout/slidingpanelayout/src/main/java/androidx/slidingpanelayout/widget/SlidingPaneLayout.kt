@@ -285,6 +285,8 @@ open class SlidingPaneLayout @JvmOverloads constructor(
     private var resizeChildList: ArrayList<View>? = null
     private var drawerPanel: View? = null
     private var customPendingAction = false
+    private var needUpdateInitially = true
+
     /**
      * The start margin of the slideable view, in pixels,
      * before any layout calculations or animations have been applied.
@@ -393,6 +395,14 @@ open class SlidingPaneLayout @JvmOverloads constructor(
      * How far in pixels the slideable panel may move.
      */
     fun getSlideRange() = slideRange //publicly exposed in sesl
+
+    /**
+     * How far in pixels the slideable panel may move.
+     *
+     * sesl9 exposes this method with the `sesl` prefix. Kept as an alias for API compatibility.
+     * @see getSlideRange
+     */
+    fun seslGetSlideRange() = slideRange
 
     private val touchTargetMin =
         (context.resources.displayMetrics.density * MIN_TOUCH_TARGET_SIZE).roundToInt()
@@ -757,6 +767,8 @@ open class SlidingPaneLayout @JvmOverloads constructor(
         slidingPaneDragArea = resources.getDimensionPixelSize(R.dimen.sesl_sliding_pane_contents_drag_width_default)
         pendingAction = if (isDefaultOpen) PENDING_ACTION_EXPANDED else PENDING_ACTION_COLLAPSED
         slidingState = SeslSlidingState()
+        // sesl9 hard-codes a 32dp overhang in the constructor; keep setOverhangSize() as an override
+        overhangSize = (DEFAULT_OVERHANG_SIZE * context.resources.displayMetrics.density + 0.5f).toInt()
         //sesl
     }
 
@@ -2962,6 +2974,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
         const val SESL_STATE_IDLE = 2
         const val SESL_STATE_OPEN = 1
         private const val SESL_EXTRA_AREA_SENSITIVITY: Float = 0.1f
+        const val DEFAULT_OVERHANG_SIZE = 32f
         //sesl
     }
 
@@ -2992,21 +3005,19 @@ open class SlidingPaneLayout @JvmOverloads constructor(
         super.onConfigurationChanged(configuration)
         if (!hasPrefContentWidth) prefContentWidth = null//to update value
 
-        if (isLocked) {
-            pendingAction = if (isOpen) {
-                PENDING_ACTION_EXPANDED
-            } else {
-                PENDING_ACTION_COLLAPSED
-            }
-        } else if (!customPendingAction) {
-            val previousIsDefaultOpen = isDefaultOpen
-            isDefaultOpen = resources.getBoolean(R.bool.sesl_sliding_layout_default_open)
-            pendingAction = if (previousIsDefaultOpen != isDefaultOpen) {
+        val previousIsDefaultOpen = isDefaultOpen
+        isDefaultOpen = resources.getBoolean(R.bool.sesl_sliding_layout_default_open)
+        if (!customPendingAction) {
+            pendingAction = if (needUpdateInitially || previousIsDefaultOpen != isDefaultOpen) {
                 if (isDefaultOpen) PENDING_ACTION_EXPANDED else PENDING_ACTION_COLLAPSED
             } else {
                 if (isOpen) PENDING_ACTION_EXPANDED else PENDING_ACTION_COLLAPSED
             }
         }
+        if (isLocked) {
+            pendingAction = if (isOpen) PENDING_ACTION_EXPANDED else PENDING_ACTION_COLLAPSED
+        }
+        needUpdateInitially = false
         seslSetDrawerPaneWidth()
     }
 
@@ -3059,7 +3070,11 @@ open class SlidingPaneLayout @JvmOverloads constructor(
     }
 
     private fun shouldSkipScroll(): Boolean {
-        return Settings.Global.getInt(context.contentResolver, "remove_animations", 0) == 1
+        return if (Build.VERSION.SDK_INT < 33) {
+            Settings.System.getInt(context.contentResolver, "remove_animations", 0) == 1
+        } else {
+            Settings.Global.getInt(context.contentResolver, "remove_animations", 0) == 1
+        }
     }
 
 
@@ -3306,6 +3321,15 @@ open class SlidingPaneLayout @JvmOverloads constructor(
     }
 
     /**
+     * sesl9 exposes this method with a typo in its name. Kept as-is for API compatibility.
+     *
+     * @see seslGetResizeOff
+     */
+    fun seslGetReiszeOff(): Boolean {
+        return resizeOff
+    }
+
+    /**
      * Disables the auto resizing the views width inside the details pane.
      * The views will just slide out when the drawer pane is expanded.
      *
@@ -3381,7 +3405,7 @@ open class SlidingPaneLayout @JvmOverloads constructor(
     /**
      * Enable rounded corner on the drawer pane
      *
-     * @param radius (optional) default is 16px
+     * @param radius (optional) default is 22dp
      *
      * @see seslGetRoundedCornerOn
      * @see seslSetRoundedCornerOff
@@ -3423,6 +3447,14 @@ open class SlidingPaneLayout @JvmOverloads constructor(
     }
 
     /**
+     * sesl9 exposes this method with the `sesl` prefix. Kept as an alias for API compatibility.
+     *
+     * @param isSinglePanel `true` to enable single panel mode, `false` for normal (multi-panel) behavior.
+     * @see setSinglePanel
+     */
+    inline fun seslSetSinglePanel(isSinglePanel: Boolean) = setSinglePanel (isSinglePanel)
+
+    /**
      * Retrieves the current status of the single panel.
      *
      * @return `true` if it is a single panel, `false` otherwise.
@@ -3430,6 +3462,14 @@ open class SlidingPaneLayout @JvmOverloads constructor(
     fun getSinglePanelStatus(): Boolean {
         return isSinglePanel
     }
+
+    /**
+     * sesl9 exposes this method with the `sesl` prefix. Kept as an alias for API compatibility.
+     *
+     * @return `true` if it is a single panel, `false` otherwise.
+     * @see getSinglePanelStatus
+     */
+    inline fun seslGetSinglePanelStatus(): Boolean = getSinglePanelStatus()
 
 
     /**
@@ -3479,6 +3519,15 @@ open class SlidingPaneLayout @JvmOverloads constructor(
      * @return The sliding pane drag area.
      */
     fun seslGetSlidingPaneDragArea(): Int = slidingPaneDragArea
+
+    /**
+     * Sets the area where a user can drag the sliding pane.
+     *
+     * @param area The sliding pane drag area in pixels.
+     */
+    fun seslSetSlidingPaneDragArea(area: Int) {
+        slidingPaneDragArea = area
+    }
 
     /**
      * Retrieves the current sliding state.

@@ -10,7 +10,6 @@ dependencies {
 
     api(libs.sesl.androidx.appcompat)
     api(libs.sesl.androidx.customview)
-    implementation(libs.sesl.androidx.coreKtx)
     implementation(libs.sesl.androidx.coordinatorlayout)
 }
 
