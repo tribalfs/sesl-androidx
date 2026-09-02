@@ -109,6 +109,9 @@ public class SeslIndexScrollView extends FrameLayout {
 
     int mIndexBarGravity = GRAVITY_INDEX_BAR_RIGHT;
 
+    int mIndexScrollBgTopMargin = 0;
+    int mIndexScrollBgBottomMargin = 0;
+
     Typeface mGroupIconFont;
     Typeface mSECRobotoLightRegularFont;
 
@@ -346,6 +349,20 @@ public class SeslIndexScrollView extends FrameLayout {
             enableScrollThumb(true);
 
             mTouchHelper.updateId(recyclerView.getId());
+
+            //sesl9
+            if (mIndexScroll.mRecyclerView != null) {
+                mIndexScrollBgTopMargin = mIndexScroll.mRecyclerView.seslGetScrollBarTopOffset();
+                mIndexScrollBgBottomMargin = mIndexScroll.mRecyclerView.seslGetScrollBarBottomOffset();
+                mIndexScroll.setIndexScrollBgMargin(mIndexScrollBgTopMargin, mIndexScrollBgBottomMargin);
+
+                mIndexScroll.mRecyclerView.seslSetScrollBarOffsetChangedListener((topOffset, bottomOffset) -> {
+                    mIndexScrollBgTopMargin = topOffset;
+                    mIndexScrollBgBottomMargin = bottomOffset;
+                    mIndexScroll.setIndexScrollBgMargin(topOffset, bottomOffset);
+                    invalidate();
+                });
+            }
         }
     }
 
@@ -904,6 +921,7 @@ public class SeslIndexScrollView extends FrameLayout {
         public void setIndexScrollBgMargin(int topMargin, int bottomMargin) {
             mScrollTopMargin = topMargin;
             mScrollBottomMargin = bottomMargin;
+            setDimensions(mWidth, mScreenHeight > 0 ? mScreenHeight : mHeight);
             invalidate();
         }
 
@@ -912,7 +930,7 @@ public class SeslIndexScrollView extends FrameLayout {
             setBgRectParams();
         }
 
-        public void setDimensions(int width, int height) {
+       private void setDimensions(int width, int height) {
             if (mIsAlphabetInit) {
                 mWidth = width;
                 mHeight = height
