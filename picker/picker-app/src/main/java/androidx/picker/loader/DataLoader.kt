@@ -20,14 +20,7 @@ import android.graphics.drawable.Drawable
 import androidx.picker.features.scs.AbstractAppDataListFactory
 import androidx.picker.helper.PackageManagerHelper
 import androidx.picker.model.AppInfo
-import kotlin.Lazy
-import kotlin.LazyThreadSafetyMode
-import kotlin.collections.Map
-import kotlin.collections.mutableMapOf
-import kotlin.jvm.functions.Function0
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import org.jetbrains.annotations.NotNull
 
 /**
  * Interface for loading app data such as labels and icons.

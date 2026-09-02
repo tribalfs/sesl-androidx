@@ -25,10 +25,14 @@ import androidx.picker.model.AppData.ItemType
 import androidx.picker.model.AppInfo
 import androidx.picker.model.AppInfoData
 
+import androidx.reflect.os.SeslBuildReflector
+
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 abstract class AbstractAppDataListFactory : LogTag {
 
     companion object {
+        private const val SMART_SUGGESTIONS_ENABLED_SEP_VERSION = 170500
+
         val EMPTY_FACTORY: AbstractAppDataListFactory = object : AbstractAppDataListFactory() {
             override fun getDataList(itemType: Int): List<AppInfoData> = emptyList()
             override val logTag: String get() = ""
@@ -37,12 +41,15 @@ abstract class AbstractAppDataListFactory : LogTag {
         /**
          * @param context The application's context.
          * @return An instance of a concrete implementation of [AbstractAppDataListFactory]
-         * based on the Android SDK version. For Android SDK versions 30 and above,
-         * it returns an [AppDataListSCSFactory]. Otherwise, it returns an [AppDataListBixbyFactory].
+         * based on the Android SDK version and SEP version.
          */
         @JvmStatic
         fun getFactory(context: Context): AbstractAppDataListFactory {
-            return if (Build.VERSION.SDK_INT >= 30) {
+            return if (Build.VERSION.SDK_INT >= 36 &&
+                SeslBuildReflector.SeslVersionReflector.getField_SEM_PLATFORM_INT() >= SMART_SUGGESTIONS_ENABLED_SEP_VERSION
+            ) {
+                AppDataListSmartSuggestionsFactory(context)
+            } else if (Build.VERSION.SDK_INT >= 30) {
                 AppDataListSCSFactory(context)
             } else {
                 AppDataListBixbyFactory(context)

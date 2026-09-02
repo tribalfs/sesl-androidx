@@ -25,6 +25,8 @@ import androidx.picker.adapter.viewholder.GridRemoveViewHolder
 import androidx.picker.adapter.viewholder.GridViewHolder
 import androidx.picker.adapter.viewholder.GroupTitleViewHolder
 import androidx.picker.adapter.viewholder.PickerViewHolder
+import androidx.picker.features.gridComposable.DefaultGridStrategy
+import androidx.picker.features.gridComposable.GridStrategy
 import androidx.picker.model.AppData.Companion.TYPE_ITEM_CHECKBOX
 import androidx.picker.model.AppData.Companion.TYPE_ITEM_CHECKBOX_REMOVE
 import androidx.picker.model.GroupTitleStyleData
@@ -40,12 +42,17 @@ import androidx.picker.model.viewdata.GroupTitleViewData
  *
  * @param context The context used to inflate views.
  * @param groupTitleStyleData Data for styling group titles.
+ * @param gridStrategy Strategy for grid layout composable types.
  */
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP_PREFIX)
-class GridAdapter(
+class GridAdapter @JvmOverloads constructor(
     context: Context,
-    groupTitleStyleData: GroupTitleStyleData
+    groupTitleStyleData: GroupTitleStyleData,
+    gridStrategy: GridStrategy? = null
 ) : AbsAdapter(context, groupTitleStyleData) {
+
+    var gridStrategy: GridStrategy = gridStrategy ?: DefaultGridStrategy()
+        private set
 
     companion object {
         private const val TYPE_HEADER = 256
@@ -54,6 +61,14 @@ class GridAdapter(
         private const val TYPE_GRID_REMOVE = 259
         private const val TYPE_GROUP_HEADER = 260
         private const val TYPE_CUSTOM = 261
+    }
+
+    fun setGridStrategy(strategy: GridStrategy?) {
+        val newStrategy = strategy ?: DefaultGridStrategy()
+        if (this.gridStrategy != newStrategy) {
+            this.gridStrategy = newStrategy
+            notifyDataSetChanged()
+        }
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -77,13 +92,16 @@ class GridAdapter(
                 groupTitleStyleData
             )
             TYPE_GRID_CHECK -> GridCheckBoxViewHolder(
-                inflate(parent, R.layout.picker_app_grid_item_view)
+                inflate(parent, R.layout.picker_app_grid_item_view),
+                gridStrategy
             )
             TYPE_GRID_REMOVE -> GridRemoveViewHolder(
-                inflate(parent, R.layout.picker_app_grid_item_view_remove)
+                inflate(parent, R.layout.picker_app_grid_item_view_remove),
+                gridStrategy
             )
             else -> GridViewHolder(
-                inflate(parent, R.layout.picker_app_grid_item_view)
+                inflate(parent, R.layout.picker_app_grid_item_view),
+                gridStrategy
             )
         }
     }

@@ -7,6 +7,6 @@ import android.graphics.drawable.Drawable
  */
 fun Drawable?.newMutateDrawable(): Drawable? {
     val constantState = this?.constantState ?: return null
-    val newDrawable = constantState.newDrawable() ?: return null
+    val newDrawable = constantState.newDrawable()
     return newDrawable.mutate()
 }

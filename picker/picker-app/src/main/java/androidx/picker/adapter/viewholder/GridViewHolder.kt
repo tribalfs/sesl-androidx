@@ -24,7 +24,10 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isVisible
 import androidx.picker.R
+import androidx.picker.features.gridComposable.DefaultGridStrategy
+import androidx.picker.features.gridComposable.GridStrategy
 import androidx.picker.helper.getPrimaryDarkColor
 import androidx.picker.helper.limitFontLarge
 import androidx.picker.helper.loadIcon
@@ -46,8 +49,12 @@ import kotlin.LazyThreadSafetyMode
  * when an action is performed on the item.
  *
  * @param view The root view of the grid item.
+ * @param gridStrategy Strategy for grid layout composable types.
  */
-open class GridViewHolder(view: View) : PickerViewHolder(view), Inducible {
+open class GridViewHolder @JvmOverloads constructor(
+    view: View,
+    private val gridStrategy: GridStrategy = DefaultGridStrategy()
+) : PickerViewHolder(view), Inducible {
 
     val shimmerLayout: ShimmerFrameLayout = view.findViewById(R.id.shimmerFrameLayout)
     val gridItem: ConstraintLayout = view.findViewById(R.id.item)
@@ -62,6 +69,7 @@ open class GridViewHolder(view: View) : PickerViewHolder(view), Inducible {
     private var disposableHandle: DisposableHandle? = null
 
     override fun bindData(data: ViewData) {
+        appName.isVisible = gridStrategy.gridComposableTypeSet.showTitle
         val disposableHandleList = mutableListOf<DisposableHandle>()
         if (data is AppInfoViewData) {
             icon.tag = data.appInfo

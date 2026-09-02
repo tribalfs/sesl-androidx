@@ -21,6 +21,8 @@ import android.view.View
 import android.view.accessibility.AccessibilityManager
 import android.widget.ImageView
 import androidx.picker.R
+import androidx.picker.features.gridComposable.DefaultGridStrategy
+import androidx.picker.features.gridComposable.GridStrategy
 import androidx.picker.model.viewdata.AppInfoViewData
 import androidx.picker.model.viewdata.ViewData
 
@@ -29,8 +31,12 @@ import androidx.picker.model.viewdata.ViewData
  * This class extends [GridViewHolder] and adds functionality for showing a remove icon.
  *
  * @param view The view for the grid item.
+ * @param gridStrategy Strategy for grid layout composable types.
  */
-class GridRemoveViewHolder(view: View) : GridViewHolder(view) {
+class GridRemoveViewHolder @JvmOverloads constructor(
+    view: View,
+    gridStrategy: GridStrategy = DefaultGridStrategy()
+) : GridViewHolder(view, gridStrategy) {
 
     val removeIcon: ImageView = view.findViewById(R.id.remove_icon)
 

@@ -19,6 +19,8 @@ dependencies {
     implementation(libs.androidx.constraintLayout)
     implementation(libs.androidx.compose.runtime)
     implementation(libs.shimmer)
+    implementation(libs.kotlin.parcelize.runtime)
+    kotlinCompilerPluginClasspath(libs.kotlin.parcelize.compiler)
 
     api(libs.sesl.androidx.appcompat)
     api(libs.sesl.androidx.core)
