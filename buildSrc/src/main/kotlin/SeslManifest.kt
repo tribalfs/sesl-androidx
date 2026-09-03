@@ -37,6 +37,7 @@ object SeslManifest {
         "androidx.picker-basic" to listOf("1.0.8", "1.0.8-sesl9", "rev0", 23, 37),
         "androidx.picker-app" to listOf("1.0.17", "1.0.17-sesl9", "rev0", 23, 37),
         "androidx.picker-color" to listOf("1.0.8", "1.0.8-sesl9", "rev0", 23, 37),
+        "androidx.glance-oneui-common" to listOf("1.1.4", "1.1.4-sesl9", "rev0", 23, 37),
     )
 
     val pomInfo: Map<String, String> = mapOf(
