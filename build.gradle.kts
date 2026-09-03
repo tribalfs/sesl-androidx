@@ -146,5 +146,4 @@ dependencies {
     add("dokka", project(":picker-basic"))
     add("dokka", project(":picker-color"))
     add("dokka", project(":picker-app"))
-    add("dokka", project(":apppickerview"))
 }
