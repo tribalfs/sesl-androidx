@@ -74,6 +74,7 @@ import org.jspecify.annotations.Nullable;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -193,7 +194,8 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
     //Sesl
     private boolean mEnableAutoCollapsingKeyEvent = true;
     private boolean mToolIsMouse;
-    private View mLastNestedScrollingChild;
+    //sesl: WeakReference prevents detached fragment views from leaking
+    private WeakReference<View> mLastNestedScrollingChild;
     //sesl
 
     private OnPreDrawListener mOnPreDrawListener;
@@ -291,7 +293,6 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
             vto.removeOnPreDrawListener(mOnPreDrawListener);
         }
         if (mNestedScrollingTarget != null) {
-            mLastNestedScrollingChild = mNestedScrollingTarget;
             onStopNestedScroll(mNestedScrollingTarget);
         }
         mIsAttachedToWindow = false;
@@ -1844,7 +1845,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
             int axes, int type) {
         mNestedScrollingParentHelper.onNestedScrollAccepted(child, target, axes, type);
         mNestedScrollingTarget = target;
-        mLastNestedScrollingChild = target;//sesl
+        mLastNestedScrollingChild = new WeakReference<>(target); //sesl
 
         final int childCount = getChildCount();
         for (int i = 0; i < childCount; i++) {
@@ -1872,7 +1873,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
     public void onStopNestedScroll(@NonNull View target, int type) {
         mNestedScrollingParentHelper.onStopNestedScroll(target, type);
 
-        mLastNestedScrollingChild = target;//sesl
+        mLastNestedScrollingChild = new WeakReference<>(target); //sesl
 
         final int childCount = getChildCount();
         for (int i = 0; i < childCount; i++) {
@@ -3502,11 +3503,13 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
                 }
 
                 if (event.getAction() == MotionEvent.ACTION_SCROLL) {
-                    if (mLastNestedScrollingChild != null) {
+                    final View lastScrollChild = mLastNestedScrollingChild != null
+                            ? mLastNestedScrollingChild.get() : null; //sesl
+                    if (lastScrollChild != null) {
                         if (event.getAxisValue(MotionEvent.AXIS_VSCROLL) < 0) {
                             ablBehavior.seslSetExpanded(false);
                         } else if (event.getAxisValue(MotionEvent.AXIS_VSCROLL) > 0
-                                && !mLastNestedScrollingChild.canScrollVertically(-1)) {
+                                && !lastScrollChild.canScrollVertically(-1)) {
                             ablBehavior.seslSetExpanded(true);
                         }
                     } else if (event.getAxisValue(MotionEvent.AXIS_VSCROLL) < 0) {
@@ -3533,7 +3536,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
      * @param view The child view that initiated the nested scroll.
      */
     public void seslSetNestedScrollingChild(View view) {
-        mLastNestedScrollingChild = view;
+        mLastNestedScrollingChild = view != null ? new WeakReference<>(view) : null; //sesl
     }
 
     /**
