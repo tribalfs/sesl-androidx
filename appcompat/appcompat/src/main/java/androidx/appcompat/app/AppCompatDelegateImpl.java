@@ -1009,10 +1009,8 @@ class AppCompatDelegateImpl extends AppCompatDelegate
                 contentView.addView(child);
             }
 
-            // Change our content FrameLayout to use the android.R.id.content id.
-            // Useful for fragments.
+            // Unset android.R.id.content id for content FrameLayout to use it.
             windowContentView.setId(View.NO_ID);
-            contentView.setId(android.R.id.content);
 
             // The decorContent may have a foreground drawable set (windowContentOverlay).
             // Remove this as we handle it ourselves
@@ -1020,6 +1018,10 @@ class AppCompatDelegateImpl extends AppCompatDelegate
                 ((FrameLayout) windowContentView).setForeground(null);
             }
         }
+
+        // Change our content FrameLayout to use the android.R.id.content id.
+        // Useful for fragments.
+        contentView.setId(android.R.id.content);
 
         // Now set the Window's content view with the decor
         mWindow.setContentView(subDecor);
