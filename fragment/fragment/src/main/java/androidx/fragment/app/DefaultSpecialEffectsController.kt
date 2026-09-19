@@ -625,6 +625,10 @@ internal class DefaultSpecialEffectsController(container: ViewGroup) :
         var animator: AnimatorSet? = null
         var animatorForCommit: AnimatorSet? = null//sesl9
 
+        //custom: true once onCommit start()-ed the animator; while false an onCancel
+        //end() cannot fire onAnimationEnd, so completion must be dispatched manually.
+        private var committed = false
+
         override fun onStart(container: ViewGroup) {
             if (animatorInfo.isVisibilityUnchanged) {
                 // No change in visibility, so we can avoid starting the animator
@@ -797,11 +801,13 @@ internal class DefaultSpecialEffectsController(container: ViewGroup) :
                     animatorSet.removeAllListeners()
                     animatorSet.cancel()
                     customCommitAnimator.setTarget(view)
+                    committed = true//custom
                     customCommitAnimator.start()
                     return
                 }
             }
             //sesl9
+            committed = true//custom
             animatorSet.start()
             if (FragmentManager.isLoggingEnabled(Log.VERBOSE)) {
                 Log.v(FragmentManager.TAG, "Animator from operation $operation has started.")
@@ -816,8 +822,10 @@ internal class DefaultSpecialEffectsController(container: ViewGroup) :
                 return
             }
             val operation = animatorInfo.operation
+            var reversing = false//custom
             if (operation.isSeeking) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    reversing = true//custom: completion arrives via onAnimationEnd at 0
                     Api26Impl.reverse(animator)
                 }
             } else {
@@ -846,6 +854,21 @@ internal class DefaultSpecialEffectsController(container: ViewGroup) :
                 )
             )
             //sesl9
+
+            //custom: an animator still driven purely via setCurrentPlayTime was never
+            //start()-ed, so both end() above and the cancel path are silent no-ops —
+            //without this, the effect never completes and the operation (with its
+            //half-animated views) hangs in runningOperations. Mirror onAnimationEnd.
+            if (!reversing && !committed && !operation.isComplete) {
+                val view = operation.fragment.mView
+                if (view != null) {
+                    container.endViewTransition(view)
+                    if (operation.finalState == Operation.State.GONE) {
+                        operation.finalState.applyState(view, container)
+                    }
+                }
+                operation.completeEffect(this)
+            }
 
             if (FragmentManager.isLoggingEnabled(Log.VERBOSE)) {
                 Log.v(
