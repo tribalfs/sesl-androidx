@@ -16927,7 +16927,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
             if (mGoToTopController != null) {
                 mGoToTopController.setImmersiveBottomPadding(padding);
             }
-            if (mFastScroller != null) {
+            if (mFastScroller != null && mAdapter != null/*sesl9*/) {
                 mFastScroller.setImmersiveBottomPadding(padding);
             }
         }
@@ -18093,7 +18093,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
 
     public void seslUpdateIndexTipPosition() {
         if (mIndexTipController != null) {
-            mIndexTipController.onImmersivePositionChanged(mContext.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE);
+            mIndexTipController.onImmersivePositionChanged(mContext.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT); //sesl9
         }
     }
 
@@ -18140,6 +18140,10 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
             runnable.run();
         }
         invalidate();
+    }
+
+    public void seslOnDispatchDraw(@NonNull Canvas canvas, @NonNull RecyclerView recyclerView,
+            @NonNull State state) {
     }
 
     private void seslRenderFadingEffect(Canvas canvas) {
