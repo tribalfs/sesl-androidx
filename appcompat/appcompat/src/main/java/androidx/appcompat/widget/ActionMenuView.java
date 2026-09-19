@@ -209,20 +209,17 @@ public class ActionMenuView extends LinearLayoutCompat implements MenuBuilder.It
                 final View child = getChildAt(i);
                 final LayoutParams lp = (LayoutParams) child.getLayoutParams();
                 lp.leftMargin = lp.rightMargin = 0;
-                final boolean isWrapped = child instanceof ActionMenuItemViewBadgedWrapper;//custom
-
+                ActionMenuItemView itemView = getActionMenuItemViewInstance(child);//custom
                 //Sesl
-                if (child instanceof ActionMenuItemView || isWrapped) {
-                    ActionMenuItemView itemView = isWrapped
-                            ? ((ActionMenuItemViewBadgedWrapper) child).getInnerItemView()//custom
-                            : (ActionMenuItemView) child;
+                if (itemView != null) {//custom
                     int paddingStart = mActionButtonPaddingStart;
                     int paddingEnd = mActionButtonPaddingEnd;
                     int lastIndex = childCount - 1;
                     if (i == lastIndex && itemView.hasText() && !lp.isOverflowButton) {
                         paddingEnd = mLastTextButtonEndPadding;
                     }
-                    child.setPaddingRelative(paddingStart, 0, paddingEnd, 0);
+                    //custom: pad the inner view, not the wrapper
+                    itemView.setPaddingRelative(paddingStart, 0, paddingEnd, 0);
                     if (i == lastIndex) {
                         if (!itemView.hasText()) {
                             itemView.setIsLastItem(true);
@@ -231,9 +228,9 @@ public class ActionMenuView extends LinearLayoutCompat implements MenuBuilder.It
                     } else if (i < lastIndex && !itemView.hasText()) {
                         itemView.setIsLastItem(false);
                     }
-                    if (isWrapped) {
-                        ((ActionMenuItemViewBadgedWrapper) child).adjustBadgeEndMargin(
-                                paddingEnd - mActionButtonPaddingEnd);
+                    //custom
+                    if (child instanceof ActionMenuItemViewBadgedWrapper wrapped) {
+                        wrapped.adjustBadgeEndMargin(paddingEnd - mActionButtonPaddingEnd);
                     }
                 } else if (lp.isOverflowButton) {
                     if (child instanceof ActionMenuPresenter.OverflowMenuButton) {
@@ -251,6 +248,18 @@ public class ActionMenuView extends LinearLayoutCompat implements MenuBuilder.It
             }
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         }
+    }
+
+    //custom
+    @Nullable
+    private  ActionMenuItemView getActionMenuItemViewInstance(View itemView) {
+        if ((itemView instanceof ActionMenuItemViewBadgedWrapper wrapped)) {
+            return wrapped.getInnerItemView();
+        }
+        if ((itemView instanceof ActionMenuItemView actionMenuItemView)) {
+            return actionMenuItemView;
+        }
+        return null;
     }
 
     private void onMeasureExactFormat(int widthMeasureSpec, int heightMeasureSpec) {
@@ -294,14 +303,13 @@ public class ActionMenuView extends LinearLayoutCompat implements MenuBuilder.It
             final View child = getChildAt(i);
             if (child.getVisibility() == GONE) continue;
 
-            final boolean isWrapped = child instanceof ActionMenuItemViewBadgedWrapper;//custom
-            final boolean isGeneratedItem = isWrapped || child instanceof ActionMenuItemView;
+            ActionMenuItemView actionMenuItemView = getActionMenuItemViewInstance(child);
             visibleItemCount++;
 
-            if (isGeneratedItem) {
+            if (actionMenuItemView != null) {
                 // Reset padding for generated menu item views; it may change below
                 // and views are recycled.
-                child.setPadding(mGeneratedItemPadding, 0, mGeneratedItemPadding, 0);
+                actionMenuItemView.setPadding(mGeneratedItemPadding, 0, mGeneratedItemPadding, 0);
             }
 
             final LayoutParams lp = (LayoutParams) child.getLayoutParams();
@@ -311,9 +319,7 @@ public class ActionMenuView extends LinearLayoutCompat implements MenuBuilder.It
             lp.expandable = false;
             lp.leftMargin = 0;
             lp.rightMargin = 0;
-            lp.preventEdgeOffset = isGeneratedItem && (isWrapped
-                    ? ((ActionMenuItemViewBadgedWrapper) child).getInnerItemView().hasText() //custom
-                    : ((ActionMenuItemView) child).hasText());
+            lp.preventEdgeOffset = actionMenuItemView != null && actionMenuItemView.hasText(); //custom
 
             // Overflow always gets 1 cell. No more, no less.
             final int cellsAvailable = lp.isOverflowButton ? 1 : cellsRemaining;
@@ -379,7 +385,14 @@ public class ActionMenuView extends LinearLayoutCompat implements MenuBuilder.It
 
                 if (centerSingleExpandedItem && lp.preventEdgeOffset && cellsRemaining == 1) {
                     // Add padding to this item such that it centers.
-                    child.setPadding(mGeneratedItemPadding + cellSize, 0, mGeneratedItemPadding, 0);
+                    if ((child instanceof ActionMenuItemViewBadgedWrapper wrapped)) {
+                        //custom: pad the inner view so the wrapper stays padding-free
+                        wrapped.getInnerItemView().setPadding(mGeneratedItemPadding + cellSize, 0,
+                                mGeneratedItemPadding, 0);
+                    } else {
+                        child.setPadding(mGeneratedItemPadding + cellSize, 0,
+                                mGeneratedItemPadding, 0);
+                    }
                 }
                 lp.cellsUsed++;
                 lp.expanded = true;
