@@ -151,6 +151,15 @@ public class FragmentActivity extends ComponentActivity implements
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    //sesl9
+    @Override
+    @Deprecated
+    public void onBackPressed() {
+        getSupportFragmentManager().clearFragmentAnimationOnLastFragmentExit();
+        super.onBackPressed();
+    }
+    //sesl9
+
 
     /**
      * Reverses the Activity Scene entry Transition and triggers the calling Activity

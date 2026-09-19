@@ -2038,7 +2038,8 @@ public class Fragment implements ComponentCallbacks, OnCreateContextMenuListener
             view.setTranslationZ(1.0f);
         }
 
-        if (SeslFragmentTransactionAnimationSet.isFragmentAnimationRes(nextAnim)) {
+        if (SeslFragmentTransactionAnimationSet.isFragmentAnimationRes(nextAnim)
+                && !mIsBgCustomized) {
             if (fragmentActivity != null) {
                 fragmentActivity.getWindow().getDecorView()
                         .setBackgroundColor(getResources().getColor(R.color.sesl_fragment_fgcolor));
@@ -2098,27 +2099,27 @@ public class Fragment implements ComponentCallbacks, OnCreateContextMenuListener
      */
     @Nullable
     public Animator onCreateAnimator(int nextAnim, boolean enter, boolean isPop) {
-        if (this.mFragmentTransitionHelper == null) {
+        if (mFragmentTransitionHelper == null) {
             initFragmentTransition(true);
         }
-        SeslFragmentTransitionHelper helper = this.mFragmentTransitionHelper;
+        SeslFragmentTransitionHelper helper = mFragmentTransitionHelper;
         if (helper == null) {
             return null;
         }
-        helper.update(this.mView);
+        helper.update(mView);
         Context context = getContext();
         return helper.createAnimator(nextAnim, enter, isPop, context != null && isPopOver(context));
     }
 
     /** Maps and clamps gesture progress for predictive back fragment transitions. */
     public float getProgress(float progress) {
-        SeslFragmentTransitionHelper helper = this.mFragmentTransitionHelper;
+        SeslFragmentTransitionHelper helper = mFragmentTransitionHelper;
         return helper != null ? helper.getProgress(progress) : progress;
     }
 
     /** Resets view translation properties at the start of a fragment transition. */
     public void initTransition() {
-        SeslFragmentTransitionHelper helper = this.mFragmentTransitionHelper;
+        SeslFragmentTransitionHelper helper = mFragmentTransitionHelper;
         if (helper != null) {
             helper.initTransition();
         }
@@ -2127,34 +2128,35 @@ public class Fragment implements ComponentCallbacks, OnCreateContextMenuListener
     /** Returns the registered {@link SeslOnTransitionCallback}, or {@code null} if none is set. */
     @Nullable
     public SeslOnTransitionCallback seslGetOnTransitionCallback() {
-        return this.mSeslOnTransitionCallback;
+        return mSeslOnTransitionCallback;
     }
 
     /** Registers a {@link SeslOnTransitionCallback} to receive transition lifecycle events. */
     public void seslSetOnTransitionCallback(@Nullable SeslOnTransitionCallback callback) {
-        if (this.mSeslOnTransitionCallback != callback) {
-            this.mSeslOnTransitionCallback = callback;
+        if (mSeslOnTransitionCallback != callback) {
+            mSeslOnTransitionCallback = callback;
         }
     }
 
     /** Returns whether predictive back transitions are enabled for this fragment. */
     public boolean seslIsPredictiveBackEnabled() {
-        return this.isPredictiveBackEnabled || FragmentManager.USE_PREDICTIVE_BACK;
+        return isPredictiveBackEnabled;
     }
 
     /** Returns whether the fragment transition helper is initialized for predictive back. */
     public boolean seslIsPredictiveBackTransitionEnabled() {
-        return this.mFragmentTransitionHelper != null;
+        return mFragmentTransitionHelper != null;
     }
 
     /**
      * Enables or disables predictive back transitions after checking system and gesture navigation prerequisites.
+     * This is disabled by default.
      *
      * @param enabled {@code true} to enable predictive back transitions, {@code false} to disable
      */
     @OptIn(markerClass = PredictiveBackControl.class)
     public void seslSetPredictiveBackEnabled(boolean enabled) {
-        this.mRequestedPredictiveBackEnabled = enabled;//custom
+        mRequestedPredictiveBackEnabled = enabled;//custom
         Context context = getContext();
         if (hasPredictiveBackPrerequisites(context)) {
             applyPredictiveBackEnabled(enabled && canEnablePredictiveBack(context));
@@ -2163,19 +2165,20 @@ public class Fragment implements ComponentCallbacks, OnCreateContextMenuListener
 
     /**
      * Enables or disables predictive back transitions with custom background flag.
+     * This is disabled by default.
      *
      * @param enabled {@code true} to enable predictive back transitions
      * @param isBgCustomized {@code true} if custom background styling is used
      */
     public void seslSetPredictiveBackEnabled(boolean enabled, boolean isBgCustomized) {
-        this.mIsBgCustomized = isBgCustomized;
+        mIsBgCustomized = isBgCustomized;
         seslSetPredictiveBackEnabled(enabled);
     }
 
     @OptIn(markerClass = PredictiveBackControl.class)
     private void applyPredictiveBackEnabled(boolean enabled) {
         FragmentManager.enablePredictiveBack(enabled);
-        this.isPredictiveBackEnabled = enabled;
+        isPredictiveBackEnabled = enabled;
         initFragmentTransition(enabled);
     }
 
@@ -2185,11 +2188,11 @@ public class Fragment implements ComponentCallbacks, OnCreateContextMenuListener
     }
 
     private boolean hasPredictiveBackPrerequisites(Context context) {
-        if (this.mView == null) {
+        if (mView == null) {
             Log.e(FragmentManager.TAG, this + " View is null");
             return false;
         }
-        if (this.mFragmentManager == null) {
+        if (mFragmentManager == null) {
             Log.e(FragmentManager.TAG, this + " ParentFragmentManager is null");
             return false;
         }
@@ -2202,9 +2205,9 @@ public class Fragment implements ComponentCallbacks, OnCreateContextMenuListener
 
     private void initFragmentTransition(boolean enabled) {
         if (!enabled) {
-            this.mFragmentTransitionHelper = null;
-        } else if (this.mFragmentTransitionHelper == null) {
-            this.mFragmentTransitionHelper = new SeslFragmentTransitionHelper(this.mView);
+            mFragmentTransitionHelper = null;
+        } else if (mFragmentTransitionHelper == null) {
+            mFragmentTransitionHelper = new SeslFragmentTransitionHelper(mView);
         }
     }
 
@@ -3452,7 +3455,8 @@ public class Fragment implements ComponentCallbacks, OnCreateContextMenuListener
     }
 
     void performViewCreated() {
-        //custom
+        // custom: check if the predictive back is requested
+        // prior to view creation.
         if (mRequestedPredictiveBackEnabled != null) {
             seslSetPredictiveBackEnabled(mRequestedPredictiveBackEnabled);
         }

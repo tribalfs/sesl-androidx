@@ -80,6 +80,8 @@ import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.savedstate.SavedStateRegistry;
 import androidx.savedstate.SavedStateRegistryOwner;
 
+import kotlinx.coroutines.DisposableHandle;
+
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
 import java.util.ArrayDeque;
@@ -1689,6 +1691,41 @@ public abstract class FragmentManager implements FragmentResultOwner {
         return mCurState >= state;
     }
 
+    //sesl9
+    /** Dispatches a cancelled predictive back gesture to the internal back callback. */
+    public void seslHandleOnBackCancelled() {
+        mOnBackPressedCallback.handleOnBackCancelled();
+    }
+
+    /** Dispatches a committed back event through the internal back handling. */
+    public void seslHandleOnBackPressed() {
+        handleOnBackPressed();
+    }
+
+    /** Dispatches predictive back progress to the internal back callback. */
+    public void seslHandleOnBackProgressed(@NonNull BackEventCompat backEventCompat) {
+        mOnBackPressedCallback.handleOnBackProgressed(backEventCompat);
+    }
+
+    /** Dispatches a predictive back gesture start to the internal back callback. */
+    public void seslHandleOnBackStarted(@NonNull BackEventCompat backEventCompat) {
+        mOnBackPressedCallback.handleOnBackStarted(backEventCompat);
+    }
+
+    /** Registers a {@link SeslOnBackPressedCallback} to intercept predictive back events. */
+    public void seslSetOnBackPressedCallback(
+            @Nullable SeslOnBackPressedCallback seslOnBackPressedCallback) {
+        if (mSeslOnBackPressedCallback != seslOnBackPressedCallback) {
+            mSeslOnBackPressedCallback = seslOnBackPressedCallback;
+        }
+    }
+
+    /** Enables or disables auto-clearing fragment animations on last back stack exit. */
+    public void seslUseClearAnimationOnLastStack(boolean use) {
+        mUseAutoClearOnLastStack = use;
+    }
+    //sesl9
+
     /**
      * Allows for changing the draw order on a container, if the container is a
      * FragmentContainerView.
@@ -2621,6 +2658,27 @@ public abstract class FragmentManager implements FragmentResultOwner {
         }
         return popBackStackState(records, isRecordPop, name, -1, POP_BACK_STACK_INCLUSIVE);
     }
+
+    //sesl9
+    /**
+     * Clears any unfinished fragment animation on the first fragment.
+     */
+    public void clearFragmentAnimationOnLastFragmentExit() {
+        if (!mUseAutoClearOnLastStack) {
+            return;
+        }
+        List<Fragment> fragments = getFragments();
+        Fragment fragment = fragments.isEmpty() ? null : fragments.get(0);
+        if (fragment == null) {
+            return;
+        }
+        DisposableHandle disposableHandle = fragment.mDisposableHandle;
+        if (disposableHandle == null) {
+            return;
+        }
+        disposableHandle.dispose();
+    }
+    //sesl9
 
     @SuppressWarnings({"unused", "WeakerAccess"}) /* synthetic access */
     boolean popBackStackState(@NonNull ArrayList<BackStackRecord> records,
