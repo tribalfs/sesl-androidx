@@ -33,6 +33,45 @@ public final class SeslConfigurationCompat {
     }
 
     /**
+     * Returns whether the given {@link Configuration} represents the main display.
+     *
+     * @param configuration the {@link Configuration} to query
+     * @return {@code true} if the configuration is for the main display, {@code false} otherwise
+     */
+    public static boolean isMainDisplay(@NonNull Configuration configuration) {//sesl9
+        Integer displayDeviceType =
+                SeslConfigurationReflector.getField_semDisplayDeviceType(configuration);
+        return displayDeviceType != null
+                && displayDeviceType.equals(
+                        SeslConfigurationReflector.getField_SEM_DISPLAY_DEVICE_TYPE_MAIN());
+    }
+
+    /**
+     * Returns whether night mode is active in the given {@link Configuration}.
+     *
+     * @param configuration the {@link Configuration} to query
+     * @return {@code true} if night mode is active, {@code false} otherwise
+     */
+    public static boolean isNightModeActive(@NonNull Configuration configuration) {//sesl9
+        return (configuration.uiMode & Configuration.UI_MODE_NIGHT_MASK)
+                == Configuration.UI_MODE_NIGHT_YES;
+    }
+
+    /**
+     * Returns whether the given {@link Configuration} represents the sub display.
+     *
+     * @param configuration the {@link Configuration} to query
+     * @return {@code true} if the configuration is for the sub display, {@code false} otherwise
+     */
+    public static boolean isSubDisplay(@NonNull Configuration configuration) {//sesl9
+        Integer displayDeviceType =
+                SeslConfigurationReflector.getField_semDisplayDeviceType(configuration);
+        return displayDeviceType != null
+                && displayDeviceType.equals(
+                        SeslConfigurationReflector.getField_SEM_DISPLAY_DEVICE_TYPE_SUB());
+    }
+
+    /**
      * Returns whether the given {@link Configuration} represents a Samsung pop-over window.
      *
      * @param configuration the {@link Configuration} to query

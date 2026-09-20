@@ -121,7 +121,8 @@ public class SeslConfigurationReflector {
     }
 
     /** Returns the Samsung display device type integer for the given {@link Configuration}. */
-    public static int getField_semDisplayDeviceType(@NonNull Configuration configuration) {
+    @Nullable
+    public static Integer getField_semDisplayDeviceType(@NonNull Configuration configuration) {
         Object semDisplayDeviceType = null;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -140,6 +141,34 @@ public class SeslConfigurationReflector {
             return (Integer) semDisplayDeviceType;
         }
 
-        return -1;
+        return null;
+    }
+
+    //sesl9
+    /** Returns the SEM_DISPLAY_DEVICE_TYPE_MAIN constant, or {@code null} if unavailable. */
+    @Nullable
+    public static Integer getField_SEM_DISPLAY_DEVICE_TYPE_MAIN() {
+        Field field = SeslBaseReflector.getField(mClass.getName(), "SEM_DISPLAY_DEVICE_TYPE_MAIN");
+        if (field != null) {
+            Object value = SeslBaseReflector.get(null, field);
+            if (value instanceof Integer) {
+                return (Integer) value;
+            }
+        }
+        return null;
+    }
+
+    //sesl9
+    /** Returns the SEM_DISPLAY_DEVICE_TYPE_SUB constant, or {@code null} if unavailable. */
+    @Nullable
+    public static Integer getField_SEM_DISPLAY_DEVICE_TYPE_SUB() {
+        Field field = SeslBaseReflector.getField(mClass.getName(), "SEM_DISPLAY_DEVICE_TYPE_SUB");
+        if (field != null) {
+            Object value = SeslBaseReflector.get(null, field);
+            if (value instanceof Integer) {
+                return (Integer) value;
+            }
+        }
+        return null;
     }
 }
