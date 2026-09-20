@@ -89,6 +89,8 @@ public class ListMenuItemView extends LinearLayout
     private TextView mBadgeView;
     private SeslDropDownItemTextView mDropDownItemTextView;
     private boolean mIsSubMenu = false;
+    private ImageView mSeslIconView;//sesl9
+    private boolean mSeslShowItemIcon;//sesl9
     //sesl
 
     public ListMenuItemView(Context context, AttributeSet attrs) {
@@ -150,6 +152,7 @@ public class ListMenuItemView extends LinearLayout
 
             mContent = findViewById(R.id.content);
             mTitleParent = findViewById(R.id.title_parent);
+            mSeslIconView = findViewById(R.id.sesl_icon);//sesl9
         }
         //sesl
     }
@@ -324,6 +327,14 @@ public class ListMenuItemView extends LinearLayout
             return;
         }
 
+        if (mSeslShowItemIcon) {//sesl9
+            if (mIconView != null) {
+                mIconView.setImageDrawable(null);
+                mIconView.setVisibility(GONE);
+            }
+            return;
+        }
+
         final boolean showIcon = mItemData.shouldShowIcon() || mForceShowIcon;
         if (!showIcon && !mPreserveIconSpacing) {
             return;
@@ -337,15 +348,56 @@ public class ListMenuItemView extends LinearLayout
             insertIconView();
         }
 
-        if (icon != null || mPreserveIconSpacing) {
-            mIconView.setImageDrawable(showIcon ? icon : null);
+        if (mSeslIconView != null) {//sesl9
+            mSeslIconView.setImageDrawable(null);
+            mSeslIconView.setVisibility(GONE);
+        }
 
-            if (mIconView.getVisibility() != VISIBLE) {
-                mIconView.setVisibility(VISIBLE);
-            }
-        } else {
+        if (icon == null && !mPreserveIconSpacing) {
+            mIconView.setVisibility(GONE);
+            return;
+        }
+
+        mIconView.setImageDrawable(showIcon ? icon : null);
+
+        if (mIconView.getVisibility() != VISIBLE) {
+            mIconView.setVisibility(VISIBLE);
+        }
+    }
+
+    public void seslSetIcon(Drawable icon) {//sesl9
+        if (mIsSubMenu || mSeslIconView == null) {
+            return;
+        }
+
+        if (mIconView != null) {
+            mIconView.setImageDrawable(null);
             mIconView.setVisibility(GONE);
         }
+
+        if (!mSeslShowItemIcon) {
+            mSeslIconView.setImageDrawable(null);
+            mSeslIconView.setVisibility(GONE);
+            return;
+        }
+
+        if (mItemData == null || !(mItemData.shouldShowIcon() || mSeslShowItemIcon)) {
+            mSeslIconView.setImageDrawable(null);
+            mSeslIconView.setVisibility(GONE);
+        } else if (icon != null) {
+            mSeslIconView.setImageDrawable(icon);
+            mSeslIconView.setVisibility(VISIBLE);
+        } else if (mPreserveIconSpacing) {
+            mSeslIconView.setImageDrawable(null);
+            mSeslIconView.setVisibility(INVISIBLE);
+        } else {
+            mSeslIconView.setImageDrawable(null);
+            mSeslIconView.setVisibility(GONE);
+        }
+    }
+
+    public void seslSetShowItemIcon(boolean showItemIcon) {//sesl9
+        mSeslShowItemIcon = showItemIcon;
     }
 
     @Override
@@ -450,6 +502,11 @@ public class ListMenuItemView extends LinearLayout
 
         if (mBadgeView == null) {
             Log.i(TAG, "SUB_MENU_ITEM_LAYOUT case, mBadgeView is null");
+            return;
+        }
+
+        if (mTitleParent == null) {//sesl9
+            Log.i(TAG, "mTitleParent is null");
             return;
         }
 
