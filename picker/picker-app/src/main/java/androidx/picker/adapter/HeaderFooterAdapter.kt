@@ -28,7 +28,7 @@ import androidx.recyclerview.widget.RecyclerView
  *                       along with any added headers and footers.
  */
 class HeaderFooterAdapter(
-    private val wrappedAdapter: AbsAdapter
+    val wrappedAdapter: AbsAdapter
 ) : RecyclerView.Adapter<PickerViewHolder>(), AppPickerAdapter, SectionIndexer {
 
     companion object {

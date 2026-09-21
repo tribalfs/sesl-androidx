@@ -30,6 +30,8 @@ import androidx.reflect.os.SeslBuildReflector
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 abstract class AbstractAppDataListFactory : LogTag {
 
+    var allAppsTitle: String = ""
+
     companion object {
         private const val SMART_SUGGESTIONS_ENABLED_SEP_VERSION = 170500
 
