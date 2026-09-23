@@ -38,7 +38,7 @@ class AppCompatIssueRegistry : IssueRegistry() {
         ColorStateListAlphaDetector.NOT_USING_ANDROID_ALPHA,
         ColorStateListLoadingDetector.NOT_USING_COMPAT_LOADING,
         DrawableLoadingDetector.NOT_USING_COMPAT_LOADING,
-        ImageViewTintDetector.USING_ANDROID_TINT,
+        //ImageViewTintDetector.USING_ANDROID_TINT,
         SwitchUsageCodeDetector.USING_CORE_SWITCH_CODE,
         SwitchUsageXmlDetector.USING_CORE_SWITCH_XML,
         TextViewCompoundDrawablesApiDetector.NOT_USING_COMPAT_TEXT_VIEW_DRAWABLE_APIS,
