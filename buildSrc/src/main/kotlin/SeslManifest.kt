@@ -35,7 +35,7 @@ object SeslManifest {
         "androidx.swiperefreshlayout" to listOf("1.2.0-alpha01", "1.0.2-sesl9", "rev1", 23, 37),
         "androidx.indexscroll" to listOf("1.0.2", "1.0.2-sesl9", "rev0", 23, 37),
         "androidx.picker-basic" to listOf("1.0.8", "1.0.8-sesl9", "rev0", 23, 37),
-        "androidx.picker-app" to listOf("1.0.17", "1.0.17-sesl9", "rev0", 23, 37),
+        "androidx.picker-app" to listOf("1.0.17", "1.0.17-sesl9", "rev1", 23, 37),
         "androidx.picker-color" to listOf("1.0.8", "1.0.8-sesl9", "rev0", 23, 37),
         "androidx.glance-oneui-common" to listOf("1.1.4", "1.1.4-sesl9", "rev0", 23, 37),
     )
