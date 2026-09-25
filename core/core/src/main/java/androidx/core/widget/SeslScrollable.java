@@ -16,11 +16,7 @@
 
 package androidx.core.widget;
 
-import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP_PREFIX;
-
 import android.graphics.Rect;
-
-import androidx.annotation.RestrictTo;
 
 //sesl9
 /**
@@ -61,10 +57,10 @@ public interface SeslScrollable {
     /** Sets whether GoToTop button display is suppressed. */
     void seslSetGoToTopSuppressed(boolean suppressed);
 
-    /** Sets top padding for hover scroll trigger area. */
+    /** Sets bottom padding for hover scroll trigger area. */
     void seslSetHoverBottomPadding(int padding);
 
-    /** Sets bottom padding for hover scroll trigger area. */
+    /** Sets top padding for hover scroll trigger area. */
     void seslSetHoverTopPadding(int padding);
 
     /** Sets bottom offset for vertical scrollbar positioning. */
