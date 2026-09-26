@@ -1657,8 +1657,8 @@ public class Toolbar extends ViewGroup implements MenuHost {
      * Returns the navigation button view.
      *
      */
-    @VisibleForTesting
-    @Nullable View getNavButtonView() {
+    @Nullable
+    public View getNavButtonView() {
         return mNavButtonView;
     }
 
