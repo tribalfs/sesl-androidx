@@ -10654,9 +10654,9 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         /**
          * Returns the resolved layout direction for this RecyclerView.
          *
-         * @return {@link androidx.core.view.ViewCompat#LAYOUT_DIRECTION_RTL} if the layout
+         * @return {@link View#LAYOUT_DIRECTION_RTL} if the layout
          * direction is RTL or returns
-         * {@link androidx.core.view.ViewCompat#LAYOUT_DIRECTION_LTR} if the layout direction
+         * {@link View#LAYOUT_DIRECTION_LTR} if the layout direction
          * is not RTL.
          */
         public int getLayoutDirection() {
@@ -16152,7 +16152,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         } else if (mLayout instanceof StaggeredGridLayoutManager) {
             firstPosition =
                     ((StaggeredGridLayoutManager) mLayout).findFirstVisibleItemPositions(null)
-                            [mLayout.getLayoutDirection() == ViewCompat.LAYOUT_DIRECTION_RTL
+                            [mLayout.getLayoutDirection() == LAYOUT_DIRECTION_RTL
                             ? ((StaggeredGridLayoutManager) mLayout).getSpanCount() - 1
                             : 0];
         }
