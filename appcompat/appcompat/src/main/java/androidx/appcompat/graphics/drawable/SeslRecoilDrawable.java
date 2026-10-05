@@ -282,6 +282,15 @@ public class SeslRecoilDrawable extends LayerDrawable {
         return mAnimator.isRunning();
     }
 
+    //sesl9
+    @Override
+    public void jumpToCurrentState() {
+        super.jumpToCurrentState();
+        if (mAnimator.isRunning()) {
+            mAnimator.end();
+        }
+    }
+
     @Override
     public boolean isProjected() {
         return isDrawHotspot();
