@@ -16,11 +16,10 @@
 package androidx.recyclerview.widget;
 
 import android.annotation.SuppressLint;
-import android.os.Trace;
 import android.view.View;
 
 import androidx.annotation.Nullable;
-import androidx.core.os.TraceCompat;
+import androidx.tracing.Trace;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -287,7 +286,7 @@ final class GapWorker implements Runnable {
         try {
             // FOREVER_NS is used as a deadline to force the work to occur now,
             // since it's needed next frame, even if it won't fit in gap
-            if (deadlineNs == RecyclerView.FOREVER_NS && TraceCompat.isEnabled()) {
+            if (deadlineNs == RecyclerView.FOREVER_NS && Trace.isEnabled()) {
                 Trace.beginSection("RV Prefetch forced - needed next frame");
             }
             view.onEnterLayoutOrScroll();
