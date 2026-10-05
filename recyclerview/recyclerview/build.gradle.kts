@@ -9,7 +9,6 @@ dependencies {
     implementation(libs.androidx.collection)
     implementation(libs.androidx.customview.poolingcontainer)
     implementation(libs.androidx.profileinstaller)
-    implementation(libs.androidx.compose.ui)
 
     api(libs.sesl.androidx.core)
     api(libs.sesl.androidx.customview)
