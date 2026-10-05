@@ -17,7 +17,6 @@ android {
 dependencies {
     api(libs.androidx.annotation)
     implementation(libs.androidx.constraintLayout)
-    implementation(libs.androidx.compose.runtime)
     implementation(libs.shimmer)
     implementation(libs.kotlin.parcelize.runtime)
     kotlinCompilerPluginClasspath(libs.kotlin.parcelize.compiler)
