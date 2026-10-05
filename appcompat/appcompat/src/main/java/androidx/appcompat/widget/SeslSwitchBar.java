@@ -16,12 +16,16 @@
 
 package androidx.appcompat.widget;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
@@ -36,6 +40,8 @@ import android.widget.TextView;
 import androidx.annotation.ColorInt;
 import androidx.annotation.StringRes;
 import androidx.appcompat.R;
+import androidx.appcompat.animation.SeslAnimationUtils;
+import androidx.appcompat.graphics.drawable.SeslRecoilDrawable;
 import androidx.appcompat.util.SeslMisc;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.AccessibilityDelegateCompat;
@@ -72,6 +78,7 @@ public class SeslSwitchBar extends LinearLayout implements CompoundButton.OnChec
 
     static final int SWITCH_ON_STRING_RESOURCE_ID = R.string.sesl_switchbar_on_text;
     static final int SWITCH_OFF_STRING_RESOURCE_ID = R.string.sesl_switchbar_off_text;
+    static final Long BACKGROUND_COLOR_CHANGE_DURATION = 350L; //sesl9
 
     private final List<OnSwitchChangeListener> mSwitchChangeListeners = new ArrayList<>();
     private final SwitchBarDelegate mDelegate;
@@ -94,6 +101,10 @@ public class SeslSwitchBar extends LinearLayout implements CompoundButton.OnChec
     private final int mBackgroundColor;
     @ColorInt
     private final int mBackgroundActivatedColor;
+    //sesl9
+    private ValueAnimator mBackgroundColorInAnimator;
+    private ValueAnimator mBackgroundColorOutAnimator;
+    private boolean mIsUpdatingFromClick = false;
 
     public SeslSwitchBar(Context context) {
         this(context, null);
@@ -127,9 +138,15 @@ public class SeslSwitchBar extends LinearLayout implements CompoundButton.OnChec
         mBackground = findViewById(R.id.sesl_switchbar_container);
         mBackground.setOnClickListener(v -> {
             if (mSwitch != null && mSwitch.isEnabled()) {
-                mSwitch.setChecked(!mSwitch.isChecked());
+                try { //sesl9
+                    mIsUpdatingFromClick = true; //sesl9
+                    mSwitch.setChecked(!mSwitch.isChecked()); //sesl9
+                } finally { //sesl9
+                    mIsUpdatingFromClick = false; //sesl9
+                }
             }
         });
+        initBackgroundColorAnimator(); //sesl9
         mOnTextId = SWITCH_ON_STRING_RESOURCE_ID;
         mOffTextId = SWITCH_OFF_STRING_RESOURCE_ID;
 
@@ -145,11 +162,12 @@ public class SeslSwitchBar extends LinearLayout implements CompoundButton.OnChec
         mSwitch.setFocusable(false);
         mSwitch.setClickable(false);
         mSwitch.setOnCheckedChangeListener(this);
-        lp = (MarginLayoutParams) mSwitch.getLayoutParams();
-        lp.setMarginEnd((int) res.getDimension(R.dimen.sesl_switchbar_margin_end));
 
         setSwitchBarText(mOnTextId, mOffTextId);
-        addOnSwitchChangeListener((switchView, isChecked) -> setTextViewLabelAndBackground(isChecked));
+        //sesl9
+        addOnSwitchChangeListener((switchView, isChecked) -> setTextViewLabelAndBackground(isChecked, mIsUpdatingFromClick));
+        lp = (MarginLayoutParams) mSwitch.getLayoutParams();
+        lp.setMarginEnd((int) res.getDimension(R.dimen.sesl_switchbar_margin_end));
 
         mDelegate = new SwitchBarDelegate(this);
         ViewCompat.setAccessibilityDelegate(mBackground, mDelegate);
@@ -178,22 +196,85 @@ public class SeslSwitchBar extends LinearLayout implements CompoundButton.OnChec
         }
     }
 
-    private void setTextViewLabelAndBackground(boolean isChecked) {
-        mLabel = getResources().getString(isChecked ? mOnTextId : mOffTextId);
-        DrawableCompat.setTintList(DrawableCompat.wrap(mBackground.getBackground()).mutate(),
-                ColorStateList.valueOf(isChecked ? mBackgroundActivatedColor : mBackgroundColor));
-        mTextView.setTextColor(isChecked ? mOnTextColor : mOffTextColor);
-
-        if (isEnabled()) {
-            mTextView.setAlpha(1.0f);
-        } else if (SeslMisc.isLightTheme(getContext()) && isChecked) {
-            mTextView.setAlpha(0.55f);
-        } else {
-            mTextView.setAlpha(0.4f);
+    //sesl9
+    private void setTextViewLabelAndBackground(boolean isChecked, boolean animate) {
+        String string = getResources().getString(isChecked ? mOnTextId : mOffTextId);
+        TextView textView = mTextView;
+        if (textView != null && string.contentEquals(textView.getText())) {
+            return;
         }
 
-        if (mLabel == null || !mLabel.contentEquals(mTextView.getText())) {
-            mTextView.setText(mLabel);
+        mLabel = string;
+
+        if (animate) {
+            if (mBackgroundColorInAnimator == null || mBackgroundColorOutAnimator == null) {
+                initBackgroundColorAnimator();
+            }
+
+            if (isChecked) {
+                if (mBackgroundColorOutAnimator.isRunning()) {
+                    mBackgroundColorOutAnimator.cancel();
+                }
+
+                mBackgroundColorInAnimator.start();
+            } else {
+                if (mBackgroundColorInAnimator.isRunning()) {
+                    mBackgroundColorInAnimator.cancel();
+                }
+
+                mBackgroundColorOutAnimator.start();
+            }
+        } else {
+            setSwitchBarBackgroundColor(isChecked ? mBackgroundActivatedColor : mBackgroundColor);
+        }
+
+        textView.setTextColor(isChecked ? mOnTextColor : mOffTextColor);
+
+        if (isEnabled()) {
+            textView.setAlpha(1.0f);
+        } else if (SeslMisc.isLightTheme(getContext()) && isChecked) {
+            textView.setAlpha(0.55f);
+        } else {
+            textView.setAlpha(0.4f);
+        }
+
+        textView.setText(mLabel);
+    }
+
+    //sesl9
+    private void initBackgroundColorAnimator() {
+        mBackgroundColorInAnimator = ValueAnimator.ofObject(new ArgbEvaluator(), mBackgroundColor,
+                mBackgroundActivatedColor);
+        mBackgroundColorInAnimator.setDuration(BACKGROUND_COLOR_CHANGE_DURATION);
+        mBackgroundColorInAnimator.setInterpolator(SeslAnimationUtils.SINE_OUT_33);
+        mBackgroundColorInAnimator.addUpdateListener(animation ->
+                setSwitchBarBackgroundColor((Integer) animation.getAnimatedValue()));
+
+        mBackgroundColorOutAnimator = ValueAnimator.ofObject(new ArgbEvaluator(), mBackgroundActivatedColor,
+                mBackgroundColor);
+        mBackgroundColorOutAnimator.setDuration(BACKGROUND_COLOR_CHANGE_DURATION);
+        mBackgroundColorOutAnimator.setInterpolator(SeslAnimationUtils.SINE_OUT_33);
+        mBackgroundColorOutAnimator.addUpdateListener(animation ->
+                setSwitchBarBackgroundColor((Integer) animation.getAnimatedValue()));
+    }
+
+    //sesl9
+    private void setSwitchBarBackgroundColor(@ColorInt int color) {
+        if (mBackground == null) {
+            return;
+        }
+
+        Drawable drawable = DrawableCompat.wrap(mBackground.getBackground().mutate()).mutate();
+        if (!(drawable instanceof SeslRecoilDrawable)) {
+            DrawableCompat.setTintList(drawable, ColorStateList.valueOf(color));
+        } else {
+            SeslRecoilDrawable recoilDrawable = (SeslRecoilDrawable) drawable;
+            if (recoilDrawable.getNumberOfLayers() > 0) {
+                Drawable layer = recoilDrawable.getDrawable(0);
+                if (layer instanceof GradientDrawable) {
+                    ((GradientDrawable) layer).setColor(color);
+                }
+            }
         }
     }
 
@@ -219,16 +300,27 @@ public class SeslSwitchBar extends LinearLayout implements CompoundButton.OnChec
     public void setSwitchBarText(int onTextId, int offTextId) {
         mOnTextId = onTextId;
         mOffTextId = offTextId;
-        setTextViewLabelAndBackground(isChecked());
+        setTextViewLabelAndBackground(isChecked(), false); //sesl9
+    }
+
+    /**
+     * Set the "On" or "Off" text label of this switch bar.
+     *
+     * @param isChecked The current checked state of the switch bar.
+     */
+    //sesl9
+    public void setTextViewLabel(boolean isChecked) {
+        mLabel = getResources().getString(isChecked ? mOnTextId : mOffTextId);
+        mTextView.setText(mLabel);
     }
 
     public void setChecked(boolean checked) {
-        setTextViewLabelAndBackground(checked);
+        setTextViewLabelAndBackground(checked, false); //sesl9
         mSwitch.setChecked(checked);
     }
 
     public void setCheckedInternal(boolean checked) {
-        setTextViewLabelAndBackground(checked);
+        setTextViewLabelAndBackground(checked, false); //sesl9
         mSwitch.setCheckedInternal(checked);
     }
 
@@ -242,7 +334,7 @@ public class SeslSwitchBar extends LinearLayout implements CompoundButton.OnChec
         mTextView.setEnabled(enabled);
         mSwitch.setEnabled(enabled);
         mBackground.setEnabled(enabled);
-        setTextViewLabelAndBackground(isChecked());
+        setTextViewLabelAndBackground(isChecked(), false); //sesl9
     }
 
     /**
@@ -289,6 +381,20 @@ public class SeslSwitchBar extends LinearLayout implements CompoundButton.OnChec
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         propagateChecked(isChecked);
+    }
+
+    //sesl9
+    @Override
+    public void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+
+        if (mBackgroundColorInAnimator != null) {
+            mBackgroundColorInAnimator.removeAllUpdateListeners();
+        }
+
+        if (mBackgroundColorOutAnimator != null) {
+            mBackgroundColorOutAnimator.removeAllUpdateListeners();
+        }
     }
 
     /**
@@ -375,7 +481,7 @@ public class SeslSwitchBar extends LinearLayout implements CompoundButton.OnChec
         super.onRestoreInstanceState(ss.getSuperState());
 
         mSwitch.setCheckedInternal(ss.checked);
-        setTextViewLabelAndBackground(ss.checked);
+        setTextViewLabelAndBackground(ss.checked, false); //sesl9
         setVisibility(ss.visible ? View.VISIBLE : View.GONE);
         mSwitch.setOnCheckedChangeListener(ss.visible ? this : null);
 
@@ -415,21 +521,13 @@ public class SeslSwitchBar extends LinearLayout implements CompoundButton.OnChec
                 @NonNull AccessibilityNodeInfoCompat info) {
             super.onInitializeAccessibilityNodeInfo(host, info);
 
-            String string = host.getContext().getResources().getString(mSwitch.isChecked() ?
-                    SeslSwitchBar.SWITCH_ON_STRING_RESOURCE_ID :
-                    SeslSwitchBar.SWITCH_OFF_STRING_RESOURCE_ID);
-            StringBuilder sb = new StringBuilder();
-            CharSequence text = mText.getText();
-            if (!TextUtils.isEmpty(mSessionName)) {
-                sb.append(mSessionName);
-                sb.append(", ");
-            }
-            if (!TextUtils.equals(string, text) && !TextUtils.isEmpty(text)) {
-                sb.append(text);
-                sb.append(", ");
+            //sesl9
+            mSwitch.setContentDescription(mText.getText());
+            if (TextUtils.isEmpty(mSessionName)) {
+                return;
             }
 
-            info.setText(sb.toString());
+            info.setText(mSessionName);
         }
     }
 
