@@ -198,13 +198,15 @@ public class SeslSwitchBar extends LinearLayout implements CompoundButton.OnChec
 
     //sesl9
     private void setTextViewLabelAndBackground(boolean isChecked, boolean animate) {
-        String string = getResources().getString(isChecked ? mOnTextId : mOffTextId);
+        String label = getResources().getString(isChecked ? mOnTextId : mOffTextId);
         TextView textView = mTextView;
-        if (textView != null && string.contentEquals(textView.getText())) {
+        if (textView != null && label.contentEquals(textView.getText())
+                //Only return early if on/off texts are different.
+                && mOnTextId != mOffTextId/*custom*/) {
             return;
         }
 
-        mLabel = string;
+        mLabel = label;
 
         if (animate) {
             if (mBackgroundColorInAnimator == null || mBackgroundColorOutAnimator == null) {
@@ -238,7 +240,10 @@ public class SeslSwitchBar extends LinearLayout implements CompoundButton.OnChec
             textView.setAlpha(0.4f);
         }
 
-        textView.setText(mLabel);
+        //Custom: Add gate as the same label can already be applied.
+        if (!label.contentEquals(textView.getText())) {
+            textView.setText(mLabel);
+        }
     }
 
     //sesl9
