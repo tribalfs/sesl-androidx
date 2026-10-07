@@ -17037,8 +17037,8 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
     }
 
     private void updateScrollbarVerticalPadding() {
-        SeslViewReflector.semSetScrollBarTopPadding(this, mScrollbarTopPadding);
-        SeslViewReflector.semSetScrollBarBottomPadding(this, mScrollbarBottomPadding);
+        SeslViewReflector.semSetScrollBarTopPadding(this, mScrollbarTopPadding + mScrollBarTopOffset);
+        SeslViewReflector.semSetScrollBarBottomPadding(this, mScrollbarBottomPadding + mScrollBarBottomOffset);
     }
 
     /**
