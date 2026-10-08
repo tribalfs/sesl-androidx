@@ -29,7 +29,6 @@ import android.view.ViewGroupOverlay;
 import android.view.accessibility.AccessibilityManager;
 
 import androidx.annotation.RestrictTo;
-import androidx.reflect.view.SeslViewReflector;
 
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
@@ -126,7 +125,6 @@ public class SeslGoToTopController extends SeslBlurController {
     public final SeslGoToTopAnimationHelper mHelper;
     public OnGoToTopClickListener mOnClickListener;
 
-    public boolean mIsBlurEnabled = false;
     public boolean mIsLightTheme;
     private int mImmersiveBottomPadding = 0;
 
@@ -278,9 +276,8 @@ public class SeslGoToTopController extends SeslBlurController {
 
         SeslGoToTopImageView view = mGoToTopView;
         if (view != null) {
-            if (mIsBlurEnabled) {
-                SeslViewReflector.semSetBlurInfo(view, null);
-                mIsBlurEnabled = false;
+            if (isBlurEnabled()) {
+                clearBlur(view);
             }
 
             try {
@@ -337,7 +334,7 @@ public class SeslGoToTopController extends SeslBlurController {
         int x = (int) event.getX();
         int y = (int) event.getY();
 
-        if (action == MotionEvent.ACTION_HOVER_EXIT) {
+        if (action == MotionEvent.ACTION_HOVER_MOVE) {
             if (mGoToTopRect.contains(x, y)) {
                 return true;
             }
@@ -375,7 +372,7 @@ public class SeslGoToTopController extends SeslBlurController {
     }
 
     public final void invalidate() {
-        if (isAvailable() && mIsBlurEnabled) {
+        if (isAvailable() && isBlurEnabled()) {
             mGoToTopView.invalidate();
         }
     }
@@ -486,7 +483,7 @@ public class SeslGoToTopController extends SeslBlurController {
     }
 
     public final void setBlurEnabled(boolean enable, boolean isLightTheme) {
-        if (!isEnabled() || enable == mIsBlurEnabled) {
+        if (!isEnabled() || enable == isBlurEnabled()) {
             return;
         }
 
@@ -555,7 +552,7 @@ public class SeslGoToTopController extends SeslBlurController {
 
         setBlurEnabled(true, isLightTheme);
 
-        mHelper.init(view, mIsBlurEnabled, () -> applyState(GTT_STATE_NONE));
+        mHelper.init(view, isBlurEnabled(), () -> applyState(GTT_STATE_NONE));
     }
 
     public void showIfNeeded() {
