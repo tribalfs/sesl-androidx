@@ -504,7 +504,9 @@ public class SeslGoToTopController extends SeslBlurController {
         config.setSizeChanged(true);
 
         boolean visible = mGoToTopState != GTT_STATE_NONE;
-        if (visible || mHelper.isFadeOutRunning()) {
+        // Custom: For edge cases where state becomes NONE before the posted fade-out starts.
+        // Keep the still-rendered overlay aligned while that runnable is pending too.
+        if (visible || mGoToTopView.getAlpha() > 0f /*custom*/ || mHelper.isFadeOutRunning()) {
             computeTargetRect();
             applyLayout();
 
