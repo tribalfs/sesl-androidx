@@ -130,7 +130,6 @@ subprojects {
 
 dependencies {
     add("dokka", project(":core"))
-    add("dokka", project(":core-ktx"))
     add("dokka", project(":appcompat"))
     add("dokka", project(":customview"))
     add("dokka", project(":coordinatorlayout"))
