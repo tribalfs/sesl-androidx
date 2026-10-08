@@ -20,7 +20,7 @@
 object SeslManifest {
     val moduleInfo: Map<String, List<Any>> = mapOf(
         // [<vanilla version or sesl if purely sesl>, <sesl version>, <rN>, <minsdk>, <targetSdk>]
-        "androidx.core" to listOf("1.19.0", "1.0.29-sesl9", "rev1", 23, 37),
+        "androidx.core" to listOf("1.19.0", "1.0.29-sesl9", "rev2", 23, 37),
         "androidx.customview" to listOf("1.2.0-rc01", "1.0.1-sesl9", "rev0", 23, 37),
         "androidx.drawerlayout" to listOf("1.2.0", "1.0.5-sesl9", "rev0", 23, 37),
         "androidx.viewpager" to listOf("1.1.0-beta01", "1.0.1-sesl9", "rev0", 23, 37),
