@@ -109,8 +109,9 @@ public final class SeslNestedGoToTopController extends SeslGoToTopController {
                     OnGoToTopClickListener listener = this.mOnClickListener;
                     if (listener == null || !listener.onGoToTopClick()) {
                         this.mHost.smoothScrollToTop();
+                    } else {
+                        return true;
                     }
-                    return true;
                 }
                 setState(GTT_STATE_SHOWN);
                 autoHide(AUTO_HIDE_REASON_SHOWN_OR_UPDATE);

@@ -462,8 +462,9 @@ public class SeslGoToTopController extends SeslBlurController {
                         if (listener == null || !listener.onGoToTopClick()) {
                             mIsScrollRunning = true;
                             mHost.smoothScrollToTop();
+                        } else {
+                            return true;
                         }
-                        return true;
                     }
 
                     autoHide(AUTO_HIDE_REASON_CLICK);
