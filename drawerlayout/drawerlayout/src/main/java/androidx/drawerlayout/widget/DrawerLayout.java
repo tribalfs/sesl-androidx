@@ -194,6 +194,9 @@ public class DrawerLayout extends ViewGroup implements Openable {
     boolean mIsShowingCanvasBlur;
     //sesl9
 
+    //Custom
+    private boolean mBackInvokedCallbackEnabled = true;
+
     private static final int DEFAULT_SCRIM_COLOR = 0x99000000;
 
     /**
@@ -2108,6 +2111,8 @@ public class DrawerLayout extends ViewGroup implements Openable {
      * properties that affect whether this view would normally receive key press events.
      */
     void updateBackInvokedCallbackState() {
+        if (!mBackInvokedCallbackEnabled) return;//custom
+
         if (Build.VERSION.SDK_INT >= 33) {
             View visibleDrawer = findVisibleDrawer();
             OnBackInvokedDispatcher currentDispatcher = Api33Impl.findOnBackInvokedDispatcher(this);
@@ -2128,6 +2133,28 @@ public class DrawerLayout extends ViewGroup implements Openable {
                         mBackInvokedDispatcher, mBackInvokedCallback);
                 mBackInvokedDispatcher = null;
             }
+        }
+    }
+
+    //Custom
+    /**
+     * Enables or disables the built-in back-invoked callback handling of this DrawerLayout.
+     * <p>
+     * Disable it when back events are consumed by custom handling, so that the internal
+     * {@code OnBackInvokedCallback} registration does not conflict with it. Any callback
+     * already registered is left untouched, so set this before a drawer is opened.
+     *
+     * @param enable {@code true} to close the open drawer on back press (default),
+     *               {@code false} to opt out and leave back handling to the caller.
+     */
+    @SuppressLint("NewApi")
+    public void setBackInvokedCallbackEnabled(boolean enable) {
+        mBackInvokedCallbackEnabled = enable;
+        if (!enable && mBackInvokedDispatcher != null && mBackInvokedCallback != null) {
+            Api33Impl.tryUnregisterOnBackInvokedCallback(
+                    mBackInvokedDispatcher, mBackInvokedCallback);
+            mBackInvokedCallback = null;
+            mBackInvokedDispatcher = null;
         }
     }
 
