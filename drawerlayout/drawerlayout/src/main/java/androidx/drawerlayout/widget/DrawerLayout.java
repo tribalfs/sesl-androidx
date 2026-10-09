@@ -2141,8 +2141,7 @@ public class DrawerLayout extends ViewGroup implements Openable {
      * Enables or disables the built-in back-invoked callback handling of this DrawerLayout.
      * <p>
      * Disable it when back events are consumed by custom handling, so that the internal
-     * {@code OnBackInvokedCallback} registration does not conflict with it. Any callback
-     * already registered is left untouched, so set this before a drawer is opened.
+     * {@code OnBackInvokedCallback} registration does not conflict with it.
      *
      * @param enable {@code true} to close the open drawer on back press (default),
      *               {@code false} to opt out and leave back handling to the caller.
