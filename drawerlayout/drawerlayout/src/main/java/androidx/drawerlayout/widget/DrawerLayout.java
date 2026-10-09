@@ -2108,7 +2108,7 @@ public class DrawerLayout extends ViewGroup implements Openable {
      * properties that affect whether this view would normally receive key press events.
      */
     void updateBackInvokedCallbackState() {
-        /*if (Build.VERSION.SDK_INT >= 33) {
+        if (Build.VERSION.SDK_INT >= 33) {
             View visibleDrawer = findVisibleDrawer();
             OnBackInvokedDispatcher currentDispatcher = Api33Impl.findOnBackInvokedDispatcher(this);
             boolean shouldBeRegistered = visibleDrawer != null
@@ -2128,7 +2128,7 @@ public class DrawerLayout extends ViewGroup implements Openable {
                         mBackInvokedDispatcher, mBackInvokedCallback);
                 mBackInvokedDispatcher = null;
             }
-        }*/
+        }
     }
 
     @VisibleForTesting
