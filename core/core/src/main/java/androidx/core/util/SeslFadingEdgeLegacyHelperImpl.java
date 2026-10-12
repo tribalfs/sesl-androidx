@@ -101,6 +101,7 @@ public class SeslFadingEdgeLegacyHelperImpl implements SeslFadingEdgeHelper {
     LinearGradient mTopFadingEdgeGradient;
     private SeslTopFadingEdgeOverrides mTopFadingEdgeOverrides;
     private boolean mWindowBottomAlignment;
+    private int mContentSaveCount = -1;//custom
 
     @RestrictTo(LIBRARY_GROUP_PREFIX)
     public class ColorAnimationManager {
@@ -245,8 +246,8 @@ public class SeslFadingEdgeLegacyHelperImpl implements SeslFadingEdgeHelper {
         ColorStateManager colorStateManager = new ColorStateManager();
         mColorStateManager = colorStateManager;
         mContext = context;
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
-        colorStateManager.updateGradientColors(getRoundedCornerColor(context));
+        //paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
+        setColorImmediate(getRoundedCornerColor(context));
     }
 
     private void animateColorChange(int startColor, int targetColor, Runnable runnable) {
@@ -477,6 +478,10 @@ public class SeslFadingEdgeLegacyHelperImpl implements SeslFadingEdgeHelper {
     private void setColorImmediate(int color) {
         mAnimationManager.cancelCurrentAnimation();
         mAnimationManager.setTargetColorImmediate(color);
+        // custom: Zero means fade the content's alpha, revealing its real backdrop. Opaque
+        // black remains an explicit overlay color, distinct from this sentinel.
+        mFadingEdgePaint.setXfermode(new PorterDuffXfermode(
+                color == NONE_COLOR ? PorterDuff.Mode.DST_OUT : PorterDuff.Mode.SRC_OVER));
         mColorStateManager.updateGradientColors(color);
         mColorStateManager.recreateGradients();
     }
@@ -564,6 +569,10 @@ public class SeslFadingEdgeLegacyHelperImpl implements SeslFadingEdgeHelper {
             int distanceFromWindowBottom = getDistanceFromWindowBottom();
             mDistanceFromWindowBottom = distanceFromWindowBottom;
             mRectForFadingEffect = new Rect(left, top, right, bottom - distanceFromWindowBottom);
+            // Isolate only the scrollable content; DST_OUT must not erase the
+            // background or siblings already drawn into the parent canvas.
+            mContentSaveCount = getPreviousColor() == NONE_COLOR
+                    ? canvas.saveLayer(left, top, right, bottom, null) : -1;
         }
     }
 
@@ -575,6 +584,11 @@ public class SeslFadingEdgeLegacyHelperImpl implements SeslFadingEdgeHelper {
         int topHeight = calculateDynamicTopHeight(scrollInfoProvider);
         renderBottomFadingEdge(canvas, calculateDynamicBottomHeight(scrollInfoProvider));
         renderTopFadingEdge(canvas, topHeight);
+        if (mContentSaveCount >= 0) {
+            canvas.restoreToCount(mContentSaveCount);
+            mContentSaveCount = -1;
+        }
+        mRectForFadingEffect = null;
     }
 
     @Override

@@ -116,6 +116,7 @@ public class SeslFadingEdgeHelperImpl implements SeslFadingEdgeHelper {
     private boolean mWindowBottomAlignment = true;
     private boolean mIsTaskBarAvailable = false;
     private boolean mForceLegacyXfermode = false;
+    private boolean mUseUnclippedLayers;//custom
 
     private final ColorAnimationManager mAnimationManager = new ColorAnimationManager();
     private final HeightAnimationManager mTopHeightAnimationManager = new HeightAnimationManager();
@@ -301,7 +302,7 @@ public class SeslFadingEdgeHelperImpl implements SeslFadingEdgeHelper {
     public SeslFadingEdgeHelperImpl(@NonNull Context context) {
         mContext = context;
         mHeights = new FadingEdgeHeights(context.getResources());
-        if (Build.VERSION.SDK_INT >= 36 && isOneUI()/*custom*/) {
+        if (Build.VERSION.SDK_INT >= 36) {
             setFadingEdgeColor(NONE_COLOR);
         } else {
             setFadingEdgeColor(getRoundedCornerColor(context));
@@ -585,7 +586,7 @@ public class SeslFadingEdgeHelperImpl implements SeslFadingEdgeHelper {
         if (shader != null) {
             shader.setLocalMatrix(mFadingEdgeMatrix);
             mFadingEdgePaint.setShader(shader);
-            if (getPreviousColor() == NONE_COLOR) {
+            if (getPreviousColor() == NONE_COLOR && mUseUnclippedLayers/*custom*/) {
                 if (saveCount > 0) {
                     SeslCanvasReflector.restoreUnclippedLayer(canvas, saveCount, mFadingEdgePaint);
                     return;
@@ -768,12 +769,26 @@ public class SeslFadingEdgeHelperImpl implements SeslFadingEdgeHelper {
                 mCanvasSaveCount = canvas.getSaveCount();
                 mTopSaveCount = -1;
                 mBottomSaveCount = -1;
-                if (!mHideTop) {
-                    mTopSaveCount = SeslCanvasReflector.saveUnclippedLayer(canvas, left, top, right, top + topHeight);
+                // Custom: OneUI's unclipped layers preserve the existing optimized path.
+                // Other devices use a public isolated layer for the same alpha mask.
+                mUseUnclippedLayers = Build.VERSION.SDK_INT >= 36 && isOneUI() && canvas.isHardwareAccelerated();
+                if (mUseUnclippedLayers) {
+                    if (!mHideTop) {
+                        mTopSaveCount = SeslCanvasReflector.saveUnclippedLayer(canvas, left, top, right, top + topHeight);
+                    }
+                    if (!mHideBottom) {
+                        mBottomSaveCount = SeslCanvasReflector.saveUnclippedLayer(canvas, left, fadingBottom - bottomHeight, right, fadingBottom);
+                    }
+                    // Fall back if this platform does not expose the hidden methods.
+                    if ((!mHideTop && mTopSaveCount < 0) || (!mHideBottom && mBottomSaveCount < 0)) {
+                        canvas.restoreToCount(mCanvasSaveCount);
+                        mUseUnclippedLayers = false;
+                    }
                 }
-                if (!mHideBottom) {
-                    mBottomSaveCount = SeslCanvasReflector.saveUnclippedLayer(canvas, left, fadingBottom - bottomHeight, right, fadingBottom);
+                if (!mUseUnclippedLayers) {
+                    canvas.saveLayer(left, top, right, bottom, null);
                 }
+                //custom
             }
             mRectForFadingEffect = new Rect(left, top, right, fadingBottom);
         }

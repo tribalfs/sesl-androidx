@@ -94,7 +94,10 @@ public interface SeslFadingEdgeHelper {
     /** Sets the bottom offset for the fading edge. */
     void setFadingEdgeBottomOffset(int offset);
 
-    /** Sets the color for fading edge rendering. */
+    /**
+     * Sets an overlay color for fading edges. Zero (transparent) instead fades
+     * the content's alpha to reveal the actual background on every API level.
+     */
     void setFadingEdgeColor(@ColorInt int color);
 
     /** Sets the color for fading edge rendering with an optional completion callback. */
