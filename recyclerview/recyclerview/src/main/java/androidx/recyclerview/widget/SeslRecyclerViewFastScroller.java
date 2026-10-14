@@ -823,6 +823,16 @@ class SeslRecyclerViewFastScroller {
             setThumbPos(1.0f);
         } else if (!canScrollList(-1)) {
             setThumbPos(0.0f);
+        } else {
+            // custom: keep top/bottom offset changes aligned with
+            // the current list position.
+            RecyclerView.Adapter<?> adapter = mRecyclerView.getAdapter();
+            if (adapter != null) {
+                setThumbPos(getPosFromItemCount(
+                        mRecyclerView.findFirstVisibleItemPosition(),
+                        mRecyclerView.getChildCount(), adapter.getItemCount())
+                );
+            }
         }
         //sesl7
     }
