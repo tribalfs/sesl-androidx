@@ -89,7 +89,11 @@ public class SeslBlurController {
         view.setBackground(isLightTheme ? provider.getBackgroundLight() : provider.getBackgroundDark());
         view.setElevation(provider.getElevation());
         view.setBackgroundTintList(null);
-        view.setAlpha(provider.getOpaqueAlphaWithoutBlur());
+        // Custom: keep a hidden view hidden. Owners (e.g. GoToTop) fade in to this alpha when shown;
+        // forcing it here made the hidden button visible on SDK < 35, where blur falls back here.
+        if (view.getAlpha() > 0f) {
+            view.setAlpha(provider.getOpaqueAlphaWithoutBlur());
+        }
     }
 
     /** Clears blur effect from the view. */
