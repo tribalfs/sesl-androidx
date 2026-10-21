@@ -121,6 +121,8 @@ public class SeslSimpleMonthView extends View {
     PathClassLoader mPathClassLoader = null;
     Object mSolarLunarConverter;
     private Calendar mTempDate = Calendar.getInstance();
+    private final Calendar mTodayDate = Calendar.getInstance();
+    private Paint mTodayDateMarkPaint;
     private final MonthViewTouchHelper mTouchHelper;
     int mWeekHeight;
     private int mWeekStart = DEFAULT_WEEK_START;
@@ -400,6 +402,12 @@ public class SeslSimpleMonthView extends View {
         mHcfEnabledDayNumberPaint = new Paint(mDayNumberPaint);
         mHcfEnabledDayNumberPaint.setTypeface(mSemiboldTypeface);
 
+        mTodayDateMarkPaint = new Paint(mDayNumberPaint);
+        mTodayDateMarkPaint.setColor(mNormalTextColor);
+        mTodayDateMarkPaint.setAntiAlias(true);
+        mTodayDateMarkPaint.setStrokeWidth(mDaySelectedCircleStroke);
+        mTodayDateMarkPaint.setStyle(Paint.Style.STROKE);
+
         mCustomConfigDayBgPaint = new Paint(mDayNumberSelectedPaint);
         mCustomConfigDayNumberPaint = new Paint(mDayNumberPaint);
         mCustomConfigRangePaint = new Paint(mDayNumberSelectedPaint);
@@ -672,6 +680,7 @@ public class SeslSimpleMonthView extends View {
 
     private void drawDays(Canvas var1) {
         /* var1 = canvas */
+        mTodayDate.setTimeInMillis(System.currentTimeMillis());
         int var2 = this.mWeekHeight * 2 / 3;
         int var3 = this.mCalendarWidth / (this.mNumDays * 2);
         int var4 = this.findDayOffset();
@@ -803,6 +812,9 @@ public class SeslSimpleMonthView extends View {
                 }
             }
 
+            int todayMarkAlpha = mDayNumberPaint.getAlpha() == mDayNumberDisabledAlpha
+                    ? mDayNumberDisabledAlpha : -1;
+
             var25 = this.mDayNumberPaint;
             var26 = var25;
             if (this.mIsHcfEnabled) {
@@ -920,6 +932,10 @@ public class SeslSimpleMonthView extends View {
                 }
             }
 
+            if (isTodayDate(mYear, mMonth, var2)) {
+                drawTodayDateMark(var1, var24, (float)var11 - var13, todayMarkAlpha);
+            }
+
             if (this.mMode == DATE_MODE_NONE && var2 == var17) {
                 var26.setColor(this.mSelectedDayNumberTextColor);
             }
@@ -1031,6 +1047,11 @@ public class SeslSimpleMonthView extends View {
 
                 if (customConfigApplied) {
                     drawCustomDateMarkers(var1, var31, var16, var13);
+                }
+
+                if (isTodayDate(nextYear, nextMonth, var2)) {
+                    drawTodayDateMark(var1, var31, (float)var16 - var13,
+                            mDayNumberPaint.getAlpha());
                 }
 
                 if (this.mMode != DATE_MODE_NONE && var17 == this.mNumCells + 1 && (var2 <= this.mEndDay || !this.isNextMonthEndMonth())) {
@@ -1163,6 +1184,11 @@ public class SeslSimpleMonthView extends View {
                     drawCustomDateMarkers(var1, var9, var8, var13);
                 }
 
+                if (isTodayDate(prevYear, prevMonth, var17)) {
+                    drawTodayDateMark(var1, var9, (float)var8 - var13,
+                            mDayNumberPaint.getAlpha());
+                }
+
                 if (this.mMode != DATE_MODE_NONE && var31 == 0 && (var17 >= this.mStartDay || !this.isPrevMonthStartMonth())) {
                     var26.setColor(this.mSelectedDayNumberTextColor);
                 }
@@ -1178,6 +1204,31 @@ public class SeslSimpleMonthView extends View {
 
     }
     // kang
+
+    private boolean isTodayDate(int year, int month, int day) {
+        int todayYear = mTodayDate.get(Calendar.YEAR);
+        int todayMonth = mTodayDate.get(Calendar.MONTH);
+        int todayDay = mTodayDate.get(Calendar.DAY_OF_MONTH);
+        if (mIsLunar && mPathClassLoader != null && mSolarLunarConverter != null) {
+            SeslSolarLunarConverterReflector.convertSolarToLunar(mPathClassLoader,
+                    mSolarLunarConverter, todayYear, todayMonth, todayDay);
+            todayYear = SeslSolarLunarConverterReflector.getYear(mPathClassLoader,
+                    mSolarLunarConverter);
+            todayMonth = SeslSolarLunarConverterReflector.getMonth(mPathClassLoader,
+                    mSolarLunarConverter);
+            todayDay = SeslSolarLunarConverterReflector.getDay(mPathClassLoader,
+                    mSolarLunarConverter);
+        }
+        return todayYear == year && todayMonth == month && todayDay == day;
+    }
+
+    private void drawTodayDateMark(Canvas canvas, int xCenter, float centerY, int alpha) {
+        mTodayDateMarkPaint.setColor(mNormalTextColor);
+        if (alpha != -1) {
+            mTodayDateMarkPaint.setAlpha(alpha);
+        }
+        canvas.drawCircle(xCenter, centerY, mDaySelectedCircleSize, mTodayDateMarkPaint);
+    }
 
     private void resetCustomDateConfigPaintColor() {
         mCustomConfigDayBgPaint.setColor(0);
