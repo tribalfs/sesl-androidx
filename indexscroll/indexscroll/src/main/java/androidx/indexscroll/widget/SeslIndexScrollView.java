@@ -109,8 +109,9 @@ public class SeslIndexScrollView extends FrameLayout {
 
     int mIndexBarGravity = GRAVITY_INDEX_BAR_RIGHT;
 
-    int mIndexScrollBgTopMargin = 0;
-    int mIndexScrollBgBottomMargin = 0;
+    //sesl9
+    private int mScrollBarTopOffset = 0;
+    private int mScrollBarBottomOffset = 0;
 
     Typeface mGroupIconFont;
     Typeface mSECRobotoLightRegularFont;
@@ -351,18 +352,23 @@ public class SeslIndexScrollView extends FrameLayout {
             mTouchHelper.updateId(recyclerView.getId());
 
             //sesl9
-            if (mIndexScroll.mRecyclerView != null) {
-                mIndexScrollBgTopMargin = mIndexScroll.mRecyclerView.seslGetScrollBarTopOffset();
-                mIndexScrollBgBottomMargin = mIndexScroll.mRecyclerView.seslGetScrollBarBottomOffset();
-                mIndexScroll.setIndexScrollBgMargin(mIndexScrollBgTopMargin, mIndexScrollBgBottomMargin);
+            initScrollbarOffset();
+            mIndexScroll.mRecyclerView.seslSetScrollBarOffsetChangedListener((topOffset, bottomOffset) -> {
+                mScrollBarTopOffset = topOffset;
+                mScrollBarBottomOffset = bottomOffset;
+                mIndexScroll.changeThumbAlpha(0);
+                mIndexScroll.setBgRectParams();
+                invalidate();
+            });
+        }
+    }
 
-                mIndexScroll.mRecyclerView.seslSetScrollBarOffsetChangedListener((topOffset, bottomOffset) -> {
-                    mIndexScrollBgTopMargin = topOffset;
-                    mIndexScrollBgBottomMargin = bottomOffset;
-                    mIndexScroll.setIndexScrollBgMargin(topOffset, bottomOffset);
-                    invalidate();
-                });
-            }
+    //sesl9
+    private void initScrollbarOffset() {
+        if (mIndexScroll.mRecyclerView != null) {
+            mScrollBarTopOffset = mIndexScroll.mRecyclerView.seslGetScrollBarTopOffset();
+            mScrollBarBottomOffset = mIndexScroll.mRecyclerView.seslGetScrollBarBottomOffset();
+            mIndexScroll.setBgRectParams();
         }
     }
 
@@ -921,7 +927,6 @@ public class SeslIndexScrollView extends FrameLayout {
         public void setIndexScrollBgMargin(int topMargin, int bottomMargin) {
             mScrollTopMargin = topMargin;
             mScrollBottomMargin = bottomMargin;
-            setDimensions(mWidth, mScreenHeight > 0 ? mScreenHeight : mHeight);
             invalidate();
         }
 
@@ -930,11 +935,12 @@ public class SeslIndexScrollView extends FrameLayout {
             setBgRectParams();
         }
 
-       private void setDimensions(int width, int height) {
+        public void setDimensions(int width, int height) {
             if (mIsAlphabetInit) {
                 mWidth = width;
                 mHeight = height
-                        - (mScrollTop + mScrollBottom + mScrollTopMargin + mScrollBottomMargin);
+                        - (mScrollTop + mScrollBottom + mScrollTopMargin + mScrollBottomMargin
+                        + mScrollBarTopOffset + mScrollBarBottomOffset); //sesl9
                 mScreenHeight = height;
                 mItemHeight = mHeight / mAlphabetSize;
                 mSeparatorHeight = Math.max(mItemHeight, mContentMinHeight);
@@ -1132,9 +1138,9 @@ public class SeslIndexScrollView extends FrameLayout {
         private int getIndex(int y) {
             int index;
 
-            if (y < mScrollTop + mScrollTopMargin + mIndexBarTextAttrs.height) {
+            if (y < mScrollTop + mScrollTopMargin + mScrollBarTopOffset + mIndexBarTextAttrs.height) { //sesl9
                 final float indexTouchBoundary = mIndexBarTextAttrs.height / mAlphabetSize;
-                index = (int) ((y - mScrollTop - mScrollTopMargin)
+                index = (int) ((y - mScrollTop - mScrollTopMargin - mScrollBarTopOffset) //sesl9
                         / indexTouchBoundary);
             } else {
                 index = mAlphabetSize - 1;
@@ -1181,9 +1187,9 @@ public class SeslIndexScrollView extends FrameLayout {
                 return false;
             }
 
-            return y >= ((int) (((float) (mScrollTop + mScrollTopMargin))
+            return y >= ((int) (((float) (mScrollTop + mScrollTopMargin + mScrollBarTopOffset)) //sesl9
                     + (((float) mSelectedIndex) * mSeparatorHeight)))
-                        && y <= ((int) (((float) (mScrollTop + mScrollTopMargin))
+                        && y <= ((int) (((float) (mScrollTop + mScrollTopMargin + mScrollBarTopOffset)) //sesl9
                            + (mSeparatorHeight * ((float) (mSelectedIndex + 1)))));
         }
 
@@ -1224,13 +1230,16 @@ public class SeslIndexScrollView extends FrameLayout {
                 final float topDrawY;
                 if (mScreenHeight
                         <= ((2.0f * mIndexScrollPreviewRadius)
-                            + mPreviewLimitY + mScrollTopMargin + mScrollBottomMargin)) {
-                    topDrawY = mScrollTop + mScrollTopMargin + (mIndexBarTextAttrs.separatorHeight * 0.5f);
-                    bottomDrawY = mScrollTop + mScrollTopMargin - mScrollBottomMargin
+                            + mPreviewLimitY + mScrollTopMargin + mScrollBottomMargin
+                            + mScrollBarTopOffset + mScrollBarBottomOffset)) { //sesl9
+                    topDrawY = mScrollTop + mScrollTopMargin + mScrollBarTopOffset //sesl9
+                            + (mIndexBarTextAttrs.separatorHeight * 0.5f);
+                    bottomDrawY = mScrollTop + mScrollTopMargin + mScrollBarTopOffset //sesl9
+                            - mScrollBottomMargin - mScrollBarBottomOffset
                             + mIndexBarTextAttrs.height - (mIndexBarTextAttrs.separatorHeight * 0.5f);
                 } else {
-                    topDrawY = mScrollTopMargin + mPreviewLimitY + mIndexScrollPreviewRadius;
-                    bottomDrawY = mScreenHeight - mScrollBottomMargin - mPreviewLimitY - mIndexScrollPreviewRadius;
+                    topDrawY = mScrollTopMargin + mScrollBarTopOffset + mPreviewLimitY + mIndexScrollPreviewRadius; //sesl9
+                    bottomDrawY = mScreenHeight - mScrollBottomMargin - mScrollBarBottomOffset - mPreviewLimitY - mIndexScrollPreviewRadius;
                 }
 
                 if (effectPositionY <= topDrawY || effectPositionY >= bottomDrawY) {
@@ -1259,15 +1268,15 @@ public class SeslIndexScrollView extends FrameLayout {
 
             if (mBgRect == null) {
                 final int top
-                        = mScrollTop + mScrollTopMargin - mContentPadding;
+                        = mScrollTop + mScrollTopMargin + mScrollBarTopOffset - mContentPadding; //sesl9
                 final int bottom
-                        = mHeight + mScrollTop + mScrollTopMargin + mContentPadding;
+                        = mHeight + mScrollTop + mScrollTopMargin + mScrollBarTopOffset + mContentPadding; //sesl9
                 mBgRect = new Rect(left, top, right, bottom);
             } else {
                 final int top
-                        = mScrollTop + mScrollTopMargin - mContentPadding;
+                        = mScrollTop + mScrollTopMargin + mScrollBarTopOffset - mContentPadding; //sesl9
                 final int bottom
-                        = mHeight + mScrollTop + mScrollTopMargin + mContentPadding;
+                        = mHeight + mScrollTop + mScrollTopMargin + mScrollBarTopOffset + mContentPadding; //sesl9
                 mBgRect.set(left, top, right, bottom);
             }
 
@@ -1336,7 +1345,8 @@ public class SeslIndexScrollView extends FrameLayout {
                             final float textPosX = mBgRect.centerX() - (width * 0.5f);
                             final float textPosY = (mIndexBarTextAttrs.separatorHeight * index)
                                     + ((mIndexBarTextAttrs.separatorHeight * 0.5f)
-                                    - (mTextBounds.top * 0.5f)) + mScrollTop + mScrollTopMargin;
+                                    - (mTextBounds.top * 0.5f)) + mScrollTop + mScrollTopMargin
+                                    + mScrollBarTopOffset; //sesl9
                             canvas.drawText(text, textPosX, textPosY, charPaint);
                         } else {
                             mTextPaint.getTextBounds(text, 0, text.length(), mTextBounds);
@@ -1345,14 +1355,15 @@ public class SeslIndexScrollView extends FrameLayout {
                             final float textPosX = mBgRect.centerX() - (width * 0.5f);
                             final float textPosY = (mIndexBarTextAttrs.separatorHeight * index)
                                     + ((mIndexBarTextAttrs.separatorHeight * 0.5f)
-                                    - (mTextBounds.top * 0.5f)) + mScrollTop + mScrollTopMargin;
+                                    - (mTextBounds.top * 0.5f)) + mScrollTop + mScrollTopMargin
+                                    + mScrollBarTopOffset; //sesl9
                             canvas.drawText(text, textPosX, textPosY, mTextPaint);
                         }
                     } else {
                         final float circleX = mBgRect.centerX();
                         final float circleY = (mIndexBarTextAttrs.separatorHeight * index)
                                 + (mIndexBarTextAttrs.separatorHeight * 0.5f)
-                                + mScrollTop + mScrollTopMargin;
+                                + mScrollTop + mScrollTopMargin + mScrollBarTopOffset; //sesl9
                         canvas.drawCircle(circleX, circleY, mDotRadius, mTextPaint);
                     }
                 }
