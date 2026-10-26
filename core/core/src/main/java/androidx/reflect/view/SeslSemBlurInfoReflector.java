@@ -150,4 +150,26 @@ public class SeslSemBlurInfoReflector {
         return builder;
     }
 
+    //sesl9
+    /** Sets custom color curve parameters on Samsung's SemBlurInfo builder. */
+    public static Object semSetColorCurve(Object builder, float saturation,
+            float curveLevel, float minX, float maxX, float minY, float maxY) {
+        if (DeviceInfo.isOneUI()) {
+            Method method;
+            if (Build.VERSION.SDK_INT >= 35) {
+                method = SeslBaseReflector.getDeclaredMethod(mBuilderClass, "setColorCurve",
+                        Float.TYPE, Float.TYPE, Float.TYPE, Float.TYPE, Float.TYPE, Float.TYPE);
+            } else {
+                method = null;
+            }
+
+            if (method != null) {
+                method.setAccessible(true);
+                SeslBaseReflector.invoke(builder, method, saturation, curveLevel, minX, maxX,
+                        minY, maxY);
+            }
+        }
+        return builder;
+    }
+
 }

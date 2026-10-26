@@ -42,6 +42,7 @@ public abstract class ActionMode {
 
     private Object mTag;
     private boolean mTitleOptionalHint;
+    private boolean mSetNullActionModeViewOnDestroy = false; //sesl9
 
     /**
      * Set a tag object associated with this ActionMode.
@@ -280,4 +281,16 @@ public abstract class ActionMode {
          */
         public void onDestroyActionMode(ActionMode mode);
     }
+
+    //Sesl9
+    /** Returns whether the action mode view should be reset to null when destroyed. */
+    public boolean seslIsSetSetNullActionModeViewOnDestroy() {
+        return mSetNullActionModeViewOnDestroy;
+    }
+
+    /** Sets a flag indicating the action mode view should be reset to null when destroyed. */
+    public void seslSetSetNullActionModeViewOnDestroy() {
+        mSetNullActionModeViewOnDestroy = true;
+    }
+    //sesl9
 }

@@ -634,6 +634,7 @@ public abstract class FragmentStateAdapter extends
         private ViewPager2.OnPageChangeCallback mPageChangeCallback;
         private RecyclerView.AdapterDataObserver mDataObserver;
         private LifecycleEventObserver mLifecycleObserver;
+        private View.OnAttachStateChangeListener mViewPagerAttachStateListener;
         private ViewPager2 mViewPager;
 
         private long mPrimaryItemId = NO_ID;
@@ -674,11 +675,27 @@ public abstract class FragmentStateAdapter extends
                 }
             };
             mLifecycle.addObserver(mLifecycleObserver);
+
+            // Null mViewPager when detached to break the retain chain:
+            // mLifecycleObserver (on fragment lifecycle) -> FragmentMaxLifecycleEnforcer -> mViewPager -> child views
+            mViewPagerAttachStateListener = new View.OnAttachStateChangeListener() {
+                @Override
+                public void onViewAttachedToWindow(@NonNull View v) {
+                    mViewPager = (ViewPager2) v;
+                }
+
+                @Override
+                public void onViewDetachedFromWindow(@NonNull View v) {
+                    mViewPager = null;
+                }
+            };
+            mViewPager.addOnAttachStateChangeListener(mViewPagerAttachStateListener);
         }
 
         void unregister(@NonNull RecyclerView recyclerView) {
             ViewPager2 viewPager = inferViewPager(recyclerView);
             viewPager.unregisterOnPageChangeCallback(mPageChangeCallback);
+            viewPager.removeOnAttachStateChangeListener(mViewPagerAttachStateListener);
             unregisterAdapterDataObserver(mDataObserver);
             mLifecycle.removeObserver(mLifecycleObserver);
             mViewPager = null;
@@ -687,6 +704,10 @@ public abstract class FragmentStateAdapter extends
         void updateFragmentMaxLifecycle(boolean dataSetChanged) {
             if (shouldDelayFragmentTransactions()) {
                 return; /* recovery step via {@link #mLifecycleObserver} */
+            }
+
+            if (mViewPager == null) {
+                return;
             }
 
             if (mViewPager.getScrollState() != ViewPager2.SCROLL_STATE_IDLE) {

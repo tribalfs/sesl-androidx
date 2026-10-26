@@ -28,14 +28,15 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.R;
 import androidx.appcompat.animation.SeslRecoilAnimator;
 import androidx.appcompat.graphics.drawable.SeslRecoilDrawable;
 import androidx.appcompat.util.SeslRoundedCorner;
 import androidx.core.view.ViewCompat;
+
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 /*
  * Original code by Samsung, all rights reserved to the original author.
@@ -110,7 +111,7 @@ public class SeslLinearLayoutCompat extends LinearLayoutCompat {
             Drawable background = view.getBackground();
             this.activeBg = background;
             if (background != null) {
-                background.setState(new int[]{android.R.attr.state_pressed});
+                background.setState(new int[]{android.R.attr.state_hovered});
             }
         }
 
@@ -151,7 +152,7 @@ public class SeslLinearLayoutCompat extends LinearLayoutCompat {
             int[] xy = transformCoordinate(viewGroup, x, y);
             for (int i = 0; i < viewGroup.getChildCount(); i++) {
                 View child = viewGroup.getChildAt(i);
-                if (isPointInsideView(xy[0], xy[1], child) && (foundView = findChildViewUnder(child, x, y)) != null){
+                if (isPointInsideView(xy[0], xy[1], child) && (foundView = findChildViewUnder(child, xy[0], xy[1])) != null){
                     break;
                 }
             }

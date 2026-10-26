@@ -25,6 +25,7 @@ import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -138,7 +139,19 @@ public class SeslColorPickerDialog extends AlertDialog
         setButton(BUTTON_NEGATIVE, context.getString(R.string.sesl_picker_cancel), this);
         seslSetBackgroundBlurEnabled();
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        Window window = getWindow();
+        if (window != null) {
+            window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+            View decorView = window.getDecorView();
+            decorView.setOnApplyWindowInsetsListener((v, windowInsets) -> {
+                WindowManager.LayoutParams attributes = window.getAttributes();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    attributes.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+                }
+                window.setAttributes(attributes);
+                return windowInsets.consumeSystemWindowInsets();
+            });
+        }
 
         mOnColorSetListener = listener;
         mColorPicker = view.findViewById(R.id.sesl_color_picker_content_view);

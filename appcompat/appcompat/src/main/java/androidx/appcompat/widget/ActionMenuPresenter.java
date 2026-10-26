@@ -46,6 +46,7 @@ import androidx.appcompat.util.SeslMisc;
 import androidx.appcompat.util.SeslShowButtonShapesHelper;
 import androidx.appcompat.view.ActionBarPolicy;
 import androidx.appcompat.view.menu.ActionMenuItemView;
+import androidx.appcompat.view.menu.ActionMenuItemViewBadgedWrapper;
 import androidx.appcompat.view.menu.BaseMenuPresenter;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuItemImpl;
@@ -105,6 +106,7 @@ class ActionMenuPresenter extends BaseMenuPresenter
 
     //Sesl
     private static final int BADGE_LIMIT_NUMBER = 99;
+    private static final int SESL_SMALL_HEIGHT_DP = 441;
     private CharSequence mTooltipText;
     private final boolean mUseTextItemMode;
     private NumberFormat mNumberFormat = NumberFormat.getInstance(Locale.getDefault());
@@ -369,81 +371,6 @@ class ActionMenuPresenter extends BaseMenuPresenter
         }
     }
 
-    //Custom
-    @RestrictTo(LIBRARY_GROUP_PREFIX)
-    class ActionMenuItemViewBadgedWrapper extends FrameLayout {
-
-        private int defaultEndMargin;
-
-        public ActionMenuItemViewBadgedWrapper(Context context, ActionMenuItemView menuItemView) {
-            super(context);
-            addView(menuItemView);
-            addView(LayoutInflater.from(context).inflate(
-                            R.layout.sesl_action_menu_item_badge, ActionMenuItemViewBadgedWrapper.this, false));
-            updateItemViewBadge(menuItemView.getItemData().getBadgeText());
-        }
-
-        private void updateItemViewBadge(String badgeText) {
-
-            ViewGroup badgeView = (ViewGroup) getChildAt(1);
-
-            if (badgeText == null) {
-                badgeView.setVisibility(GONE);
-                return;
-            }
-
-            String formattedTextBadge;
-            int badgeWidth;
-            int badgeHeight;
-            int badgeTopMargin;
-            FrameLayout.LayoutParams badgeLp = (FrameLayout.LayoutParams) badgeView.getLayoutParams();
-
-            Resources res = getResources();
-            try {
-                final int badgeCount = Math.min(Integer.parseInt(badgeText), BADGE_LIMIT_NUMBER);
-                formattedTextBadge = mNumberFormat.format(badgeCount);
-
-                final float default_width = res.getDimension(R.dimen.sesl_badge_default_width);
-                final float additionalWidth = res.getDimension(R.dimen.sesl_badge_additional_width);
-                badgeWidth = (int) (default_width + (formattedTextBadge.length() * additionalWidth));
-                badgeHeight = (int)(default_width + additionalWidth);
-                badgeTopMargin = (int) res.getDimension(R.dimen.sesl_menu_item_number_badge_top_margin);
-                defaultEndMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2, getResources().getDisplayMetrics());
-            } catch (NumberFormatException e) {
-
-                //This means `badgeText` is not a number
-                //We will show dot badge instead
-                formattedTextBadge = "";
-
-                final int badgeSize = (int) res.getDimension(R.dimen.sesl_menu_item_badge_size);
-                badgeWidth = badgeSize;
-                badgeHeight = badgeSize;
-                badgeTopMargin = (int) res.getDimension(R.dimen.sesl_menu_item_badge_top_margin);
-                defaultEndMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 6, getResources().getDisplayMetrics());
-            }
-
-            ((TextView)badgeView.getChildAt(0)).setText(formattedTextBadge);
-            badgeLp.setMarginEnd(defaultEndMargin);
-            badgeLp.topMargin = badgeTopMargin;
-            badgeLp.width = badgeWidth;
-            badgeLp.height = badgeHeight;
-            badgeView.setLayoutParams(badgeLp);
-            badgeView.setVisibility(VISIBLE);
-        }
-
-        public ActionMenuItemView getInnerItemView() {
-            return (ActionMenuItemView) getChildAt(0);
-        }
-
-        public void adjustBadgeEndMargin(int additionalMargin) {
-            View badgeView = getChildAt(1);
-            FrameLayout.LayoutParams badgeLp = (FrameLayout.LayoutParams) badgeView.getLayoutParams();
-            int adjustedEndMargin = defaultEndMargin + additionalMargin;
-            if (badgeLp.getMarginEnd() == adjustedEndMargin) return;
-            badgeLp.setMarginEnd(adjustedEndMargin);
-        }
-    }
-
     @Override
     public boolean filterLeftoverView(ViewGroup parent, int childIndex) {
         if (parent.getChildAt(childIndex) == mOverflowButton) return false;
@@ -568,6 +495,13 @@ class ActionMenuPresenter extends BaseMenuPresenter
     public boolean isOverflowMenuShowing() {
         return mOverflowPopup != null && mOverflowPopup.isShowing();
     }
+
+    //Sesl
+    @RestrictTo(LIBRARY_GROUP_PREFIX)
+    public MenuPopupHelper seslGetOverflowPopup() {
+        return mOverflowPopup;
+    }
+    //sesl
 
     public boolean isOverflowMenuShowPending() {
         return mPostedOpenRunnable != null || isOverflowMenuShowing();
@@ -1206,10 +1140,29 @@ class ActionMenuPresenter extends BaseMenuPresenter
                 mMenu.changeMenuMode();
             }
             final View menuView = (View) mMenuView;
-            if (menuView != null && menuView.getWindowToken() != null && mPopup.tryShow(0, 0 /*sesl*/)) {
-                mOverflowPopup = mPopup;
+            //Sesl9
+            if (menuView != null) {
+                Resources resources = mContext.getResources();
+                boolean isRtl = menuView.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
+                int xOffset = resources.getDimensionPixelSize(R.dimen.sesl_action_menu_view_padding_end);
+                if (isRtl) {
+                    xOffset = -xOffset;
+                }
+                int yOffset = seslGetOverflowPopupYOffset(resources);
+                if (menuView.getWindowToken() != null && mPopup.tryShow(xOffset, yOffset)) {
+                    mOverflowPopup = mPopup;
+                }
             }
+            //sesl9
             mPostedOpenRunnable = null;
+        }
+
+        //sesl9
+        private int seslGetOverflowPopupYOffset(Resources resources) {
+            if (resources.getConfiguration().screenHeightDp <= SESL_SMALL_HEIGHT_DP) {
+                return resources.getDimensionPixelSize(R.dimen.sesl_action_bar_overflow_popup_offset_y_small_height);
+            }
+            return 0;
         }
     }
 

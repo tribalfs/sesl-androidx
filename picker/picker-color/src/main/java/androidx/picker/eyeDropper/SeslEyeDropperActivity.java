@@ -27,6 +27,7 @@ import android.app.KeyguardManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.RectF;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -35,6 +36,8 @@ import android.view.animation.PathInterpolator;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.picker.R;
 import androidx.picker3.app.SeslColorPickerDialog;
 
@@ -83,6 +86,9 @@ public class SeslEyeDropperActivity extends AppCompatActivity {
     private SeslMagnifyingView mMagnifyingView;
     private View mPointerView;
 
+    private final RectF mOriginalBitmapDrawnBounds = new RectF();
+    private int mCaptionBarTop = 0;
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -109,6 +115,11 @@ public class SeslEyeDropperActivity extends AppCompatActivity {
 
         getWindow().setFlags(512, 512);
         setContentView(R.layout.activity_eye_dropper);
+
+        ViewCompat.setOnApplyWindowInsetsListener(getWindow().getDecorView(), (v, windowInsets) -> {
+            mCaptionBarTop = windowInsets.getInsets(WindowInsetsCompat.Type.captionBar()).top;
+            return windowInsets;
+        });
 
         mBitmapView = findViewById(R.id.screenshotView);
         mBitmapView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
@@ -142,10 +153,10 @@ public class SeslEyeDropperActivity extends AppCompatActivity {
                         (int) (bitmap.getHeight() * scale),
                         false);
             }
-            canvas.drawBitmap(scaledBitmap,
-                    (width - scaledBitmap.getWidth()) / 2f,
-                    (height - scaledBitmap.getHeight()) / 2f,
-                    null);
+            float left = (width - scaledBitmap.getWidth()) / 2f;
+            float top = (height - scaledBitmap.getHeight()) / 2f;
+            canvas.drawBitmap(scaledBitmap, left, top, null);
+            mOriginalBitmapDrawnBounds.set(left, top, left + scaledBitmap.getWidth(), top + scaledBitmap.getHeight());
         }
         return createBitmap;
     }
@@ -179,14 +190,18 @@ public class SeslEyeDropperActivity extends AppCompatActivity {
         int magnifierHeight = mMagnifyingView.getHeight();
         int yOffset = getResources().getDimensionPixelSize(R.dimen.sesl_eyedropper_y_offset);
 
-        if (y <= mImageBitmap.getHeight() * 0.2) {
-            mMagnifyingView.setY((pointerHeight / 2.0f) + y + yOffset);
+        float thresholdY = mOriginalBitmapDrawnBounds.isEmpty()
+                ? mImageBitmap.getHeight() * 0.2f
+                : mOriginalBitmapDrawnBounds.top + (mOriginalBitmapDrawnBounds.bottom - mOriginalBitmapDrawnBounds.top) * 0.2f;
+
+        if (y <= thresholdY) {
+            mMagnifyingView.setY((pointerHeight / 2.0f) + mCaptionBarTop + y + yOffset);
         } else {
-            mMagnifyingView.setY(y - ((pointerHeight / 2.0f) + magnifierHeight + yOffset));
+            mMagnifyingView.setY((mCaptionBarTop + y) - ((pointerHeight / 2.0f) + magnifierHeight + yOffset));
         }
         mMagnifyingView.setX(x - (mMagnifyingView.getWidth() / 2.0f));
         mPointerView.setX(x - (mPointerView.getWidth() / 2.0f));
-        mPointerView.setY(y - (pointerHeight / 2.0f));
+        mPointerView.setY((y + mCaptionBarTop) - (pointerHeight / 2.0f));
     }
 
     private void initializeBitmapViewAnimation() {
@@ -235,18 +250,25 @@ public class SeslEyeDropperActivity extends AppCompatActivity {
             int x = (int) event.getX();
             int y = (int) event.getY();
 
+            if (!mOriginalBitmapDrawnBounds.isEmpty()) {
+                x = (int) Math.max(mOriginalBitmapDrawnBounds.left, Math.min(event.getX(), mOriginalBitmapDrawnBounds.right - 1.0f));
+                y = (int) Math.max(mOriginalBitmapDrawnBounds.top, Math.min(event.getY(), mOriginalBitmapDrawnBounds.bottom - 1.0f));
+            }
+
             if (x >= 0 && x < mImageBitmap.getWidth()) {
                 if ((float) y > mPointerView.getHeight() / 2.0f &&
                         (float) y < mImageBitmap.getHeight() - (mPointerView.getHeight() / 2.0f)) {
                     int action = event.getActionMasked();
-                    if (action == MotionEvent.ACTION_UP) {
+                    if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) {
                         if (mOnColorPickListener != null) {
                             mCurrentPixelColor = mImageBitmap.getPixel(x, y);
                             mOnColorPickListener.onColorPicked(mCurrentPixelColor);
                             mOnColorPickListener = null;
                         }
                         finishAfterTransition();
+                        return true;
                     }
+                    mCurrentPixelColor = mImageBitmap.getPixel(x, y);
                     positionMagnifierAndPointer(x, y, mCurrentPixelColor);
                 }
             }
@@ -262,6 +284,7 @@ public class SeslEyeDropperActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        mOnColorPickListener = null;
         super.onDestroy();
     }
 

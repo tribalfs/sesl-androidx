@@ -270,6 +270,15 @@ public class SeslViewReflector {
         }
     }
 
+    //sesl9
+    /** Reflects `setFrameContentVelocity` on the given view to pass velocity hints to the system. */
+    public static void setFrameContentVelocity(@NonNull View view, float velocity) {
+        Method method = SeslBaseReflector.getDeclaredMethod(mClass, "setFrameContentVelocity", Float.TYPE);
+        if (method != null) {
+            SeslBaseReflector.invoke(view, method, velocity);
+        }
+    }
+
     public static boolean isHighContrastTextEnabled(@NonNull View view) {
         if (DeviceInfo.isOneUI() ) {
             String methodName;

@@ -22,6 +22,7 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP_PREFIX;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
@@ -34,7 +35,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.Parcelable;
-import android.util.LayoutDirection;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -106,7 +106,7 @@ public abstract class PreferenceFragmentCompat extends Fragment implements
         PreferenceManager.OnNavigateToScreenListener,
         DialogPreference.TargetFragment {
 
-    private static final String TAG = "PreferenceFragment";
+    private static final String TAG = "SeslPreferenceFragmentC";
 
     /**
      * Fragment argument used to specify the tag of the desired root {@link PreferenceScreen}
@@ -121,6 +121,9 @@ public abstract class PreferenceFragmentCompat extends Fragment implements
             "androidx.preference.PreferenceFragment.DIALOG";
 
     private static final int MSG_BIND_PREFERENCES = 1;
+
+    static final int SWITCH_PREFERENCE_LAYOUT = 2;
+    static final int SWITCH_PREFERENCE_LAYOUT_LARGE = 1;
 
     private final DividerDecoration mDividerDecoration = new DividerDecoration();
     private PreferenceManager mPreferenceManager;
@@ -141,7 +144,7 @@ public abstract class PreferenceFragmentCompat extends Fragment implements
         }
     };
 
-    final private Runnable mRequestFocus = new Runnable() {
+    private final Runnable mRequestFocus = new Runnable() {
         @Override
         public void run() {
             mList.focusableViewAvailable(mList);
@@ -149,13 +152,13 @@ public abstract class PreferenceFragmentCompat extends Fragment implements
     };
 
     //Sesl
-    protected int mIsLargeLayout;
-    protected ViewTreeObserver.OnPreDrawListener mOnPreDrawListener;
-    protected int mScreenWidthDp;
-    protected boolean mIsRoundedCorner = true;
-    protected SeslRoundedCorner mListRoundedCorner;
-    protected SeslRoundedCorner mRoundedCorner;
-    protected SeslSubheaderRoundedCorner mSubheaderRoundedCorner;
+    int mIsLargeLayout;
+    ViewTreeObserver.OnPreDrawListener mOnPreDrawListener;
+    int mScreenWidthDp;
+    boolean mIsRoundedCorner = true;
+    SeslRoundedCorner mListRoundedCorner;
+    SeslRoundedCorner mRoundedCorner;
+    SeslSubheaderRoundedCorner mSubheaderRoundedCorner;
     private static final float FONT_SCALE_LARGE = 1.3f;
     private static final float FONT_SCALE_MEDIUM = 1.1f;
     private boolean mIsReducedMargin;
@@ -164,30 +167,31 @@ public abstract class PreferenceFragmentCompat extends Fragment implements
     int mTop = -1;
     int mRight = -1;
     int mBottom = -1;
-    final boolean mSupportsInsets = Build.VERSION.SDK_INT > 29;//custom
     //sesl
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final TypedValue tv = new TypedValue();
-        requireContext().getTheme().resolveAttribute(R.attr.preferenceTheme, tv , true);
+        requireContext().getTheme().resolveAttribute(R.attr.preferenceTheme, tv, true);
 
         //Sesl
         Configuration configuration = getResources().getConfiguration();
         int screenWidthDp = configuration.screenWidthDp;
         mIsLargeLayout =
-                ((screenWidthDp > 320 || configuration.fontScale < FONT_SCALE_MEDIUM) && (screenWidthDp >= 411 || configuration.fontScale < FONT_SCALE_LARGE)) ? 2 : 1;
+                ((screenWidthDp > 320 || configuration.fontScale < FONT_SCALE_MEDIUM)
+                        && (screenWidthDp >= 411 || configuration.fontScale < FONT_SCALE_LARGE))
+                            ? SWITCH_PREFERENCE_LAYOUT : SWITCH_PREFERENCE_LAYOUT_LARGE;
         mScreenWidthDp = screenWidthDp;
         mIsReducedMargin = screenWidthDp <= 250;
         //sesl
 
-        int theme  = tv .resourceId;
-        if (theme  == 0) {
+        int theme = tv.resourceId;
+        if (theme == 0) {
             // Fallback to default theme.
-            theme  = R.style.PreferenceThemeOverlay;
+            theme = R.style.PreferenceThemeOverlay;
         }
-        requireContext().getTheme().applyStyle(theme , false);
+        requireContext().getTheme().applyStyle(theme, false);
 
         mPreferenceManager = new PreferenceManager(requireContext());
         mPreferenceManager.setOnNavigateToScreenListener(this);
@@ -249,7 +253,7 @@ public abstract class PreferenceFragmentCompat extends Fragment implements
         ta.recycle();
         //sesl
 
-        final LayoutInflater themedInflater = inflater.cloneInContext(requireContext());
+        final LayoutInflater themedInflater = inflater.cloneInContext(context);
 
         final View view = themedInflater.inflate(mLayoutResId, container, false);
 
@@ -269,30 +273,7 @@ public abstract class PreferenceFragmentCompat extends Fragment implements
 
         mList = listView;
 
-        listView.addItemDecoration(mDividerDecoration);
-        setDivider(divider);
-        if (dividerHeight != -1) {
-            setDividerHeight(dividerHeight);
-        }
-        mDividerDecoration.setAllowDividerAfterLastItem(allowDividerAfterLastItem);
-
-        //Sesl
-        mList.setItemAnimator(null);
-        mRoundedCorner = new SeslRoundedCorner(context);
-        mSubheaderRoundedCorner = new SeslSubheaderRoundedCorner(context);
-
-        if (mIsRoundedCorner) {
-            listView.seslSetFillBottomEnabled(true);
-            listView.seslSetFillBottomColor(mSubheaderColor);
-            mListRoundedCorner = new SeslRoundedCorner(context, true);
-            mListRoundedCorner.setRoundedCorners(SeslRoundedCorner.ROUNDED_CORNER_TOP_LEFT
-                    | SeslRoundedCorner.ROUNDED_CORNER_TOP_RIGHT);
-        }
-
-        if (mOnPreDrawListener == null) {
-            createOnPreDrawListener();
-            listView.getViewTreeObserver().addOnPreDrawListener(mOnPreDrawListener);
-        }
+        registerOnPreDrawListener(listView);
 
         mList.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
             @Override
@@ -306,23 +287,45 @@ public abstract class PreferenceFragmentCompat extends Fragment implements
                 mOnPreDrawListener = null;
             }
         });
-        //sesl
 
-        // If mList isn't present in the view hierarchy, add it. mList is automatically inflated
-        // on an Auto device so don't need to add it.
+        listView.addItemDecoration(mDividerDecoration);
+        setDivider(divider);
+        if (dividerHeight != -1) {
+            setDividerHeight(dividerHeight);
+        }
+        mDividerDecoration.setAllowDividerAfterLastItem(allowDividerAfterLastItem);
+
+        mList.setItemAnimator(null);
+        mRoundedCorner = new SeslRoundedCorner(context);
+        mSubheaderRoundedCorner = new SeslSubheaderRoundedCorner(context);
+
+        if (mIsRoundedCorner) {
+            listView.seslSetFillBottomEnabled(true);
+            listView.seslSetFillBottomColor(mSubheaderColor);
+            mListRoundedCorner = new SeslRoundedCorner(context, true);
+            mListRoundedCorner.setRoundedCorners(3);
+        }
+
         if (mList.getParent() == null) {
             listContainer.addView(mList);
         }
         mHandler.post(mRequestFocus);
 
-        //Sesl7
-        final int defaultHorizontalPadding = getResources().getDimensionPixelSize(R.dimen.sesl_preference_padding_horizontal);
-        if (mLeft < 0) mLeft = defaultHorizontalPadding;
-        if (mRight < 0) mRight = defaultHorizontalPadding;
-        if (mTop < 0) mTop = 0;
-        if (mBottom < 0) mBottom = 0;
-        setPadding(mLeft, mTop, mRight, mBottom);
-        //sesl7
+        int defaultHorizontalPadding = getResources().getDimensionPixelSize(R.dimen.sesl_preference_padding_horizontal);
+        int left = mLeft;
+        if (left < 0) {
+            left = defaultHorizontalPadding;
+        }
+        int top = mTop;
+        if (top < 0) {
+            top = 0;
+        }
+        int right = mRight;
+        if (right >= 0) {
+            defaultHorizontalPadding = right;
+        }
+        int bottom = mBottom;
+        setPadding(left, top, defaultHorizontalPadding, bottom >= 0 ? bottom : 0);
 
         return view;
     }
@@ -709,7 +712,7 @@ public abstract class PreferenceFragmentCompat extends Fragment implements
      * @return An adapter that contains the preferences contained in this {@link PreferenceScreen}
      */
     @NonNull
-    protected RecyclerView.Adapter onCreateAdapter(@NonNull PreferenceScreen preferenceScreen) {
+    protected RecyclerView.Adapter<?> onCreateAdapter(@NonNull PreferenceScreen preferenceScreen) {
         return new PreferenceGroupAdapter(preferenceScreen);
     }
 
@@ -1031,8 +1034,7 @@ public abstract class PreferenceFragmentCompat extends Fragment implements
             }
 
             if (mIsRoundedCorner) {
-                mListRoundedCorner.drawRoundedCorner(c,
-                        mSupportsInsets ? Insets.of(mLeft, mTop, mRight, mBottom) : null);
+                mListRoundedCorner.drawRoundedCorner(c, Insets.of(mLeft, mTop, mRight, mBottom));
             }
         }
         //sesl
@@ -1080,10 +1082,7 @@ public abstract class PreferenceFragmentCompat extends Fragment implements
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         RecyclerView listView = getListView();
         if (listView != null) {
-            if (mOnPreDrawListener == null) {
-                createOnPreDrawListener();
-                listView.getViewTreeObserver().addOnPreDrawListener(mOnPreDrawListener);
-            }
+            registerOnPreDrawListener(listView);
             RecyclerView.Adapter<?> adapter = listView.getAdapter();
             RecyclerView.LayoutManager layoutManager = listView.getLayoutManager();
             boolean isSmallScreenWidth = newConfig.screenWidthDp <= 250;
@@ -1105,7 +1104,15 @@ public abstract class PreferenceFragmentCompat extends Fragment implements
         super.onConfigurationChanged(newConfig);
     }
 
-    private void createOnPreDrawListener() {
+    private void registerOnPreDrawListener(RecyclerView listView) {
+        if (mOnPreDrawListener == null) {
+            ViewTreeObserver viewTreeObserver = listView.getViewTreeObserver();
+            createOnPreDrawListner();
+            viewTreeObserver.addOnPreDrawListener(mOnPreDrawListener);
+        }
+    }
+
+    private void createOnPreDrawListner() {
         if (mList != null) {
             mOnPreDrawListener = new ViewTreeObserver.OnPreDrawListener() {
                 @Override
@@ -1139,10 +1146,11 @@ public abstract class PreferenceFragmentCompat extends Fragment implements
         }
     }
 
-    public boolean needToRefeshSwitch(@NonNull PreferenceGroupAdapter preferenceGroupAdapter,
+    private boolean needToRefeshSwitch(@NonNull PreferenceGroupAdapter preferenceGroupAdapter,
             int isLargeLayout, int swDp) {
         if (isLargeLayout == mIsLargeLayout) {
-            return isLargeLayout == 1 && (mScreenWidthDp != swDp || preferenceGroupAdapter.getListWidth() == 0);
+            return isLargeLayout == SWITCH_PREFERENCE_LAYOUT_LARGE
+                    && (mScreenWidthDp != swDp || preferenceGroupAdapter.getListWidth() == 0);
         }
         return true;
     }

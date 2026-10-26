@@ -38,6 +38,7 @@ import android.database.Cursor;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -61,6 +62,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.TouchDelegate;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewConfiguration;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
@@ -78,13 +80,22 @@ import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.appcompat.R;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.oneui.common.BlurSupportable;
+import androidx.appcompat.oneui.common.internal.policy.BlurInfoState;
+import androidx.appcompat.oneui.common.internal.semblurinfo.SemBlurInfoStateBuilder;
 import androidx.appcompat.util.SeslMisc;
 import androidx.appcompat.view.CollapsibleActionView;
 import androidx.core.content.pm.PackageInfoCompat;
+import androidx.core.graphics.ColorUtils;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.oneui.common.internal.semblurinfo.SemBlurInfoState;
+import androidx.core.view.SemBlurCompat;
+import androidx.core.view.SemBlurCompat.SeslBlurMode;
 import androidx.core.view.ViewCompat;
 import androidx.cursoradapter.widget.CursorAdapter;
 import androidx.customview.view.AbsSavedState;
 import androidx.reflect.os.SeslBuildReflector;
+import androidx.reflect.view.SeslHapticFeedbackConstantsReflector;
 import androidx.reflect.view.inputmethod.SeslInputMethodManagerReflector;
 import androidx.reflect.widget.SeslTextViewReflector;
 import androidx.resourceinspection.annotation.Attribute;
@@ -93,13 +104,28 @@ import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.WeakHashMap;
 
 /**
- * (SESL modified) A widget that provides a user interface for the user to enter a search query and submit a request
- * to a search provider. Shows a list of query suggestions or results, if available, and allows the
- * user to pick a suggestion or result to launch into.
+ * (SESL modified) A widget that provides a user interface for entering search queries and submitting requests
+ * to a search provider, fully adapted for Samsung One UI.
+ *
+ * <ul>
+ *   <li><b>Background Blur Support:</b> Implements {@link BlurSupportable} for rendering One UI 8.5 background blur
+ *       effects on {@link #getBlurTargetView()} (the search plate), configured dynamically via {@link #setBlurMode(int)},
+ *       {@link #applyBlurInfo(Context)}, and {@link #clearBlurInfo(Context)}.</li>
+ *   <li><b>SVoice & Voice Search Integration:</b> Native support for Samsung SVoice (SVI) speech recognition
+ *       and Google Voice Input (GVI) search intents and voice button dispatch.</li>
+ *   <li><b>Up & Overflow Navigation Buttons:</b> Integrated up/back button ({@link #seslSetOnUpButtonClickListener(OnClickListener)})
+ *       and overflow menu button ({@link #seslSetOnOverflowMenuButtonClickListener(OnClickListener)}) for toolbar action view layouts.</li>
+ *   <li><b>Typography & Styling:</b> Adapts search query font weights (semibold) and search plate corner radii
+ *       to match One UI design guidelines.</li>
+ *   <li><b>Haptic Feedback:</b> Provides subtle haptic feedback for search button interactions.</li>
+ * </ul>
+ * </p>
  *
  * <p>
  * When the SearchView is used in an {@link ActionBar}
@@ -110,27 +136,27 @@ import java.util.WeakHashMap;
  * {@link #setIconifiedByDefault(boolean) setIconifiedByDefault(false)}.
  * </p>
  *
- * <div class="special reference">
- * <h3>Developer Guides</h3>
- * <p>For information about using {@code SearchView}, read the
- * <a href="{@docRoot}guide/topics/search/index.html">Search</a> API guide.
- * Additional information about action views is also available in the <<a
- * href="{@docRoot}guide/topics/ui/actionbar.html#ActionView">Action Bar</a> API guide</p>
- * </div>
- *
  * @see MenuItem#SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW
  */
-public class SearchView extends LinearLayoutCompat implements CollapsibleActionView {
+public class SearchView extends LinearLayoutCompat implements CollapsibleActionView, BlurSupportable {
+
+    //sesl9
+    private SemBlurInfoState mBlurInfo;
+    @SeslBlurMode private int mBlurMode = SemBlurCompat.BLUR_MODE_CANVAS;
+    private final boolean mIsBlurApplied;
+    private final boolean mIsBottomSearchView;
+    //sesl9
 
     //Sesl
     private static final int SEP_VERSION_SUPPORTING_SVI_SEARCH_QUERY = 110100;
-
-    private static final String SVI_PACKAGE = "com.samsung.android.svoiceime";
-    private static final String AUTHORITY_SVI_APP = "com.samsung.android.svoiceime.provider";
+    private static final int FONT_WEIGHT_SEMIBOLD = 600;
+    public static final int FLAG_MUTABLE = 33554432;
+    private static final String SVI_PACKAGE = Build.VERSION.SDK_INT < 33 ? "com.samsung.android.svoiceime" : "com.samsung.android.honeyboard";
+    private static final String AUTHORITY_SVI_APP = Build.VERSION.SDK_INT < 33 ? "com.samsung.android.svoiceime.provider" : "com.samsung.android.honeyboard.provider.VoiceLanguageListProvider";
     private static final int SVI_VERSION_SUPPORTING_SEARCH_QUERY = 220002001;
-    private static final String SVI_ACTION = "samsung.svoiceime.action.RECOGNIZE_SPEECH";
+    private static final String SVI_ACTION = Build.VERSION.SDK_INT < 33 ? "samsung.svoiceime.action.RECOGNIZE_SPEECH" : "samsung.honeyboard.honeyvoice.action.RECOGNIZE_SPEECH";
     private static final String SVI_INTENT_EXTRA = "samsung.svoiceime.extra.LANGUAGE";
-    private static final String KEY_SVI_APP_LOCALE = "is_svoice_locale_supported";
+    private static final String KEY_SVI_APP_LOCALE = Build.VERSION.SDK_INT < 33 ? "is_svoice_locale_supported" : "is_honeyvoice_locale_supported";;
     private final Context mContext;
     private final Intent mSVoiceSearchIntent;
     private InputMethodManager mImm;
@@ -173,9 +199,15 @@ public class SearchView extends LinearLayoutCompat implements CollapsibleActionV
     private Rect mSearchSrtTextViewBoundsExpanded = new Rect();
     private int[] mTemp = new int[2];
     private int[] mTemp2 = new int[2];
-
-    /** Icon optionally displayed when the SearchView is collapsed. */
-    private final ImageView mCollapsedIcon;
+    //Sesl9
+    private final View mSearchPlateFrame;
+    private final View mSearchPlateStroke;
+    //Search magnifier icon button shown when the query is non-empty and unfocused
+    final ImageView mSearchMagIconButton;
+    boolean mIsSearchMagIconButtonEnabled = false;
+    private final Drawable mGVIVoiceIcon;
+    private final Drawable mSVIVoiceIcon;
+    //sesl9
 
     /** Drawable used as an EditText hint. */
     private final Drawable mSearchHintIcon;
@@ -312,11 +344,14 @@ public class SearchView extends LinearLayoutCompat implements CollapsibleActionV
         this(context, attrs, R.attr.searchViewStyle);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     public SearchView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
         final TintTypedArray a = TintTypedArray.obtainStyledAttributes(context,
                 attrs, R.styleable.SearchView, defStyleAttr, 0);
+        ViewCompat.saveAttributeDataForStyleable(this, context, R.styleable.SearchView,
+                attrs, a.getWrappedTypeArray(), defStyleAttr, 0);//sesl9
 
         final LayoutInflater inflater = LayoutInflater.from(context);
         final int layoutResId = a.getResourceId(
@@ -335,27 +370,33 @@ public class SearchView extends LinearLayoutCompat implements CollapsibleActionV
         mGoButton = findViewById(R.id.search_go_btn);
         mCloseButton = findViewById(R.id.search_close_btn);
         mVoiceButton = findViewById(R.id.search_voice_btn);
-        mCollapsedIcon = findViewById(R.id.search_mag_icon);
         mMoreButton = findViewById(R.id.search_more_btn);//sesl
         mBackButton = findViewById(R.id.search_back_btn);//sesl
 
         // Set up icons and backgrounds.
-        ViewCompat.setBackground(mSearchPlate,
-                a.getDrawable(R.styleable.SearchView_queryBackground));
-        ViewCompat.setBackground(mSubmitArea,
-                a.getDrawable(R.styleable.SearchView_submitBackground));
+        mSearchPlate.setBackground(a.getDrawable(R.styleable.SearchView_queryBackground));
+        mSubmitArea.setBackground(a.getDrawable(R.styleable.SearchView_submitBackground));
         mSearchIconResId = a.getResourceId(R.styleable.SearchView_searchIcon, 0);//sesl
         mSearchButton.setImageDrawable(a.getDrawable(R.styleable.SearchView_searchIcon));
         mGoButton.setImageDrawable(a.getDrawable(R.styleable.SearchView_goIcon));
         mCloseButton.setImageDrawable(a.getDrawable(R.styleable.SearchView_closeIcon));
-        mVoiceButton.setImageDrawable(a.getDrawable(R.styleable.SearchView_voiceIcon));
-        mCollapsedIcon.setImageDrawable(a.getDrawable(R.styleable.SearchView_searchIcon));
-
         mSearchHintIcon = a.getDrawable(R.styleable.SearchView_searchHintIcon);
 
-        //sesl
         TooltipCompat.setTooltipText(mSearchButton,
-                mSearchButton.getContentDescription());
+                mSearchButton.getContentDescription()); //sesl
+
+        //Sesl9
+        mSearchPlateFrame = findViewById(R.id.search_plate_frame);
+        mSearchPlateStroke = findViewById(R.id.search_plate_stroke_overlay);
+        mSearchMagIconButton = findViewById(R.id.search_mag_icon);
+        mIsBlurApplied = a.getBoolean(R.styleable.SearchView_seslSearchViewApplyBlur, false);
+        mIsBottomSearchView = a.getBoolean(R.styleable.SearchView_seslIsBottomSearchView, false);
+        mGVIVoiceIcon = a.getDrawable(R.styleable.SearchView_voiceIcon);
+        mSVIVoiceIcon = a.getDrawable(R.styleable.SearchView_voiceIconSVI);
+        updateVoiceButtonDrawable();
+        mSearchMagIconButton.setImageDrawable(a.getDrawable(R.styleable.SearchView_searchIcon));
+        TooltipCompat.setTooltipText(mSearchMagIconButton,
+                mSearchMagIconButton.getContentDescription());
         TooltipCompat.setTooltipText(mCloseButton,
                 mCloseButton.getContentDescription());
         TooltipCompat.setTooltipText(mGoButton,
@@ -366,7 +407,21 @@ public class SearchView extends LinearLayoutCompat implements CollapsibleActionV
                 mMoreButton.getContentDescription());
         TooltipCompat.setTooltipText(mBackButton,
                 mBackButton.getContentDescription());
-        //sesl
+
+        //haptic feedback on voice button release
+        mVoiceButton.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    v.performHapticFeedback(
+                            SeslHapticFeedbackConstantsReflector.semGetVibrationIndex(38));
+                }
+                return false;
+            }
+        });
+        mSearchMagIconButton.setOnClickListener(mOnClickListener);
+        mSearchSrcTextView.setOnClickListener(mOnClickListener);
+        //sesl9
 
         // Extract dropdown layout resource IDs for later use.
         mSuggestionRowLayout = a.getResourceId(R.styleable.SearchView_suggestionRowLayout,
@@ -377,7 +432,6 @@ public class SearchView extends LinearLayoutCompat implements CollapsibleActionV
         mCloseButton.setOnClickListener(mOnClickListener);
         mGoButton.setOnClickListener(mOnClickListener);
         mVoiceButton.setOnClickListener(mOnClickListener);
-        mSearchSrcTextView.setOnClickListener(mOnClickListener);
 
         mSearchSrcTextView.addTextChangedListener(mTextWatcher);
         mSearchSrcTextView.setOnEditorActionListener(mOnEditorActionListener);
@@ -389,6 +443,15 @@ public class SearchView extends LinearLayoutCompat implements CollapsibleActionV
         mSearchSrcTextView.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
+                //Sesl9
+                if (mIsSearchMagIconButtonEnabled) {
+                    int visibility = GONE;
+                    if (!hasFocus && mSearchSrcTextView.isEmpty()) {
+                        visibility = VISIBLE;
+                    }
+                    updateSearchMagIconVisibility(visibility);
+                }
+                //sesl9
                 if (mOnQueryTextFocusChangeListener != null) {
                     mOnQueryTextFocusChangeListener.onFocusChange(SearchView.this, hasFocus);
                 }
@@ -419,7 +482,7 @@ public class SearchView extends LinearLayoutCompat implements CollapsibleActionV
         setFocusable(focusable);
 
         //Sesl
-        mCollapsedIcon.setImageDrawable(a.getDrawable(R.styleable.SearchView_searchIcon));
+        mSearchMagIconButton.setImageDrawable(a.getDrawable(R.styleable.SearchView_searchIcon));//sesl9
         mSearchButton.setImageDrawable(a.getDrawable(R.styleable.SearchView_searchIcon));
 
         mIsLightTheme = SeslMisc.isLightTheme(mContext);
@@ -427,66 +490,19 @@ public class SearchView extends LinearLayoutCompat implements CollapsibleActionV
         final Resources resources = mContext.getResources();
 
         if (android.os.Build.VERSION.SDK_INT >= 34) {
-            mBoldTypeface = Typeface.create(Typeface.create("sec", Typeface.NORMAL), 600, false);
+            mBoldTypeface = Typeface.create(Typeface.create("sec", Typeface.NORMAL), FONT_WEIGHT_SEMIBOLD, false);
         } else {
             mBoldTypeface = Typeface.create(resources.getString(R.string.sesl_font_family_regular), Typeface.BOLD);
         }
         mSearchSrcTextView.setTypeface(mBoldTypeface);
-
-        if (mIsLightTheme) {
-            if (mSearchPlate.getBackground() == null) {
-                mSearchSrcTextView.setTextColor(resources.getColor(R.color.sesl_search_view_text_color));
-                mSearchSrcTextView.setHintTextColor(resources.getColor(R.color.sesl_search_view_hint_text_color));
-
-                mGoButton.setColorFilter(resources.getColor(R.color.sesl_search_view_icon_color));
-                mCloseButton.setColorFilter(resources.getColor(R.color.sesl_search_view_icon_color));
-                mVoiceButton.setColorFilter(resources.getColor(R.color.sesl_search_view_icon_color));
-                mMoreButton.setColorFilter(resources.getColor(R.color.sesl_search_view_icon_color));
-                if (mBackButton.getDrawable().equals(R.drawable.sesl_search_icon_background_borderless)) {
-                    mBackButton.setColorFilter(resources.getColor(R.color.sesl_search_view_icon_color));
-                }
-                mSearchButton.setColorFilter(resources.getColor(R.color.sesl_search_view_icon_color));
-            } else {
-                mSearchSrcTextView.setTextColor(resources.getColor(R.color.sesl_search_view_background_text_color_light));
-                mSearchSrcTextView.setHintTextColor(resources.getColor(R.color.sesl_search_view_background_hint_text_color_light));
-
-                mGoButton.setColorFilter(resources.getColor(R.color.sesl_search_view_background_icon_color_light));
-                mCloseButton.setColorFilter(resources.getColor(R.color.sesl_search_view_background_icon_color_light));
-                mVoiceButton.setColorFilter(resources.getColor(R.color.sesl_search_view_background_icon_color_light));
-                mMoreButton.setColorFilter(resources.getColor(R.color.sesl_search_view_background_icon_color_light));
-                if (mBackButton.getDrawable().equals(R.drawable.sesl_search_icon_background_borderless)) {
-                    mBackButton.setColorFilter(resources.getColor(R.color.sesl_search_view_background_icon_color_light));
-                }
-                mSearchButton.setColorFilter(resources.getColor(R.color.sesl_search_view_background_icon_color_light));
-            }
-        } else {
-            if (mSearchPlate.getBackground() == null) {
-                mSearchSrcTextView.setTextColor(resources.getColor(R.color.sesl_search_view_text_color_dark));
-                mSearchSrcTextView.setHintTextColor(resources.getColor(R.color.sesl_search_view_hint_text_color_dark));
-
-                mGoButton.setColorFilter(resources.getColor(R.color.sesl_search_view_icon_color_dark));
-                mCloseButton.setColorFilter(resources.getColor(R.color.sesl_search_view_icon_color_dark));
-                mVoiceButton.setColorFilter(resources.getColor(R.color.sesl_search_view_icon_color_dark));
-                mMoreButton.setColorFilter(resources.getColor(R.color.sesl_search_view_icon_color_dark));
-                if (mBackButton.getDrawable().equals(R.drawable.sesl_search_icon_background_borderless)) {
-                    mBackButton.setColorFilter(resources.getColor(R.color.sesl_search_view_icon_color_dark));
-                }
-                mSearchButton.setColorFilter(resources.getColor(R.color.sesl_search_view_icon_color_dark));
-            } else {
-                mSearchSrcTextView.setTextColor(resources.getColor(R.color.sesl_search_view_background_text_color_dark));
-                mSearchSrcTextView.setHintTextColor(resources.getColor(R.color.sesl_search_view_background_hint_text_color_dark));
-
-                mGoButton.setColorFilter(resources.getColor(R.color.sesl_search_view_background_icon_color_dark));
-                mCloseButton.setColorFilter(resources.getColor(R.color.sesl_search_view_background_icon_color_dark));
-                mVoiceButton.setColorFilter(resources.getColor(R.color.sesl_search_view_background_icon_color_dark));
-                mMoreButton.setColorFilter(resources.getColor(R.color.sesl_search_view_background_icon_color_dark));
-                if (mBackButton.getDrawable().equals(R.drawable.sesl_search_icon_background_borderless)) {
-                    mBackButton.setColorFilter(resources.getColor(R.color.sesl_search_view_background_icon_color_dark));
-                }
-                mSearchButton.setColorFilter(resources.getColor(R.color.sesl_search_view_background_icon_color_dark));
-            }
-        }
         //sesl
+
+        //Sesl9
+        if (mSearchPlate != null) {
+            SeslSearchViewStyle.create(mContext, mSearchPlate.getBackground() != null)
+                    .apply(resources, mSearchSrcTextView, Arrays.asList(mGoButton, mCloseButton, mVoiceButton, mMoreButton, mBackButton, mSearchButton));
+        }
+        //sesl9
 
         a.recycle();
 
@@ -502,8 +518,10 @@ public class SearchView extends LinearLayoutCompat implements CollapsibleActionV
         //Sesl
         mSVoiceSearchIntent = new Intent(SVI_ACTION);
         mSVoiceSearchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        mSVoiceSearchIntent.putExtra(SVI_INTENT_EXTRA,
-                Locale.getDefault().toString());
+        if (Build.VERSION.SDK_INT < 33) {
+            mSVoiceSearchIntent.putExtra(SVI_INTENT_EXTRA,
+                    Locale.getDefault().toString());
+        }
         //sesl
 
         mDropDownAnchor = findViewById(mSearchSrcTextView.getDropDownAnchor());
@@ -528,7 +546,10 @@ public class SearchView extends LinearLayoutCompat implements CollapsibleActionV
                     SEM_AUTOFILL_ID, false);
         }
         seslCheckMaxFont();
-        //sesl
+        //sesl9
+        applyBottomSearchPlateStyle(resources);
+        applySearchViewBlur();
+        //sesl9
     }
 
     int getSuggestionRowLayout() {
@@ -716,6 +737,11 @@ public class SearchView extends LinearLayoutCompat implements CollapsibleActionV
         if (query != null) {
             mSearchSrcTextView.setSelection(mSearchSrcTextView.length());
             mUserQuery = query;
+            //sesl9
+            if (mIsSearchMagIconButtonEnabled && !mSearchSrcTextView.hasFocus()) {
+                updateSearchMagIconVisibility(TextUtils.isEmpty(query) ? VISIBLE : GONE);
+            }
+            //sesl9
         }
 
         // If the query is not empty and submit is requested, submit the query
@@ -935,11 +961,9 @@ public class SearchView extends LinearLayoutCompat implements CollapsibleActionV
 
         switch (widthMode) {
             case MeasureSpec.AT_MOST:
-                // If there is an upper limit, don't exceed maximum width (explicit or implicit)
+                // If there is an upper limit, don't exceed maximum width
                 if (mMaxWidth > 0) {
                     width = Math.min(mMaxWidth, width);
-                } else {
-                    width = Math.min(getPreferredWidth(), width);
                 }
                 break;
             case MeasureSpec.EXACTLY:
@@ -1006,8 +1030,13 @@ public class SearchView extends LinearLayoutCompat implements CollapsibleActionV
     }
 
     private int getPreferredHeight() {
-        return getContext().getResources()
-                .getDimensionPixelSize(R.dimen.sesl_search_view_preferred_height);
+        //sesl9
+        return mIsBottomSearchView
+                ? getContext().getResources()
+                        .getDimensionPixelSize(R.dimen.sesl_search_view_bottom_preferred_height)
+                : getContext().getResources()
+                        .getDimensionPixelSize(R.dimen.sesl_search_view_preferred_height);
+        //sesl9
     }
 
     private void updateViewsVisibility(final boolean collapsed) {
@@ -1020,8 +1049,6 @@ public class SearchView extends LinearLayoutCompat implements CollapsibleActionV
         mSearchButton.setVisibility(visCollapsed);
         updateSubmitButton(hasText);
         mSearchEditFrame.setVisibility(collapsed ? GONE : VISIBLE);
-
-        mCollapsedIcon.setVisibility(GONE);
 
         updateCloseButton();
         updateVoiceButton(!hasText);
@@ -1074,10 +1101,7 @@ public class SearchView extends LinearLayoutCompat implements CollapsibleActionV
 
     private void updateCloseButton() {
         final boolean hasText = !TextUtils.isEmpty(mSearchSrcTextView.getText());
-        // Should we show the close button? It is not shown if there's no focus,
-        // field is not iconified by default and there is no text in it.
-        final boolean showClose = hasText || (mIconifiedByDefault && !mExpandedInActionView);
-        mCloseButton.setVisibility(showClose ? VISIBLE : GONE);
+        mCloseButton.setVisibility(hasText ? VISIBLE : GONE);
         final Drawable closeButtonImg = mCloseButton.getDrawable();
         if (closeButtonImg != null){
             closeButtonImg.setState(hasText ? ENABLED_STATE_SET : EMPTY_STATE_SET);
@@ -1124,7 +1148,8 @@ public class SearchView extends LinearLayoutCompat implements CollapsibleActionV
     private final OnClickListener mOnClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (v == mSearchButton) {
+            //sesl9
+            if (v == mSearchButton || v == mSearchMagIconButton) {
                 onSearchClicked();
             } else if (v == mCloseButton) {
                 onCloseClicked();
@@ -1232,9 +1257,8 @@ public class SearchView extends LinearLayoutCompat implements CollapsibleActionV
             }
 
             // Next, check for an "up and out" move
-            if (keyCode == KeyEvent.KEYCODE_DPAD_UP && 0 == mSearchSrcTextView.getListSelection()) {
-                // TODO: restoreUserQuery();
-                // let ACTV complete the move
+            if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
+                mSearchSrcTextView.getListSelection();
                 return false;
             }
         }
@@ -1314,7 +1338,15 @@ public class SearchView extends LinearLayoutCompat implements CollapsibleActionV
             visibility = VISIBLE;
             mGoButton.setVisibility(GONE);
         }
+        //sesl9
+        updateVoiceButtonDrawable();
+        //sesl9
         mVoiceButton.setVisibility(visibility);
+    }
+
+    //sesl9: swap between the SVI (Samsung voice input) and regular voice icon
+    private void updateVoiceButtonDrawable() {
+        mVoiceButton.setImageDrawable(mUseSVI ? mSVIVoiceIcon : mGVIVoiceIcon);
     }
 
     private final OnEditorActionListener mOnEditorActionListener = new OnEditorActionListener() {
@@ -1363,29 +1395,34 @@ public class SearchView extends LinearLayoutCompat implements CollapsibleActionV
 
     void onCloseClicked() {
         CharSequence text = mSearchSrcTextView.getText();
-        if (TextUtils.isEmpty(text)) {
-            if (mIconifiedByDefault) {
-                // If the app doesn't override the close behavior
-                if (mOnCloseListener == null || !mOnCloseListener.onClose()) {
-                    // hide the keyboard and remove focus
-                    clearFocus();
-                    // collapse the search field
-                    updateViewsVisibility(true);
-                }
-            }
-        } else {
+        if (!TextUtils.isEmpty(text)) {
             mSearchSrcTextView.setText("");
             mSearchSrcTextView.requestFocus();
+            mSearchSrcTextView.announceForAccessibility(
+                    getResources().getString(R.string.sesl_searchview_description_clear_field));
             if (SeslInputMethodManagerReflector.isAccessoryKeyboardState(mImm) != 0) {
                 mSearchSrcTextView.setImeVisibility(false);
             } else {
                 mSearchSrcTextView.setImeVisibility(true);
+            }
+        } else if (mIconifiedByDefault) {
+            // If the app doesn't override the close behavior
+            if (mOnCloseListener == null || !mOnCloseListener.onClose()) {
+                // hide the keyboard and remove focus
+                clearFocus();
+                // collapse the search field
+                updateViewsVisibility(true);
             }
         }
     }
 
     void onSearchClicked() {
         updateViewsVisibility(false);
+        //sesl9
+        if (mIsSearchMagIconButtonEnabled) {
+            updateSearchMagIconVisibility(GONE);
+        }
+        //sesl9
         mSearchSrcTextView.requestFocus();
         if (SeslInputMethodManagerReflector.isAccessoryKeyboardState(mImm) != 0) {
             mSearchSrcTextView.setImeVisibility(false);
@@ -1474,7 +1511,7 @@ public class SearchView extends LinearLayoutCompat implements CollapsibleActionV
 
         mExpandedInActionView = true;
         mCollapsedImeOptions = mSearchSrcTextView.getImeOptions();
-        mSearchSrcTextView.setImeOptions(mCollapsedImeOptions | EditorInfo.IME_FLAG_NO_FULLSCREEN);
+        mSearchSrcTextView.setImeOptions(mCollapsedImeOptions | FLAG_MUTABLE);
         mSearchSrcTextView.setText("");
         setIconified(false);
     }
@@ -1497,6 +1534,7 @@ public class SearchView extends LinearLayoutCompat implements CollapsibleActionV
             dest.writeValue(isIconified);
         }
 
+        @NonNull
         @Override
         public String toString() {
             return "SearchView.SavedState{"
@@ -1695,6 +1733,9 @@ public class SearchView extends LinearLayoutCompat implements CollapsibleActionV
         mSearchSrcTextView.setText(query);
         // Move the cursor to the end
         mSearchSrcTextView.setSelection(TextUtils.isEmpty(query) ? 0 : query.length());
+        if (mIsSearchMagIconButtonEnabled && !mSearchSrcTextView.hasFocus()) {
+            updateSearchMagIconVisibility(TextUtils.isEmpty(query) ? VISIBLE : GONE);
+        }
     }
 
     void launchQuerySearch(int actionKey, String actionMsg, String query) {
@@ -1773,8 +1814,11 @@ public class SearchView extends LinearLayoutCompat implements CollapsibleActionV
         Intent queryIntent = new Intent(Intent.ACTION_SEARCH);
         queryIntent.setComponent(searchActivity);
 
-        PendingIntent pending = PendingIntent.getActivity(getContext(), 0, queryIntent,
-                PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_MUTABLE);
+        PendingIntent pending = Build.VERSION.SDK_INT >= 31
+                ? PendingIntent.getActivity(getContext(), 0, queryIntent,
+                        PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_MUTABLE)
+                : PendingIntent.getActivity(getContext(), 0, queryIntent,
+                        PendingIntent.FLAG_ONE_SHOT);
 
         // Now set up the bundle that will be inserted into the pending intent
         // when it's time to do the search.  We always build it here (even if empty)
@@ -1887,6 +1931,11 @@ public class SearchView extends LinearLayoutCompat implements CollapsibleActionV
             PRE_API_29_HIDDEN_METHOD_INVOKER.doBeforeTextChanged(mSearchSrcTextView);
             PRE_API_29_HIDDEN_METHOD_INVOKER.doAfterTextChanged(mSearchSrcTextView);
         }
+        //sesl9
+        if (mIsSearchMagIconButtonEnabled) {
+            updateSearchMagIconVisibility(GONE);
+        }
+        //sesl9
     }
 
     static boolean isLandscapeMode(Context context) {
@@ -2195,7 +2244,7 @@ public class SearchView extends LinearLayoutCompat implements CollapsibleActionV
         void ensureImeVisible() {
             if (Build.VERSION.SDK_INT >= 29) {
                 Api29Impl.setInputMethodMode(this, INPUT_METHOD_NEEDED);
-                if (enoughToFilter()) {
+                if (getFilter() != null && enoughToFilter()) {
                     showDropDown();
                 }
             } else {
@@ -2216,6 +2265,11 @@ public class SearchView extends LinearLayoutCompat implements CollapsibleActionV
             mForceNotCallShowSoftInput = notCall;
         }
 
+        /**
+         * Sets a listener to receive private IME commands sent to this text view.
+         *
+         * @param listener The listener to receive commands, or {@code null} to clear it.
+         */
         public void seslSetOnPrivateImeCommandListener(@Nullable OnPrivateImeCommandListener listener) {
             mOnAppPrivateCommandListener = listener;
         }
@@ -2229,7 +2283,7 @@ public class SearchView extends LinearLayoutCompat implements CollapsibleActionV
 
 
         @SuppressWarnings("JavaReflectionMemberAccess")
-        @SuppressLint({"DiscouragedPrivateApi", "SoonBlockedPrivateApi"})
+        @SuppressLint({"DiscouragedPrivateApi", "SoonBlockedPrivateApi", "PrivateApi"})
         PreQAutoCompleteTextViewReflector() {
             preApi29Check();
             try {
@@ -2340,53 +2394,324 @@ public class SearchView extends LinearLayoutCompat implements CollapsibleActionV
         }
     }
 
+    /**
+     * Returns the auto-complete text view used for query input.
+     *
+     * @return The {@link AutoCompleteTextView} instance.
+     */
     public AutoCompleteTextView seslGetAutoCompleteView() {
         return mSearchSrcTextView;
     }
 
+    /**
+     * Returns the up (back) navigation button view.
+     *
+     * @return The up button {@link ImageView}.
+     */
     public ImageView seslGetUpButton() {
         return mBackButton;
     }
 
+    /**
+     * Returns the overflow menu button view.
+     *
+     * @return The overflow menu button {@link ImageView}.
+     */
     public ImageView seslGetOverflowMenuButton() {
         return mMoreButton;
     }
 
+    /**
+     * Sets the icon drawable for the up navigation button.
+     *
+     * @param drawable The drawable to set as the up button icon, or {@code null} to clear.
+     */
     public void seslSetUpButtonIcon(Drawable drawable) {
         if (mBackButton != null) {
             mBackButton.setImageDrawable(drawable);
         }
     }
 
+    /**
+     * Sets the icon drawable for the overflow menu button.
+     *
+     * @param drawable The drawable to set as the overflow menu button icon, or {@code null} to clear.
+     */
     public void seslSetOverflowMenuButtonIcon(Drawable drawable) {
         if (mMoreButton != null) {
             mMoreButton.setImageDrawable(drawable);
         }
     }
 
+    /**
+     * Sets the visibility of the up navigation button.
+     *
+     * @param visibility One of {@link View#VISIBLE}, {@link View#INVISIBLE}, or {@link View#GONE}.
+     */
     public void seslSetUpButtonVisibility(int visibility) {
         if (mBackButton != null) {
             mBackButton.setVisibility(visibility);
         }
     }
 
+    /**
+     * Sets the visibility of the overflow menu button.
+     *
+     * @param visibility One of {@link View#VISIBLE}, {@link View#INVISIBLE}, or {@link View#GONE}.
+     */
     public void seslSetOverflowMenuButtonVisibility(int visibility) {
         if (mMoreButton != null) {
             mMoreButton.setVisibility(visibility);
         }
     }
 
-    public void seslSetOnUpButtonClickListener(View.OnClickListener listener) {
+    /**
+     * Sets a click listener for the up navigation button.
+     *
+     * @param listener The click listener to set, or {@code null} to remove the listener.
+     */
+    public void seslSetOnUpButtonClickListener(OnClickListener listener) {
         if (mBackButton != null) {
             mBackButton.setOnClickListener(listener);
         }
     }
 
-    public void seslSetOnOverflowMenuButtonClickListener(View.OnClickListener listener) {
+    /**
+     * Sets a click listener for the overflow menu button.
+     *
+     * @param listener The click listener to set, or {@code null} to remove the listener.
+     */
+    public void seslSetOnOverflowMenuButtonClickListener(OnClickListener listener) {
         if (mMoreButton != null) {
             mMoreButton.setOnClickListener(listener);
         }
     }
+
+    //sesl9
+    /**
+     * Style configuration enum for SearchView text, hint, and icon colors based on theme and background presence.
+     */
+    public enum SeslSearchViewStyle {
+        LIGHT_WITH_BACKGROUND(R.color.sesl_search_view_background_text_color_light,
+                R.color.sesl_search_view_background_hint_text_color_light,
+                R.color.sesl_search_view_background_icon_color_light,
+                R.dimen.sesl_search_view_search_text_size_with_background),
+        LIGHT_WITHOUT_BACKGROUND(R.color.sesl_search_view_text_color,
+                R.color.sesl_search_view_hint_text_color,
+                R.color.sesl_search_view_icon_color,
+                R.dimen.sesl_search_view_search_text_size),
+        DARK_WITH_BACKGROUND(R.color.sesl_search_view_background_text_color_dark,
+                R.color.sesl_search_view_background_hint_text_color_dark,
+                R.color.sesl_search_view_background_icon_color_dark,
+                R.dimen.sesl_search_view_search_text_size_with_background),
+        DARK_WITHOUT_BACKGROUND(R.color.sesl_search_view_text_color_dark,
+                R.color.sesl_search_view_hint_text_color_dark,
+                R.color.sesl_search_view_icon_color_dark,
+                R.dimen.sesl_search_view_search_text_size);
+
+        final int mTextColorRes;
+        final int mHintTextColorRes;
+        final int mIconColorRes;
+        final int mTextSizeRes;
+
+        SeslSearchViewStyle(int textColorRes, int hintTextColorRes, int iconColorRes, int textSizeRes) {
+            mTextColorRes = textColorRes;
+            mHintTextColorRes = hintTextColorRes;
+            mIconColorRes = iconColorRes;
+            mTextSizeRes = textSizeRes;
+        }
+
+        public static SeslSearchViewStyle create(@NonNull Context context, boolean hasBackground) {
+            return (SeslMisc.isLightTheme(context)
+                    ? new SeslSearchViewStyle[]{LIGHT_WITH_BACKGROUND, LIGHT_WITHOUT_BACKGROUND}
+                    : new SeslSearchViewStyle[]{DARK_WITH_BACKGROUND, DARK_WITHOUT_BACKGROUND})[!hasBackground ? 1 : 0];
+        }
+
+        public void apply(@NonNull Resources resources, @NonNull TextView textView, @NonNull List<ImageView> iconList) {
+            Log.d(LOG_TAG, "[SeslSearchViewStyle] apply " + this);
+            textView.setTextColor(resources.getColor(mTextColorRes));
+            textView.setHintTextColor(resources.getColor(mHintTextColorRes));
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimensionPixelSize(mTextSizeRes));
+            for (ImageView icon : iconList) {
+                if (icon != null) {
+                    icon.setColorFilter(resources.getColor(mIconColorRes));
+                }
+            }
+        }
+    }
+
+    private void applySearchViewBlur() {
+        if (!mIsBlurApplied || mSearchPlate == null) {
+            return;
+        }
+        applyBlurInfo(getContext());
+    }
+
+    private SemBlurInfoState generateBlurInfo(Context context) {
+        float dimension = context.getResources().getDimension(R.dimen.sesl_search_plate_radius_size);
+        SemBlurInfoStateBuilder builder = BlurInfoState.INSTANCE.generateFloatingComponentBlurInfoStateBuilder(context, mBlurMode);
+        if (mSearchPlate != null && mSearchPlate.getBackground() != null) {
+            builder.nonBlurBackground(mSearchPlate.getBackground());
+        }
+        return builder.cornerRadius(dimension).build();
+    }
+
+    /**
+     * Applies blur info using the given context.
+     *
+     * @param context App context.
+     * @return true if blur was successfully applied, false otherwise.
+     */
+    @Override
+    public boolean applyBlurInfo(@NonNull Context context) {
+        if (Build.VERSION.SDK_INT < 36) {
+            return false;
+        }
+        clearBlurInfo(context);
+        SemBlurInfoState info = generateBlurInfo(context);
+        if (mSearchPlate != null && info.applyBlurInfo(mSearchPlate)) {
+            mBlurInfo = info;
+            return true;
+        }
+        mBlurInfo = null;
+        return false;
+    }
+
+    /**
+     * Clears blur info using the given context.
+     *
+     * @param context App context.
+     */
+    @Override
+    public void clearBlurInfo(@NonNull Context context) {
+        if (mBlurInfo == null || mSearchPlate == null) {
+            return;
+        }
+        mBlurInfo.clearBlurInfo(mSearchPlate);
+        mBlurInfo = null;
+    }
+
+    /**
+     * Checks if blur is currently applied to the search plate.
+     *
+     * @return true if blur is applied, false otherwise.
+     */
+    @Override
+    public boolean isBlurApplied() {
+        return mBlurInfo != null;
+    }
+
+    /**
+     * Sets the blur mode integer.
+     *
+     * @param semBlurInfoMode Blur mode integer.
+     */
+    @Override
+    public void setBlurMode(int semBlurInfoMode) {
+        mBlurMode = semBlurInfoMode;
+        applySearchViewBlur();
+    }
+
+    /**
+     * Returns the target view for applying blur effects (the search plate).
+     *
+     * @return The search plate view.
+     */
+    @Override
+    @Nullable
+    public View getBlurTargetView() {
+        return mSearchPlate;
+    }
+
+    //sesl9: bottom search view (search bar docked at the screen bottom) styling
+    private void applyBottomSearchPlateBgColor() {
+        Drawable background = mSearchPlate.getBackground();
+        if (background == null) {
+            return;
+        }
+        Drawable mutated = background.mutate();
+        int color = ColorUtils.setAlphaComponent(
+                mContext.getResources().getColor(
+                        SeslMisc.isLightTheme(mContext)
+                                ? R.color.sesl_search_textfield_color
+                                : R.color.sesl_search_textfield_color_dark,
+                        mContext.getTheme()),
+                255);
+        if (mutated instanceof GradientDrawable) {
+            ((GradientDrawable) mutated).setColor(color);
+        } else {
+            DrawableCompat.setTint(mutated, color);
+        }
+        mSearchPlate.setBackground(mutated);
+    }
+
+    private void applyBottomSearchPlateStyle(Resources resources) {
+        if (!mIsBottomSearchView || mSearchPlateFrame == null || mSearchPlate == null
+                || mSearchPlateStroke == null) {
+            return;
+        }
+        ViewGroup.LayoutParams layoutParams = mSearchPlateFrame.getLayoutParams();
+        if (layoutParams instanceof MarginLayoutParams marginLayoutParams) {
+            int horizontalMargin = resources.getDimensionPixelSize(
+                    R.dimen.sesl_search_bottom_horizontal_margin);
+            if (marginLayoutParams.getMarginStart() != horizontalMargin
+                    || marginLayoutParams.getMarginEnd() != horizontalMargin) {
+                marginLayoutParams.setMarginStart(horizontalMargin);
+                marginLayoutParams.setMarginEnd(horizontalMargin);
+                mSearchPlateFrame.setLayoutParams(marginLayoutParams);
+            }
+        } else {
+            Log.w(LOG_TAG, "SearchPlateFrame's LayoutParams are not an instance of MarginLayoutParams.");
+        }
+        applyBottomSearchPlateBgColor();
+        float elevation = resources.getDimension(R.dimen.sesl_figma_elevation_md);
+        mSearchPlate.setElevation(elevation);
+        mSearchPlateStroke.setElevation(elevation);
+        mSearchSrcTextView.setImeOptions(
+                mSearchSrcTextView.getImeOptions() | EditorInfo.IME_FLAG_NO_FULLSCREEN);
+        setIconifiedByDefault(false);
+        seslSetSearchMagIconVisibility(VISIBLE);
+        mSearchPlateStroke.setVisibility(VISIBLE);
+    }
+
+    void updateSearchMagIconVisibility(int visibility) {
+        if (mSearchMagIconButton == null) {
+            return;
+        }
+        if (mSearchMagIconButton.getVisibility() == visibility) {
+            return;
+        }
+        mSearchMagIconButton.setVisibility(visibility);
+        updateSearchPlatePadding();
+    }
+
+    private void updateSearchPlatePadding() {
+        if (mSearchPlate == null) {
+            return;
+        }
+        Resources resources = mContext.getResources();
+        int paddingStart = (!mIsBottomSearchView || mSearchMagIconButton.getVisibility() == VISIBLE)
+                ? resources.getDimensionPixelSize(R.dimen.sesl_search_plate_padding_start)
+                : resources.getDimensionPixelSize(R.dimen.sesl_search_plate_bottom_padding_start);
+        int paddingEnd = resources.getDimensionPixelSize(R.dimen.sesl_search_plate_bottom_padding_end);
+        mSearchPlate.setPaddingRelative(paddingStart, mSearchPlate.getPaddingTop(),
+                paddingEnd, mSearchPlate.getPaddingBottom());
+    }
+
+    /**
+     * Sets the visibility of the search magnifier icon button. When made visible, the button is
+     * enabled and shown/hidden according to query text and focus state.
+     *
+     * @param visibility {@link View#VISIBLE} to enable and show the icon button, or
+     *                   {@link View#GONE} to disable it.
+     */
+    public void seslSetSearchMagIconVisibility(int visibility) {
+        if (mSearchMagIconButton != null) {
+            mIsSearchMagIconButtonEnabled = visibility == VISIBLE;
+            updateSearchMagIconVisibility(visibility);
+        }
+    }
+    //sesl9
 
     private Intent createSVoiceSearchIntent(Intent baseIntent, SearchableInfo searchable) {
         ComponentName searchActivity = searchable.getSearchActivity();
@@ -2394,9 +2719,11 @@ public class SearchView extends LinearLayoutCompat implements CollapsibleActionV
         Intent queryIntent = new Intent(Intent.ACTION_SEARCH);
         queryIntent.setComponent(searchActivity);
 
-        PendingIntent pending= PendingIntent.getActivity(getContext(), 0, queryIntent,
-                PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_MUTABLE);
-
+        PendingIntent pending = Build.VERSION.SDK_INT >= 31
+                ? PendingIntent.getActivity(getContext(), 0, queryIntent,
+                        PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_MUTABLE)
+                : PendingIntent.getActivity(getContext(), 0, queryIntent,
+                        PendingIntent.FLAG_ONE_SHOT);
 
         Bundle queryExtras = new Bundle();
         if (mAppSearchData != null) {
@@ -2414,6 +2741,12 @@ public class SearchView extends LinearLayoutCompat implements CollapsibleActionV
         return voiceIntent;
     }
 
+    /**
+     * Enables or disables Samsung Voice Input (SVI) for voice search queries.
+     *
+     * @param enabled {@code true} to enable Samsung Voice Input, {@code false} to use standard voice search.
+     * @return {@code true} if Samsung Voice Input was successfully enabled, {@code false} otherwise.
+     */
     public boolean seslSetSviEnabled(boolean enabled) {
         if (SeslBuildReflector.SeslVersionReflector.getField_SEM_PLATFORM_INT()
                 < SEP_VERSION_SUPPORTING_SVI_SEARCH_QUERY) {
@@ -2444,9 +2777,18 @@ public class SearchView extends LinearLayoutCompat implements CollapsibleActionV
             }
         }
 
+        //sesl9: re-resolve voice button drawable (SVI vs regular) once posted
+        post(() -> updateViewsVisibility(isIconified()));
+        //sesl9
+
         return mUseSVI;
     }
 
+    /**
+     * Returns whether Samsung Voice Input (SVI) is enabled for voice search.
+     *
+     * @return {@code true} if Samsung Voice Input is enabled, {@code false} otherwise.
+     */
     public boolean seslIsSviEnabled() {
         return mUseSVI;
     }
@@ -2489,24 +2831,33 @@ public class SearchView extends LinearLayoutCompat implements CollapsibleActionV
         seslCheckMaxFont();
     }
 
+    /**
+     * Sets whether to suppress displaying the soft keyboard automatically when the search view is focused.
+     *
+     * @param notCall {@code true} to suppress showing the soft keyboard, {@code false} to allow showing it.
+     */
     public void seslSetNotCallShowSoftInput(boolean notCall) {
         mSearchSrcTextView.setNotCallShowSoftInput(notCall);
     }
 
+    /**
+     * Sets a listener to receive private IME commands sent to the search query text field.
+     *
+     * @param listener The listener to receive private IME commands, or {@code null} to clear it.
+     */
     public void seslSetOnPrivateImeCommandListener(@Nullable OnPrivateImeCommandListener listener) {
         mSearchSrcTextView.seslSetOnPrivateImeCommandListener(listener);
     }
 
     private void seslCheckMaxFont() {
-        final float currentFontScale = getContext().getResources().getConfiguration().fontScale;
-        final int searchSrcTextSize = getContext().getResources().getDimensionPixelSize(R.dimen.sesl_search_view_search_text_size);
-
-        if (currentFontScale > 1.3f) {
-            mSearchSrcTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
-                    (searchSrcTextSize / currentFontScale) * 1.3f);
-        } else {
-            mSearchSrcTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, searchSrcTextSize);
+        Resources resources = mContext.getResources();
+        float fontScale = resources.getConfiguration().fontScale;
+        boolean hasBackground = mSearchPlate != null && mSearchPlate.getBackground() != null;
+        float textSize = resources.getDimensionPixelSize(SeslSearchViewStyle.create(mContext, hasBackground).mTextSizeRes);
+        if (fontScale > 1.3f) {
+            textSize = (textSize / fontScale) * 1.3f;
         }
+        mSearchSrcTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
     }
     //sesl
 }

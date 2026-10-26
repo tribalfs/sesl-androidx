@@ -18,107 +18,95 @@
 <!-- Original code by Samsung, all rights reserved to the original author. -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/parentPanel"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingTop="@dimen/sesl_suggestive_dialog_title_padding_top">
-
+    android:id="@+id/parentPanel"
+    android:paddingTop="@dimen/sesl_suggestive_dialog_title_padding_top"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/topPanel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:gravity="start|bottom"
+            android:orientation="horizontal"
+            android:id="@+id/title_template"
+            android:paddingLeft="@dimen/sesl_suggestive_dialog_padding_horizontal"
+            android:paddingRight="@dimen/sesl_suggestive_dialog_padding_horizontal"
+            android:paddingBottom="@dimen/sesl_suggestive_dialog_title_padding_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@android:id/icon"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@null"
+                android:scaleType="fitCenter"
+                style="@style/RtlOverlay.Widget.AppCompat.DialogTitle.Icon"/>
+            <androidx.appcompat.widget.DialogTitle
+                android:ellipsize="end"
+                android:id="@+id/alertTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:textAlignment="viewStart"
+                style="?android:attr/windowTitleStyle"/>
+        </LinearLayout>
+    </LinearLayout>
     <FrameLayout
         android:id="@+id/contentPanel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:minHeight="18dp">
-
+        android:minHeight="18dp"
+        android:layout_weight="1">
         <View
-            android:id="@+id/scrollIndicatorUp"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
             android:layout_gravity="top"
-            android:background="?colorControlHighlight"
-            android:visibility="gone" />
-
-        <View
-            android:id="@+id/scrollIndicatorDown"
+            android:id="@+id/scrollIndicatorUp"
+            android:background="?attr/colorControlHighlight"
+            android:visibility="gone"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_gravity="bottom"
-            android:background="?colorControlHighlight"
-            android:visibility="gone" />
-
+            android:layout_height="1dp"/>
         <androidx.core.widget.NestedScrollView
+            android:scrollbarStyle="outsideOverlay"
             android:id="@+id/scrollView"
+            android:paddingBottom="@dimen/sesl_dialog_body_text_padding_bottom"
+            android:scrollbars="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/sesl_dialog_body_text_padding_bottom"
-            android:paddingEnd="@dimen/sesl_dialog_body_text_scroll_padding_end"
             android:paddingStart="@dimen/sesl_dialog_body_text_scroll_padding_start"
-            android:scrollbarStyle="outsideOverlay"
-            android:scrollbars="vertical">
-
+            android:paddingEnd="@dimen/sesl_dialog_body_text_scroll_padding_end">
             <TextView
                 android:id="@android:id/message"
-                style="?android:textAppearance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/sesl_dialog_body_text_margin_end"
-                android:layout_marginStart="@dimen/sesl_dialog_body_text_margin_start"
                 android:lineSpacingExtra="@dimen/sesl_dialog_body_text_line_spacing_extra"
-                android:textAlignment="viewStart" />
+                android:textAlignment="viewStart"
+                android:layout_marginStart="@dimen/sesl_dialog_body_text_margin_start"
+                android:layout_marginEnd="@dimen/sesl_dialog_body_text_margin_end"
+                style="?android:attr/textAppearance"/>
         </androidx.core.widget.NestedScrollView>
+        <View
+            android:layout_gravity="bottom"
+            android:id="@+id/scrollIndicatorDown"
+            android:background="?attr/colorControlHighlight"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
     </FrameLayout>
-
     <FrameLayout
         android:id="@+id/customPanel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:minHeight="48dp">
-
+        android:minHeight="48dp"
+        android:layout_weight="1">
         <FrameLayout
             android:id="@+id/custom"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"/>
     </FrameLayout>
-
-    <LinearLayout
-        android:id="@+id/topPanel"
+    <include
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:id="@+id/title_template"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="start|bottom"
-            android:orientation="horizontal"
-            android:paddingBottom="@dimen/sesl_suggestive_dialog_title_padding_bottom"
-            android:paddingLeft="@dimen/sesl_suggestive_dialog_padding_horizontal"
-            android:paddingRight="@dimen/sesl_suggestive_dialog_padding_horizontal">
-
-            <ImageView
-                android:id="@android:id/icon"
-                style="@style/RtlOverlay.Widget.AppCompat.DialogTitle.Icon"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:scaleType="fitCenter"
-                android:src="@null" />
-
-            <androidx.appcompat.widget.DialogTitle
-                android:id="@+id/alertTitle"
-                style="?android:windowTitleStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:textAlignment="viewStart" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <include
-        layout="@layout/sesl_suggestive_dialog_button_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        layout="@layout/sesl_suggestive_dialog_button_bar"/>
 </LinearLayout>

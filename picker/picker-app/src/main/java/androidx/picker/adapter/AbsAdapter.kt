@@ -51,7 +51,6 @@ import androidx.picker.widget.SeslAppPickerView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import java.util.Locale
-import java.util.StringTokenizer
 import kotlin.collections.ArrayList
 import kotlin.collections.List
 import kotlin.collections.set
@@ -113,15 +112,16 @@ abstract class AbsAdapter @JvmOverloads constructor(
     }
 
     private fun isFilterMatch(searchText: String, searchable: String?): Boolean {
-        if (searchable.isNullOrEmpty()) return false
-        val tokens = StringTokenizer(searchText.lowercase())
-        val searchableLower = searchable.lowercase().trim().replace(" ", "")
-        val pattern = this@AbsAdapter.searchText.trim().replace(" ", "")
-        while (tokens.hasMoreTokens()) {
-            val token = tokens.nextToken()
-            if (searchableLower.contains(token) || getMatchedStringOffset(searchableLower, pattern) > -1) return true
+        if (searchable.isNullOrEmpty() || searchText.isEmpty()) return false
+        val searchableLower = searchable.lowercase()
+        val pattern = searchText.lowercase().replace(Regex("[\\n\\t\\r]"), "").trim()
+        if (pattern.isEmpty()) return false
+        return if (pattern.contains(" ")) {
+            searchableLower.contains(pattern) || getMatchedStringOffset(searchableLower, pattern) > -1
+        } else {
+            val searchableNoSpace = searchableLower.replace(" ", "")
+            searchableLower.contains(pattern) || getMatchedStringOffset(searchableNoSpace, pattern) > -1
         }
-        return false
     }
 
     private fun refreshSectionMap(list: List<ViewData>) {

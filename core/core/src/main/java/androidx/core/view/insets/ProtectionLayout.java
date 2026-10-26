@@ -136,6 +136,10 @@ public class ProtectionLayout extends FrameLayout {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+        //sesl
+        if (mGroup != null) {
+            removeProtectionViews();
+        }
         addProtectionViews();
         requestApplyInsets();
     }

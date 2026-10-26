@@ -171,8 +171,6 @@ public class ShortcutInfoCompat {
 
     /**
      */
-    @RequiresApi(22)
-    @RestrictTo(LIBRARY_GROUP_PREFIX)
     private PersistableBundle buildLegacyExtrasBundle() {
         if (mExtras == null) {
             mExtras = new PersistableBundle();
@@ -509,7 +507,6 @@ public class ShortcutInfoCompat {
     /**
      */
     @RequiresApi(25)
-    @RestrictTo(LIBRARY_GROUP_PREFIX)
     private static @Nullable LocusIdCompat getLocusIdFromExtra(@Nullable PersistableBundle bundle) {
         if (bundle == null) return null;
         final String locusId = bundle.getString(EXTRA_LOCUS_ID);

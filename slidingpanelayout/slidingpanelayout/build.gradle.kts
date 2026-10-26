@@ -1,8 +1,6 @@
 plugins {
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.mavenPublish)
-    alias(libs.plugins.kotlinAndroid)
-    alias(libs.plugins.kotlinKapt)
+    id("com.android.legacy-kapt")
 }
 
 dependencies {
@@ -12,7 +10,6 @@ dependencies {
 
     api(libs.sesl.androidx.appcompat)
     api(libs.sesl.androidx.customview)
-    implementation(libs.sesl.androidx.coreKtx)
     implementation(libs.sesl.androidx.coordinatorlayout)
 }
 

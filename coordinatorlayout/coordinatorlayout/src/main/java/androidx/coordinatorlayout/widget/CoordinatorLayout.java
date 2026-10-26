@@ -17,6 +17,8 @@
 package androidx.coordinatorlayout.widget;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP_PREFIX;
+import static androidx.coordinatorlayout.widget.AppBarLayoutBehavior.SESL_STATE_COLLAPSED;
+import static androidx.coordinatorlayout.widget.AppBarLayoutBehavior.SESL_STATE_EXPANDED;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -124,13 +126,13 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
 
     private static final int TYPE_ON_INTERCEPT = 0;
     private static final int TYPE_ON_TOUCH = 1;
+    //Sesl9
+    private static final float KEY_SCROLL_FRACTION_AMOUNT = 0.2f;
+    private static final int RECTANGLE_ON_SCREEN_REQUEST_SOURCE_INPUT_FOCUS = 3;
+    //sesl9
 
     static {
-        if (Build.VERSION.SDK_INT >= 21) {
-            TOP_SORTED_CHILDREN_COMPARATOR = new ViewElevationComparator();
-        } else {
-            TOP_SORTED_CHILDREN_COMPARATOR = null;
-        }
+        TOP_SORTED_CHILDREN_COMPARATOR = new ViewElevationComparator();
     }
 
     static final Class<?>[] CONSTRUCTOR_PARAMS = new Class<?>[] {
@@ -180,6 +182,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
     // Array to be used for calls from v2 version of onNestedScroll to v3 version of onNestedScroll.
     // This only exist to prevent GC and object instantiation costs that are present before API 21.
     private final int[] mNestedScrollingV2ConsumedCompat = new int[2];
+    private final int[] mKeyTriggeredScrollConsumed = new int[2];//sesl9
 
     private boolean mDisallowInterceptReset;
 
@@ -191,7 +194,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
     private View mNestedScrollingTarget;
 
     //Sesl
-    private boolean mEnableAutoCollapsingKeyEvent = true;
+    private boolean mEnableAutoCollapsingKeyEvent = false/*sesl9*/;
     private boolean mToolIsMouse;
     private View mLastNestedScrollingChild;
     //sesl
@@ -1970,6 +1973,19 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
                 for (int i = 0; i < childCount; i++) {
                     final View child = getChildAt(i);
                     if (child instanceof AppBarLayoutBehavior behavior) {
+                        //sesl9
+                        if (behavior.useFloatingToolbar()) {
+                            if (keyCode == KeyEvent.KEYCODE_DPAD_UP
+                                    && behavior.seslIsHided()) {
+                                behavior.seslSetExpanded(false);
+                                break;
+                            }
+                            if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN
+                                    && behavior.seslIsCollapsed()) {
+                                behavior.seslSetHide();
+                                break;
+                            }
+                        }
                         if (!behavior.seslIsCollapsed()) {
                             behavior.seslSetExpanded(false);
                             break;
@@ -3393,9 +3409,6 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
 
     @SuppressWarnings("deprecation") /* SYSTEM_UI_FLAG_LAYOUT_* */
     private void setupForInsets() {
-        if (Build.VERSION.SDK_INT < 21) {
-            return;
-        }
 
         if (ViewCompat.getFitsSystemWindows(this)) {
             if (mApplyWindowInsetsListener == null) {
@@ -3501,22 +3514,45 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
                     ablBehavior.seslSetIsMouse(isMouseEvent);
                 }
 
+                //Sesl9
                 if (event.getAction() == MotionEvent.ACTION_SCROLL) {
+                    final float axisValue = event.getAxisValue(MotionEvent.AXIS_VSCROLL);
                     if (mLastNestedScrollingChild != null) {
-                        if (event.getAxisValue(MotionEvent.AXIS_VSCROLL) < 0) {
-                            ablBehavior.seslSetExpanded(false);
-                        } else if (event.getAxisValue(MotionEvent.AXIS_VSCROLL) > 0
+                        if (axisValue < 0) {
+                            if (ablBehavior.useFloatingToolbar()) {
+                                final int appBarState = ablBehavior.seslGetCurrentAppBarState();
+                                if ((appBarState & SESL_STATE_EXPANDED) != 0) {
+                                    ablBehavior.seslSetExpanded(false);
+                                    return true;
+                                }
+                                if ((appBarState & SESL_STATE_COLLAPSED) != 0
+                                        && ablBehavior.seslCanChangeToHideState()) {
+                                    ablBehavior.seslSetHide();
+                                    return true;
+                                }
+                            } else {
+                                ablBehavior.seslSetExpanded(false);
+                            }
+                        } else if (axisValue > 0
                                 && !mLastNestedScrollingChild.canScrollVertically(-1)) {
-                            ablBehavior.seslSetExpanded(true);
+                            ablBehavior.seslSetExpanded(!ablBehavior.seslIsHided());
+                            return true;
                         }
-                    } else if (event.getAxisValue(MotionEvent.AXIS_VSCROLL) < 0) {
-                        ablBehavior.seslSetExpanded(false);
-                    } else if (event.getAxisValue(MotionEvent.AXIS_VSCROLL) > 0) {
-                        ablBehavior.seslSetExpanded(true);
+                    } else {
+                        if (axisValue < 0) {
+                            if (ablBehavior.useFloatingToolbar()) {
+                                ablBehavior.seslSetHide();
+                            } else {
+                                ablBehavior.seslSetExpanded(false);
+                            }
+                        } else if (axisValue > 0) {
+                            ablBehavior.seslSetExpanded(!ablBehavior.seslIsHided());
+                        }
                     }
                 }
 
                 break;
+                //sesl9
             }
         }
 
@@ -3538,7 +3574,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
 
     /**
      * Enables or disables whether certain key events will trigger automatic collapsing of the AppBarLayout.
-     * These keys include tab, up, down, left, and right arrow keys. This is set to true by default.
+     * These keys include tab, up, down, left, and right arrow keys. This is set to false by default.
      *
      * @param enable {@code true} to enable auto-collapsing key event handling, {@code false} to disable.
      */
@@ -3546,4 +3582,73 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         mEnableAutoCollapsingKeyEvent = enable;
     }
     //sesl
+
+    //Sesl9
+    public boolean requestChildRectangleOnScreen(@NonNull View child, @NonNull Rect rectangle,
+            boolean immediate, int requestSource) {
+        if (requestSource == RECTANGLE_ON_SCREEN_REQUEST_SOURCE_INPUT_FOCUS) {
+            return false;
+        }
+        return requestChildRectangleOnScreen(child, rectangle, immediate);
+    }
+
+    private int getFullContentHeight() {
+        int height = 0;
+        for (int i = 0; i < getChildCount(); i++) {
+            final View child = getChildAt(i);
+            final LayoutParams lp = (LayoutParams) child.getLayoutParams();
+            height += child.getHeight() + lp.topMargin + lp.bottomMargin;
+        }
+        return height;
+    }
+
+    private int distanceToTop() {
+        return -getFullContentHeight();
+    }
+
+    private int distanceToBottom() {
+        return getFullContentHeight() - getHeight();
+    }
+
+    private int pageDelta() {
+        return getHeight();
+    }
+
+    private int lineDelta() {
+        return (int) (getHeight() * KEY_SCROLL_FRACTION_AMOUNT);
+    }
+
+    private View findDeepestFocusedChild(View v) {
+        View view = v;
+        while (true) {
+            if (view == null) {
+                return null;
+            }
+            if (view.isFocused()) {
+                return view;
+            }
+            if (view instanceof ViewGroup group) {
+                view = group.getFocusedChild();
+            } else {
+                return null;
+            }
+        }
+    }
+
+    private boolean manuallyTriggersNestedScrollFromKeyEvent(View view, int dy) {
+        onStartNestedScroll(this, view, ViewCompat.SCROLL_AXIS_VERTICAL, ViewCompat.TYPE_NON_TOUCH);
+        onNestedPreScroll(view, 0, dy, mKeyTriggeredScrollConsumed, ViewCompat.TYPE_NON_TOUCH);
+        final int dyConsumed = mKeyTriggeredScrollConsumed[1];
+        mKeyTriggeredScrollConsumed[0] = 0;
+        mKeyTriggeredScrollConsumed[1] = 0;
+        onNestedScroll(view, 0, dyConsumed, 0, dy,
+                ViewCompat.TYPE_NON_TOUCH, mKeyTriggeredScrollConsumed);
+        onStopNestedScroll(view, ViewCompat.TYPE_NON_TOUCH);
+        return mKeyTriggeredScrollConsumed[1] > 0;
+    }
+
+    private boolean moveVertically(int dy) {
+        return manuallyTriggersNestedScrollFromKeyEvent(findDeepestFocusedChild(this), dy);
+    }
+    //sesl9
 }

@@ -304,6 +304,7 @@ public abstract class AppCompatDelegate {
     /**
      * Create an {@link androidx.appcompat.app.AppCompatDelegate} to use with {@code activity}.
      *
+     * @param activity The activity linked to the returned instance.
      * @param callback An optional callback for AppCompat specific events
      */
     public static @NonNull AppCompatDelegate create(@NonNull Activity activity,
@@ -314,6 +315,7 @@ public abstract class AppCompatDelegate {
     /**
      * Create an {@link androidx.appcompat.app.AppCompatDelegate} to use with {@code dialog}.
      *
+     * @param dialog The dialog to be linked to the returned instance instead of an activity.
      * @param callback An optional callback for AppCompat specific events
      */
     public static @NonNull AppCompatDelegate create(@NonNull Dialog dialog,
@@ -325,6 +327,8 @@ public abstract class AppCompatDelegate {
      * Create an {@link androidx.appcompat.app.AppCompatDelegate} to use with a {@code context}
      * and a {@code window}.
      *
+     * @param context The context of the associated window
+     * @param window The window to be linked to the returned instance instead of an activity.
      * @param callback An optional callback for AppCompat specific events
      */
     public static @NonNull AppCompatDelegate create(@NonNull Context context,
@@ -336,6 +340,8 @@ public abstract class AppCompatDelegate {
      * Create an {@link androidx.appcompat.app.AppCompatDelegate} to use with a {@code context}
      * and hosted by an {@code Activity}.
      *
+     * @param context The context of the associated activity
+     * @param activity The activity to be linked to the returned instance
      * @param callback An optional callback for AppCompat specific events
      */
     public static @NonNull AppCompatDelegate create(@NonNull Context context,
@@ -522,6 +528,19 @@ public abstract class AppCompatDelegate {
      */
     public abstract @Nullable ActionMode startSupportActionMode(
             ActionMode.@NonNull Callback callback);
+
+    //sesl9
+    /**
+     * Start an action mode targeting a specific child view for SESL floating toolbar support.
+     *
+     * @param view the target view requesting the action mode
+     * @param callback callback to manage the lifecycle of the action mode
+     * @return the started action mode, or {@code null} if cancelled
+     */
+    @Nullable
+    public ActionMode seslStartSupportActionModeForChild(@NonNull View view, ActionMode.@NonNull Callback callback) {
+        return null;
+    }
 
     /**
      * Installs AppCompat's {@link android.view.LayoutInflater} Factory so that it can replace
@@ -1080,9 +1099,9 @@ public abstract class AppCompatDelegate {
                     // the locales will be persisted there.
                     Object localeManager = context.getSystemService(Context.LOCALE_SERVICE);
                     if (localeManager != null) {
-                        AppCompatDelegate.Api33Impl.localeManagerSetApplicationLocales(
+                        Api33Impl.localeManagerSetApplicationLocales(
                                 localeManager,
-                                AppCompatDelegate.Api24Impl.localeListForLanguageTags(appLocales));
+                                Api24Impl.localeListForLanguageTags(appLocales));
                     }
                 }
                 // setting ComponentEnabledSetting for app component using

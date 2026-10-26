@@ -18,7 +18,7 @@ package androidx.recyclerview.sesl.drawable
 import androidx.annotation.RestrictTo
 
 //Added in sesl7
-@RestrictTo(RestrictTo.Scope.LIBRARY)
+@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP_PREFIX)
 interface SeslAutowiredDrawable<T> {
     var value: T
 

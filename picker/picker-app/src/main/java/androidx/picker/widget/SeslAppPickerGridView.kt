@@ -20,20 +20,20 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import androidx.core.content.ContextCompat
+import androidx.core.content.withStyledAttributes
 import androidx.picker.R
 import androidx.picker.adapter.AbsAdapter
 import androidx.picker.adapter.GridAdapter
 import androidx.picker.adapter.HeaderFooterAdapter
 import androidx.picker.adapter.layoutmanager.AutoFitGridLayoutManager
-import androidx.picker.common.log.LogTag
 import androidx.picker.decorator.GridSpacingItemDecoration
 import androidx.picker.decorator.RoundedCornerDecoration
+import androidx.picker.features.gridComposable.DefaultGridStrategy
+import androidx.picker.features.gridComposable.GridStrategy
 import androidx.picker.helper.SeslAppInfoDataHelper
 import androidx.picker.model.AppData
-import androidx.picker.model.AppData.ListCheckBoxAppDataBuilder
 import androidx.picker.model.SpanData
 import androidx.recyclerview.widget.GridLayoutManager
-import kotlin.jvm.java
 
 /**
  * A specialized [SeslAppPickerView] that displays app items in a grid layout.
@@ -52,13 +52,33 @@ import kotlin.jvm.java
  * @param attrs The attributes of the XML tag that is inflating the view.
  * @param defStyleAttr An attribute in the current theme that contains a reference to a style resource that supplies default values for the view. Can be 0 to not look for defaults.
  */
-class SeslAppPickerGridView @JvmOverloads constructor(
+open class SeslAppPickerGridView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : SeslAppPickerView(context, attrs, defStyleAttr) {
 
+    var gridStrategy: GridStrategy = DefaultGridStrategy()
+        private set
+
     init {
+        var strategyClassName: String? = null
+        context.withStyledAttributes(attrs, R.styleable.SeslAppPickerGridView, defStyleAttr) {
+            strategyClassName = getString(R.styleable.SeslAppPickerGridView_customGridStrategyClass)
+        }
+
+        gridStrategy = if (strategyClassName.isNullOrEmpty()) {
+            DefaultGridStrategy()
+        } else {
+            try {
+                val clazz = Class.forName(strategyClassName)
+                val ctor = clazz.getConstructor()
+                ctor.newInstance() as GridStrategy
+            } catch (e: Throwable) {
+                DefaultGridStrategy()
+            }
+        }
+
         val dimensionPixelOffset = context.resources.getDimensionPixelOffset(R.dimen.picker_app_grid_item_interval_spacing) / 2
         setPadding(0, dimensionPixelOffset, 0, dimensionPixelOffset)
         clipToPadding = false
@@ -82,11 +102,22 @@ class SeslAppPickerGridView @JvmOverloads constructor(
      * @return An [AbsAdapter] instance, specifically a [GridAdapter], for the app picker.
      */
     override fun getAppPickerAdapter(@AppPickerType viewType: Int): AbsAdapter {
-        val gridAdapter = GridAdapter(context, groupTitleStyleData)
+        val gridAdapter = GridAdapter(context, groupTitleStyleData, gridStrategy)
         gridAdapter.setHasStableIds(true)
         return gridAdapter
     }
 
+    /**
+     * Sets a new [GridStrategy] for customizing the rendering of grid composable types.
+     */
+    open fun setGridStrategy(strategy: GridStrategy = DefaultGridStrategy()) {
+        if (this.gridStrategy !== strategy) {
+            this.gridStrategy = strategy
+            (adapter as? HeaderFooterAdapter)?.let {
+                (it.wrappedAdapter as? GridAdapter)?.setGridStrategy(strategy)
+            }
+        }
+    }
 
     /**
      * Returns the [AutoFitGridLayoutManager] to be used for the RecyclerView.
@@ -130,7 +161,7 @@ class SeslAppPickerGridView @JvmOverloads constructor(
             gridLayoutManager.spanCount = spanCount
         }
 
-        gridLayoutManager.spanSizeLookup =createSpanSizeLookup(gridLayoutManager)
+        gridLayoutManager.spanSizeLookup = createSpanSizeLookup(gridLayoutManager)
         @SuppressLint("NotifyDataSetChanged")
         (headerFooterAdapter.notifyDataSetChanged())
     }
@@ -167,5 +198,4 @@ class SeslAppPickerGridView @JvmOverloads constructor(
             )
         )
     }
-
 }

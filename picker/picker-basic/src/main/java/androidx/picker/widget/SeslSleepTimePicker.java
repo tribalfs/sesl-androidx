@@ -31,9 +31,13 @@ import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.Typeface;
@@ -118,7 +122,7 @@ public class SeslSleepTimePicker extends LinearLayout {
     private static final int BED_WAKEUP_SRC_FADE_OUT_DURATION = 66;
     private static final float DEFAULT_BED_TIME_MINUTE = 1320.0f;
     private static final float DEFAULT_WAKEUP_TIME_MINUTE = 420.0f;
-    private static final int FONT_WEIGHT_LIGHT = 300;
+    private static final int FONT_WEIGHT_REGULAR = 400;
     private static final int MINIMUM_DIMEN_MULTIWINDOW = 290;
     private static final float SIZE_RATIO = 0.75f;
     private static final int SLEEP_PICKER_VIBRATION = 41;
@@ -128,7 +132,7 @@ public class SeslSleepTimePicker extends LinearLayout {
 
     static final class SleepDurationFormatterImpl implements SleepDurationFormatter {
         @Override
-        public int format(float bedTime, float wakeupTime) {
+        public int formatDuration(float bedTime, float wakeupTime) {
             return (int) (((wakeupTime - bedTime) + TOTAL_MINUTES) % TOTAL_MINUTES);
         }
     }
@@ -183,7 +187,19 @@ public class SeslSleepTimePicker extends LinearLayout {
 
     private final int mOuterCircleSize;
     private final int mOuterCircleMinSize;
-    private float mInnerCircleRatio;
+    private int mPaddingHorizontal = 0;
+
+    private final BroadcastReceiver mTimeFormatChangeReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent == null || !Intent.ACTION_TIME_CHANGED.equals(intent.getAction())) {
+                return;
+            }
+            Log.d(TAG, "ACTION_TIME_CHANGED received");
+            updateWakeUpTimeText();
+            updateBedTimeText();
+        }
+    };
 
 
     public interface OnSleepTimeChangedListener {
@@ -197,7 +213,7 @@ public class SeslSleepTimePicker extends LinearLayout {
 
 
     public interface SleepDurationFormatter {
-        int format(float bedTime, float wakeupTime);
+        int formatDuration(float bedTime, float wakeupTime);
     }
 
     /**
@@ -212,7 +228,16 @@ public class SeslSleepTimePicker extends LinearLayout {
         this.mContext = getContext();
         LayoutInflater.from(context).inflate(R.layout.sesl_sleep_time_picker, this);
 
+        if (attributeSet != null) {
+            TypedArray ta = context.obtainStyledAttributes(attributeSet,
+                    R.styleable.SeslSleepTimePicker, 0, 0);
+            mPaddingHorizontal = ta.getDimensionPixelSize(
+                    R.styleable.SeslSleepTimePicker_sleepPicker_horizontalPadding, 0);
+            ta.recycle();
+        }
+
         mCircularSeekBar = findViewById(R.id.circular_seekbar);
+        mCircularSeekBar.setCircularSeekBarHorizontalPadding(mPaddingHorizontal);
         mBedTimeText = findViewById(R.id.sleep_top_center_duration_bedtime);
         mBedTimeTextLeftAmPm = findViewById(R.id.bedtime_am_pm_left);
         mBedTimeTextRightAmPm = findViewById(R.id.bedtime_am_pm_right);
@@ -278,7 +303,6 @@ public class SeslSleepTimePicker extends LinearLayout {
         mOuterCircleSize = (int) res.getDimension(R.dimen.sesl_sleep_visual_edit_outer_circle_size);
         mOuterCircleMinSize =
                 (int) res.getDimension(R.dimen.sesl_sleep_visual_edit_outer_circle_min_size);
-        mInnerCircleRatio = getInnerCircleRatio(res);
 
         initListeners();
 
@@ -296,7 +320,7 @@ public class SeslSleepTimePicker extends LinearLayout {
 
             @Override
             public void onProgressChangedBedTime(@NonNull SeslCircularSeekBarView seslCircularSeekBarView,
-                    float bedTimePosition) {
+                    float progress, float bedTimePosition, boolean fromUser) {
                 Log.d(TAG, "onProgressChangedBedTime : BedTimePosition " + bedTimePosition);
                 mBedTimeInMinute = SeslSleepTimePickerUtil.convertToTime(bedTimePosition);
                 if (updateBedTimeText()) {
@@ -309,7 +333,7 @@ public class SeslSleepTimePicker extends LinearLayout {
 
             @Override
             public void onProgressChangedWakeupTime(@NonNull SeslCircularSeekBarView seslCircularSeekBarView,
-                    float wakeupPosition) {
+                    float progress, float wakeupPosition, boolean fromUser) {
                 Log.d(TAG, "onProgressChangedWakeupTime : WakeUpTimePosition " + wakeupPosition);
                 mWakeupTimeInMinute = SeslSleepTimePickerUtil.convertToTime(wakeupPosition);
                 if (updateWakeUpTimeText()) {
@@ -405,10 +429,21 @@ public class SeslSleepTimePicker extends LinearLayout {
         mCircularSeekBar.setOnSeekBarChangeListener(listener);
     }
 
-    private static float getInnerCircleRatio(Resources res){
-        TypedValue typedValue = new TypedValue();
-        res.getValue(R.dimen.sesl_time_picker_inner_circle_container_ratio, typedValue, true);
-        return typedValue.getFloat();
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        getContext().registerReceiver(mTimeFormatChangeReceiver,
+                new IntentFilter(Intent.ACTION_TIME_CHANGED));
+    }
+
+    @Override
+    public void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        try {
+            getContext().unregisterReceiver(mTimeFormatChangeReceiver);
+        } catch (IllegalArgumentException e) {
+            Log.w(TAG, "Receiver was not registered or already unregistered.", e);
+        }
     }
 
     void animateCenter(
@@ -665,21 +700,21 @@ public class SeslSleepTimePicker extends LinearLayout {
             outerCircleSize = res.getDimension(R.dimen.sesl_sleep_visual_edit_outer_circle_size);
         }
 
-        // Calculate the minimum size for the inner circle
-        float minCircleSize = Math.min(outerCircleSize - totalPointerDimension,
-                screenWidthPixels - totalPointerDimension);
-
+        // Calculate the inner circle container size
+        float innerCircleSize = (Math.min((screenWidthPixels / 2.0f)
+                        - (mPaddingHorizontal + totalPointerDimension),
+                (outerCircleSize / 2.0f) - totalPointerDimension) - pointerRadius) * 2.0f;
 
         // Set the dimensions for the inner circle container
         RelativeLayout.LayoutParams innerCircleLayoutParams =
                 (RelativeLayout.LayoutParams) editInnerCircleContainer.getLayoutParams();
-        int innerCircleSize = (int) (mInnerCircleRatio * minCircleSize);
-        innerCircleLayoutParams.height = innerCircleSize;
-        innerCircleLayoutParams.width = innerCircleSize;
+        int size = (int) innerCircleSize;
+        innerCircleLayoutParams.height = size;
+        innerCircleLayoutParams.width = size;
     }
 
     void setSleepTimeDurationText() {
-        final int totalMinutes = durationFormatter.format(mBedTimeInMinute, mWakeupTimeInMinute);
+        final int totalMinutes = durationFormatter.formatDuration(mBedTimeInMinute, mWakeupTimeInMinute);
         mSleepDuration.setText(makeSleepDurationText(totalMinutes));
     }
 
@@ -758,7 +793,7 @@ public class SeslSleepTimePicker extends LinearLayout {
         if (fontFromOpenTheme == null) {
             try {
                 fontFromOpenTheme = Build.VERSION.SDK_INT >= 33 ?
-                        Typeface.create(Typeface.create("sec", Typeface.NORMAL), FONT_WEIGHT_LIGHT, false) :
+                        Typeface.create(Typeface.create("sec", Typeface.NORMAL), FONT_WEIGHT_REGULAR, false) :
                         Typeface.create("roboto-num3L", Typeface.NORMAL);
             } catch (Exception e) {
                 Log.e("SeslSleepTimePicker", "setTimeTypeFace exception : " + e);

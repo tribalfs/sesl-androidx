@@ -1,7 +1,5 @@
 plugins {
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.kotlinAndroid)
-    alias(libs.plugins.mavenPublish)
 }
 
 dependencies {
@@ -12,6 +10,10 @@ dependencies {
     implementation(libs.androidx.core.viewtree)
     implementation(libs.androidx.collection)
     implementation(libs.androidx.concurrent.futures)
+    // exclude upstream androidx.core: it would shadow this module's own classes
+    implementation(libs.androidx.dynamicanimation) {
+        exclude(group = "androidx.core")
+    }
     implementation(libs.androidx.interpolator)
     api(libs.kotlinStdlib)
     implementation(libs.androidx.tracing)
@@ -25,10 +27,6 @@ android {
 
     androidResources {
         noCompress += "ttf"
-    }
-
-    buildTypes.all {
-        consumerProguardFiles("proguard-rules.pro")
     }
 
     defaultConfig.vectorDrawables.useSupportLibrary = true

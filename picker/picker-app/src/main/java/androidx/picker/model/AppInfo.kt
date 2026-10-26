@@ -14,6 +14,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class AppInfo @JvmOverloads constructor(
     val packageName: String,
-    val activityName: String,
+    val activityName: String = "",
     val user: Int = 0
 ) : Parcelable
+

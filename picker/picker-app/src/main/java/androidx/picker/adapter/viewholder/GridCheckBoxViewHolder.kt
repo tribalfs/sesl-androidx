@@ -21,6 +21,8 @@ import android.view.accessibility.AccessibilityManager
 import android.widget.CheckBox
 import androidx.core.view.isVisible
 import androidx.picker.R
+import androidx.picker.features.gridComposable.DefaultGridStrategy
+import androidx.picker.features.gridComposable.GridStrategy
 import androidx.picker.model.viewdata.AppInfoViewData
 import androidx.picker.model.viewdata.ViewData
 import kotlinx.coroutines.DisposableHandle
@@ -33,8 +35,12 @@ import kotlinx.coroutines.DisposableHandle
  * information and manage the selection state of the associated item.
  *
  * @param view The view for this ViewHolder, typically inflated from a layout resource.
+ * @param gridStrategy Strategy for grid layout composable types.
  */
-class GridCheckBoxViewHolder(view: View) : GridViewHolder(view) {
+class GridCheckBoxViewHolder @JvmOverloads constructor(
+    view: View,
+    gridStrategy: GridStrategy = DefaultGridStrategy()
+) : GridViewHolder(view, gridStrategy) {
 
     private val checkBox = view.findViewById<CheckBox>(R.id.check_widget).apply { isVisible = true }
 

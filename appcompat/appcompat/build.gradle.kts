@@ -1,12 +1,9 @@
 plugins {
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.kotlinAndroid)
-    alias(libs.plugins.mavenPublish)
 }
 
 dependencies {
     api(libs.sesl.androidx.core)
-    api(libs.sesl.androidx.coreKtx)
     api(libs.sesl.androidx.fragment)
     api(libs.sesl.androidx.drawerlayout)
 
@@ -31,23 +28,20 @@ dependencies {
 android {
     defaultConfig {
         // Disables the build tools' automatic vector -> PNG generation
-        resourceConfigurations.clear()
         vectorDrawables {
             useSupportLibrary = true
         }
     }
 
-    sourceSets.named("main") {
-        res.srcDirs("src/main/res", "src/main/res-public")
+    sourceSets {
+        named("main") {
+            res.directories.addAll(listOf("src/main/res", "src/main/res-public"))
+        }
     }
 
     androidResources {
         additionalParameters.add("--no-version-vectors")
         noCompress += "ttf"
-    }
-
-    buildTypes.configureEach {
-        consumerProguardFiles("proguard-rules.pro")
     }
 
     namespace = "androidx.appcompat"

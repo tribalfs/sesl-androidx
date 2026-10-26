@@ -22,6 +22,7 @@ import static androidx.core.view.accessibility.AccessibilityNodeInfoCompat.*;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.PointF;
+import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcel;
@@ -34,11 +35,12 @@ import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.animation.PathInterpolator;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
+
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 
@@ -271,8 +273,8 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
     }
 
     @Override
-    public void onInitializeAccessibilityNodeInfo(@NonNull RecyclerView.Recycler recycler,
-            @NonNull RecyclerView.State state, @NonNull AccessibilityNodeInfoCompat info) {
+    public void onInitializeAccessibilityNodeInfo(RecyclerView.@NonNull Recycler recycler,
+            RecyclerView.@NonNull State state, @NonNull AccessibilityNodeInfoCompat info) {
         super.onInitializeAccessibilityNodeInfo(recycler, state, info);
         // TODO(b/251823537)
         if (mRecyclerView.mAdapter != null && mRecyclerView.mAdapter.getItemCount() > 0) {
@@ -561,8 +563,8 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
      * layout space to swap to the opposite side of the viewport, incurring many rebinds/recycles,
      * unless the cache is large enough to handle it.</p>
      */
-    protected void calculateExtraLayoutSpace(@NonNull RecyclerView.State state,
-            @NonNull int[] extraLayoutSpace) {
+    protected void calculateExtraLayoutSpace(RecyclerView.@NonNull State state,
+            int @NonNull [] extraLayoutSpace) {
         int extraLayoutSpaceStart = 0;
         int extraLayoutSpaceEnd = 0;
 
@@ -587,8 +589,19 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
         LinearSmoothScroller linearSmoothScroller =
                 new LinearSmoothScroller(recyclerView.getContext());
         recyclerView.showGoToTop();//sesl
+        //Sesl9
+        Rect availableBounds = recyclerView.seslGetAvailableBounds();
+        if (availableBounds != null) {
+            Rect bounds = new Rect(availableBounds);
+            bounds.top = getPaddingTop() + bounds.top;
+            bounds.bottom = getPaddingBottom() + bounds.bottom;
+            availableBounds = bounds;
+        }
+        linearSmoothScroller.seslSetAvailableBounds(availableBounds);
+        //sesl9
         linearSmoothScroller.setTargetPosition(position);
         startSmoothScroll(linearSmoothScroller);
+        Log.d(TAG,  "SS pos to : " + position);
     }
 
     @Override
@@ -2067,6 +2080,29 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
         return child == null ? RecyclerView.NO_POSITION : getPosition(child);
     }
 
+    //Sesl9
+    public int findFirstAvailableItemPosition() {
+        View child = findOneAvailableChild(0, getChildCount(), false, true);
+        if (child == null) {
+            return -1;
+        }
+        return getPosition(child);
+    }
+
+    public View findOneAvailableChild(int fromIndex, int toIndex, boolean completelyVisible, boolean acceptPartiallyVisible) {
+        ensureLayoutState();
+        int preferredBounds = completelyVisible
+                ? (ViewBoundsCheck.FLAG_CVS_GT_PVS | ViewBoundsCheck.FLAG_CVS_EQ_PVS | ViewBoundsCheck.FLAG_CVE_LT_PVE | ViewBoundsCheck.FLAG_CVE_EQ_PVE)
+                : (ViewBoundsCheck.FLAG_CVS_LT_PVE | ViewBoundsCheck.FLAG_CVE_GT_PVS);
+        int acceptableBounds = acceptPartiallyVisible
+                ? (ViewBoundsCheck.FLAG_CVS_LT_PVE | ViewBoundsCheck.FLAG_CVE_GT_PVS)
+                : 0;
+        return mOrientation == HORIZONTAL
+                ? mHorizontalBoundCheck.findOneViewWithinAvailableBoundFlags(fromIndex, toIndex, preferredBounds, acceptableBounds)
+                : mVerticalBoundCheck.findOneViewWithinAvailableBoundFlags(fromIndex, toIndex, preferredBounds, acceptableBounds);
+    }
+    //sesl9
+
     /**
      * Returns the adapter position of the first fully visible view. This position does not include
      * adapter changes that were dispatched after the last layout pass.
@@ -2335,6 +2371,16 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
     public void smoothScrollToPositionJumpIfNeeded(RecyclerView recyclerView, RecyclerView.State state, int position) {
         SmoothScrollerJumpIfNeeded smoothScroller2 = new SmoothScrollerJumpIfNeeded(recyclerView.getContext());
         recyclerView.showGoToTop();
+        //Sesl9
+        Rect availableBounds = recyclerView.seslGetAvailableBounds();
+        if (availableBounds != null) {
+            Rect bounds = new Rect(availableBounds);
+            bounds.top = getPaddingTop() + bounds.top;
+            bounds.bottom = getPaddingBottom() + bounds.bottom;
+            availableBounds = bounds;
+        }
+        smoothScroller2.seslSetAvailableBounds(availableBounds);
+        //sesl9
         smoothScroller2.setTargetPosition(position);
         startSmoothScroll(smoothScroller2);
         Log.d(TAG, "smoothScroller2");
@@ -2346,8 +2392,8 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
         }
 
         @Override
-        public void onTargetFound(@NonNull View view, @NonNull RecyclerView.State state,
-                @NonNull RecyclerView.SmoothScroller.Action action) {
+        public void onTargetFound(@NonNull View view, RecyclerView.@NonNull State state,
+                RecyclerView.SmoothScroller.@NonNull Action action) {
             int dx = calculateDxToMakeVisible(view, getHorizontalSnapPreference());
             int dy = calculateDyToMakeVisible(view, getVerticalSnapPreference());
             int offset = (int) Math.sqrt((dx * dx) + (dy * dy));

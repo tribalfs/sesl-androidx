@@ -129,8 +129,12 @@ public class SeslNumberPicker extends LinearLayout {
         String format(int value);
     }
 
-    @RestrictTo(LIBRARY)
-    static Formatter getTwoDigitFormatter() {
+    public interface CustomTalkbackFormatter {
+        @NonNull
+        String format(int value);
+    }
+
+    public static Formatter getTwoDigitFormatter() {
         return sTwoDigitFormatter;
     }
 
@@ -184,6 +188,18 @@ public class SeslNumberPicker extends LinearLayout {
     @RestrictTo(LIBRARY)
     public void setCustomIntervalValue(int interval) {
         mDelegate.setCustomIntervalValue(interval);
+    }
+
+    public void setCustomNumberPickerIdleColor(int color) {
+        mDelegate.setCustomNumberPickerIdleColor(color);
+    }
+
+    public void setCustomNumberPickerScrollColor(int color) {
+        mDelegate.setCustomNumberPickerScrollColor(color);
+    }
+
+    public void setCustomTalkbackFormatter(CustomTalkbackFormatter formatter) {
+        mDelegate.setCustomTalkbackFormatter(formatter);
     }
 
     public boolean setCustomInterval(int interval) {
@@ -432,6 +448,10 @@ public class SeslNumberPicker extends LinearLayout {
 
     public void setSubTextSize(float size) {
         mDelegate.setSubTextSize(size);
+    }
+
+    public void setSubTextTypeface(Typeface typeface) {
+        mDelegate.setSubTextTypeface(typeface);
     }
 
     public void setTextTypeface(Typeface typeface) {
@@ -696,6 +716,12 @@ public class SeslNumberPicker extends LinearLayout {
 
         void setCustomIntervalValue(int interval);
 
+        void setCustomNumberPickerIdleColor(int color);
+
+        void setCustomNumberPickerScrollColor(int color);
+
+        void setCustomTalkbackFormatter(CustomTalkbackFormatter formatter);
+
         void setDateUnit(int unit);
 
         void setDisplayedValues(String[] displayedValues);
@@ -732,6 +758,8 @@ public class SeslNumberPicker extends LinearLayout {
         void setPickerContentDescription(String name);
 
         void setSubTextSize(float size);
+
+        void setSubTextTypeface(Typeface typeface);
 
         void setTextSize(float size);
 

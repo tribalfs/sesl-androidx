@@ -1,7 +1,5 @@
 plugins {
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.mavenPublish)
-    alias(libs.plugins.kotlinAndroid)
 }
 
 dependencies {
@@ -11,20 +9,18 @@ dependencies {
     implementation(libs.androidx.collection)
     implementation(libs.androidx.customview.poolingcontainer)
     implementation(libs.androidx.profileinstaller)
-    implementation(libs.androidx.compose.ui)
 
     api(libs.sesl.androidx.core)
     api(libs.sesl.androidx.customview)
     implementation(libs.sesl.androidx.appcompat)
+    implementation(libs.androidx.tracing)
 }
 
 android {
-    sourceSets.named("main") {
-        res.srcDirs("res", "res-public")
-    }
-
-    buildTypes.configureEach {
-        consumerProguardFiles("proguard-rules.pro")
+    sourceSets {
+        named("main") {
+            res.directories.addAll(listOf("res", "res-public"))
+        }
     }
 
     namespace = "androidx.recyclerview"

@@ -114,7 +114,6 @@ class SeslRecyclerViewFastScroller {
     private int mEffectState = EFFECT_STATE_CLOSE;
     private int mImmersiveBottomPadding;
     private final int mPreviewMarginEnd;
-    private int mThumbBackgroundColor = Color.WHITE;
     private final int mThumbMarginEnd;
     private final int mTrackVerticalPadding;//sesl7
     // Sesl
@@ -248,6 +247,9 @@ class SeslRecyclerViewFastScroller {
     /** Whether the fast scroller is enabled. */
     private boolean mEnabled;
 
+    private int mScrollBarTopOffset = 0;
+    private int mScrollBarBottomOffset = 0;
+
     /** Whether the scrollbar and decorations should always be shown. */
     private boolean mAlwaysShow;
 
@@ -267,7 +269,7 @@ class SeslRecyclerViewFastScroller {
     /** Whether to precisely match the thumb position to the list. */
     private final boolean mMatchDragPosition;
 
-    private float mInitialTouchY;
+    private float mThumbTouchYOffset = 0f; //sesl9
     private long mPendingDrag = -1;
     private final int mScaledTouchSlop;
 
@@ -290,9 +292,10 @@ class SeslRecyclerViewFastScroller {
     };
 
     //Sesl7
-    private static final int NORMAL_VIBRATE_INDEX = 26;
-    private static final int FASTSCROLL_VIBRATE_INDEX = 24;
+    private static final int FASTSCROLL_NORMAL_VIBRATE_INDEX = 26;
+    private static final int FASTSCROLL_FAST_VIBRATE_INDEX = 24;
     private static final float MIN_FAST_VIBRATE_VELOCITY = 1000.0f;
+    private static final float DEFAULT_NORMAL_VIBRATE_VELOCITY = 0.0f; //sesl9
 
     private VelocityTracker mVelocityTracker;
 
@@ -307,7 +310,16 @@ class SeslRecyclerViewFastScroller {
 
 
     public static class SeslFastScrollThumbAnimator implements DisposableHandle {
+        public void setDefaultColor(int color) {
+            mCustomColor = color; //sesl9
+            if (color == 0) {
+                color = mDefaultColor;
+            }
+            mColorAnimator.tryAnimateTo(color);
+        }
+
         private static final float DEFAULT_SCROLL_BAR_VALUE = 0.0f;
+        private static final float FAST_SCROLL_BAR_ALPHA = 0.6f; //sesl9
         private static final float FAST_SCROLL_BAR_VALUE = 1.0f;
         private final int mActivatedColor;
 
@@ -315,6 +327,7 @@ class SeslRecyclerViewFastScroller {
         private SeslFastScrollerBgDrawable mBgDrawable;
         private final SeslColorAnimatable mColorAnimator;
         private final int mDefaultColor;
+        private int mCustomColor = 0; //sesl9
         private final float mMaxWidthPx;
         private final float mMinWidthPx;
         private final SeslFloatAnimatable mWidthAnimator;
@@ -324,10 +337,9 @@ class SeslRecyclerViewFastScroller {
             Resources res = context.getResources();
             mMinWidthPx = res.getDimension(R.dimen.sesl_fast_scroller_thumb_min_width);
             mMaxWidthPx = res.getDimension(R.dimen.sesl_fast_scroller_thumb_max_width);
-            mDefaultColor = ColorUtils.setAlphaComponent(
-                    res.getColor(SeslMisc.isLightTheme(context)
+            mDefaultColor = res.getColor(SeslMisc.isLightTheme(context) //sesl9
                             ? androidx.appcompat.R.color.sesl_scrollbar_handle_tint_color_light
-                            : androidx.appcompat.R.color.sesl_scrollbar_handle_tint_color_dark), 255);
+                            : androidx.appcompat.R.color.sesl_scrollbar_handle_tint_color_dark);
 
             TypedValue typedValue = new TypedValue();
             context.getTheme().resolveAttribute(androidx.appcompat.R.attr.colorPrimary, typedValue, true);
@@ -366,7 +378,13 @@ class SeslRecyclerViewFastScroller {
 
         public void setDragging(boolean isDragging) {
             mWidthAnimator.tryAnimateTo(isDragging ? FAST_SCROLL_BAR_VALUE : DEFAULT_SCROLL_BAR_VALUE);
-            mColorAnimator.tryAnimateTo(isDragging ? mActivatedColor : mDefaultColor);
+            int color; //sesl9
+            if (isDragging) {
+                color = mActivatedColor;
+            } else {
+                color = mCustomColor != 0 ? mCustomColor : mDefaultColor;
+            }
+            mColorAnimator.tryAnimateTo(color);
         }
     }
     //sesl7
@@ -379,7 +397,7 @@ class SeslRecyclerViewFastScroller {
 
     public SeslRecyclerViewFastScroller(RecyclerView listView) {
         mRecyclerView = listView;
-        mOldItemCount = listView.getAdapter().getItemCount();
+        mOldItemCount = getItemCount(listView);//sesl9
         mOldChildCount = listView.getChildCount();
 
         final Context context = listView.getContext();
@@ -452,7 +470,7 @@ class SeslRecyclerViewFastScroller {
 
             final Resources resources = mContext.getResources();
             mPreviewMarginEnd = resources.getDimensionPixelOffset(R.dimen.sesl_fast_scroll_preview_margin_end);
-            mThumbMarginEnd = resources.getDimensionPixelOffset(R.dimen.sesl_fast_scroll_thumb_margin_end);
+            mThumbMarginEnd = 0;//sesl9: dimen no longer used
             mAdditionalTouchArea = resources.getDimension(R.dimen.sesl_fast_scroll_additional_touch_area);
             mTrackVerticalPadding = resources.getDimensionPixelOffset(R.dimen.sesl_fast_scroller_track_vertical_padding);
             mAdditionalBottomPadding = 0;
@@ -468,8 +486,8 @@ class SeslRecyclerViewFastScroller {
             postAutoHide();
 
             //Sesl7
-            mNormalVibrateIndex = SeslHapticFeedbackConstantsReflector.semGetVibrationIndex(NORMAL_VIBRATE_INDEX);
-            mFastVibrateIndex = SeslHapticFeedbackConstantsReflector.semGetVibrationIndex(FASTSCROLL_VIBRATE_INDEX);
+            mNormalVibrateIndex = SeslHapticFeedbackConstantsReflector.semGetVibrationIndex(FASTSCROLL_NORMAL_VIBRATE_INDEX);
+            mFastVibrateIndex = SeslHapticFeedbackConstantsReflector.semGetVibrationIndex(FASTSCROLL_FAST_VIBRATE_INDEX);
             //sesl7
 
             //Custom
@@ -488,9 +506,8 @@ class SeslRecyclerViewFastScroller {
         TypedValue outValue = new TypedValue();
         mContext.getTheme().resolveAttribute(androidx.appcompat.R.attr.colorPrimary, outValue, true);
 
-        mColorPrimary = getColorWithAlpha(mContext.getResources().getColor(outValue.resourceId), 0.9f);
-
-        mThumbBackgroundColor = mContext.getResources().getColor(androidx.appcompat.R.color.sesl_fast_scrollbar_bg_color);
+        mColorPrimary = ColorUtils.setAlphaComponent( //sesl9
+                mContext.getResources().getColor(outValue.resourceId), 229);
 
         int width = 0;
 
@@ -501,9 +518,6 @@ class SeslRecyclerViewFastScroller {
         }
 
         // Add thumb to overlay if it has an image.
-        if (mThumbDrawable != null) {
-            DrawableCompat.setTint(mThumbDrawable, mThumbBackgroundColor);
-        }
         mThumbImage.setImageDrawable(mThumbDrawable);
         mThumbImage.setMinimumWidth(mThumbMinWidth);
         mThumbImage.setMinimumHeight(mThumbMinHeight);
@@ -639,9 +653,28 @@ class SeslRecyclerViewFastScroller {
         setState(STATE_NONE);
     }
 
+    public void setScrollBarBottomOffset(int offset) {
+        if (offset < 0) {
+            offset = 0;
+        }
+        mScrollBarBottomOffset = offset;
+        resetScrollDatas();
+        updateLayout();
+    }
+
+    public void setScrollBarTopOffset(int offset) {
+        if (offset < 0) {
+            offset = 0;
+        }
+        mScrollBarTopOffset = offset;
+        resetScrollDatas();
+        updateLayout();
+    }
+
     public void setScrollbarPosition(int position) {
-        if (position == View.SCROLLBAR_POSITION_DEFAULT) {
-            position = mRecyclerView.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL ?
+        RecyclerView.LayoutManager layoutManager = mRecyclerView.getLayoutManager();//sesl9
+        if (position == View.SCROLLBAR_POSITION_DEFAULT && layoutManager != null) {
+            position = layoutManager.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL ?
                     View.SCROLLBAR_POSITION_LEFT : View.SCROLLBAR_POSITION_RIGHT;
         }
 
@@ -651,14 +684,8 @@ class SeslRecyclerViewFastScroller {
 
             final int previewResId = mPreviewResId[mLayoutFromRight ? PREVIEW_RIGHT : PREVIEW_LEFT];
             mPreviewImage.setBackgroundResource(previewResId);
-            if (Build.VERSION.SDK_INT >= 22) {
-                DrawableCompat.setTintMode(mPreviewImage.getBackground(), PorterDuff.Mode.MULTIPLY);
-                DrawableCompat.setTintList(mPreviewImage.getBackground(), ColorStateList.valueOf(mColorPrimary));
-            } else {
-                if (mPreviewImage.getBackground() != null) {
-                    mPreviewImage.getBackground().setColorFilter(mColorPrimary, PorterDuff.Mode.MULTIPLY);
-                }
-            }
+            DrawableCompat.setTintMode(mPreviewImage.getBackground(), PorterDuff.Mode.MULTIPLY);
+            DrawableCompat.setTintList(mPreviewImage.getBackground(), ColorStateList.valueOf(mColorPrimary));
 
             resetScrollDatas();//sesl7
             // Requires re-layout.
@@ -666,15 +693,7 @@ class SeslRecyclerViewFastScroller {
         }
     }
 
-    private int getColorWithAlpha(int color, float ratio) {
-        int newColor;
-        int alpha = Math.round(Color.alpha(color) * ratio);
-        int r = Color.red(color);
-        int g = Color.green(color);
-        int b = Color.blue(color);
-        newColor = Color.argb(alpha, r, g, b);
-        return newColor;
-    }
+    //sesl9: getColorWithAlpha removed, replaced by ColorUtils.setAlphaComponent
 
     public int getWidth() {
         return mWidth;
@@ -800,6 +819,20 @@ class SeslRecyclerViewFastScroller {
         if (oldThumbPosition != -1.0f) {
             setThumbPos(oldThumbPosition);
             mOldThumbPosition = -1.0f;
+        } else if (!canScrollList(1)) {//sesl9: clamp thumb to ends when layout settles
+            setThumbPos(1.0f);
+        } else if (!canScrollList(-1)) {
+            setThumbPos(0.0f);
+        } else {
+            // custom: keep top/bottom offset changes aligned with
+            // the current list position.
+            RecyclerView.Adapter<?> adapter = mRecyclerView.getAdapter();
+            if (adapter != null) {
+                setThumbPos(getPosFromItemCount(
+                        mRecyclerView.findFirstVisibleItemPosition(),
+                        mRecyclerView.getChildCount(), adapter.getItemCount())
+                );
+            }
         }
         //sesl7
     }
@@ -1006,12 +1039,13 @@ class SeslRecyclerViewFastScroller {
            bounds.left = 0;
        }
        bounds.top = 0;
-       bounds.bottom = getThumbLength(
-               mRecyclerView.getHeight(),
+       int height = ((((mRecyclerView.getHeight() - (mTrackVerticalPadding * 2)) - mAdditionalTopPadding) - mAdditionalBottomPadding) - mScrollBarTopOffset) - mScrollBarBottomOffset;
+       bounds.bottom = Math.min(getThumbLength(
+               height,
                mContext.getResources().getDimensionPixelOffset(R.dimen.sesl_fast_scroll_thumb_min_height),
                mListScrollExtent,
                mListScrollRange
-       );
+       ), height);
    }
 
     private int getThumbLength(int height, int minHeight, int scrollExtent, int scrollRange) {
@@ -1037,12 +1071,12 @@ class SeslRecyclerViewFastScroller {
         final int top;
         int bottom;
         if (mThumbPosition == THUMB_POSITION_INSIDE) {
-            top = container.top + mTrackVerticalPadding + mAdditionalTopPadding;
-            bottom = container.bottom - mTrackVerticalPadding - mAdditionalBottomPadding;
+            top = container.top + mTrackVerticalPadding + mAdditionalTopPadding + mScrollBarTopOffset;
+            bottom = container.bottom - mTrackVerticalPadding - mAdditionalBottomPadding - mScrollBarBottomOffset;
         } else {
             final int thumbHalfHeight = thumb.getHeight() / 2;
-            top = container.top + thumbHalfHeight + mTrackVerticalPadding + mAdditionalTopPadding;
-            bottom = container.bottom - thumbHalfHeight - mTrackVerticalPadding - mAdditionalBottomPadding;
+            top = container.top + thumbHalfHeight + mTrackVerticalPadding + mAdditionalTopPadding + mScrollBarTopOffset;
+            bottom = container.bottom - thumbHalfHeight - mTrackVerticalPadding - mAdditionalBottomPadding - mScrollBarBottomOffset;
         }
 
         if (bottom < top) {
@@ -1093,30 +1127,28 @@ class SeslRecyclerViewFastScroller {
             return;
         }
 
+        final boolean fastScrolling = state == STATE_DRAGGING;//sesl9
+
         switch (state) {
             case STATE_NONE:
                 transitionToHidden();
                 break;
             case STATE_VISIBLE:
-                if (mThumbDrawable != null) {
-                    DrawableCompat.setTint(mThumbDrawable, mThumbBackgroundColor);
-                }
                 transitionToVisible();
                 break;
             case STATE_DRAGGING:
-                if (mThumbDrawable != null) {
-                    DrawableCompat.setTint(mThumbDrawable, mColorPrimary);
-                }
                 transitionPreviewLayout(mCurrentSection);
                 break;
         }
 
         SeslFastScrollThumbAnimator animator = mThumbWidthAnimator;
         if (animator != null) {
-            animator.setDragging(state == STATE_DRAGGING);
+            animator.setDragging(fastScrolling);
         }
 
         mState = state;
+
+        mRecyclerView.dispatchOnFastScrollStateChange(fastScrolling);//sesl9
 
         refreshDrawablePressedState();
     }
@@ -1196,6 +1228,13 @@ class SeslRecyclerViewFastScroller {
         mRecyclerView.postDelayed(mDeferHide, FADE_TIMEOUT);
     }
 
+    private int getItemCount(RecyclerView recyclerView) {//sesl9
+        if (recyclerView.getAdapter() == null) {
+            return 0;
+        }
+        return recyclerView.getAdapter().getItemCount();
+    }
+
     public boolean canScrollList(int direction) {
         final int childCount = mRecyclerView.getChildCount();
         if (childCount == 0) {
@@ -1206,7 +1245,7 @@ class SeslRecyclerViewFastScroller {
         if (direction > 0) {
             final int lastBottom = mRecyclerView.getChildAt(childCount - 1).getBottom();
             final int lastPosition = firstPosition + childCount;
-            return lastPosition < mRecyclerView.getAdapter().getItemCount()
+            return lastPosition < getItemCount(mRecyclerView)//sesl9
                     || lastBottom > mRecyclerView.getHeight() - listPadding.bottom;
         } else {
             final int firstTop = mRecyclerView.getChildAt(0).getTop();
@@ -1228,15 +1267,15 @@ class SeslRecyclerViewFastScroller {
             } else {
                 setThumbPos(getPosFromItemCount(firstVisibleItem, visibleItemCount, totalItemCount));
             }
+
+            //sesl9: show/auto-fade moved inside the can-scroll branch
+            if (mState != STATE_DRAGGING) {
+                setState(STATE_VISIBLE);
+                postAutoHide();
+            }
         }
 
         mScrollCompleted = true;
-
-        // Show the thumb, if necessary, and set up auto-fade.
-        if (mState != STATE_DRAGGING) {
-            setState(STATE_VISIBLE);
-            postAutoHide();
-        }
     }
 
     private void getSectionsFromIndexer() {
@@ -1273,7 +1312,7 @@ class SeslRecyclerViewFastScroller {
     private void scrollTo(float position, float velocity/*sesl7*/) {
         mScrollCompleted = false;
 
-        final int count = mRecyclerView.getAdapter().getItemCount();
+        final int count = getItemCount(mRecyclerView);//sesl9
         final Object[] sections = mSections;
         final int sectionCount = sections == null ? 0 : sections.length;
         int sectionIndex;
@@ -1351,7 +1390,7 @@ class SeslRecyclerViewFastScroller {
 
             if (layoutManager instanceof LinearLayoutManager) {
                 ((LinearLayoutManager) layoutManager).scrollToPositionWithOffset(targetIndex, 0);
-            } else {
+            } else if (layoutManager instanceof StaggeredGridLayoutManager) {//sesl9
                 ((StaggeredGridLayoutManager) layoutManager).scrollToPositionWithOffset(targetIndex, 0, true);
             }
         } else {
@@ -1361,13 +1400,13 @@ class SeslRecyclerViewFastScroller {
 
             if (layoutManager instanceof LinearLayoutManager) {
                 ((LinearLayoutManager) layoutManager).scrollToPositionWithOffset(index, 0);
-            } else {
+            } else if (layoutManager instanceof StaggeredGridLayoutManager) {//sesl9
                 ((StaggeredGridLayoutManager) layoutManager).scrollToPositionWithOffset(index, 0, true);
             }
         }
 
         onScroll(mRecyclerView.findFirstVisibleItemPosition(),
-                mRecyclerView.getChildCount(), mRecyclerView.getAdapter().getItemCount());
+                mRecyclerView.getChildCount(), getItemCount(mRecyclerView));//sesl9
 
         mCurrentSection = sectionIndex;
 
@@ -1431,7 +1470,8 @@ class SeslRecyclerViewFastScroller {
 
         if (mState == STATE_VISIBLE) {
             showing.setText("");
-        } else if (mState == STATE_DRAGGING && showing.getText().equals(text)) {
+        } else if (mState == STATE_DRAGGING && showing.getText().equals(text)
+                && showing.getAlpha() != 0f) {//sesl9
             return !TextUtils.isEmpty(text);
         }
 
@@ -1535,7 +1575,7 @@ class SeslRecyclerViewFastScroller {
             return 0f;
         }
 
-        return MathUtils.clamp((y - mThumbOffset) / mThumbRange, 0f, 1f);
+        return MathUtils.clamp((y - mThumbOffset + mThumbTouchYOffset) / mThumbRange, 0f, 1f);//sesl9
     }
 
     /**
@@ -1551,126 +1591,85 @@ class SeslRecyclerViewFastScroller {
             getSectionsFromIndexer();
         }
 
-        RecyclerView.LayoutManager layoutManager = this.mRecyclerView.getLayoutManager();
-
-        float percentage = 0.0F;
+        float pos = 0.0f;
         if (visibleItemCount != 0 && totalItemCount != 0) {
             SectionIndexer sectionIndexer = mSectionIndexer;
             int topPadding = mRecyclerView.getPaddingTop();
+            RecyclerView.LayoutManager layoutManager = mRecyclerView.getLayoutManager();
             int startPosition = firstVisibleItem;
-            if (topPadding > 0) {
-                if (layoutManager instanceof LinearLayoutManager) {
-                    while(startPosition > 0 && layoutManager.findViewByPosition(startPosition - 1) != null) {
-                        startPosition--;
+            if (topPadding > 0 && (layoutManager instanceof LinearLayoutManager)) {
+                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) layoutManager;
+                while (startPosition > 0) {
+                    int prev = startPosition - 1;
+                    if (linearLayoutManager.findViewByPosition(prev) == null) {
+                        break;
                     }
+                    startPosition = prev;
                 }
             }
 
-            View firstChild = mRecyclerView.getChildAt(0);
-            float position;
-            int firstChildHeight;
-            if (firstChild != null && (firstChildHeight = firstChild.getHeight()) != 0) {
-                if (startPosition == 0) {
-                    position = (float)(topPadding - firstChild.getTop()) / (float)(firstChildHeight + topPadding);
-                } else {
-                    position = (float)(-firstChild.getTop()) / (float)firstChildHeight;
+            int childAdapterPosition = startPosition - mRecyclerView.getChildAdapterPosition(mRecyclerView.getChildAt(0));
+            if (childAdapterPosition < 0) {
+                childAdapterPosition = 0;
+            }
+            View childAt = mRecyclerView.getChildAt(childAdapterPosition);
+            float top;
+            if (childAt == null || childAt.getHeight() == 0) {
+                top = 0.0f;
+            } else {
+                top = startPosition == 0
+                        ? (float) (topPadding - childAt.getTop()) / (float) (childAt.getHeight() + topPadding)
+                        : (float) (-childAt.getTop()) / (float) childAt.getHeight();
+            }
+
+            if (sectionIndexer == null || mSections == null || mSections.length <= 0 || !mMatchDragPosition) {
+                if (visibleItemCount != totalItemCount || (startPosition != 0 && !(layoutManager instanceof StaggeredGridLayoutManager))) {
+                    int spanCount;
+                    if (layoutManager instanceof GridLayoutManager) {
+                        GridLayoutManager gridLayoutManager = (GridLayoutManager) layoutManager;
+                        spanCount = gridLayoutManager.getSpanCount() / gridLayoutManager.getSpanSizeLookup().getSpanSize(startPosition);
+                    } else if (layoutManager instanceof StaggeredGridLayoutManager) {
+                        spanCount = ((StaggeredGridLayoutManager) layoutManager).getSpanCount();
+                    } else {
+                        spanCount = 1;
+                    }
+                    pos = ((top * spanCount) + startPosition) / totalItemCount;
+                } else if ((layoutManager instanceof StaggeredGridLayoutManager) && startPosition != 0 && childAt != null
+                        && ((StaggeredGridLayoutManager.LayoutParams) childAt.getLayoutParams()).isFullSpan()) {
+                    return 1.0f;
                 }
             } else {
-                position = 0.0F;
-            }
-
-            boolean hasSections;
-            checkHasSections: {
-                if (sectionIndexer != null) {
-                    Object[] sections = mSections;
-                    if (sections != null && sections.length > 0) {
-                        hasSections = true;
-                        break checkHasSections;
-                    }
-                }
-
-                hasSections = false;
-            }
-
-            if (hasSections && mMatchDragPosition) {
                 if (startPosition < 0) {
-                    return 0.0F;
+                    return 0.0f;
                 }
-
                 int section = sectionIndexer.getSectionForPosition(startPosition);
                 int sectionStartPosition = sectionIndexer.getPositionForSection(section);
                 int sectionCount = mSections.length;
+                int positionForSection;
                 if (section < sectionCount - 1) {
-                    firstVisibleItem = section + 1;
-                    if (firstVisibleItem < sectionCount) {
-                        firstVisibleItem = sectionIndexer.getPositionForSection(firstVisibleItem);
-                    } else {
-                        firstVisibleItem = totalItemCount - 1;
-                    }
-
-                    firstVisibleItem -= sectionStartPosition;
+                    int nextSection = section + 1;
+                    positionForSection = (nextSection < sectionCount ? sectionIndexer.getPositionForSection(nextSection) : totalItemCount - 1) - sectionStartPosition;
                 } else {
-                    firstVisibleItem = totalItemCount - sectionStartPosition;
+                    positionForSection = totalItemCount - sectionStartPosition;
                 }
-
-                if (firstVisibleItem == 0) {
-                    position = percentage;
-                } else {
-                    position = ((float)startPosition + position - (float)sectionStartPosition) / (float)firstVisibleItem;
-                }
-
-                percentage = (float)section + position;
-                position = (float)sectionCount;
-            } else {
-                if (visibleItemCount == totalItemCount) {
-                    if (layoutManager instanceof StaggeredGridLayoutManager
-                            && startPosition != 0 && firstChild != null
-                            && ((StaggeredGridLayoutManager.LayoutParams)firstChild.getLayoutParams()).isFullSpan()
-                    ) {
-                        return 1.0F;
-                    }
-
-                    return 0.0F;
-                }
-
-                int spanCount;
-                if (layoutManager instanceof GridLayoutManager) {
-                    spanCount = ((GridLayoutManager)layoutManager).getSpanCount();
-                    int spanSize = ((GridLayoutManager)layoutManager).getSpanSizeLookup().getSpanSize(startPosition);
-                    firstVisibleItem = spanCount / spanSize;
-                } else if (layoutManager instanceof StaggeredGridLayoutManager) {
-                    spanCount = ((StaggeredGridLayoutManager)layoutManager).getSpanCount();
-                    firstVisibleItem = spanCount;
-                } else {
-                    firstVisibleItem = 1;
-                }
-
-                percentage = (float)startPosition + position * (float)firstVisibleItem;
-                position = (float)totalItemCount;
+                pos = (section + (positionForSection != 0 ? ((startPosition + top) - sectionStartPosition) / positionForSection : 0.0f)) / sectionCount;
             }
 
-            float itemSize = percentage / position;
             if (startPosition + visibleItemCount == totalItemCount) {
                 View lastChild = mRecyclerView.getChildAt(visibleItemCount - 1);
-                View firstVisibleChild = mRecyclerView.getChildAt(0);
-                int visibleHeight = lastChild.getBottom() - mRecyclerView.getHeight() + mRecyclerView.getPaddingBottom();
-                int firstVisibleItemHeight = visibleHeight - (firstVisibleChild.getTop() - mRecyclerView.getPaddingTop());
+                View firstChild = mRecyclerView.getChildAt(0);
+                int paddingBottom = mRecyclerView.getPaddingBottom() + (lastChild.getBottom() - mRecyclerView.getHeight());
+                int firstVisibleItemHeight = paddingBottom - (firstChild.getTop() - mRecyclerView.getPaddingTop());
                 if (firstVisibleItemHeight > lastChild.getHeight() || startPosition > 0) {
                     firstVisibleItemHeight = lastChild.getHeight();
                 }
-
-                visibleHeight = firstVisibleItemHeight - visibleHeight;
+                int visibleHeight = firstVisibleItemHeight - paddingBottom;
                 if (visibleHeight > 0 && firstVisibleItemHeight > 0) {
-                    position = itemSize + (1.0F - itemSize) * ((float)visibleHeight / (float)firstVisibleItemHeight);
+                    return ((visibleHeight / (float) firstVisibleItemHeight) * (1.0f - pos)) + pos;
                 }
-            }else{
-                position = itemSize;
             }
-
-            return position;
-        } else {
-            return 0.0F;
         }
+        return pos;
     }
 
     /**
@@ -1724,20 +1723,9 @@ class SeslRecyclerViewFastScroller {
             case MotionEvent.ACTION_DOWN:
                 if (isPointInside(ev.getX(), ev.getY())) {
                     enableDummyBackCallback(true);//custom
-                    // If the parent has requested that its children delay
-                    // pressed state (e.g. is a scrolling container) then we
-                    // need to allow the parent time to decide whether it wants
-                    // to intercept events. If it does, we will receive a CANCEL
-                    // event.
                     mRecyclerView.performHapticFeedback(mNormalVibrateIndex);
-                    if (!mRecyclerView.isInScrollingContainer()) {
-                        // This will get dispatched to onTouchEvent(). Start
-                        // dragging there.
-                        return true;
-                    }
-
-                    mInitialTouchY = ev.getY();
-                    startPendingDrag();
+                    //sesl9: always intercept; isInScrollingContainer/pending-drag path removed
+                    return true;
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -1746,7 +1734,7 @@ class SeslRecyclerViewFastScroller {
                 } else if (mPendingDrag >= 0 && mPendingDrag <= SystemClock.uptimeMillis()) {
                     beginDrag();
 
-                    final float pos = getPosFromMotionEvent(mInitialTouchY);
+                    final float pos = getPosFromMotionEvent(0.0f);//sesl9
                     mOldThumbPosition = pos;
                     scrollTo(pos);
 
@@ -1803,12 +1791,12 @@ class SeslRecyclerViewFastScroller {
         switch (me.getActionMasked()) {
             case MotionEvent.ACTION_DOWN: {
                 if (isPointInside(me.getX(), me.getY())) {
-                    if (!mRecyclerView.isInScrollingContainer()) {
-                        enableDummyBackCallback(true);//custom
-                        beginDrag();
-                        mEffectState = EFFECT_STATE_OPEN;
-                        return true;
-                    }
+                    enableDummyBackCallback(true);//custom
+                    beginDrag();
+                    mEffectState = EFFECT_STATE_OPEN;
+                    mThumbTouchYOffset = (mThumbImage.getHeight() / 2f
+                            + (mThumbImage.getTop() + mThumbImage.getTranslationY())) - me.getY();//sesl9
+                    return true;
                 }
             } break;
 
@@ -1840,12 +1828,13 @@ class SeslRecyclerViewFastScroller {
 
                     mEffectState = EFFECT_STATE_CLOSE;
                     mScrollY = 0.0f;
+                    mThumbTouchYOffset = 0.0f;//sesl9
                     return true;
                 }
             } break;
 
             case MotionEvent.ACTION_MOVE: {
-                if (mPendingDrag >= 0 && Math.abs(me.getY() - mInitialTouchY) > mScaledTouchSlop) {
+                if (mPendingDrag >= 0 && Math.abs(me.getY()) > mScaledTouchSlop) {//sesl9
                     beginDrag();
 
                     if (mScrollY > containerTop && mScrollY < containerBottom) {
@@ -2102,4 +2091,10 @@ class SeslRecyclerViewFastScroller {
             }
         }
     }
+    public void setDefaultColor(int color) {
+        if (mThumbWidthAnimator != null) {
+            mThumbWidthAnimator.setDefaultColor(color);
+        }
+    }
+
 }

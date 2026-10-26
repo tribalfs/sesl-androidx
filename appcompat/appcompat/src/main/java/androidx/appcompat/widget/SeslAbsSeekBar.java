@@ -39,8 +39,6 @@ import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.animation.LinearInterpolator;
 
 import androidx.annotation.ColorInt;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.appcompat.R;
 import androidx.appcompat.animation.SeslAnimationUtils;
@@ -53,6 +51,9 @@ import androidx.reflect.DeviceInfo;
 import androidx.reflect.view.SeslHapticFeedbackConstantsReflector;
 import androidx.reflect.view.SeslViewReflector;
 import androidx.reflect.widget.SeslHoverPopupWindowReflector;
+
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -495,7 +496,7 @@ public abstract class SeslAbsSeekBar extends SeslProgressBar {
      * @see #getThumbTintMode()
      * @see Drawable#setTintMode(PorterDuff.Mode)
      */
-    public void setThumbTintMode(@Nullable PorterDuff.Mode tintMode) {
+    public void setThumbTintMode(PorterDuff.@Nullable Mode tintMode) {
         mThumbTintMode = tintMode;
         mHasThumbTintMode = true;
         applyThumbTint();
@@ -509,8 +510,7 @@ public abstract class SeslAbsSeekBar extends SeslProgressBar {
      * @attr ref android.R.styleable#SeekBar_thumbTintMode
      * @see #setThumbTintMode(PorterDuff.Mode)
      */
-    @Nullable
-    public PorterDuff.Mode getThumbTintMode() {
+    public PorterDuff.@Nullable Mode getThumbTintMode() {
         return mThumbTintMode;
     }
 
@@ -653,7 +653,7 @@ public abstract class SeslAbsSeekBar extends SeslProgressBar {
      * @see #getTickMarkTintMode()
      * @see Drawable#setTintMode(PorterDuff.Mode)
      */
-    public void setTickMarkTintMode(@Nullable PorterDuff.Mode tintMode) {
+    public void setTickMarkTintMode(PorterDuff.@Nullable Mode tintMode) {
         mTickMarkTintMode = tintMode;
         mHasTickMarkTintMode = true;
 
@@ -668,8 +668,7 @@ public abstract class SeslAbsSeekBar extends SeslProgressBar {
      * @attr ref android.R.styleable#SeekBar_tickMarkTintMode
      * @see #setTickMarkTintMode(PorterDuff.Mode)
      */
-    @Nullable
-    public PorterDuff.Mode getTickMarkTintMode() {
+    public PorterDuff.@Nullable Mode getTickMarkTintMode() {
         return mTickMarkTintMode;
     }
 
@@ -2313,7 +2312,7 @@ public abstract class SeslAbsSeekBar extends SeslProgressBar {
         }
 
         @Override
-        public boolean onStateChange(@NonNull int[] stateSet) {
+        public boolean onStateChange(int @NonNull [] stateSet) {
             boolean onStateChange = super.onStateChange(stateSet);
             int colorForState = mColorStateList.getColorForState(stateSet, mColor);
             if (mColor != colorForState) {
@@ -2560,7 +2559,7 @@ public abstract class SeslAbsSeekBar extends SeslProgressBar {
         }
 
         @Override
-        public boolean onStateChange(@NonNull int[] stateSet) {
+        public boolean onStateChange(int @NonNull [] stateSet) {
             boolean changed = super.onStateChange(stateSet);
             final int color = mColorStateList.getColorForState(stateSet, mColor);
             if (mColor != color) {

@@ -1,17 +1,12 @@
 plugins {
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.mavenPublish)
 }
 
 android {
     sourceSets {
         named("main") {
-            res.srcDirs("src/main/res", "src/main/res-public")
+            res.directories.addAll(listOf("src/main/res", "src/main/res-public"))
         }
-    }
-
-    buildTypes.configureEach {
-        consumerProguardFiles("proguard-rules.pro")
     }
 
     defaultConfig.vectorDrawables.useSupportLibrary = true

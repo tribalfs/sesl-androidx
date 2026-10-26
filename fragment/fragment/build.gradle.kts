@@ -1,15 +1,9 @@
 plugins {
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.kotlinAndroid)
-    alias(libs.plugins.mavenPublish)
-    alias(libs.plugins.kotlinKapt)
+    id("com.android.legacy-kapt")
 }
 
 android {
-    buildTypes.configureEach {
-        consumerProguardFiles("proguard-rules.pro")
-    }
-
     namespace = "androidx.fragment"
 }
 
@@ -17,12 +11,13 @@ dependencies {
     api(libs.androidx.annotation)
     api(libs.androidx.collection)
     api(libs.androidx.loader)
-    api(libs.androidx.activity)
+    api(libs.androidx.activity.ktx)
     api(libs.androidx.lifecycle.runtime)
     api(libs.androidx.lifecycle.livedata.core)
-    api(libs.androidx.lifecycle.viewmodel)
+    api(libs.androidx.lifecycle.viewmodel.ktx)
     api(libs.androidx.lifecycle.viewmodel.savedstate)
     implementation(libs.androidx.profileinstaller)
+    implementation(libs.androidx.tracing)
     api(libs.androidx.savedstate)
     api(libs.androidx.annotation.experimental)
     api(libs.kotlinStdlib)
@@ -31,12 +26,6 @@ dependencies {
     api(libs.sesl.androidx.viewpager)
 
     lintPublish(project(":fragment-lint"))
-
-    constraints {
-        implementation(libs.androidx.fragment.ktx) {
-            version { require("1.8.8") }
-        }
-    }
 }
 
 extra.set(

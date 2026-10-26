@@ -55,9 +55,9 @@ abstract class SeslThemeResourceColor private constructor() {
     ) : ResourceColor() {
 
         override fun getColor(context: Context): Int =
-            if (SeslMisc.isDefaultTheme(context)) {
-                defaultThemeResource.getColor(context)
-            } else openThemeResource.getColor(context)
+            if (SeslMisc.isOpenThemeAppliedAndThemeOverlay(context)) {
+                openThemeResource.getColor(context)
+            } else defaultThemeResource.getColor(context)
 
         companion object {
             fun copydefault(

@@ -20,5 +20,5 @@ object SeslAppCompatRune {
 @Retention(AnnotationRetention.SOURCE)
 @Target(AnnotationTarget.ANNOTATION_CLASS)
 annotation class SeslAppCompatRuneSupport(
-    @SeslAppCompatRune.RuneAppCompatType val value: Boolean = false
+    @param:SeslAppCompatRune.RuneAppCompatType val value: Boolean = false
 )

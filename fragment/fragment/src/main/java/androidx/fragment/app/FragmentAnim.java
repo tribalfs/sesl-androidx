@@ -77,11 +77,25 @@ class FragmentAnim {
             nextAnim = transitToAnimResourceId(context, transit, enter);
         }
 
+        //custom (sesl9): fallback to SESL transition animator as default
+        if (nextAnim == 0 && (fragment.seslIsPredictiveBackEnabled() || FragmentManager.USE_PREDICTIVE_BACK)) {
+            boolean isRtl = context.getResources().getConfiguration().getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
+            if (isPop) {
+                nextAnim = enter
+                        ? (isRtl ? R.animator.sesl_fragment_close_enter_rtl : R.animator.sesl_fragment_close_enter)
+                        : (isRtl ? R.animator.sesl_fragment_close_exit_rtl : R.animator.sesl_fragment_close_exit);
+            } else {
+                nextAnim = enter
+                        ? (isRtl ? R.animator.sesl_fragment_open_enter_rtl : R.animator.sesl_fragment_open_enter)
+                        : (isRtl ? R.animator.sesl_fragment_open_exit_rtl : R.animator.sesl_fragment_open_exit);
+            }
+        }
+
         if (nextAnim != 0) {
             String dir = context.getResources().getResourceTypeName(nextAnim);
             boolean isAnim = "anim".equals(dir);
-            boolean successfulLoad = false;
             if (isAnim) {
+                boolean successfulLoad = false;
                 // try AnimationUtils first
                 try {
                     animation = AnimationUtils.loadAnimation(context, nextAnim);
@@ -95,25 +109,57 @@ class FragmentAnim {
                 } catch (RuntimeException e) {
                     // Other exceptions can occur when loading an Animator from AnimationUtils.
                 }
-            }
-            if (!successfulLoad) {
-                // try Animator
-                try {
-                    animator = AnimatorInflater.loadAnimator(context, nextAnim);
-                    if (animator != null) {
-                        return new AnimationOrAnimator(animator);
+
+                if (!successfulLoad) {
+                    //Sesl9
+                    try {
+                        // try Animator
+                        if (SeslFragmentTransactionAnimationSet.isFragmentAnimationRes(nextAnim)) {
+                            Animator animatorForCommit = fragment.onCreateAnimator(nextAnim, false,
+                                    false);
+                            if (nextAnim != R.animator.sesl_fragment_close_enter
+                                    && nextAnim != R.animator.sesl_fragment_close_exit
+                                    && nextAnim != R.animator.sesl_fragment_close_enter_rtl
+                                    && nextAnim != R.animator.sesl_fragment_close_exit_rtl) {//sesl9
+                                return new AnimationOrAnimator(animatorForCommit, true);
+                            }
+                            return new AnimationOrAnimator(animatorForCommit,
+                                    fragment.onCreateAnimator(nextAnim, true, false));
+                        }
+                        animator = AnimatorInflater.loadAnimator(context, nextAnim);
+                        if (animator != null) {
+                            return new AnimationOrAnimator(animator);
+                        }
+                    } catch (RuntimeException e) {
+                        if (isAnim) {
+                            // Rethrow it -- we already tried AnimationUtils and it failed.
+                            throw e;
+                        }
+                        // Otherwise, it is probably an animation resource
+                        animation = AnimationUtils.loadAnimation(context, nextAnim);
+                        if (animation != null) {
+                            return new AnimationOrAnimator(animation);
+                        }
                     }
-                } catch (RuntimeException e) {
-                    if (isAnim) {
-                        // Rethrow it -- we already tried AnimationUtils and it failed.
-                        throw e;
-                    }
-                    // Otherwise, it is probably an animation resource
-                    animation = AnimationUtils.loadAnimation(context, nextAnim);
-                    if (animation != null) {
-                        return new AnimationOrAnimator(animation);
-                    }
+                    //sesl9
                 }
+            } else {
+                //Sesl9
+                if (SeslFragmentTransactionAnimationSet.isFragmentAnimationRes(nextAnim)) {
+                    Animator animatorForCommit = fragment.onCreateAnimator(nextAnim, false, false);
+                    if (nextAnim != R.animator.sesl_fragment_close_enter
+                            && nextAnim != R.animator.sesl_fragment_close_exit
+                            && nextAnim != R.animator.sesl_fragment_close_enter_rtl
+                            && nextAnim != R.animator.sesl_fragment_close_exit_rtl) {
+                        return new AnimationOrAnimator(animatorForCommit, true);
+                    }
+                    return new AnimationOrAnimator(animatorForCommit, fragment.onCreateAnimator(nextAnim, true, false));
+                }
+                animator = AnimatorInflater.loadAnimator(context, nextAnim);
+                if (animator != null) {
+                    return new AnimationOrAnimator(animator);
+                }
+                //sesl9
             }
         }
         return null;
@@ -182,6 +228,8 @@ class FragmentAnim {
     static class AnimationOrAnimator {
         public final Animation animation;
         public final AnimatorSet animator;
+        public final AnimatorSet animatorForCommit;//sesl9
+        public final boolean isFragmentAnimationRes;//sesl9
 
         AnimationOrAnimator(Animation animation) {
             this.animation = animation;
@@ -189,6 +237,8 @@ class FragmentAnim {
             if (animation == null) {
                 throw new IllegalStateException("Animation cannot be null");
             }
+            this.animatorForCommit = null;
+            this.isFragmentAnimationRes = false;
         }
 
         AnimationOrAnimator(Animator animator) {
@@ -198,7 +248,37 @@ class FragmentAnim {
             if (animator == null) {
                 throw new IllegalStateException("Animator cannot be null");
             }
+            this.animatorForCommit = null;
+            this.isFragmentAnimationRes = false;
         }
+
+        //Sesl9
+        AnimationOrAnimator(Animator animator, boolean isFragmentAnimationRes) {
+            this.animation = null;
+            this.animator = new AnimatorSet();
+            this.animator.play(animator);
+            if (animator == null) {
+                throw new IllegalStateException("Animator cannot be null");
+            }
+            this.animatorForCommit = null;
+            this.isFragmentAnimationRes = isFragmentAnimationRes;
+        }
+
+        AnimationOrAnimator(Animator animator, Animator animatorForCommit) {
+            this.animation = null;
+            this.animator = new AnimatorSet();
+            this.animator.play(animator);
+            if (animator == null) {
+                throw new IllegalStateException("Animator cannot be null");
+            }
+            this.animatorForCommit = new AnimatorSet();
+            this.animatorForCommit.play(animatorForCommit);
+            if (animatorForCommit == null) {
+                throw new IllegalStateException("animatorForCommit cannot be null");
+            }
+            this.isFragmentAnimationRes = true;
+        }
+        //sesl9
     }
 
     /**

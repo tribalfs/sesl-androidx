@@ -24,6 +24,7 @@ import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -39,8 +40,6 @@ import android.widget.ListView;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.content.ContextCompat;
@@ -55,6 +54,9 @@ import androidx.core.view.NestedScrollingParentHelper;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.ListViewCompat;
 import androidx.reflect.view.SeslHapticFeedbackConstantsReflector;
+
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 /**
  * (SESL modified) The SwipeRefreshLayout should be used whenever the user can refresh the
@@ -254,7 +256,7 @@ public class SwipeRefreshLayout extends ViewGroup implements NestedScrollingPare
          */
         SavedState(Parcelable superState, boolean refreshing) {
             super(superState);
-            this.mRefreshing = refreshing;
+            mRefreshing = refreshing;
         }
 
         /**
@@ -484,6 +486,16 @@ public class SwipeRefreshLayout extends ViewGroup implements NestedScrollingPare
         mListener = listener;
     }
 
+    //sesl9
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent keyEvent) {
+        if (keyEvent == null || keyEvent.getAction() != KeyEvent.ACTION_UP || keyEvent.getKeyCode() != 285) {
+            return super.dispatchKeyEvent(keyEvent);
+        }
+        setRefreshingWithoutSwipeGesture(true, true);
+        return true;
+    }
+
     /**
      * Notify the widget that refresh state has changed. Do not call this when
      * refresh is triggered by a swipe gesture.
@@ -491,17 +503,21 @@ public class SwipeRefreshLayout extends ViewGroup implements NestedScrollingPare
      * @param refreshing Whether or not the view should show refresh progress.
      */
     public void setRefreshing(boolean refreshing) {
-        if (refreshing && mRefreshing != refreshing) {
+        setRefreshingWithoutSwipeGesture(refreshing, false);
+    }
+
+    private void setRefreshingWithoutSwipeGesture(boolean refreshing, boolean notify) {
+        if (refreshing && !mRefreshing) {
             // scale and show
             mRefreshing = true;
-            int endTarget = 0;
+            int endTarget;
             if (!mUsingCustomStart) {
                 endTarget = mSpinnerOffsetEnd + mOriginalOffsetTop;
             } else {
                 endTarget = mSpinnerOffsetEnd;
             }
             setTargetOffsetTopAndBottom(endTarget - mCurrentTargetOffsetTop);
-            mNotify = false;
+            mNotify = notify;
             startScaleUpAnimation(mRefreshListener);
         } else {
             setRefreshing(refreshing, false /* notify */);
@@ -877,7 +893,7 @@ public class SwipeRefreshLayout extends ViewGroup implements NestedScrollingPare
     @Override
     public void onNestedScroll(@NonNull View target, int dxConsumed, int dyConsumed,
             int dxUnconsumed, int dyUnconsumed, @ViewCompat.NestedScrollType int type,
-            @NonNull int[] consumed) {
+            int @NonNull [] consumed) {
         if (type != ViewCompat.TYPE_TOUCH) {
             return;
         }
@@ -960,7 +976,7 @@ public class SwipeRefreshLayout extends ViewGroup implements NestedScrollingPare
     }
 
     @Override
-    public void onNestedPreScroll(@NonNull View target, int dx, int dy, @NonNull int[] consumed,
+    public void onNestedPreScroll(@NonNull View target, int dx, int dy, int @NonNull [] consumed,
             int type) {
         // Should always be true because onStartNestedScroll returns false for all type !=
         // ViewCompat.TYPE_TOUCH, but check just in case.
@@ -972,7 +988,7 @@ public class SwipeRefreshLayout extends ViewGroup implements NestedScrollingPare
     // NestedScrollingParent 1
 
     @Override
-    public boolean onStartNestedScroll(View child, View target, int axes) {
+    public boolean onStartNestedScroll(@NonNull View child, @NonNull View target, int axes) {
         return isEnabled() && !mReturningToStart && !mRefreshing
                 && (axes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0;
     }
@@ -1063,8 +1079,8 @@ public class SwipeRefreshLayout extends ViewGroup implements NestedScrollingPare
 
     @Override
     public void dispatchNestedScroll(int dxConsumed, int dyConsumed, int dxUnconsumed,
-            int dyUnconsumed, @Nullable int[] offsetInWindow, @ViewCompat.NestedScrollType int type,
-            @NonNull int[] consumed) {
+            int dyUnconsumed, int @Nullable [] offsetInWindow, @ViewCompat.NestedScrollType int type,
+            int @NonNull [] consumed) {
         if (type == ViewCompat.TYPE_TOUCH) {
             mNestedScrollingChildHelper.dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed,
                     dyUnconsumed, offsetInWindow, type, consumed);
@@ -1092,14 +1108,14 @@ public class SwipeRefreshLayout extends ViewGroup implements NestedScrollingPare
 
     @Override
     public boolean dispatchNestedScroll(int dxConsumed, int dyConsumed, int dxUnconsumed,
-            int dyUnconsumed, @Nullable int[] offsetInWindow, int type) {
+            int dyUnconsumed, int @Nullable [] offsetInWindow, int type) {
         return type == ViewCompat.TYPE_TOUCH && mNestedScrollingChildHelper.dispatchNestedScroll(
                 dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, offsetInWindow, type);
     }
 
     @Override
-    public boolean dispatchNestedPreScroll(int dx, int dy, @Nullable int[] consumed,
-            @Nullable int[] offsetInWindow, int type) {
+    public boolean dispatchNestedPreScroll(int dx, int dy, int @Nullable [] consumed,
+            int @Nullable [] offsetInWindow, int type) {
         return type == ViewCompat.TYPE_TOUCH && dispatchNestedPreScroll(dx, dy, consumed,
                 offsetInWindow);
     }
@@ -1133,14 +1149,14 @@ public class SwipeRefreshLayout extends ViewGroup implements NestedScrollingPare
 
     @Override
     public boolean dispatchNestedScroll(int dxConsumed, int dyConsumed, int dxUnconsumed,
-            int dyUnconsumed, @Nullable int[] offsetInWindow) {
+            int dyUnconsumed, int @Nullable [] offsetInWindow) {
         return mNestedScrollingChildHelper.dispatchNestedScroll(dxConsumed, dyConsumed,
                 dxUnconsumed, dyUnconsumed, offsetInWindow);
     }
 
     @Override
-    public boolean dispatchNestedPreScroll(int dx, int dy, @Nullable int[] consumed,
-            @Nullable int[] offsetInWindow) {
+    public boolean dispatchNestedPreScroll(int dx, int dy, int @Nullable [] consumed,
+            int @Nullable [] offsetInWindow) {
         return mNestedScrollingChildHelper.dispatchNestedPreScroll(
                 dx, dy, consumed, offsetInWindow);
     }
@@ -1423,7 +1439,6 @@ public class SwipeRefreshLayout extends ViewGroup implements NestedScrollingPare
         }
     }
 
-
     public void seslSetRefreshOnce(boolean once) {
         if (once) {
             mProgress.setOnAnimationEndCallback(new CircularProgressDrawable.OnAnimationEndCallback() {
@@ -1438,4 +1453,9 @@ public class SwipeRefreshLayout extends ViewGroup implements NestedScrollingPare
         }
     }
     //sesl
+
+    //sesl9
+    public void seslSetCurrentTargetOffsetTop(int targetOffsetTop) {
+        this.mCurrentTargetOffsetTop = targetOffsetTop;
+    }
 }

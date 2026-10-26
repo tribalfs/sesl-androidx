@@ -22,11 +22,12 @@ import android.view.animation.Interpolator;
 import android.view.animation.PathInterpolator;
 
 import androidx.annotation.FloatRange;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.graphics.Insets;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsCompat.Side.InsetsSide;
+
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 /**
  * An abstract class which describes a layer to be placed on the content of a window and underneath

@@ -42,4 +42,8 @@ class AppDataRepository(
     fun getDefaultList(): List<AppInfoData> {
         return appDataListFactory.getDataList()
     }
+
+    fun setAllAppsTitle(title: String) {
+        appDataListFactory.allAppsTitle = title
+    }
 }

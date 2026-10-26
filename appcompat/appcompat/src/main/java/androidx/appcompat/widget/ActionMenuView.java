@@ -38,12 +38,11 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
 import androidx.appcompat.R;
 import androidx.appcompat.view.menu.ActionMenuItemView;
+import androidx.appcompat.view.menu.ActionMenuItemViewBadgedWrapper;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuItemImpl;
 import androidx.appcompat.view.menu.MenuPresenter;
 import androidx.appcompat.view.menu.MenuView;
-import androidx.appcompat.widget.ActionMenuPresenter.ActionMenuItemViewBadgedWrapper;
-import androidx.reflect.os.SeslBuildReflector;
 
 import java.util.ArrayList;
 
@@ -87,12 +86,11 @@ public class ActionMenuView extends LinearLayoutCompat implements MenuBuilder.It
     //Sesl
     private int mActionButtonPaddingStart;
     private int mActionButtonPaddingEnd;
-    private int mLastItemEndPadding;
+    private int mLastTextButtonEndPadding;
     private String mOverflowBadgeText;
     private int mOverflowButtonMinWidth;
     private int mOverflowButtonPaddingStart;
     private int mOverflowButtonPaddingEnd;
-    private boolean mIsOneUI41;
     //sesl
 
     public ActionMenuView(@NonNull Context context) {
@@ -111,29 +109,20 @@ public class ActionMenuView extends LinearLayoutCompat implements MenuBuilder.It
 
         //Sesl
         mOverflowBadgeText = resources.getString(R.string.sesl_action_menu_overflow_badge_text_n);
-
-        TypedArray overflowButtonsAttrs = context.obtainStyledAttributes(attrs, R.styleable.View, R.attr.actionOverflowButtonStyle, 0);
-        mOverflowButtonMinWidth = overflowButtonsAttrs.getDimensionPixelSize(R.styleable.View_android_minWidth, 0);
-
-        mIsOneUI41 = SeslBuildReflector.SeslVersionReflector.getField_SEM_PLATFORM_INT() >= 130100;
-
-        if (mIsOneUI41) {
-            mActionButtonPaddingStart = resources.getDimensionPixelSize(R.dimen.sesl_action_button_side_padding);
-            mActionButtonPaddingEnd = resources.getDimensionPixelSize(R.dimen.sesl_action_button_side_padding);
-            mOverflowButtonPaddingStart = resources.getDimensionPixelSize(R.dimen.sesl_action_bar_overflow_side_padding);
-            mOverflowButtonPaddingEnd = resources.getDimensionPixelSize(R.dimen.sesl_action_bar_overflow_padding_end);
-        }else{
-            TypedArray actionButtonAttrs = context.obtainStyledAttributes(attrs, R.styleable.View, R.attr.actionButtonStyle, 0);
-            mActionButtonPaddingStart = actionButtonAttrs.getDimensionPixelSize(R.styleable.View_paddingStart, 0);
-            mActionButtonPaddingEnd = actionButtonAttrs.getDimensionPixelSize(R.styleable.View_paddingEnd, 0);
-            actionButtonAttrs.recycle();
-
-            mOverflowButtonPaddingStart = overflowButtonsAttrs.getDimensionPixelSize(R.styleable.View_paddingStart, 0);
-            mOverflowButtonPaddingEnd = overflowButtonsAttrs.getDimensionPixelSize(R.styleable.View_paddingEnd, 0);
-        }
-        overflowButtonsAttrs.recycle();
-        mLastItemEndPadding = resources.getDimensionPixelSize(R.dimen.sesl_action_bar_last_padding);
+        updateValue();
         //sesl
+    }
+
+    private void updateValue() {
+        TypedArray actionButtonAttrs = getContext().obtainStyledAttributes(null, R.styleable.View, R.attr.actionOverflowButtonStyle, 0);
+        mOverflowButtonMinWidth = actionButtonAttrs.getDimensionPixelSize(R.styleable.View_android_minWidth, 0);
+        actionButtonAttrs.recycle();
+
+        mActionButtonPaddingStart = getResources().getDimensionPixelSize(R.dimen.sesl_action_button_side_padding);
+        mActionButtonPaddingEnd = getResources().getDimensionPixelSize(R.dimen.sesl_action_button_side_padding);
+        mOverflowButtonPaddingStart = getResources().getDimensionPixelSize(R.dimen.sesl_action_bar_overflow_padding_start);
+        mOverflowButtonPaddingEnd = getResources().getDimensionPixelSize(R.dimen.sesl_action_bar_overflow_padding_end);
+        mLastTextButtonEndPadding = getResources().getDimensionPixelSize(R.dimen.sesl_action_button_last_text_end_padding);
     }
 
     /**
@@ -186,30 +175,7 @@ public class ActionMenuView extends LinearLayoutCompat implements MenuBuilder.It
             }
         }
 
-        //Sesl
-        Context context = getContext();
-        Resources resources = getResources();
-
-        TypedArray actionButtonAttrs = context.obtainStyledAttributes(null, R.styleable.View, R.attr.actionOverflowButtonStyle, 0);
-        mOverflowButtonMinWidth = actionButtonAttrs.getDimensionPixelSize(R.styleable.View_android_minWidth, 0);
-
-        if (mIsOneUI41) {
-            mActionButtonPaddingStart = resources.getDimensionPixelSize(R.dimen.sesl_action_button_side_padding);
-            mActionButtonPaddingEnd = resources.getDimensionPixelSize(R.dimen.sesl_action_button_side_padding);
-            mOverflowButtonPaddingStart = resources.getDimensionPixelSize(R.dimen.sesl_action_bar_overflow_side_padding);
-            mOverflowButtonPaddingEnd = resources.getDimensionPixelSize(R.dimen.sesl_action_bar_overflow_padding_end);
-        }else{
-            TypedArray overflowButtonsAttrs = context.obtainStyledAttributes(null, R.styleable.View, R.attr.actionButtonStyle, 0);
-            mActionButtonPaddingStart = overflowButtonsAttrs.getDimensionPixelSize(R.styleable.View_paddingStart, 0);
-            mActionButtonPaddingEnd = overflowButtonsAttrs.getDimensionPixelSize(R.styleable.View_paddingEnd, 0);
-            overflowButtonsAttrs.recycle();
-
-            mOverflowButtonPaddingStart = actionButtonAttrs.getDimensionPixelSize(R.styleable.View_paddingStart, 0);
-            mOverflowButtonPaddingEnd = actionButtonAttrs.getDimensionPixelSize(R.styleable.View_paddingEnd, 0);
-        }
-        actionButtonAttrs.recycle();
-        mLastItemEndPadding = resources.getDimensionPixelSize(R.dimen.sesl_action_bar_last_padding);
-        //sesl
+        updateValue();//sesl
     }
 
     public void setOnMenuItemClickListener(OnMenuItemClickListener listener) {
@@ -243,45 +209,28 @@ public class ActionMenuView extends LinearLayoutCompat implements MenuBuilder.It
                 final View child = getChildAt(i);
                 final LayoutParams lp = (LayoutParams) child.getLayoutParams();
                 lp.leftMargin = lp.rightMargin = 0;
-                final boolean isWrapped = child instanceof ActionMenuItemViewBadgedWrapper;//custom
-
+                ActionMenuItemView itemView = getActionMenuItemViewInstance(child);//custom
                 //Sesl
-                if (isWrapped || child instanceof ActionMenuItemView) {
-                    ActionMenuItemView itemView = isWrapped
-                            ? ((ActionMenuItemViewBadgedWrapper) child).getInnerItemView()//custom
-                            : (ActionMenuItemView) child;
-                    itemView.setPaddingRelative(mActionButtonPaddingStart, 0, mActionButtonPaddingEnd, 0);
-                    if (i == childCount - 1) {
-                        if (itemView.hasText()) {
-                            if (getLayoutDirection() == LAYOUT_DIRECTION_LTR) {
-                                lp.rightMargin = mLastItemEndPadding;
-                                child.setLayoutParams(lp);
-                            } else {
-                                lp.leftMargin = mLastItemEndPadding;
-                                child.setLayoutParams(lp);
-                            }
-                        } else {
-                            if (mIsOneUI41) {
-                                itemView.setIsLastItem(true);
-                                child.setLayoutParams(lp);
-                                itemView.setPaddingRelative(mActionButtonPaddingStart, 0,
-                                        mOverflowButtonPaddingEnd, 0);
-                            } else {
-                                itemView.setIsLastItem(true);
-                                child.setMinimumWidth(mOverflowButtonMinWidth);
-                                child.setLayoutParams(lp);
-                                itemView.setPaddingRelative(mOverflowButtonPaddingStart, 0,
-                                        Math.max(mOverflowButtonPaddingEnd, 0), 0);
-                            }
-                            if (isWrapped) {
-                                ((ActionMenuItemViewBadgedWrapper) child).adjustBadgeEndMargin(
-                                        mOverflowButtonPaddingEnd - mActionButtonPaddingEnd);
-                            }
-                        }
-                    } else if (i < childCount - 1) {
+                if (itemView != null) {//custom
+                    int paddingStart = mActionButtonPaddingStart;
+                    int paddingEnd = mActionButtonPaddingEnd;
+                    int lastIndex = childCount - 1;
+                    if (i == lastIndex && itemView.hasText() && !lp.isOverflowButton) {
+                        paddingEnd = mLastTextButtonEndPadding;
+                    }
+                    //custom: pad the inner view, not the wrapper
+                    itemView.setPaddingRelative(paddingStart, 0, paddingEnd, 0);
+                    if (i == lastIndex) {
                         if (!itemView.hasText()) {
-                            itemView.setIsLastItem(false);
+                            itemView.setIsLastItem(true);
                         }
+                        child.setLayoutParams(lp);
+                    } else if (i < lastIndex && !itemView.hasText()) {
+                        itemView.setIsLastItem(false);
+                    }
+                    //custom
+                    if (child instanceof ActionMenuItemViewBadgedWrapper wrapped) {
+                        wrapped.adjustBadgeEndMargin(paddingEnd - mActionButtonPaddingEnd);
                     }
                 } else if (lp.isOverflowButton) {
                     if (child instanceof ActionMenuPresenter.OverflowMenuButton) {
@@ -299,6 +248,18 @@ public class ActionMenuView extends LinearLayoutCompat implements MenuBuilder.It
             }
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         }
+    }
+
+    //custom
+    @Nullable
+    private  ActionMenuItemView getActionMenuItemViewInstance(View itemView) {
+        if ((itemView instanceof ActionMenuItemViewBadgedWrapper wrapped)) {
+            return wrapped.getInnerItemView();
+        }
+        if ((itemView instanceof ActionMenuItemView actionMenuItemView)) {
+            return actionMenuItemView;
+        }
+        return null;
     }
 
     private void onMeasureExactFormat(int widthMeasureSpec, int heightMeasureSpec) {
@@ -342,14 +303,13 @@ public class ActionMenuView extends LinearLayoutCompat implements MenuBuilder.It
             final View child = getChildAt(i);
             if (child.getVisibility() == GONE) continue;
 
-            final boolean isWrapped = child instanceof ActionMenuItemViewBadgedWrapper;//custom
-            final boolean isGeneratedItem = isWrapped || child instanceof ActionMenuItemView;
+            ActionMenuItemView actionMenuItemView = getActionMenuItemViewInstance(child);
             visibleItemCount++;
 
-            if (isGeneratedItem) {
+            if (actionMenuItemView != null) {
                 // Reset padding for generated menu item views; it may change below
                 // and views are recycled.
-                child.setPadding(mGeneratedItemPadding, 0, mGeneratedItemPadding, 0);
+                actionMenuItemView.setPadding(mGeneratedItemPadding, 0, mGeneratedItemPadding, 0);
             }
 
             final LayoutParams lp = (LayoutParams) child.getLayoutParams();
@@ -359,9 +319,7 @@ public class ActionMenuView extends LinearLayoutCompat implements MenuBuilder.It
             lp.expandable = false;
             lp.leftMargin = 0;
             lp.rightMargin = 0;
-            lp.preventEdgeOffset = isGeneratedItem && (isWrapped
-                    ? ((ActionMenuItemViewBadgedWrapper) child).getInnerItemView().hasText() //custom
-                    : ((ActionMenuItemView) child).hasText());
+            lp.preventEdgeOffset = actionMenuItemView != null && actionMenuItemView.hasText(); //custom
 
             // Overflow always gets 1 cell. No more, no less.
             final int cellsAvailable = lp.isOverflowButton ? 1 : cellsRemaining;
@@ -427,7 +385,14 @@ public class ActionMenuView extends LinearLayoutCompat implements MenuBuilder.It
 
                 if (centerSingleExpandedItem && lp.preventEdgeOffset && cellsRemaining == 1) {
                     // Add padding to this item such that it centers.
-                    child.setPadding(mGeneratedItemPadding + cellSize, 0, mGeneratedItemPadding, 0);
+                    if ((child instanceof ActionMenuItemViewBadgedWrapper wrapped)) {
+                        //custom: pad the inner view so the wrapper stays padding-free
+                        wrapped.getInnerItemView().setPadding(mGeneratedItemPadding + cellSize, 0,
+                                mGeneratedItemPadding, 0);
+                    } else {
+                        child.setPadding(mGeneratedItemPadding + cellSize, 0,
+                                mGeneratedItemPadding, 0);
+                    }
                 }
                 lp.cellsUsed++;
                 lp.expanded = true;
@@ -539,8 +504,10 @@ public class ActionMenuView extends LinearLayoutCompat implements MenuBuilder.It
         final int childHeightMode = MeasureSpec.getMode(parentHeightMeasureSpec);
         final int childHeightSpec = MeasureSpec.makeMeasureSpec(childHeightSize, childHeightMode);
 
-        final ActionMenuItemView itemView = child instanceof ActionMenuItemView ?
-                (ActionMenuItemView) child : null;
+        final ActionMenuItemView itemView = child instanceof ActionMenuItemView
+                ? (ActionMenuItemView) child
+                : (child instanceof ActionMenuItemViewBadgedWrapper
+                ? ((ActionMenuItemViewBadgedWrapper) child).getInnerItemView() : null);
         final boolean hasText = itemView != null && itemView.hasText();
 
         int cellsUsed = 0;
@@ -787,6 +754,13 @@ public class ActionMenuView extends LinearLayoutCompat implements MenuBuilder.It
         return mMenu;
     }
 
+    //Sesl
+    @RestrictTo(LIBRARY_GROUP_PREFIX)
+    public ActionMenuPresenter seslGetActionMenuPresenter() {
+        return mPresenter;
+    }
+    //sesl
+
     /**
      * Must be called before the first call to getMenu()
      */
@@ -972,7 +946,7 @@ public class ActionMenuView extends LinearLayoutCompat implements MenuBuilder.It
     }
 
     //Sesl
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP_PREFIX})
+    @RestrictTo({LIBRARY_GROUP_PREFIX})
     int getSumOfDigitsInBadges() {
         if (mMenu == null) {
             return 0;
@@ -990,7 +964,7 @@ public class ActionMenuView extends LinearLayoutCompat implements MenuBuilder.It
     }
 
     //Custom
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP_PREFIX})
+    @RestrictTo({LIBRARY_GROUP_PREFIX})
     int getSumOfDigitsInOverflowBadges() {
         if (mMenu == null) {
             return 0;
@@ -1028,6 +1002,37 @@ public class ActionMenuView extends LinearLayoutCompat implements MenuBuilder.It
     @RestrictTo(LIBRARY_GROUP_PREFIX)
     int getEndBadgeAdditionalMargin() {
         return mOverflowButtonPaddingEnd - mActionButtonPaddingEnd;
+    }
+
+    @RestrictTo(LIBRARY_GROUP_PREFIX)
+    public boolean seslIsShowOverflowButton() {
+        for (int i = 0; i < getChildCount(); i++) {
+            if (((LayoutParams) getChildAt(i).getLayoutParams()).isOverflowButton) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void addView(View child) {
+        super.addView(child);
+        addShowAnimation(child);
+    }
+
+    @Override
+    public void addView(View child, int index) {
+        super.addView(child, index);
+        addShowAnimation(child);
+    }
+
+    @Override
+    public void addView(View child, ViewGroup.LayoutParams params) {
+        super.addView(child, params);
+        addShowAnimation(child);
+    }
+
+    private void addShowAnimation(View view) {
     }
     //sesl
 }

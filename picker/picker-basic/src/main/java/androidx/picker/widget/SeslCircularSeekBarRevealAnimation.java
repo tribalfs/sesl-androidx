@@ -49,10 +49,10 @@ public  final class SeslCircularSeekBarRevealAnimation {
     private static final long REVEAL_ANIMATION_DURATION = 800;
     private static final String TAG = "CircularRevealAnimation";
     private float mSweepProgress;
-    boolean mIsRevealAnimation;
-    SeslCircularSeekBarView mView;
+    private boolean mIsRevealAnimation;
+    private SeslCircularSeekBarView mView;
 
-    final PathInterpolator mAniInterpolator = new PathInterpolator(0.22f, 0.25f, 0.0f, 1.0f);
+    private final PathInterpolator mAniInterpolator = new PathInterpolator(0.22f, 0.25f, 0.0f, 1.0f);
 
         public SeslCircularSeekBarRevealAnimation(@NonNull View view) {
         if (view instanceof SeslCircularSeekBarView) {
@@ -66,6 +66,14 @@ public  final class SeslCircularSeekBarRevealAnimation {
 
     public float getmSweepProgress() {
         return this.mSweepProgress;
+    }
+
+    public boolean isRevealAnimation() {
+        return this.mIsRevealAnimation;
+    }
+
+    public void setRevealAnimation(boolean z) {
+        this.mIsRevealAnimation = z;
     }
 
     public void startAnimators() {

@@ -20,7 +20,6 @@ import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
-import static androidx.picker.util.SeslDatePickerFontUtil.getRegularFontTypeface;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
@@ -34,6 +33,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
@@ -47,6 +47,7 @@ import android.text.format.DateUtils;
 import android.text.format.Time;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.Pair;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -75,6 +76,8 @@ import androidx.annotation.RestrictTo;
 import androidx.appcompat.widget.TooltipCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.picker.R;
+import androidx.reflect.app.SeslWindowConfigurationReflector;
+import androidx.reflect.content.res.SeslConfigurationReflector;
 import androidx.reflect.feature.SeslCscFeatureReflector;
 import androidx.reflect.feature.SeslFloatingFeatureReflector;
 import androidx.reflect.lunarcalendar.SeslFeatureReflector;
@@ -92,6 +95,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Formatter;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -208,7 +212,6 @@ public class SeslDatePicker extends LinearLayout
     private static final long DEFAULT_LONG_PRESS_UPDATE_INTERVAL = 300;
 
     private static final int SIZE_UNSPECIFIED = -1;
-    private static final float MAX_FONT_SCALE = 1.2f;
 
     private static final int MESSAGE_CALENDAR_HEADER_TEXT_VALUE_SET = 1000;
     private static final int MESSAGE_CALENDAR_HEADER_MONTH_BUTTON_SET = 1001;
@@ -242,7 +245,10 @@ public class SeslDatePicker extends LinearLayout
     Calendar mMinDate;
     String mMonthViewColor = null;
     final ImageButton mNextButton;
+    private DateValidator mDateValidator;
+    OnCustomDateConfigListener mOnCustomDateConfigListener;
     private OnDateChangedListener mOnDateChangedListener;
+    private OnSimpleMonthViewDayClickListener mOnSimpleMonthViewDayClickListener;
     private OnViewTypeChangedListener mOnViewTypeChangedListener;
     PathClassLoader mPathClassLoader = null;
     final ImageButton mPrevButton;
@@ -315,7 +321,10 @@ public class SeslDatePicker extends LinearLayout
     private static final PathInterpolator CALENDAR_HEADER_SPINNER_INTERPOLATOR
             = new PathInterpolator(0.22f, 0.25f, 0.0f, 1.0f);
 
+    boolean mIsCalendarInitialized = true;
+    boolean mIsCalendarPageChanged = false;
     private boolean mIsCalendarViewDisabled = false;
+    private boolean mIsSpinnerViewDisabled = false;
     //sesl6
 
     private final LinearLayout.LayoutParams mLpPreAllocated = new LinearLayout.LayoutParams(
@@ -693,7 +702,6 @@ public class SeslDatePicker extends LinearLayout
 
         mDayOfTheWeekLayoutHeight =
                 res.getDimensionPixelOffset(R.dimen.sesl_date_picker_calendar_day_height);
-        checkMaxFontSize();
         mCalendarViewPagerWidth =
                 res.getDimensionPixelOffset(R.dimen.sesl_date_picker_calendar_view_width);
         mCalendarViewMargin =
@@ -1192,24 +1200,23 @@ public class SeslDatePicker extends LinearLayout
     }
 
     /**
-     * Use this method to enable/disable the calendar view.
-     * Set true to disable the calendar view.
-     * @param disable boolean value
-     * @see #getCalendarViewDisabled
+     * Disables the calendar view, forcing the spinner view.
      */
-    public void setCalendarViewDisabled(@NonNull Boolean disable){
-        mIsCalendarViewDisabled = disable;
-        requestLayout();
+    public void disableCalendarView() {
+        mIsCalendarViewDisabled = true;
+        setCurrentViewType(VIEW_TYPE_SPINNER);
+        manageCalendarHeaderLayoutClick(true);
+        mAnimator.setMeasureAllChildren(false);
     }
 
     /**
-     * Gets a boolean indicating whether the calendar view is disabled.
-     *
-     * @return true if the calendar view is disabled, false otherwise.
-     * @see #setCalendarViewDisabled
+     * Disables the spinner view, forcing the calendar view.
      */
-    public @NonNull Boolean getCalendarViewDisabled(){
-        return mIsCalendarViewDisabled;
+    public void disableSpinnerView() {
+        mIsSpinnerViewDisabled = true;
+        setCurrentViewType(VIEW_TYPE_CALENDAR);
+        manageCalendarHeaderLayoutClick(true);
+        mAnimator.setMeasureAllChildren(false);
     }
 
     @Override
@@ -1266,8 +1273,6 @@ public class SeslDatePicker extends LinearLayout
         if (mIsRTL) {
             mIsConfigurationChanged = true;
         }
-
-        checkMaxFontSize();
     }
 
     /**
@@ -1646,6 +1651,20 @@ public class SeslDatePicker extends LinearLayout
                 endYear, endMonth, endDay, mIsLeapEndMonth, mMode);
         view.invalidate();
         mIsCalledFromDeactivatedDayClick = false;
+
+        if (mOnSimpleMonthViewDayClickListener != null) {
+            int clickedYear = mCurrentDate.get(Calendar.YEAR);
+            int clickedMonth = mCurrentDate.get(Calendar.MONTH);
+            int clickedDay = mCurrentDate.get(Calendar.DAY_OF_MONTH);
+
+            if (mIsLunar) {
+                clickedYear = mLunarCurrentYear;
+                clickedMonth = mLunarCurrentMonth;
+                clickedDay = mLunarCurrentDay;
+            }
+
+            mOnSimpleMonthViewDayClickListener.onDayClick(clickedYear, clickedMonth, clickedDay);
+        }
     }
 
     /**
@@ -1755,6 +1774,10 @@ public class SeslDatePicker extends LinearLayout
     private class CalendarPagerAdapter extends PagerAdapter {
         SparseArray<SeslSimpleMonthView> views = new SparseArray<>();
 
+        private Calendar mBatchStart = null;
+        private Calendar mBatchEnd = null;
+        private boolean mBatchRangeChanged = false;
+
         public CalendarPagerAdapter() {
         }
 
@@ -1833,6 +1856,19 @@ public class SeslDatePicker extends LinearLayout
                 endMonth = mEndDate.get(Calendar.MONTH);
                 endDay = mEndDate.get(Calendar.DAY_OF_MONTH);
             }
+            if (mOnCustomDateConfigListener != null) {
+                v.setOnCustomDateConfigListener(mOnCustomDateConfigListener);
+            }
+
+            Pair<Calendar, Calendar> visibleGridRange = calculateVisibleGridRange(year, month);
+            if (mBatchStart == null || visibleGridRange.first.before(mBatchStart)) {
+                mBatchStart = visibleGridRange.first;
+            }
+            if (mBatchEnd == null || visibleGridRange.second.after(mBatchEnd)) {
+                mBatchEnd = visibleGridRange.second;
+            }
+            mBatchRangeChanged = true;
+
             v.setMonthParams(selectedDay, month, year,
                     getFirstDayOfWeek(), 1, 31,
                     mMinDate, mMaxDate, startYear, startMonth, startDay, mIsLeapStartMonth,
@@ -1852,6 +1888,11 @@ public class SeslDatePicker extends LinearLayout
                 if (position != mPositionCount - 1 && getLunarDateByPosition(position + 1).isLeapMonth) {
                     v.setNextMonthLeap();
                 }
+            }
+
+            if (mDateValidator != null) {
+                manageCalendarHeaderLayoutClick(true);
+                v.setDisableDates(mDateValidator);
             }
 
             mNumDays = v.getNumDays();
@@ -1877,11 +1918,28 @@ public class SeslDatePicker extends LinearLayout
         @Override
         public void startUpdate(@NonNull View view) {
             debugLog("startUpdate");
+            mBatchStart = null;
+            mBatchEnd = null;
+            mBatchRangeChanged = false;
         }
 
         @Override
         public void finishUpdate(@NonNull View view) {
             debugLog("finishUpdate");
+
+            if (mBatchRangeChanged && mOnCustomDateConfigListener != null
+                    && mBatchStart != null && mBatchEnd != null
+                    && (mIsCalendarInitialized || mIsCalendarPageChanged)) {
+                mOnCustomDateConfigListener.onDateRangeUpdated(mBatchStart.getTime(),
+                        mBatchEnd.getTime());
+                mIsCalendarInitialized = false;
+                mIsCalendarPageChanged = false;
+            }
+
+            mBatchRangeChanged = false;
+            mBatchStart = null;
+            mBatchEnd = null;
+            mIsCalendarPageChanged = false;
         }
     }
 
@@ -1896,6 +1954,10 @@ public class SeslDatePicker extends LinearLayout
 
         @Override
         public void onPageSelected(int position) {
+            if (!mIsCalendarInitialized) {
+                mIsCalendarPageChanged = true;
+            }
+
             if (mIsRTL) {
                 mIsConfigurationChanged = false;
             }
@@ -2067,65 +2129,147 @@ public class SeslDatePicker extends LinearLayout
         }
     }
 
-    private void updateViewType(int height) {
-        //sesl6
-        if (mIsCalendarViewDisabled) {
-            setCurrentViewType(VIEW_TYPE_SPINNER);
-            if (!useLegacyLayout){
-                mCalendarHeaderTextSpinnerLayout.setOnClickListener(null);
-                mCalendarHeaderTextSpinnerLayout.setClickable(false);
-                removeCalendarHeaderPadding();
-                mCalendarHeaderSpinner.setVisibility(View.GONE);
-            }else{
-                mCalendarHeaderText.setOnClickListener(null);
-                mCalendarHeaderText.setClickable(false);
-            }
-            mAnimator.setMeasureAllChildren(false);
+    private Pair<Calendar, Calendar> calculateVisibleGridRange(int year, int month) {
+        final Calendar startDate = Calendar.getInstance();
+        final Calendar endDate = Calendar.getInstance();
+        startDate.clear();
+        endDate.clear();
+
+        final Calendar firstOfMonth = Calendar.getInstance();
+        firstOfMonth.set(year, month, 1);
+
+        int dayOfWeekOffset = ((firstOfMonth.get(Calendar.DAY_OF_WEEK) - mWeekStart) + 7) % 7;
+
+        if (dayOfWeekOffset > 0) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.clear();
+            calendar.set(year, month, 1);
+            calendar.add(Calendar.DAY_OF_MONTH, -dayOfWeekOffset);
+            startDate.setTimeInMillis(calendar.getTimeInMillis());
         } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                Activity activity = scanForActivity(mContext);
-                if (activity != null && activity.isInMultiWindowMode()) {
-                    if (height < mDatePickerHeight) {
-                        setCurrentViewType(VIEW_TYPE_SPINNER);
-                        if (!useLegacyLayout) {
-                            mCalendarHeaderTextSpinnerLayout.setOnClickListener(null);
-                            mCalendarHeaderTextSpinnerLayout.setClickable(false);
-                            removeCalendarHeaderPadding();
-                            mCalendarHeaderSpinner.setVisibility(View.GONE);
-                        }
-                        mAnimator.setMeasureAllChildren(false);
-                    } else {
-                        if (!useLegacyLayout) {
-                            if (!mCalendarHeaderTextSpinnerLayout.hasOnClickListeners()) {
-                                mCalendarHeaderTextSpinnerLayout.setOnClickListener(mCalendarHeaderClickListener);
-                                mCalendarHeaderTextSpinnerLayout.setClickable(true);
-                            }
-                        }else{
-                            if (!mCalendarHeaderText.hasOnClickListeners()) {
-                                mCalendarHeaderText.setOnClickListener(mCalendarHeaderClickListener);
-                                mCalendarHeaderText.setClickable(true);
-                            }
-                        }
-                    }
-                }
+            startDate.set(year, month, 1);
+        }
+
+        int remainingDays = 42 - (dayOfWeekOffset + SeslSimpleMonthView.getDaysInMonth(month, year));
+
+        int nextMonth = month + 1;
+        if (nextMonth > Calendar.DECEMBER) {
+            year++;
+            nextMonth = Calendar.JANUARY;
+        }
+
+        endDate.set(year, nextMonth, remainingDays);
+
+        startDate.set(Calendar.HOUR_OF_DAY, 0);
+        startDate.set(Calendar.MINUTE, 0);
+
+        endDate.set(Calendar.HOUR_OF_DAY, 23);
+        endDate.set(Calendar.MINUTE, 59);
+
+        return new Pair<>(startDate, endDate);
+    }
+
+    private void manageCalendarHeaderLayoutClick(boolean disable) {
+        if (disable) {
+            mCalendarHeaderTextSpinnerLayout.setOnClickListener(null);
+            mCalendarHeaderTextSpinnerLayout.setClickable(false);
+            setCalendarHeaderPadding(false);
+            mCalendarHeaderSpinner.setVisibility(GONE);
+        } else {
+            if (!mCalendarHeaderTextSpinnerLayout.hasOnClickListeners()) {
+                mCalendarHeaderTextSpinnerLayout.setOnClickListener(mCalendarHeaderClickListener);
+                mCalendarHeaderTextSpinnerLayout.setClickable(true);
+                setCalendarHeaderPadding(true);
+                mCalendarHeaderSpinner.setVisibility(VISIBLE);
             }
         }
     }
 
-    private void removeCalendarHeaderPadding() {
-        mCalendarHeaderTextSpinnerLayout.setPadding(0, 0, 0, 0);
+    private void setCalendarHeaderPadding(boolean applyPadding) {
+        if (applyPadding) {
+            mCalendarHeaderTextSpinnerLayout.setPadding(
+                    mContext.getResources().getDimensionPixelSize(
+                            R.dimen.sesl_date_picker_calendar_header_layout_padding_left),
+                    getPaddingTop(),
+                    mContext.getResources().getDimensionPixelSize(
+                            R.dimen.sesl_date_picker_calendar_header_layout_padding_right),
+                    getPaddingBottom());
+        } else {
+            mCalendarHeaderTextSpinnerLayout.setPadding(0, getPaddingTop(), 0, getPaddingBottom());
+        }
+    }
+
+    private void updateViewType(int height) {
+        Activity activity = scanForActivity(mContext);
+
+        Object windowConfiguration = SeslConfigurationReflector.getField_windowConfiguration(
+                getContext().getResources().getConfiguration());
+        boolean isEmbedded = windowConfiguration != null
+                && SeslWindowConfigurationReflector.isEmbedded(windowConfiguration);
+
+        if (mIsCalendarViewDisabled || mIsSpinnerViewDisabled) {
+            setCurrentViewType(mIsCalendarViewDisabled ? VIEW_TYPE_SPINNER : VIEW_TYPE_CALENDAR);
+            manageCalendarHeaderLayoutClick(true);
+            mAnimator.setMeasureAllChildren(false);
+        } else {
+            if (mDateValidator != null) {
+                manageCalendarHeaderLayoutClick(true);
+                return;
+            }
+
+            if (activity == null || !activity.isInMultiWindowMode() || isEmbedded) {
+                manageCalendarHeaderLayoutClick(false);
+            } else if (height <= 0 || height >= mDatePickerHeight) {
+                manageCalendarHeaderLayoutClick(false);
+            } else {
+                setCurrentViewType(VIEW_TYPE_SPINNER);
+                manageCalendarHeaderLayoutClick(true);
+            }
+        }
     }
 
     @RestrictTo(LIBRARY_GROUP)
     public void setDialogWindow(@NonNull Window window) {
-        if (window != null) {
-            mDialogWindow = window;
-        }
+        mDialogWindow = window;
     }
 
     @RestrictTo(LIBRARY_GROUP)
     public void setDialogPaddingVertical(int paddingVertical) {
         mDialogPaddingVertical = paddingVertical;
+    }
+
+    /**
+     * Sets the validator used to determine whether dates are selectable.
+     *
+     * @param dateValidator The {@link DateValidator} to set, or null to clear.
+     */
+    public void setDateValidator(@Nullable DateValidator dateValidator) {
+        mDateValidator = dateValidator;
+    }
+
+    /**
+     * Sets the listener that provides custom styling for specific dates.
+     *
+     * @param listener The {@link OnCustomDateConfigListener} to set, or null to clear.
+     */
+    public void setOnCustomDateConfigListener(
+            @Nullable OnCustomDateConfigListener listener) {
+        mOnCustomDateConfigListener = listener;
+
+        CalendarPagerAdapter adapter = mCalendarPagerAdapter;
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    /**
+     * Sets the listener invoked when a day cell in the calendar month view is clicked.
+     *
+     * @param listener The {@link OnSimpleMonthViewDayClickListener} to set, or null to clear.
+     */
+    public void setOnSimpleMonthViewDayClickListener(
+            @Nullable OnSimpleMonthViewDayClickListener listener) {
+        mOnSimpleMonthViewDayClickListener = listener;
     }
 
     String getMonthAndYearString(Calendar calendar) {
@@ -2227,6 +2371,99 @@ public class SeslDatePicker extends LinearLayout
     }
 
     /**
+     * A configuration holder for customizing the appearance of individual dates and
+     * date ranges within the DatePicker.
+     */
+    public static class CustomDateConfig {
+        public static final int COLOR_UNDEFINED = 0;
+
+        public static final int RANGE_POS_END = 2;
+        public static final int RANGE_POS_MIDDLE = 3;
+        public static final int RANGE_POS_NONE = 0;
+        public static final int RANGE_POS_START = 1;
+
+        private int dayColor = COLOR_UNDEFINED;
+        private int dayBackgroundColor = COLOR_UNDEFINED;
+        private int rangeColor = COLOR_UNDEFINED;
+        private boolean isMarked = false;
+        private boolean isRangeMode = false;
+        private int rangePosition = COLOR_UNDEFINED;
+
+        public int getDayBackgroundColor() {
+            return dayBackgroundColor;
+        }
+
+        public int getDayColor() {
+            return dayColor;
+        }
+
+        public int getRangeColor() {
+            return rangeColor;
+        }
+
+        public int getRangePosition() {
+            return rangePosition;
+        }
+
+        public boolean isMarked() {
+            return isMarked;
+        }
+
+        public boolean isRangeMode() {
+            return isRangeMode;
+        }
+
+        public void reset() {
+            dayColor = COLOR_UNDEFINED;
+            dayBackgroundColor = COLOR_UNDEFINED;
+            rangeColor = COLOR_UNDEFINED;
+            isMarked = false;
+            isRangeMode = false;
+            rangePosition = RANGE_POS_NONE;
+        }
+
+        public void setupDayColor(int color) {
+            dayColor = color;
+        }
+
+        public void setupDayMark(int backgroundColor, int textColor) {
+            dayBackgroundColor = backgroundColor;
+            isMarked = backgroundColor != 0;
+            setupDayColor(textColor);
+        }
+
+        public void setupRangeStyle(int rangeColor, int rangePosition) {
+            this.rangeColor = rangeColor;
+            this.rangePosition = rangePosition;
+            isRangeMode = rangeColor != 0 && rangePosition != RANGE_POS_NONE;
+        }
+    }
+
+    /**
+     * Listener that allows the client to provide custom styling for specific dates.
+     */
+    public interface OnCustomDateConfigListener {
+        boolean onUpdateDateConfig(@NonNull Date date, @Nullable CustomDateConfig config);
+
+        default void onDateRangeUpdated(@Nullable Date start, @Nullable Date end) {
+        }
+    }
+
+    /**
+     * Listener invoked when a day cell in the calendar month view is clicked.
+     */
+    public interface OnSimpleMonthViewDayClickListener {
+        void onDayClick(int year, int month, int day);
+    }
+
+    /**
+     * Validator used to determine whether a given date is selectable.
+     */
+    public interface DateValidator {
+        boolean isValid(@NonNull Date date);
+    }
+
+    /**
      * Sets the {@link DateMode selection mode} for the DatePicker.
      *
      * @param mode The {@link DateMode selection mode} to set.}
@@ -2247,6 +2484,9 @@ public class SeslDatePicker extends LinearLayout
                 int endMonth = mIsLunar ? mLunarEndMonth: mEndDate.get(Calendar.MONTH);
                 int endDay = mIsLunar ? mLunarEndDay: mEndDate.get(Calendar.DAY_OF_MONTH);
                 mSpinnerLayout.updateDate(endYear, endMonth, endDay);
+                break;
+            case DATE_MODE_NONE:
+            case DATE_MODE_WEEK_SELECT:
                 break;
         }
 
@@ -2308,16 +2548,6 @@ public class SeslDatePicker extends LinearLayout
      */
     public @DateMode int getDateMode() {
         return mMode;
-    }
-
-    private void checkMaxFontSize() {
-        final float currentFontScale = mContext.getResources().getConfiguration().fontScale;
-        final int calendarHeaderTextSize = getResources().getDimensionPixelOffset(
-                R.dimen.sesl_date_picker_calendar_header_month_text_size);
-        if (currentFontScale > MAX_FONT_SCALE) {
-            mCalendarHeaderText.setTextSize(TypedValue.COMPLEX_UNIT_PX,
-                    (float) Math.floor(Math.ceil(calendarHeaderTextSize / currentFontScale) * (double) 1.2f));
-        }
     }
 
     /**
@@ -2943,7 +3173,13 @@ public class SeslDatePicker extends LinearLayout
             mMonthDayLabelPaint.setAntiAlias(true);
             mMonthDayLabelPaint.setColor(mNormalDayTextColor);
             mMonthDayLabelPaint.setTextSize(monthDayLabelTextSize);
-            mMonthDayLabelPaint.setTypeface(getRegularFontTypeface());
+            if (Build.VERSION.SDK_INT >= 33) {
+                mMonthDayLabelPaint.setTypeface(Typeface.create(
+                        Typeface.create("sec", Typeface.NORMAL), 400, false));
+            } else {
+                mMonthDayLabelPaint.setTypeface(
+                        Typeface.create("sec-roboto-light", Typeface.NORMAL));
+            }
             mMonthDayLabelPaint.setTextAlign(Paint.Align.CENTER);
             mMonthDayLabelPaint.setStyle(Paint.Style.FILL);
             mMonthDayLabelPaint.setFakeBoldText(false);

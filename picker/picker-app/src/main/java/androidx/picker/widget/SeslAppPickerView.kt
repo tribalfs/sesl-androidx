@@ -791,4 +791,20 @@ abstract class SeslAppPickerView @JvmOverloads constructor(
         val list = viewDataController.currentList.mapNotNull { (it as? AppInfoViewData)?.selectableItem }
         selectStateLoader.updateSelectableItemList(list)
     }
+    fun clearHeaders() {
+        if (::headerFooterAdapter.isInitialized) {
+            headerFooterAdapter.clearHeaders()
+        }
+    }
+
+    fun clearFooters() {
+        if (::headerFooterAdapter.isInitialized) {
+            headerFooterAdapter.clearFooters()
+        }
+    }
+
+    fun setAllAppsTitle(title: String) {
+        appDataRepository.setAllAppsTitle(title)
+    }
+
 }

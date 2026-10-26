@@ -22,6 +22,7 @@ import androidx.annotation.ChecksSdkIntAtLeast
 import androidx.annotation.RequiresApi
 import androidx.annotation.RestrictTo
 import androidx.annotation.VisibleForTesting
+import java.util.Locale
 
 /**
  * This class contains additional platform version checking methods for targeting pre-release
@@ -44,9 +45,31 @@ public object BuildCompat {
         if ("REL" == buildCodename) {
             return false
         }
-        // Otherwise lexically compare them.  Return true if the build codename is equal to or
-        // greater than the requested codename.
-        return buildCodename.uppercase() >= codename.uppercase()
+
+        val buildUpper = buildCodename.uppercase(Locale.US)
+        val codeUpper = codename.uppercase(Locale.US)
+
+        fun codenameToInt(upperCodename: String): Int? =
+            when (upperCodename) {
+                "BAKLAVA" -> 0
+                else -> null
+            }
+
+        // Starting with Baklava, the Android dessert names wrapped around to the start of the
+        // alphabet; handle these "new" codenames explicitly; lexically compare "old" codenames.
+        // Return true if the build codename is equal to or greater than the requested codename.
+        val buildCodenameInt = codenameToInt(buildUpper)
+        val codenameInt = codenameToInt(codeUpper)
+        if (buildCodenameInt != null && codenameInt != null) {
+            // both codenames are "new" -> use hard-coded int values
+            return buildCodenameInt >= codenameInt
+        } else if (buildCodenameInt == null && codenameInt == null) {
+            // both codenames are "old" -> use lexical comparison
+            return buildUpper >= codeUpper
+        } else {
+            // one codename is "new", one is "old"
+            return buildCodenameInt != null
+        }
     }
 
     /**
@@ -61,7 +84,7 @@ public object BuildCompat {
             "Android N is a finalized release and this method is no longer necessary. " +
                 "It will be removed in a future release of this library. Instead, use " +
                 "`Build.VERSION.SDK_INT >= 24`.",
-        ReplaceWith("android.os.Build.VERSION.SDK_INT >= 24")
+        ReplaceWith("android.os.Build.VERSION.SDK_INT >= 24"),
     )
     public fun isAtLeastN(): Boolean = Build.VERSION.SDK_INT >= 24
 
@@ -77,7 +100,7 @@ public object BuildCompat {
             "Android N MR1 is a finalized release and this method is no longer necessary. " +
                 "It will be removed in a future release of this library. Instead, use " +
                 "`Build.VERSION.SDK_INT >= 25`.",
-        ReplaceWith("android.os.Build.VERSION.SDK_INT >= 25")
+        ReplaceWith("android.os.Build.VERSION.SDK_INT >= 25"),
     )
     public fun isAtLeastNMR1(): Boolean = Build.VERSION.SDK_INT >= 25
 
@@ -93,7 +116,7 @@ public object BuildCompat {
             "Android O is a finalized release and this method is no longer necessary. " +
                 "It will be removed in a future release of this library. Instead use " +
                 "`Build.VERSION.SDK_INT >= 26`.",
-        ReplaceWith("android.os.Build.VERSION.SDK_INT >= 26")
+        ReplaceWith("android.os.Build.VERSION.SDK_INT >= 26"),
     )
     public fun isAtLeastO(): Boolean = Build.VERSION.SDK_INT >= 26
 
@@ -109,7 +132,7 @@ public object BuildCompat {
             "Android O MR1 is a finalized release and this method is no longer necessary. " +
                 "It will be removed in a future release of this library. Instead, use " +
                 "`Build.VERSION.SDK_INT >= 27`.",
-        ReplaceWith("android.os.Build.VERSION.SDK_INT >= 27")
+        ReplaceWith("android.os.Build.VERSION.SDK_INT >= 27"),
     )
     public fun isAtLeastOMR1(): Boolean = Build.VERSION.SDK_INT >= 27
 
@@ -125,7 +148,7 @@ public object BuildCompat {
             "Android P is a finalized release and this method is no longer necessary. " +
                 "It will be removed in a future release of this library. Instead, use " +
                 "`Build.VERSION.SDK_INT >= 28`.",
-        ReplaceWith("android.os.Build.VERSION.SDK_INT >= 28")
+        ReplaceWith("android.os.Build.VERSION.SDK_INT >= 28"),
     )
     public fun isAtLeastP(): Boolean = Build.VERSION.SDK_INT >= 28
 
@@ -141,7 +164,7 @@ public object BuildCompat {
             "Android Q is a finalized release and this method is no longer necessary. " +
                 "It will be removed in a future release of this library. Instead, use " +
                 "`Build.VERSION.SDK_INT >= 29`.",
-        ReplaceWith("android.os.Build.VERSION.SDK_INT >= 29")
+        ReplaceWith("android.os.Build.VERSION.SDK_INT >= 29"),
     )
     public fun isAtLeastQ(): Boolean = Build.VERSION.SDK_INT >= 29
 
@@ -157,7 +180,7 @@ public object BuildCompat {
             "Android R is a finalized release and this method is no longer necessary. " +
                 "It will be removed in a future release of this library. Instead, use " +
                 "`Build.VERSION.SDK_INT >= 30`.",
-        ReplaceWith("android.os.Build.VERSION.SDK_INT >= 30")
+        ReplaceWith("android.os.Build.VERSION.SDK_INT >= 30"),
     )
     public fun isAtLeastR(): Boolean = Build.VERSION.SDK_INT >= 30
 
@@ -174,7 +197,7 @@ public object BuildCompat {
             "Android S is a finalized release and this method is no longer necessary. " +
                 "It will be removed in a future release of this library. Instead, use " +
                 "`Build.VERSION.SDK_INT >= 31`.",
-        ReplaceWith("android.os.Build.VERSION.SDK_INT >= 31")
+        ReplaceWith("android.os.Build.VERSION.SDK_INT >= 31"),
     )
     public fun isAtLeastS(): Boolean =
         Build.VERSION.SDK_INT >= 31 ||
@@ -194,7 +217,7 @@ public object BuildCompat {
             "Android Sv2 is a finalized release and this method is no longer necessary. " +
                 "It will be removed in a future release of this library. Instead, use " +
                 "`Build.VERSION.SDK_INT >= 32`.",
-        ReplaceWith("android.os.Build.VERSION.SDK_INT >= 32")
+        ReplaceWith("android.os.Build.VERSION.SDK_INT >= 32"),
     )
     public fun isAtLeastSv2(): Boolean =
         Build.VERSION.SDK_INT >= 32 ||
@@ -217,7 +240,7 @@ public object BuildCompat {
             "Android Tiramisu is a finalized release and this method is no longer " +
                 "necessary. It will be removed in a future release of this library. Instead, use " +
                 "`Build.VERSION.SDK_INT >= 33`.",
-        ReplaceWith("android.os.Build.VERSION.SDK_INT >= 33")
+        ReplaceWith("android.os.Build.VERSION.SDK_INT >= 33"),
     )
     public fun isAtLeastT(): Boolean =
         Build.VERSION.SDK_INT >= 33 ||
@@ -240,7 +263,7 @@ public object BuildCompat {
             "Android UpsideDownCase is a finalized release and this method is no longer " +
                 "necessary. It will be removed in a future release of this library. Instead, use " +
                 "`Build.VERSION.SDK_INT >= 34`.",
-        ReplaceWith("android.os.Build.VERSION.SDK_INT >= 34")
+        ReplaceWith("android.os.Build.VERSION.SDK_INT >= 34"),
     )
     public fun isAtLeastU(): Boolean =
         Build.VERSION.SDK_INT >= 34 ||
@@ -263,12 +286,56 @@ public object BuildCompat {
             "Android VanillaIceCream is a finalized release and this method is no longer " +
                 "necessary. It will be removed in a future release of this library. Instead, use " +
                 "`Build.VERSION.SDK_INT >= 35`.",
-        ReplaceWith("android.os.Build.VERSION.SDK_INT >= 35")
+        ReplaceWith("android.os.Build.VERSION.SDK_INT >= 35"),
     )
     public fun isAtLeastV(): Boolean =
         Build.VERSION.SDK_INT >= 35 ||
             (Build.VERSION.SDK_INT >= 34 &&
                 isAtLeastPreReleaseCodename("VanillaIceCream", Build.VERSION.CODENAME))
+
+    /**
+     * Checks if the device is running on a pre-release version of Android Baklava or a release
+     * version of Android Baklava or newer.
+     *
+     * **Note:** When Android Baklava is finalized for release, this method will be removed and all
+     * calls must be replaced with `Build.VERSION.SDK_INT >= 36`.
+     *
+     * @return `true` if Baklava APIs are available for use, `false` otherwise
+     */
+    @JvmStatic
+    @ChecksSdkIntAtLeast(api = 36, codename = "Baklava")
+    @Deprecated(
+        message =
+            "Android Baklava is a finalized release and this method is no longer " +
+                "necessary. It will be removed in a future release of this library. Instead, use " +
+                "`Build.VERSION.SDK_INT >= 36`.",
+        ReplaceWith("android.os.Build.VERSION.SDK_INT >= 36"),
+    )
+    public fun isAtLeastB(): Boolean =
+        Build.VERSION.SDK_INT >= 36 ||
+            (Build.VERSION.SDK_INT >= 35 &&
+                isAtLeastPreReleaseCodename("Baklava", Build.VERSION.CODENAME))
+
+    /**
+     * Checks if the device is running on a release version of Android Baklava minor release 1, or
+     * newer.
+     *
+     * @return `true` if Baklava minor release 1 APIs are available for use, `false` otherwise
+     */
+    @JvmStatic
+    @ChecksSdkIntAtLeast(api = Build.VERSION_CODES_FULL.BAKLAVA_1)
+    @Deprecated(
+        message =
+            "Android Baklava minor release 1 is a finalized release and this method is no longer " +
+                "necessary. It will be removed in a future release of this library. Instead, use " +
+                "`Build.VERSION.SDK_INT_FULL >= Build.VERSION_CODES_FULL.BAKLAVA_1`.",
+        ReplaceWith(
+            "android.os.Build.VERSION.SDK_INT_FULL >= android.os.Build.VERSION_CODES_FULL.BAKLAVA_1"
+        ),
+    )
+    public fun isAtLeastB_1(): Boolean =
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA &&
+            Build.VERSION.SDK_INT_FULL >= Build.VERSION_CODES_FULL.BAKLAVA_1
 
     /**
      * Experimental feature set for pre-release SDK checks.
@@ -279,9 +346,7 @@ public object BuildCompat {
      * Additionally, pre-release checks **may not** return `true` when run on a finalized version of
      * the SDK associated with the codename.
      */
-    @RequiresOptIn
-    @Retention(AnnotationRetention.BINARY)
-    public annotation class PrereleaseSdkCheck
+    @RequiresOptIn @Retention(AnnotationRetention.BINARY) public annotation class PrereleaseSdkCheck
 
     /**
      * The value of `SdkExtensions.getExtensionVersion(R)`. This is a convenience constant which

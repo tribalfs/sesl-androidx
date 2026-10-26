@@ -31,6 +31,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
@@ -854,6 +856,29 @@ public class AlertDialog extends AppCompatDialog implements DialogInterface {
             P.mCheckedItem = checkedItem;
             P.mIsSingleChoice = true;
             return this;
+        }
+
+        //sesl9
+        /**
+         * Configures a single choice option label and checkbox listener on the AlertDialog.
+         *
+         * @param label text label to display next to the single choice checkbox
+         * @param isChecked initial checked state
+         * @param listener listener invoked when checkbox state changes
+         * @return this Builder object for method chaining
+         * @throws IllegalStateException if {@link #setMessage} was not called first
+         */
+        @NonNull
+        public Builder setSingleChoiceOption(@Nullable CharSequence label, boolean isChecked, @Nullable OnCheckedChangeListener listener) {
+            if (P.mMessage != null) {
+                P.mSingleChoiceOptionLabel = label;
+                P.mSingleChoiceChecked = isChecked;
+                P.isSingleChoiceOption = true;//sesl9
+                P.mSingleChoiceListener = listener;
+                return this;
+            } else {
+                throw new IllegalStateException("setSingleChoiceOption() requires setMessage().");
+            }
         }
 
         /**

@@ -327,8 +327,17 @@ public class LinearSmoothScroller extends RecyclerView.SmoothScroller {
                 view.getLayoutParams();
         final int top = layoutManager.getDecoratedTop(view) - params.topMargin;
         final int bottom = layoutManager.getDecoratedBottom(view) + params.bottomMargin;
-        final int start = layoutManager.getPaddingTop();
-        final int end = layoutManager.getHeight() - layoutManager.getPaddingBottom();
+        final int start;
+        final int end;
+        //Sesl9
+        if (mAvailableBounds != null) {
+            start = mAvailableBounds.top;
+            end = mAvailableBounds.bottom;
+        } else {
+            start = layoutManager.getPaddingTop();
+            end = layoutManager.getHeight() - layoutManager.getPaddingBottom();
+        }
+        //sesl9
         return calculateDtToFit(top, bottom, start, end, snapPreference);
     }
 
@@ -353,8 +362,17 @@ public class LinearSmoothScroller extends RecyclerView.SmoothScroller {
                 view.getLayoutParams();
         final int left = layoutManager.getDecoratedLeft(view) - params.leftMargin;
         final int right = layoutManager.getDecoratedRight(view) + params.rightMargin;
-        final int start = layoutManager.getPaddingLeft();
-        final int end = layoutManager.getWidth() - layoutManager.getPaddingRight();
+        final int start;
+        final int end;
+        //Sesl9
+        if (mAvailableBounds != null) {
+            start = mAvailableBounds.left;
+            end = mAvailableBounds.right;
+        } else {
+            start = layoutManager.getPaddingLeft();
+            end = layoutManager.getWidth() - layoutManager.getPaddingRight();
+        }
+        //sesl9
         return calculateDtToFit(left, right, start, end, snapPreference);
     }
 }

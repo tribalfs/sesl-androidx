@@ -19,19 +19,24 @@ package androidx.appcompat.widget;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP_PREFIX;
 
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ColorFilter;
+import android.graphics.LinearGradient;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
+import android.graphics.SweepGradient;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.AnimationDrawable;
@@ -60,26 +65,28 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
+import android.view.animation.PathInterpolator;
 import android.view.animation.Transformation;
 import android.widget.RemoteViews.RemoteView;
 
-import androidx.annotation.DrawableRes;
 import androidx.annotation.IntDef;
 import androidx.annotation.InterpolatorRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import androidx.appcompat.R;
-import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.appcompat.util.SeslMisc;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.math.MathUtils;
-import androidx.core.util.Pools.SynchronizedPool;
+import androidx.core.util.Pools;
+import androidx.core.view.ViewCompat;
 import androidx.reflect.graphics.drawable.SeslStateListDrawableReflector;
 import androidx.reflect.view.SeslViewReflector;
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat;
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
+
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -93,7 +100,8 @@ import java.util.Locale;
  */
 
 /**
- * SeslProgressBar is a base widget for visualizing and controlling progress, supporting both determinate and indeterminate modes.
+ * SeslProgressBar is a base widget for visualizing and controlling progress in One UI,
+ * supporting both determinate and indeterminate modes, custom shapes, and smooth gradient styling.
  *
  * <p>
  * <b>Configurable functionalities (via XML attributes and/or public methods):</b>
@@ -135,43 +143,46 @@ import java.util.Locale;
  *       <li>Supports accessibility events and node info customization for assistive technologies.</li>
  *     </ul>
  *   </li>
- *   <li><b>Listener Support:</b>
- *     <ul>
- *       <li>Subclasses can register/unregister progress change listeners (e.g., via {@link SeslSeekBar.OnSeekBarChangeListener}).</li>
- *     </ul>
- *   </li>
  * </ul>
+ * </p>
  *
- * <p>
- * <b>Common XML attributes:</b>
+ * <p><b>SESL9/8.5 Enhancements:</b>
  * <ul>
- *   <li><code>android:min</code>, <code>android:max</code>, <code>android:progress</code>, <code>android:secondaryProgress</code></li>
- *   <li><code>android:indeterminate</code>, <code>android:indeterminateDrawable</code>, <code>android:progressDrawable</code></li>
- *   <li><code>android:progressTint</code>, <code>android:indeterminateTint</code></li>
- *   <li><code>android:minWidth</code>, <code>android:maxWidth</code>, <code>android:minHeight</code>, <code>android:maxHeight</code></li>
+ *   <li><b>Gradient Modes:</b> Introduced {@link #MODE_GRADIENT_HORIZONTAL} and {@link #MODE_GRADIENT_CIRCLE}
+ *       modes for animated linear and circular sweep gradient progress indicators.</li>
+ *   <li><b>Gradient Smoothing:</b> Integrates {@link SeslProgressBarGradientSmoother} to apply Catmull-Rom
+ *       cubic spline interpolation over gradient color stops and positions for smoother color transitions.</li>
+ *   <li><b>Custom Circle Sizing:</b> Supports XML configuration for stroke width ({@code R.styleable#ProgressBar_seslCircleModeStrokeWidth})
+ *       and padding ({@code R.styleable#ProgressBar_seslCircleModePadding}) when {@code seslUseCustomWidthForCircleMode} is enabled.</li>
+ *   <li><b>Animated Gradient Shaders:</b> Drives continuous gradient translation and rotation via
+ *       {@link #createGradientProgressAnimator(ValueAnimator.AnimatorUpdateListener)} and {@link GradientHorizontalProgressDrawable}.</li>
  * </ul>
+ * </p>
+ *
+ * <p><b>ProgressBar Modes:</b>
+ * <ul>
+ *   <li>{@link #MODE_STANDARD}: Default horizontal progress bar.</li>
+ *   <li>{@link #MODE_WARNING}: Progress bar with warning state styling.</li>
+ *   <li>{@link #MODE_DUAL_COLOR}: Dual-color progress indicator.</li>
+ *   <li>{@link #MODE_VERTICAL}: Vertical orientation progress bar.</li>
+ *   <li>{@link #MODE_SPLIT}: Split progress bar.</li>
+ *   <li>{@link #MODE_EXPAND}: Expandable horizontal progress bar.</li>
+ *   <li>{@link #MODE_EXPAND_VERTICAL}: Expandable vertical progress bar.</li>
+ *   <li>{@link #MODE_CIRCLE}: Circular progress bar.</li>
+ *   <li>{@link #MODE_LEVEL_BAR}: Level bar style indicator.</li>
+ *   <li>{@link #MODE_GRADIENT_HORIZONTAL}: Horizontal progress bar with animated smoothed linear gradient.</li>
+ *   <li>{@link #MODE_GRADIENT_CIRCLE}: Circular progress bar with animated smoothed sweep gradient.</li>
+ * </ul>
+ * </p>
  *
  * @see SeslSeekBar
  * @see SeslAbsSeekBar
- *
- * @attr ref android.R.styleable#ProgressBar_android_min
- * @attr ref android.R.styleable#ProgressBar_android_max
- * @attr ref android.R.styleable#ProgressBar_android_progress
- * @attr ref android.R.styleable#ProgressBar_android_secondaryProgress
- * @attr ref android.R.styleable#ProgressBar_android_indeterminate
- * @attr ref android.R.styleable#ProgressBar_android_indeterminateDrawable
- * @attr ref android.R.styleable#ProgressBar_android_progressDrawable
- * @attr ref android.R.styleable#ProgressBar_android_progressTint
- * @attr ref android.R.styleable#ProgressBar_android_indeterminateTint
- * @attr ref android.R.styleable#ProgressBar_android_minWidth
- * @attr ref android.R.styleable#ProgressBar_android_maxWidth
- * @attr ref android.R.styleable#ProgressBar_android_minHeight
- * @attr ref android.R.styleable#ProgressBar_android_maxHeight
  */
 @RemoteView
 @SuppressLint("RestrictedApi")
 public class SeslProgressBar extends View {
 
+    private static final int GRADIENT_ANIM_DURATION = 2000;
     private static final int MAX_LEVEL = 10000;
 
     private static final int TIMEOUT_SEND_ACCESSIBILITY_EVENT = 200;
@@ -184,7 +195,6 @@ public class SeslProgressBar extends View {
     private static final int PROGRESS_ANIM_DURATION = 80;
 
     /** Samsung ProgressBar modes */
-
     @IntDef({MODE_STANDARD,
             MODE_WARNING,
             MODE_DUAL_COLOR,
@@ -193,7 +203,9 @@ public class SeslProgressBar extends View {
             MODE_EXPAND,
             MODE_EXPAND_VERTICAL,
             MODE_CIRCLE,
-            MODE_LEVEL_BAR})
+            MODE_LEVEL_BAR,
+            MODE_GRADIENT_HORIZONTAL,
+            MODE_GRADIENT_CIRCLE})
     @Retention(RetentionPolicy.SOURCE)
     public @interface SeekBarMode { }
 
@@ -207,6 +219,9 @@ public class SeslProgressBar extends View {
     public static final int MODE_EXPAND_VERTICAL = 6;
     public static final int MODE_CIRCLE = 7;
     public static final int MODE_LEVEL_BAR = 8;
+    public static final int MODE_GRADIENT_HORIZONTAL = 9;
+    public static final int MODE_GRADIENT_CIRCLE = 10;
+
     @RestrictTo(LIBRARY_GROUP_PREFIX)
     int mMinWidth;
     @RestrictTo(LIBRARY_GROUP_PREFIX)
@@ -240,7 +255,7 @@ public class SeslProgressBar extends View {
 
     Drawable mIndeterminateDrawable;
     private Drawable mProgressDrawable;
-    private final boolean mUseHorizontalProgress;
+    private boolean mUseHorizontalProgress;
 
     /**
      * Please use {@link #getCurrentDrawable()}, {@link #setProgressDrawable(Drawable)},
@@ -284,7 +299,23 @@ public class SeslProgressBar extends View {
     @Nullable
     private NumberFormat mPercentFormat;//added in Sesl6
 
-    private boolean mFirstMeasure = true;
+    //Sesl9
+    private final Drawable mIndeterminateHorizontalXsmall;
+    private final Drawable mIndeterminateHorizontalSmall;
+    private final Drawable mIndeterminateHorizontalMedium;
+    private final Drawable mIndeterminateHorizontalLarge;
+    private final Drawable mIndeterminateHorizontalXlarge;
+    private int mCircleGradientStyle = 0;
+    private int[] mCircleGradientColors;
+    private float[] mCircleGradientPositions;
+    private boolean mIsGradient = false;
+    private boolean mUseCustomWidthForCircleMode = false;
+    private boolean mIsAnimationStartRequested = true;
+
+    private final PathInterpolator GRADIENT_ANIMATION_INTERPOLATOR;
+    private ValueAnimator mGradientAnimator;
+    private final boolean mIsLightTheme;
+    //sesl9
 
     private int mCircleProgressColor = -1;
 
@@ -309,6 +340,11 @@ public class SeslProgressBar extends View {
     public SeslProgressBar(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr,
             int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+
+        //Sesl9
+        mIsLightTheme = SeslMisc.isLightTheme(getContext());
+        GRADIENT_ANIMATION_INTERPOLATOR = new PathInterpolator(0.3f, 0.2f, 0.7f, 0.8f);
+        //sesl9
 
         mUiThreadId = Thread.currentThread().getId();
         initProgressBar();
@@ -336,6 +372,7 @@ public class SeslProgressBar extends View {
         }
 
         mDuration = a.getInt(R.styleable.ProgressBar_android_indeterminateDuration, mDuration);
+        mCircleGradientStyle = a.getInt(R.styleable.ProgressBar_sesl_progressCircleGradientStyle, mCircleGradientStyle);//sesl9
 
         mMinWidth = a.getDimensionPixelSize(R.styleable.ProgressBar_android_minWidth, mMinWidth);
         mMaxWidth = a.getDimensionPixelSize(R.styleable.ProgressBar_android_maxWidth, mMaxWidth);
@@ -450,7 +487,24 @@ public class SeslProgressBar extends View {
             mProgressTintInfo.mHasIndeterminateTint = true;
         }
 
-        mUseHorizontalProgress = a.getBoolean(R.styleable.ProgressBar_useHorizontalProgress, false);
+        //Sesl9
+        mUseCustomWidthForCircleMode = a.getBoolean(R.styleable.ProgressBar_seslUseCustomWidthForCircleMode, mUseCustomWidthForCircleMode);
+        if (mUseCustomWidthForCircleMode) {
+            mRoundStrokeWidth = a.getDimensionPixelSize(R.styleable.ProgressBar_seslCircleModeStrokeWidth,
+                    getResources().getDimensionPixelSize(R.dimen.sesl_progress_circle_size_small_width));
+            mCirclePadding = a.getDimensionPixelSize(R.styleable.ProgressBar_seslCircleModePadding,
+                    getResources().getDimensionPixelOffset(R.dimen.sesl_progress_circle_size_small_padding));
+        }
+
+        mUseHorizontalProgress = a.getBoolean(R.styleable.ProgressBar_useHorizontalProgress, mUseHorizontalProgress);
+
+        Resources.Theme theme = context.getTheme();
+        mIndeterminateHorizontalXsmall = getResources().getDrawable(R.drawable.sesl_progress_bar_indeterminate_xsmall_transition, theme);
+        mIndeterminateHorizontalSmall = getResources().getDrawable(R.drawable.sesl_progress_bar_indeterminate_small_transition, theme);
+        mIndeterminateHorizontalMedium = getResources().getDrawable(R.drawable.sesl_progress_bar_indeterminate_medium_transition, theme);
+        mIndeterminateHorizontalLarge = getResources().getDrawable(R.drawable.sesl_progress_bar_indeterminate_large_transition, theme);
+        mIndeterminateHorizontalXlarge = getResources().getDrawable(R.drawable.sesl_progress_bar_indeterminate_xlarge_transition, theme);
+        //sesl9
 
         mCircleProgressColor = a.getColor(R.styleable.ProgressBar_seslCircleProgressColor, -1);
 
@@ -470,13 +524,13 @@ public class SeslProgressBar extends View {
 
     //Custom
     private static Drawable getCompatDrawable(Context context, TypedArray a, int index) {
-        if ( Build.VERSION.SDK_INT >= 24) {
+        if (Build.VERSION.SDK_INT >= 24) {
             return a.getDrawable(index);
         } else {
             int resId = a.getResourceId(index, -1);
             if (resId != -1) {
                 Drawable d = AnimatedVectorDrawableCompat.create(context, resId);
-                if (d == null){
+                if (d == null) {
                     d = ContextCompat.getDrawable(context, resId);
                     if (!(d instanceof AnimatedVectorDrawableCompat)) {
                         return null;
@@ -610,19 +664,17 @@ public class SeslProgressBar extends View {
             }
 
             final LayerDrawable clone = new LayerDrawable(outDrawables);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                for (int i = 0; i < N; i++) {
-                    clone.setId(i, orig.getId(i));
-                    clone.setLayerGravity(i, orig.getLayerGravity(i));
-                    clone.setLayerWidth(i, orig.getLayerWidth(i));
-                    clone.setLayerHeight(i, orig.getLayerHeight(i));
-                    clone.setLayerInsetLeft(i, orig.getLayerInsetLeft(i));
-                    clone.setLayerInsetRight(i, orig.getLayerInsetRight(i));
-                    clone.setLayerInsetTop(i, orig.getLayerInsetTop(i));
-                    clone.setLayerInsetBottom(i, orig.getLayerInsetBottom(i));
-                    clone.setLayerInsetStart(i, orig.getLayerInsetStart(i));
-                    clone.setLayerInsetEnd(i, orig.getLayerInsetEnd(i));
-                }
+            for (int i = 0; i < N; i++) {
+                clone.setId(i, orig.getId(i));
+                clone.setLayerGravity(i, orig.getLayerGravity(i));
+                clone.setLayerWidth(i, orig.getLayerWidth(i));
+                clone.setLayerHeight(i, orig.getLayerHeight(i));
+                clone.setLayerInsetLeft(i, orig.getLayerInsetLeft(i));
+                clone.setLayerInsetRight(i, orig.getLayerInsetRight(i));
+                clone.setLayerInsetTop(i, orig.getLayerInsetTop(i));
+                clone.setLayerInsetBottom(i, orig.getLayerInsetBottom(i));
+                clone.setLayerInsetStart(i, orig.getLayerInsetStart(i));
+                clone.setLayerInsetEnd(i, orig.getLayerInsetEnd(i));
             }
 
             return clone;
@@ -674,10 +726,10 @@ public class SeslProgressBar extends View {
 
             for (int i = 0; i < N; i++) {
                 Drawable frame = tileify(background.getFrame(i), true);
-                frame.setLevel(10000);
+                frame.setLevel(MAX_LEVEL);
                 newBg.addFrame(frame, background.getDuration(i));
             }
-            newBg.setLevel(10000);
+            newBg.setLevel(MAX_LEVEL);
             drawable = newBg;
         }
         return drawable;
@@ -735,13 +787,8 @@ public class SeslProgressBar extends View {
             mIndeterminate = indeterminate;
 
             if (indeterminate) {
-                if (mUseHorizontalProgress) {
-                    //Ensure we're using the correct indeterminate drawable size for the available width
-                    updateDrawableSizeAndBounds(getWidth(), getHeight());
-                }else {
-                    swapCurrentDrawable(mIndeterminateDrawable);
-                    startAnimation();
-                }
+                swapCurrentDrawable(mIndeterminateDrawable);
+                startAnimation();
             } else {
                 swapCurrentDrawable(mProgressDrawable);
                 stopAnimation();
@@ -862,7 +909,7 @@ public class SeslProgressBar extends View {
      * @see Drawable#setTintMode(PorterDuff.Mode)
      *
      */
-    public void setIndeterminateTintMode(@Nullable PorterDuff.Mode tintMode) {
+    public void setIndeterminateTintMode(PorterDuff.@Nullable Mode tintMode) {
         if (mProgressTintInfo == null) {
             mProgressTintInfo = new ProgressTintInfo();
         }
@@ -881,8 +928,7 @@ public class SeslProgressBar extends View {
      * @attr ref android.R.styleable#ProgressBar_indeterminateTintMode
      * @see #setIndeterminateTintMode(PorterDuff.Mode)
      */
-    @Nullable
-    public PorterDuff.Mode getIndeterminateTintMode() {
+    public PorterDuff.@Nullable Mode getIndeterminateTintMode() {
         return mProgressTintInfo != null ? mProgressTintInfo.mIndeterminateTintMode : null;
     }
 
@@ -997,6 +1043,10 @@ public class SeslProgressBar extends View {
                     mProgress, false, false, false);
             doRefreshProgress(android.R.id.secondaryProgress,
                     mSecondaryProgress, false, false, false);
+
+            if (ViewCompat.getImportantForAccessibility(this) == ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_AUTO) {
+                ViewCompat.setImportantForAccessibility(this, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
+            }
         }
     }
 
@@ -1153,7 +1203,7 @@ public class SeslProgressBar extends View {
      * @see #getProgressTintMode()
      * @see Drawable#setTintMode(PorterDuff.Mode)
      */
-    public void setProgressTintMode(@Nullable PorterDuff.Mode tintMode) {
+    public void setProgressTintMode(PorterDuff.@Nullable Mode tintMode) {
         if (mProgressTintInfo == null) {
             mProgressTintInfo = new ProgressTintInfo();
         }
@@ -1174,8 +1224,7 @@ public class SeslProgressBar extends View {
      * @attr ref android.R.styleable#ProgressBar_progressTintMode
      * @see #setProgressTintMode(PorterDuff.Mode)
      */
-    @Nullable
-    public PorterDuff.Mode getProgressTintMode() {
+    public PorterDuff.@Nullable Mode getProgressTintMode() {
         return mProgressTintInfo != null ? mProgressTintInfo.mProgressTintMode : null;
     }
 
@@ -1234,7 +1283,7 @@ public class SeslProgressBar extends View {
      * @see #setProgressBackgroundTintList(ColorStateList)
      * @see Drawable#setTintMode(PorterDuff.Mode)
      */
-    public void setProgressBackgroundTintMode(@Nullable PorterDuff.Mode tintMode) {
+    public void setProgressBackgroundTintMode(PorterDuff.@Nullable Mode tintMode) {
         if (mProgressTintInfo == null) {
             mProgressTintInfo = new ProgressTintInfo();
         }
@@ -1252,8 +1301,7 @@ public class SeslProgressBar extends View {
      * @attr ref android.R.styleable#ProgressBar_progressBackgroundTintMode
      * @see #setProgressBackgroundTintMode(PorterDuff.Mode)
      */
-    @Nullable
-    public PorterDuff.Mode getProgressBackgroundTintMode() {
+    public PorterDuff.@Nullable Mode getProgressBackgroundTintMode() {
         return mProgressTintInfo != null ? mProgressTintInfo.mProgressBackgroundTintMode : null;
     }
 
@@ -1314,7 +1362,7 @@ public class SeslProgressBar extends View {
      * @see #setSecondaryProgressTintList(ColorStateList)
      * @see Drawable#setTintMode(PorterDuff.Mode)
      */
-    public void setSecondaryProgressTintMode(@Nullable PorterDuff.Mode tintMode) {
+    public void setSecondaryProgressTintMode(PorterDuff.@Nullable Mode tintMode) {
         if (mProgressTintInfo == null) {
             mProgressTintInfo = new ProgressTintInfo();
         }
@@ -1335,8 +1383,7 @@ public class SeslProgressBar extends View {
      * @attr ref android.R.styleable#ProgressBar_secondaryProgressTintMode
      * @see #setSecondaryProgressTintMode(PorterDuff.Mode)
      */
-    @Nullable
-    public PorterDuff.Mode getSecondaryProgressTintMode() {
+    public PorterDuff.@Nullable Mode getSecondaryProgressTintMode() {
         return mProgressTintInfo != null ? mProgressTintInfo.mSecondaryProgressTintMode : null;
     }
 
@@ -1438,6 +1485,7 @@ public class SeslProgressBar extends View {
     }
 
     class RefreshProgressRunnable implements Runnable {
+        @Override
         public void run() {
             synchronized (SeslProgressBar.this) {
                 final int count = mRefreshData.size();
@@ -1454,8 +1502,8 @@ public class SeslProgressBar extends View {
 
     private static class RefreshData {
         private static final int POOL_MAX = 24;
-        private static final SynchronizedPool<RefreshData> sPool =
-                new SynchronizedPool<RefreshData>(POOL_MAX);
+        private static final Pools.SynchronizedPool<RefreshData> sPool =
+                new Pools.SynchronizedPool<>(POOL_MAX);
 
         public int id;
         public int progress;
@@ -1587,7 +1635,7 @@ public class SeslProgressBar extends View {
      * @param id the identifier of the progress indicator
      * @param progress the visual progress in the range [0...1]
      */
-    void onVisualProgressChanged(int id, float progress) {
+    public void onVisualProgressChanged(int id, float progress) {
         // Stub method.
     }
 
@@ -1644,6 +1692,7 @@ public class SeslProgressBar extends View {
     }
 
     synchronized boolean setProgressInternal(int progress, boolean fromUser, boolean animate) {
+        Drawable drawable;
         if (mIndeterminate) {
             // Not applicable.
             return false;
@@ -1656,16 +1705,33 @@ public class SeslProgressBar extends View {
             return false;
         }
 
+        mVisualProgress = mProgress;
         mProgress = progress;
-        if (mCurrentMode == MODE_CIRCLE) {
-            if (getProgressDrawable() instanceof LayerDrawable) {
-                Drawable d = ((LayerDrawable) getProgressDrawable())
-                        .findDrawableByLayerId(android.R.id.progress);
-                if (d != null && d instanceof CirCleProgressDrawable) {
-                    ((CirCleProgressDrawable) d).setProgress(progress, animate);
+
+        if (mGradientAnimator != null) {
+            if (mGradientAnimator.isRunning()) {
+                if (mProgress == 0) {
+                    mGradientAnimator.cancel();
                 }
+            } else if (mIsAnimationStartRequested && isShown()) {
+                mGradientAnimator.start();
             }
         }
+
+        if (mCurrentMode == MODE_GRADIENT_HORIZONTAL && (getProgressDrawable() instanceof LayerDrawable)
+                && (drawable = ((LayerDrawable) getProgressDrawable()).findDrawableByLayerId(android.R.id.progress)) != null
+                && (drawable instanceof GradientHorizontalProgressDrawable)) {
+            ((GradientHorizontalProgressDrawable) drawable).setProgress(progress, animate);
+            return true;
+        }
+
+        if ((mCurrentMode == MODE_CIRCLE || mCurrentMode == MODE_GRADIENT_CIRCLE)
+                && (getProgressDrawable() instanceof LayerDrawable)
+                && (drawable = ((LayerDrawable) getProgressDrawable()).findDrawableByLayerId(android.R.id.progress)) != null
+                && (drawable instanceof CirCleProgressDrawable)) {
+            ((CirCleProgressDrawable) drawable).setProgress(progress, animate);
+        }
+
         refreshProgress(android.R.id.progress, mProgress, fromUser, animate);
         return true;
     }
@@ -1737,20 +1803,6 @@ public class SeslProgressBar extends View {
     }
 
     /**
-     * <p>Return the lower limit of this progress bar's range.</p>
-     *
-     * @return a positive integer
-     *
-     * @see #setMin(int)
-     * @see #getProgress()
-     * @see #getSecondaryProgress()
-     */
-    @ViewDebug.ExportedProperty(category = "progress")
-    public synchronized int getMin() {
-        return mMin;
-    }
-
-    /**
      * <p>Return the upper limit of this progress bar's range.</p>
      *
      * @return a positive integer
@@ -1760,6 +1812,20 @@ public class SeslProgressBar extends View {
      * @see #getSecondaryProgress()
      */
     @ViewDebug.ExportedProperty(category = "progress")
+    public synchronized int getMin() {
+        return mMin;
+    }
+
+    @ViewDebug.ExportedProperty(category = "progress")
+    /**
+    * <p>Return the upper limit of this progress bar's range.</p>
+    *
+    * @return a positive integer
+    *
+    * @see #setMax(int)
+    * @see #getProgress()
+    * @see #getSecondaryProgress()
+    */
     public synchronized int getMax() {
         return mMax;
     }
@@ -1852,12 +1918,12 @@ public class SeslProgressBar extends View {
             return;
         }
 
-       if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M || getWindowVisibility() == VISIBLE) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M || getWindowVisibility() == VISIBLE) {
             if (mIndeterminateDrawable instanceof Animatable) {
                 mShouldStartAnimationDrawable = true;
                 mHasAnimation = false;
-                if (mIndeterminateDrawable instanceof AnimatedVectorDrawable ||
-                        mIndeterminateDrawable instanceof AnimatedVectorDrawableCompat) {
+                if (mIndeterminateDrawable instanceof AnimatedVectorDrawable
+                        || mIndeterminateDrawable instanceof AnimatedVectorDrawableCompat) {
                     AnimatedVectorDrawableCompat.registerAnimationCallback(mIndeterminateDrawable, mCircleAnimationCallback);
                 }
             } else {
@@ -1975,9 +2041,33 @@ public class SeslProgressBar extends View {
                 }
             }
 
+            //sesl9
+            if (!mIndeterminate) {
+                requestAnimationInternal(isVisible && mIsAnimationStartRequested);
+            }
+
             if (mCurrentDrawable != null) {
                 mCurrentDrawable.setVisible(isVisible, false);
             }
+        }
+    }
+
+    //sesl9
+    public void requestAnimation(boolean start) {
+        mIsAnimationStartRequested = start;
+        requestAnimationInternal(start);
+    }
+
+    public void requestAnimationInternal(boolean start) {
+        if (mGradientAnimator == null) {
+            return;
+        }
+        if (!start || mProgress == 0) {
+            if (mGradientAnimator.isRunning()) {
+                mGradientAnimator.cancel();
+            }
+        } else if (!mGradientAnimator.isRunning()) {
+            mGradientAnimator.start();
         }
     }
 
@@ -1999,28 +2089,12 @@ public class SeslProgressBar extends View {
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        updateDrawableSizeAndBounds(w, h);
-    }
-
-    //Custom
-    private void updateDrawableSizeAndBounds(int w, int h){
-        //Sesl (Note: Moved updating from onMeasure for efficiency
-        // and to fix concurrency issue causing the indeterminate drawable
-        // to not being shown after a re-layout)
-        int paddingLeft = getPaddingLeft();
-        int paddingRight = getPaddingRight();
-
-        initCirCleStrokeWidth(w - paddingLeft - paddingRight);
-        if (mUseHorizontalProgress && mIndeterminate) {
-            seslSetIndeterminateProgressDrawable(w - paddingLeft - paddingRight);
-        }
-        //sesl
         updateDrawableBounds(w, h);
     }
 
     protected void updateDrawableBounds(int w, int h) {
         // onDraw will translate the canvas so we draw starting at 0,0.
-        // Subtract out padding for the purposes of the calculations below.
+        // Subtract out padding for the purposes of the calculations below
         w -= getPaddingRight() + getPaddingLeft();
         h -= getPaddingTop() + getPaddingBottom();
 
@@ -2061,29 +2135,22 @@ public class SeslProgressBar extends View {
         }
 
         if (mProgressDrawable != null) {
-            if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                mProgressDrawable.setBounds(0, 0, right, bottom);
-            }else{
-                mProgressDrawable.setBounds(0, 0, right, getResources().getDimensionPixelSize(R.dimen.sesl_seekbar_track_height));
-           }
+            mProgressDrawable.setBounds(0, 0, right, bottom);
         }
     }
 
     @Override
     protected synchronized void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
-
         drawTrack(canvas);
     }
 
     /**
-     * Draws the progress bar track.
-     */
+    * Draws the progress bar track.
+    */
     void drawTrack(Canvas canvas) {
         final Drawable d = mCurrentDrawable;
         if (d != null) {
-            // Translate canvas so a indeterminate circular progress bar with padding
-            // rotates properly in its animation
             final int saveCount = canvas.save();
 
             if (mCurrentMode != MODE_VERTICAL && mMirrorForRtl && ViewUtils.isLayoutRtl(this)) {
@@ -2123,24 +2190,30 @@ public class SeslProgressBar extends View {
 
         final Drawable d = mCurrentDrawable;
         if (d != null) {
-            dw = Math.max(mMinWidth, Math.min(mMaxWidth, d.getIntrinsicWidth()));
-            dh = Math.max(mMinHeight, Math.min(mMaxHeight, d.getIntrinsicHeight()));
-        }else{
+            dw = Math.clamp(d.getIntrinsicWidth(), mMinWidth, mMaxWidth);
+            dh = Math.clamp(d.getIntrinsicHeight(), mMinHeight, mMaxHeight);
+        } else {
             dw = 0;
             dh = 0;
         }
 
         updateDrawableState();
 
-        dw += getPaddingLeft() + getPaddingRight();
-        dh += getPaddingTop() + getPaddingBottom();
+        //Sesl9
+        final int paddingWidth = getPaddingLeft() + getPaddingRight() + dw;
+        final int paddingHeight = getPaddingTop() + getPaddingBottom() + dh;
 
-        final int measuredWidth = resolveSizeAndState(dw, widthMeasureSpec, 0);
-        final int measuredHeight = resolveSizeAndState(dh, heightMeasureSpec, 0);
-        if (mFirstMeasure) {//Moved the subsequent updating to onSizeChanged
-            updateDrawableSizeAndBounds(measuredWidth, measuredHeight);
-            mFirstMeasure = false;
+        final int measuredWidth = View.resolveSizeAndState(paddingWidth, widthMeasureSpec, 0);
+        final int measuredHeight = View.resolveSizeAndState(paddingHeight, heightMeasureSpec, 0);
+
+        if (!mUseCustomWidthForCircleMode) {
+            initCirCleStrokeWidth(measuredWidth - getPaddingLeft() - getPaddingRight());
         }
+
+        if (mUseHorizontalProgress && mIndeterminate) {
+            seslSetIndeterminateProgressDrawable(measuredWidth - getPaddingLeft() - getPaddingRight());
+        }
+        //sesl9
         setMeasuredDimension(measuredWidth, measuredHeight);
     }
 
@@ -2267,6 +2340,10 @@ public class SeslProgressBar extends View {
         } else {
             mCircleAnimationCallback = null;
         }
+        //sesl9
+        if (mGradientAnimator != null && mGradientAnimator.isRunning()) {
+            mGradientAnimator.cancel();
+        }
         if (mRefreshProgressRunnable != null) {
             removeCallbacks(mRefreshProgressRunnable);
             mRefreshIsPosted = false;
@@ -2378,8 +2455,16 @@ public class SeslProgressBar extends View {
         boolean mHasSecondaryProgressTintMode;
     }
 
+    /**
+     * Sets the display mode for this progress bar.
+     *
+     * @param mode one of {@link #MODE_STANDARD}, {@link #MODE_VERTICAL}, {@link #MODE_SPLIT},
+     *   {@link #MODE_EXPAND}, {@link #MODE_EXPAND_VERTICAL}, {@link #MODE_CIRCLE},
+     *   {@link #MODE_GRADIENT_HORIZONTAL}, or {@link #MODE_GRADIENT_CIRCLE}
+     */
     public void setMode(@SeekBarMode int mode) {
         mCurrentMode = mode;
+        mIsGradient = false;
 
         Drawable progressDrawable = null;
         switch (mode) {
@@ -2394,7 +2479,15 @@ public class SeslProgressBar extends View {
             case MODE_EXPAND:
                 break;
             case MODE_CIRCLE:
-                initializeRoundCicleMode();
+                initializeRoundCircleMode();
+                break;
+            case MODE_GRADIENT_HORIZONTAL:
+                initializeGradientHorizontalMode();
+                break;
+            case MODE_GRADIENT_CIRCLE:
+                mIsGradient = true;
+                setGradientColorsForCircle();
+                initializeRoundCircleMode();
                 break;
         }
 
@@ -2458,37 +2551,22 @@ public class SeslProgressBar extends View {
      *  Called when on indeterminate mode and useHorizontalProgress attr is set to true.
      *  This overrides the drawable set in android:indeterminateDrawable attr.
      */
-    private void seslSetIndeterminateProgressDrawable(int size) {
+    private void seslSetIndeterminateProgressDrawable(int i) {
         Resources res = getResources();
-        Drawable mIndeterminateHorizontal;
-        if (res.getDimensionPixelSize(R.dimen.sesl_progress_bar_indeterminate_xsmall) >= size) {
-            mIndeterminateHorizontal = createIndeterminateDrawable(res,
-                    R.drawable.sesl_progress_bar_indeterminate_xsmall_transition);
-        } else if (res.getDimensionPixelSize(R.dimen.sesl_progress_bar_indeterminate_small) >= size) {
-            mIndeterminateHorizontal = createIndeterminateDrawable(res,
-                    R.drawable.sesl_progress_bar_indeterminate_small_transition);
-        } else if (res.getDimensionPixelSize(R.dimen.sesl_progress_bar_indeterminate_medium) >= size) {
-            mIndeterminateHorizontal = createIndeterminateDrawable(res,
-                    R.drawable.sesl_progress_bar_indeterminate_medium_transition);
-        } else if (res.getDimensionPixelSize(R.dimen.sesl_progress_bar_indeterminate_large) >= size) {
-            mIndeterminateHorizontal = createIndeterminateDrawable(res,
-                    R.drawable.sesl_progress_bar_indeterminate_large_transition);
-        } else {
-            mIndeterminateHorizontal = createIndeterminateDrawable(res,
-                    R.drawable.sesl_progress_bar_indeterminate_xlarge_transition);
+        if (res.getDimensionPixelSize(R.dimen.sesl_progress_bar_indeterminate_xsmall) >= i) {
+            setIndeterminateDrawable(mIndeterminateHorizontalXsmall);
+            return;
         }
-        setIndeterminateDrawable(mIndeterminateHorizontal);
-    }
-
-    //Custom
-    private Drawable createIndeterminateDrawable(Resources res, @DrawableRes int drawableRes){
-        if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(getContext(),
-                    R.style.Base_V7_Theme_AppCompat_Light);
-            Resources.Theme theme = contextThemeWrapper.getTheme();
-            return res.getDrawable(drawableRes, theme);
-        }else{
-            return AnimatedVectorDrawableCompat.create(getContext(), drawableRes);
+        if (res.getDimensionPixelSize(R.dimen.sesl_progress_bar_indeterminate_small) >= i) {
+            setIndeterminateDrawable(mIndeterminateHorizontalSmall);
+            return;
+        }
+        if (res.getDimensionPixelSize(R.dimen.sesl_progress_bar_indeterminate_medium) >= i) {
+            setIndeterminateDrawable(mIndeterminateHorizontalMedium);
+        } else if (res.getDimensionPixelSize(R.dimen.sesl_progress_bar_indeterminate_large) >= i) {
+            setIndeterminateDrawable(mIndeterminateHorizontalLarge);
+        } else {
+            setIndeterminateDrawable(mIndeterminateHorizontalXlarge);
         }
     }
 
@@ -2534,7 +2612,7 @@ public class SeslProgressBar extends View {
                 if (progressBar != null) {
                     if (progressBar.mIndeterminateDrawable instanceof AnimatedVectorDrawable) {
                         ((AnimatedVectorDrawable) progressBar.mIndeterminateDrawable).start();
-                    }else if (progressBar.mIndeterminateDrawable instanceof AnimatedVectorDrawableCompat){
+                    } else if (progressBar.mIndeterminateDrawable instanceof AnimatedVectorDrawableCompat) {
                         ((AnimatedVectorDrawableCompat) progressBar.mIndeterminateDrawable).start();
                     }
                 }
@@ -2547,7 +2625,7 @@ public class SeslProgressBar extends View {
         return new ColorStateList(EMPTY, new int[]{color});
     }
 
-    private void initializeRoundCicleMode() {
+    private void initializeRoundCircleMode() {
         mOnlyIndeterminate = false;
         setIndeterminate(false);
         Resources res = getResources();
@@ -2561,7 +2639,7 @@ public class SeslProgressBar extends View {
         CirCleProgressDrawable primaryProgress
                 = new CirCleProgressDrawable(false,
                 colorToColorStateList(mCircleProgressColor));
-       //custom
+        //custom
         Drawable[] drawables = {background, primaryProgress};
 
         LayerDrawable layer = new LayerDrawable(drawables);
@@ -2570,6 +2648,86 @@ public class SeslProgressBar extends View {
         layer.setId(1, android.R.id.progress);
         setProgressDrawable(layer);
     }
+
+    //Sesl9
+    private ValueAnimator createGradientProgressAnimator(ValueAnimator.AnimatorUpdateListener animatorUpdateListener) {
+        ValueAnimator valueAnimatorOfFloat = ValueAnimator.ofFloat(0.0f, 1.0f);
+        valueAnimatorOfFloat.setDuration(GRADIENT_ANIM_DURATION);
+        valueAnimatorOfFloat.setRepeatCount(ValueAnimator.INFINITE);
+        valueAnimatorOfFloat.setRepeatMode(ValueAnimator.REVERSE);
+        valueAnimatorOfFloat.setInterpolator(GRADIENT_ANIMATION_INTERPOLATOR);
+        valueAnimatorOfFloat.addUpdateListener(animatorUpdateListener);
+        return valueAnimatorOfFloat;
+    }
+
+    private SeslProgressBarGradientSmoother.Result createGradientResult(int[] colors, float[] positions) {
+        return SeslProgressBarGradientSmoother.smoothStopsCubic(colors, positions, 16);
+    }
+
+    private void initializeGradientHorizontalMode() {
+        mOnlyIndeterminate = false;
+        setIndeterminate(false);
+        int[] colors = new int[]{
+                Color.argb(153, 59, 163, 243),
+                Color.argb(153, 57, 140, 251),
+                Color.argb(153, 56, 122, 255),
+                Color.argb(204, 60, 185, 162),
+                Color.argb(204, 61, 204, 135),
+                Color.argb(204, 56, 122, 255),
+                Color.argb(153, 59, 163, 243),
+                Color.argb(153, 61, 204, 135),
+                Color.argb(153, 60, 180, 165),
+                Color.argb(153, 59, 163, 243)
+        };
+        float[] positions = new float[]{0.0f, 0.03f, 0.07f, 0.2f, 0.38f, 0.58f, 0.85f, 0.96f, 0.98f, 1.0f};
+        SeslProgressBarGradientSmoother.Result result = createGradientResult(colors, positions);
+        LayerDrawable layerDrawable = new LayerDrawable(new Drawable[]{
+                new GradientHorizontalProgressDrawable(true,
+                        getResources().getColor(mIsLightTheme ? R.color.sesl_progress_control_color_background_light
+                                : R.color.sesl_progress_control_color_background_dark)),
+                new GradientHorizontalProgressDrawable(false, result.getColors(), result.getPositions())
+        });
+        layerDrawable.setPaddingMode(LayerDrawable.PADDING_MODE_STACK);
+        layerDrawable.setId(0, android.R.id.background);
+        layerDrawable.setId(1, android.R.id.progress);
+        setProgressDrawable(layerDrawable);
+    }
+
+    private void setGradientColorsForCircle() {
+        if (mCircleGradientStyle == 0) {
+            mCircleGradientColors = new int[]{
+                    Color.argb(153, 59, 163, 243),
+                    Color.argb(153, 57, 140, 251),
+                    Color.argb(153, 56, 122, 255),
+                    Color.argb(204, 60, 185, 162),
+                    Color.argb(204, 61, 204, 135),
+                    Color.argb(204, 56, 122, 255),
+                    Color.argb(153, 59, 163, 243),
+                    Color.argb(153, 61, 204, 135),
+                    Color.argb(153, 60, 180, 165),
+                    Color.argb(153, 59, 163, 243)
+            };
+        } else {
+            mCircleGradientColors = new int[]{
+                    Color.argb(153, 252, 252, 255),
+                    Color.argb(153, 252, 252, 255),
+                    Color.argb(153, 252, 252, 255),
+                    Color.argb(204, 252, 252, 255),
+                    Color.argb(102, 252, 252, 255),
+                    Color.argb(204, 252, 252, 255),
+                    Color.argb(102, 252, 252, 255),
+                    Color.argb(153, 252, 252, 255),
+                    Color.argb(153, 252, 252, 255),
+                    Color.argb(153, 252, 252, 255)
+            };
+        }
+        float[] positions = new float[]{0.0f, 0.03f, 0.07f, 0.2f, 0.38f, 0.58f, 0.85f, 0.96f, 0.98f, 1.0f};
+        mCircleGradientPositions = positions;
+        SeslProgressBarGradientSmoother.Result result = createGradientResult(mCircleGradientColors, positions);
+        mCircleGradientColors = result.getColors();
+        mCircleGradientPositions = result.getPositions();
+    }
+    //sesl9
 
     private CharSequence formatStateDescription(int progress) {
         Locale locale = getResources().getConfiguration().locale;
@@ -2598,6 +2756,9 @@ public class SeslProgressBar extends View {
         int mAlpha = 255;
         private final RectF mArcRect = new RectF();
         private final ProgressState mState = new ProgressState();
+        private final Matrix mCircleGradientMatrix = new Matrix();
+        private SweepGradient mCircleShader;
+
         private final IntProperty<CirCleProgressDrawable> VISUAL_CIRCLE_PROGRESS =
                 new IntProperty<>("visual_progress") {
             public void setValue(CirCleProgressDrawable d, int value) {
@@ -2619,10 +2780,14 @@ public class SeslProgressBar extends View {
             mColorStateList = colorStateList;
             mColor = colorStateList.getDefaultColor();
             mPaint.setColor(mColor);
+            //sesl9
+            if (mIsGradient && !mIsBackground) {
+                mGradientAnimator = createGradientProgressAnimator(animation -> invalidateSelf());
+            }
         }
 
         @Override
-        public void draw(Canvas canvas) {
+        public void draw(@NonNull Canvas canvas) {
             mPaint.setStrokeWidth(mRoundStrokeWidth);
 
             final int prevAlpha = mPaint.getAlpha();
@@ -2632,6 +2797,23 @@ public class SeslProgressBar extends View {
                     (((float) mRoundStrokeWidth) / 2.0f) + ((float) mCirclePadding),
                     (((float) SeslProgressBar.this.getWidth()) - (((float) mRoundStrokeWidth) / 2.0f)) - ((float) mCirclePadding),
                     (((float) SeslProgressBar.this.getWidth()) - (((float) mRoundStrokeWidth) / 2.0f)) - ((float) mCirclePadding));
+
+            //Sesl9
+            if (mIsGradient && !mIsBackground) {
+                float centerX = mArcRect.centerX();
+                float centerY = mArcRect.centerY();
+                if (mCircleShader == null) {
+                    mCircleShader = new SweepGradient(centerX, centerY, mCircleGradientColors, mCircleGradientPositions);
+                }
+                float rotateValue = (((Float) mGradientAnimator.getAnimatedValue()) * 360.0f) - 90.0f;
+                mCircleGradientMatrix.reset();
+                mCircleGradientMatrix.setRotate(rotateValue, centerX, centerY);
+                mCircleShader.setLocalMatrix(mCircleGradientMatrix);
+                mPaint.setShader(mCircleShader);
+            } else if (mIsGradient) {
+                mPaint.setShader(null);
+            }
+            //sesl9
 
             final int range = mMax - mMin;
             final float scale = range > 0 ? ((float) (mProgress - mMin)) / ((float) range) : 0.0f;
@@ -2710,7 +2892,7 @@ public class SeslProgressBar extends View {
         }
 
         @Override
-        protected boolean onStateChange(int[] stateSet) {
+        protected boolean onStateChange(int @NonNull [] stateSet) {
             final boolean changed = super.onStateChange(stateSet);
 
             final int color = mColorStateList.getColorForState(stateSet, mColor);
@@ -2747,6 +2929,7 @@ public class SeslProgressBar extends View {
      * handled by the {@link SeslProgressBar#setProgress(int, boolean)} method. This does
      * not correspond directly to the actual progress -- only the visual state.
      */
+    @SuppressLint("NewApi")
     private final FloatProperty<SeslProgressBar> VISUAL_PROGRESS =
             new FloatProperty<>("visual_progress") {
                 @Override
@@ -2760,4 +2943,148 @@ public class SeslProgressBar extends View {
                     return object.mVisualProgress;
                 }
             };
+
+    //sesl9
+    public class GradientHorizontalProgressDrawable extends Drawable {
+        private final IntProperty<GradientHorizontalProgressDrawable> VISUAL_HORIZONTAL_PROGRESS;
+        private int mAlpha = 255;
+        private final RectF mBackgroundRect = new RectF();
+        int mColor;
+        private int[] mGradientColors;
+        private float[] mGradientPositions;
+        private final Matrix mHorizontalGradientMatrix = new Matrix();
+        private LinearGradient mHorizontalShader;
+        private final boolean mIsBackground;
+        private final Paint mPaint = new Paint();
+        public int mProgress = 0;
+        private final RectF mProgressRect = new RectF();
+
+        public GradientHorizontalProgressDrawable(boolean isBackground, int color) {
+            mIsBackground = isBackground;
+            mColor = color;
+            mPaint.setAntiAlias(true);
+            mPaint.setStyle(Paint.Style.FILL);
+            mPaint.setColor(mColor);
+            VISUAL_HORIZONTAL_PROGRESS = new IntProperty<>("visual_progress") {
+                @Override
+                public Integer get(GradientHorizontalProgressDrawable drawable) {
+                    return drawable.mProgress;
+                }
+
+                @Override
+                public void setValue(GradientHorizontalProgressDrawable drawable, int value) {
+                    drawable.mProgress = value;
+                    drawable.invalidateSelf();
+                }
+            };
+        }
+
+        public GradientHorizontalProgressDrawable(boolean isBackground, int[] colors, float[] positions) {
+            mIsBackground = isBackground;
+            mGradientColors = colors;
+            mGradientPositions = positions;
+            mPaint.setAntiAlias(true);
+            mPaint.setStyle(Paint.Style.FILL);
+            mPaint.setStrokeCap(Paint.Cap.ROUND);
+            VISUAL_HORIZONTAL_PROGRESS = new IntProperty<>("visual_progress") {
+                @Override
+                public Integer get(GradientHorizontalProgressDrawable drawable) {
+                    return drawable.mProgress;
+                }
+
+                @Override
+                public void setValue(GradientHorizontalProgressDrawable drawable, int value) {
+                    drawable.mProgress = value;
+                    drawable.invalidateSelf();
+                }
+            };
+            if (!isBackground) {
+                mGradientAnimator = createGradientProgressAnimator(animation -> invalidateSelf());
+            }
+        }
+
+        private int modulateAlpha(int paintAlpha, int alpha) {
+            return ((alpha + (alpha >>> 7)) * paintAlpha) >>> 8;
+        }
+
+        @Override
+        public void draw(@NonNull Canvas canvas) {
+            Rect bounds = getBounds();
+            if (bounds.width() <= 0 || bounds.height() <= 0) {
+                return;
+            }
+            float radius = getResources().getDimensionPixelSize(R.dimen.sesl_progress_bar_height) / 2.0f;
+            float centerY = bounds.exactCenterY();
+            float top = centerY - radius;
+            float bottom = centerY + radius;
+            int alpha = mPaint.getAlpha();
+            mPaint.setAlpha(modulateAlpha(alpha, mAlpha));
+            if (mIsBackground) {
+                mPaint.setColor(mColor);
+                mPaint.setShader(null);
+                mBackgroundRect.set(bounds.left, top, bounds.right, bottom);
+                canvas.drawRoundRect(mBackgroundRect, radius, radius, mPaint);
+            } else {
+                int range = mMax - mMin;
+                float width = bounds.width() * (range > 0 ? ((float) (mProgress - mMin)) / range : 0.0f);
+                if (width > 0.0f) {
+                    if (mHorizontalShader == null) {
+                        mHorizontalShader = new LinearGradient(bounds.left, top, bounds.right, top,
+                                mGradientColors, mGradientPositions, Shader.TileMode.REPEAT);
+                    }
+                    mHorizontalGradientMatrix.setTranslate(((Float) mGradientAnimator.getAnimatedValue()) * bounds.width(), 0.0f);
+                    mHorizontalShader.setLocalMatrix(mHorizontalGradientMatrix);
+                    mPaint.setShader(mHorizontalShader);
+                    mProgressRect.set(bounds.left, top, bounds.left + width, bottom);
+                    canvas.drawRoundRect(mProgressRect, radius, radius, mPaint);
+                }
+            }
+            mPaint.setAlpha(alpha);
+        }
+
+        @Override
+        public int getOpacity() {
+            if (mPaint.getXfermode() != null) {
+                return PixelFormat.TRANSLUCENT;
+            }
+            int alpha = mPaint.getAlpha();
+            if (alpha == 0) {
+                return PixelFormat.TRANSPARENT;
+            }
+            return alpha == 255 ? PixelFormat.OPAQUE : PixelFormat.TRANSLUCENT;
+        }
+
+        @Override
+        public boolean isStateful() {
+            return true;
+        }
+
+        @Override
+        public void setAlpha(int alpha) {
+            if (mAlpha != alpha) {
+                mAlpha = alpha;
+                invalidateSelf();
+            }
+        }
+
+        @Override
+        public void setColorFilter(@Nullable ColorFilter colorFilter) {
+            mPaint.setColorFilter(colorFilter);
+            invalidateSelf();
+        }
+
+        public void setProgress(int progress, boolean animate) {
+            if (!animate) {
+                mProgress = progress;
+                invalidateSelf();
+                return;
+            }
+            ObjectAnimator animator = ObjectAnimator.ofInt(this, VISUAL_HORIZONTAL_PROGRESS, progress);
+            animator.setAutoCancel(true);
+            animator.setDuration(PROGRESS_ANIM_DURATION);
+            animator.setInterpolator(PROGRESS_ANIM_INTERPOLATOR);
+            animator.start();
+        }
+    }
+
 }

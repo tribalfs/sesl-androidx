@@ -21,22 +21,22 @@ import androidx.annotation.AnimatorRes
 import androidx.fragment.R
 
 enum class SeslFragmentTransactionAnimationSet(
-    @AnimRes @AnimatorRes val enter: Int,
-    @AnimRes @AnimatorRes val exit: Int,
-    @AnimRes @AnimatorRes val popEnter: Int,
-    @AnimRes @AnimatorRes val popExit: Int
+    @param:AnimRes @param:AnimatorRes val enter: Int,
+    @param:AnimRes @param:AnimatorRes val exit: Int,
+    @param:AnimRes @param:AnimatorRes val popEnter: Int,
+    @param:AnimRes @param:AnimatorRes val popExit: Int
 ) {
     Horizontal(
-        R.anim.sesl_fragment_open_enter,
-        R.anim.sesl_fragment_open_exit,
-        R.anim.sesl_fragment_close_enter,
-        R.anim.sesl_fragment_close_exit
+        R.animator.sesl_fragment_open_enter,
+        R.animator.sesl_fragment_open_exit,
+        R.animator.sesl_fragment_close_enter,
+        R.animator.sesl_fragment_close_exit
     ),
     HorizontalForRTL(
-        R.anim.sesl_fragment_open_enter_rtl,
-        R.anim.sesl_fragment_open_exit_rtl,
-        R.anim.sesl_fragment_close_enter_rtl,
-        R.anim.sesl_fragment_close_exit_rtl
+        R.animator.sesl_fragment_open_enter_rtl,
+        R.animator.sesl_fragment_open_exit_rtl,
+        R.animator.sesl_fragment_close_enter_rtl,
+        R.animator.sesl_fragment_close_exit_rtl
     );
 
     companion object {

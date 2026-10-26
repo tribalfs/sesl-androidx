@@ -43,6 +43,8 @@ public class MenuAdapter extends BaseAdapter {
     public int mInitPaddingTop;
     public int mInitPaddingBottom;
 
+    private boolean mSeslShowItemIcon;//sesl9
+
     public MenuAdapter(MenuBuilder menu, LayoutInflater inflater, boolean overflowOnly,
             int itemLayoutRes) {
         mOverflowOnly = overflowOnly;
@@ -58,6 +60,10 @@ public class MenuAdapter extends BaseAdapter {
 
     public void setForceShowIcon(boolean forceShow) {
         mForceShowIcon = forceShow;
+    }
+
+    public void seslSetShowItemIcon(boolean showItemIcon) {//sesl9
+        mSeslShowItemIcon = showItemIcon;
     }
 
     @Override
@@ -92,6 +98,13 @@ public class MenuAdapter extends BaseAdapter {
     }
 
     @Override
+    public boolean isEnabled(int position) {//sesl9
+        ArrayList<MenuItemImpl> items = mOverflowOnly ?
+                mAdapterMenu.getNonActionItems() : mAdapterMenu.getVisibleItems();
+        return items.get(position).isEnabled();
+    }
+
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             convertView = mInflater.inflate(mItemLayoutRes, parent, false);
@@ -111,7 +124,14 @@ public class MenuAdapter extends BaseAdapter {
         if (mForceShowIcon) {
             ((ListMenuItemView) convertView).setForceShowIcon(true);
         }
+        if (mSeslShowItemIcon) {//sesl9
+            ((ListMenuItemView) convertView).seslSetShowItemIcon(true);
+        }
         itemView.initialize(getItem(position), 0);
+
+        if (mSeslShowItemIcon) {//sesl9
+            ((ListMenuItemView) convertView).seslSetIcon(getItem(position).getIcon());
+        }
 
         final int firstLastItemPadding = convertView.getResources()
                 .getDimensionPixelSize(R.dimen.sesl_popup_menu_first_last_item_vertical_edge_padding);

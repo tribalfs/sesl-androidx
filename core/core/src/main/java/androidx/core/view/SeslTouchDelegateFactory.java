@@ -17,15 +17,15 @@
 package androidx.core.view;
 
 import android.graphics.Rect;
-import android.view.TouchDelegate;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.core.view.SeslTouchTargetDelegate.ExtraInsets;
+
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,13 +40,11 @@ public class SeslTouchDelegateFactory {
         ExtraInsets getExtraInsets(Rect prevBounds, Rect bounds, Rect nextBounds);
     }
 
-    @Nullable
-    public static SeslTouchTargetDelegate.Builder make(@NonNull LinearLayout linearLayout) throws SeslTouchTargetDelegate.InvalidDelegateViewException {
+    public static SeslTouchTargetDelegate.@Nullable Builder make(@NonNull LinearLayout linearLayout) throws SeslTouchTargetDelegate.InvalidDelegateViewException {
         return make(linearLayout, getChildren(linearLayout));
     }
 
-    @Nullable
-    public static SeslTouchTargetDelegate.Builder make(@NonNull LinearLayout linearLayout, @NonNull List<View> targetList)
+    public static SeslTouchTargetDelegate.@Nullable Builder make(@NonNull LinearLayout linearLayout, @NonNull List<View> targetList)
             throws SeslTouchTargetDelegate.InvalidDelegateViewException {
 
         if (targetList.isEmpty()) {

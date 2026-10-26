@@ -21,12 +21,12 @@ import android.graphics.drawable.GradientDrawable;
 import android.util.AttributeSet;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.reflect.DeviceInfo;
 import androidx.reflect.SeslBaseReflector;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -39,13 +39,12 @@ import java.lang.reflect.Method;
  * <p>This class extends {@link GradientDrawable} and, during inflation, attempts to invoke
  * a hidden API ({@code setSmoothCorner(true)}) to enable smooth corner rendering on a supported OneUI device.
  */
-@RequiresApi(api = 23)
 public class SeslShapeDrawable extends GradientDrawable {
     static final String TAG = "SeslShapeDrawable";
 
     @Override
     public void inflate(@NonNull Resources resources, @NonNull XmlPullParser xmlPullParser,
-            @NonNull AttributeSet attrs, @Nullable Resources.Theme theme)
+            @NonNull AttributeSet attrs, Resources.@Nullable Theme theme)
             throws XmlPullParserException, IOException {
         super.inflate(resources, xmlPullParser, attrs, theme);
         if (DeviceInfo.isOneUI()) {

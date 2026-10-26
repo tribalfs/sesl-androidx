@@ -70,12 +70,15 @@ public class ActionMenuItemView extends AppCompatTextView
     private int mMaxIconSize;
 
     //Sesl
-    private static final float MAX_FONT_SCALE = 1.2f;//sesl
+    private static final float MAX_FONT_SCALE = 1.2f;
     private float mDefaultTextSize = 0;
     private SeslShowButtonShapesHelper mSBSHelper;
     private boolean mIsChangedRelativePadding = false;
     private boolean mIsLastItem = false;
     //sesl
+
+    //sesl9 - background for icon button
+    private final Drawable initBackgroundDrawable;
 
     public ActionMenuItemView(Context context) {
         this(context, null);
@@ -107,16 +110,23 @@ public class ActionMenuItemView extends AppCompatTextView
         //Sesl
         TypedArray am = context.getTheme().obtainStyledAttributes(null, R.styleable.AppCompatTheme, 0, 0);
         final int amTextAppearanceId = am.getResourceId(R.styleable.AppCompatTheme_actionMenuTextAppearance, 0);
+        //Sesl9
+        final int actionButtonStyleRes = am.getResourceId(R.styleable.AppCompatTheme_actionButtonStyle, 0);
+        TypedArray ab = context.getTheme().obtainStyledAttributes(actionButtonStyleRes, new int[]{android.R.attr.background});
+        initBackgroundDrawable = ab.getDrawable(0);//sesl9
+        ab.recycle();
+        //sesl9
         am.recycle();
 
         TypedArray ta = context.obtainStyledAttributes(amTextAppearanceId, R.styleable.TextAppearance);
         TypedValue outValue = ta.peekValue(R.styleable.TextAppearance_android_textSize);
         ta.recycle();
+
         if (outValue != null) {
             mDefaultTextSize = TypedValue.complexToFloat(outValue.data);
         }
 
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O_MR1) {
+        if (Build.VERSION.SDK_INT > 27) {
             seslSetButtonShapeEnabled(true);
         } else {
             mSBSHelper = new SeslShowButtonShapesHelper(this,
@@ -229,19 +239,17 @@ public class ActionMenuItemView extends AppCompatTextView
     }
 
     private void updateTextButtonVisibility() {
-        boolean visible = !TextUtils.isEmpty(mTitle);
-        visible &= mIcon == null ||
-                (mItemData.showsTextAsAction() && (mAllowTextWithIcon || mExpandedFormat));
+        boolean isTextButtonVisible = seslIsTextButtonVisible();
 
-        setText(visible ? mTitle : null);
+        setText(isTextButtonVisible ? mTitle : null);
 
         //Sesl
-        if (visible) {
-            if (SeslMisc.isLightTheme(getContext())) {
-                setBackgroundResource(R.drawable.sesl_action_bar_item_text_background_light);
-            } else {
-                setBackgroundResource(R.drawable.sesl_action_bar_item_text_background_dark);
-            }
+        if (isTextButtonVisible) {
+            setBackgroundResource(SeslMisc.isLightTheme(getContext())
+                    ? R.drawable.sesl_action_bar_item_text_background_light
+                    : R.drawable.sesl_action_bar_item_text_background_dark);
+        } else {
+            setBackground(initBackgroundDrawable);
         }
         //sesl
 
@@ -250,7 +258,7 @@ public class ActionMenuItemView extends AppCompatTextView
         if (TextUtils.isEmpty(contentDescription)) {
             // Use the uncondensed title for content description, but only if the title is not
             // shown already.
-            setContentDescription(visible ? null : mItemData.getTitle());
+            setContentDescription(isTextButtonVisible ? null : mItemData.getTitle());
         } else {
             setContentDescription(contentDescription);
         }
@@ -258,7 +266,7 @@ public class ActionMenuItemView extends AppCompatTextView
         final CharSequence tooltipText = mItemData.getTooltipText();
         if (TextUtils.isEmpty(tooltipText)) {
             // Use the uncondensed title for tooltip, but only if the title is not shown already.
-            TooltipCompat.setTooltipText(this, visible ? null : mItemData.getTitle());
+            TooltipCompat.setTooltipText(this, isTextButtonVisible ? null : mItemData.getTitle());
         } else {
             TooltipCompat.setTooltipText(this, tooltipText);
         }
@@ -268,7 +276,7 @@ public class ActionMenuItemView extends AppCompatTextView
             setTextSize(TypedValue.COMPLEX_UNIT_DIP, mDefaultTextSize * Math.min(getResources().getConfiguration().fontScale, MAX_FONT_SCALE));
         }
 
-        setText(visible ? mTitle : null);
+        setText(isTextButtonVisible ? mTitle : null);
         //sesl
     }
 
@@ -523,4 +531,12 @@ public class ActionMenuItemView extends AppCompatTextView
         return super.performLongClick();
     }
     //sesl
+
+    //sesl9
+    public boolean seslIsTextButtonVisible() {
+        boolean hasTitle = !TextUtils.isEmpty(mTitle);
+        boolean hasNoIcon = mIcon == null;
+        boolean allowText = mItemData != null && mItemData.showsTextAsAction() && (mAllowTextWithIcon || mExpandedFormat);
+        return hasTitle && (hasNoIcon || allowText);
+    }
 }

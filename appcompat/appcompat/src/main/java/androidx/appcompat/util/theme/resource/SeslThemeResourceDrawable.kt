@@ -30,9 +30,9 @@ abstract class SeslThemeResourceDrawable private constructor() {
     ) : ResourceDrawable() {
 
         override fun getDrawable(context: Context): Int =
-            if (SeslMisc.isDefaultTheme(context)) {
-                defaultThemeResource.getDrawable(context)
-            } else openThemeResource.getDrawable(context)
+            if (SeslMisc.isOpenThemeAppliedAndThemeOverlay(context)) {
+                openThemeResource.getDrawable(context)
+            } else defaultThemeResource.getDrawable(context)
 
         companion object {
             fun copydefault(

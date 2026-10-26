@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.mavenPublish)
 }
 
 
@@ -28,4 +27,3 @@ extra.set(
             "Compatible on devices running API 19 or later."
     )
 )
-

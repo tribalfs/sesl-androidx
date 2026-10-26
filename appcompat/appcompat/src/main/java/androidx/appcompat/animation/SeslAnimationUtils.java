@@ -61,6 +61,16 @@ public class SeslAnimationUtils {
             new PathInterpolator(0.33f, 0.0f, 0.1f, 1.0f);
 
     /**
+     * An interpolator that uses a sine curve for an ease-out effect with a 33% out ratio.
+     * This creates an animation with the most gradual acceleration and deceleration when
+     * compared to SINE_OUT_70.
+     *
+     * <p>The control points are (0.17, 0.17) and (0.67, 1.0).
+     */
+    public static final Interpolator SINE_OUT_33 =
+            new PathInterpolator(0.17f, 0.17f, 0.67f, 1.0f);
+
+    /**
      * An interpolator that uses a sine curve for an ease-out effect with a 90% out ratio.
      * This creates an animation that accelerates rapidly at the beginning and decelerates as it approaches the end.
      *
