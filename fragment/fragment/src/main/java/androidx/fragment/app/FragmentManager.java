@@ -2126,7 +2126,6 @@ public abstract class FragmentManager implements FragmentResultOwner {
             mExecutingActions = true;
             try {
                 removeRedundantOperationsAndExecute(mTmpRecords, mTmpIsPop);
-            } catch (Exception ignore){
             } finally {
                 cleanupExec();
             }
