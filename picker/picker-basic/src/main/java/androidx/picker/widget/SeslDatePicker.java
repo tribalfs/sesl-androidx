@@ -969,6 +969,7 @@ public class SeslDatePicker extends LinearLayout
                 break;
         }
 
+        mCalendarPagerAdapter.notifyDataSetChanged();
         updateSimpleMonthView(true);
         onDateChanged();
 
