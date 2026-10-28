@@ -48,6 +48,9 @@
                 android:importantForAccessibility="no"
                 android:text="@string/sesl_sleep_picker_numeric_0" />
 
+            <!-- Custom: sesl9 exports disagree on these gravities (Notes/Routines say
+                 center, Settings/Contacts omit them) and picker-basic never repositions
+                 the numerals in code — real OneUI renders 6/18 flush to the dial edges. -->
             <TextView
                 android:id="@+id/sleep_record_clock_time_6"
                 style="@style/SleepTimePickerInsideClockNumbers"
@@ -68,6 +71,26 @@
                 android:importantForAccessibility="no"
                 android:text="@string/sesl_sleep_picker_numeric_18" />
         </FrameLayout>
+
+        <!-- sesl9: seekbar sits below the centre time containers -->
+        <androidx.picker.widget.SeslCircularSeekBarView
+            android:id="@+id/circular_seekbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:csCircleColor="@color/sesl_circular_seekbar_color"
+            app:csCircleGridMediumColor="@color/sesl_grid_medium_size_color"
+            app:csCircleGridSmallColor="@color/sesl_grid_small_size_color"
+            app:csCircleStrokeWidth="@dimen/sesl_circular_seekbar_circle_stroke_width"
+            app:csCircleXRadius="@dimen/sesl_sleep_visual_edit_inner_circle_size"
+            app:csCircleYRadius="@dimen/sesl_sleep_visual_edit_inner_circle_size"
+            app:csFirstPointerColor="?colorPrimary"
+            app:csFirstPointerHaloColor="?colorPrimary"
+            app:csIconWidth="@dimen/sesl_circular_bar_icon_width"
+            app:csMiddleColor="?colorPrimary"
+            app:csPointerHaloWidth="@dimen/sesl_sleep_time_icon_touch_width"
+            app:csPointerStrokeWidth="@dimen/sesl_sleep_time_pointer_size"
+            app:csSecondPointerColor="?colorPrimary"
+            app:csSecondPointerHaloColor="?colorPrimary" />
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -92,13 +115,11 @@
                     android:src="@drawable/sesl_bedtime_solid"
                     android:visibility="gone" />
 
-                <ImageView
-                    android:id="@+id/sleep_center_icon_bedtime_right"
-                    android:layout_width="@dimen/sesl_sleep_record_bed_image_icon_size"
-                    android:layout_height="@dimen/sesl_sleep_record_bed_image_icon_size"
+                <TextView
+                    android:id="@+id/bedtime_center_am_pm_left"
+                    style="@style/BedTimePicker_AMPM"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/sesl_sleep_record_bed_image_margin_right"
-                    android:src="@drawable/sesl_bedtime_solid"
+                    android:text="am"
                     android:visibility="gone" />
 
                 <TextView
@@ -117,11 +138,13 @@
                     android:text="am"
                     android:visibility="gone" />
 
-                <TextView
-                    android:id="@+id/bedtime_center_am_pm_left"
-                    style="@style/BedTimePicker_AMPM"
+                <ImageView
+                    android:id="@+id/sleep_center_icon_bedtime_right"
+                    android:layout_width="@dimen/sesl_sleep_record_bed_image_icon_size"
+                    android:layout_height="@dimen/sesl_sleep_record_bed_image_icon_size"
                     android:layout_gravity="center_vertical"
-                    android:text="am"
+                    android:layout_marginLeft="@dimen/sesl_sleep_record_bed_image_margin_right"
+                    android:src="@drawable/sesl_bedtime_solid"
                     android:visibility="gone" />
             </LinearLayout>
 
@@ -142,13 +165,11 @@
                     android:src="@drawable/sesl_wakeup_solid"
                     android:visibility="gone" />
 
-                <ImageView
-                    android:id="@+id/sleep_center_icon_wakeuptime_right"
-                    android:layout_width="@dimen/sesl_sleep_record_bed_image_icon_size"
-                    android:layout_height="@dimen/sesl_sleep_record_bed_image_icon_size"
+                <TextView
+                    android:id="@+id/wakeuptime_center_am_pm_left"
+                    style="@style/WakeUpTimePicker_AMPM"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/sesl_sleep_record_bed_image_margin_right"
-                    android:src="@drawable/sesl_wakeup_solid"
+                    android:text="am"
                     android:visibility="gone" />
 
                 <TextView
@@ -167,32 +188,15 @@
                     android:text="am"
                     android:visibility="gone" />
 
-                <TextView
-                    android:id="@+id/wakeuptime_center_am_pm_left"
-                    style="@style/WakeUpTimePicker_AMPM"
+                <ImageView
+                    android:id="@+id/sleep_center_icon_wakeuptime_right"
+                    android:layout_width="@dimen/sesl_sleep_record_bed_image_icon_size"
+                    android:layout_height="@dimen/sesl_sleep_record_bed_image_icon_size"
                     android:layout_gravity="center_vertical"
-                    android:text="am"
+                    android:layout_marginLeft="@dimen/sesl_sleep_record_bed_image_margin_right"
+                    android:src="@drawable/sesl_wakeup_solid"
                     android:visibility="gone" />
             </LinearLayout>
         </RelativeLayout>
-
-        <androidx.picker.widget.SeslCircularSeekBarView
-            android:id="@+id/circular_seekbar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:csCircleColor="@color/sesl_circular_seekbar_color"
-            app:csCircleGridMediumColor="@color/sesl_grid_medium_size_color"
-            app:csCircleGridSmallColor="@color/sesl_grid_small_size_color"
-            app:csCircleStrokeWidth="@dimen/sesl_circular_seekbar_circle_stroke_width"
-            app:csCircleXRadius="@dimen/sesl_sleep_visual_edit_inner_circle_size"
-            app:csCircleYRadius="@dimen/sesl_sleep_visual_edit_inner_circle_size"
-            app:csFirstPointerColor="?colorPrimary"
-            app:csFirstPointerHaloColor="?colorPrimary"
-            app:csIconWidth="@dimen/sesl_circular_bar_icon_width"
-            app:csMiddleColor="?colorPrimary"
-            app:csPointerHaloWidth="@dimen/sesl_sleep_time_icon_touch_width"
-            app:csPointerStrokeWidth="@dimen/sesl_sleep_time_pointer_size"
-            app:csSecondPointerColor="?colorPrimary"
-            app:csSecondPointerHaloColor="?colorPrimary" />
     </RelativeLayout>
 </LinearLayout>

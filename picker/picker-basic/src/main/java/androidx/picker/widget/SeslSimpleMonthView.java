@@ -19,6 +19,7 @@ package androidx.picker.widget;
 import org.jspecify.annotations.NonNull;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY;
 import static androidx.picker.widget.SeslDatePicker.DATE_MODE_NONE;
+import static androidx.picker.widget.SeslDatePicker.DATE_MODE_WEEK_SELECT;//sesl9
 
 import android.content.Context;
 import android.content.res.Configuration;
@@ -1415,7 +1416,8 @@ public class SeslSimpleMonthView extends View {
 
             for (int viewId = 1; viewId <= MAX_MONTH_VIEW_ID; viewId++) {
                 final int day = viewId - dayOffset;
-                if ((!mIsFirstMonth || day >= mEnabledDayStart)
+                if ((mMode != DATE_MODE_WEEK_SELECT || viewId % DEFAULT_NUM_DAYS == 0)
+                        && (!mIsFirstMonth || day >= mEnabledDayStart)
                         && (!mIsLastMonth || day <= mEnabledDayEnd)) {
                     if (mDateValidator != null) {
                         mTempDate.clear();
@@ -1442,14 +1444,30 @@ public class SeslSimpleMonthView extends View {
                 mLastAccessibilityFocusedView = View.NO_ID;
                 mLostAccessibilityFocus = true;
             }
-            event.setContentDescription(getItemDescription(virtualViewId));
+            //sesl9
+            if (mMode != DATE_MODE_WEEK_SELECT) {
+                event.setContentDescription(getItemDescription(virtualViewId));
+            } else {
+                final int dayPositionInWeek = getDayPositionInWeek(virtualViewId);
+                event.setContentDescription(getItemDescriptionWeek(
+                        (virtualViewId - dayPositionInWeek) + 1,
+                        (DEFAULT_NUM_DAYS - dayPositionInWeek) + virtualViewId));
+            }
         }
 
         @Override
         protected void onPopulateNodeForVirtualView(int virtualViewId, AccessibilityNodeInfoCompat node) {
             virtualViewId -= findDayOffset();
             getItemBounds(virtualViewId, mTempRect);
-            node.setContentDescription(getItemDescription(virtualViewId));
+            //sesl9
+            if (mMode == DATE_MODE_WEEK_SELECT) {
+                final int dayPositionInWeek = getDayPositionInWeek(virtualViewId);
+                node.setContentDescription(getItemDescriptionWeek(
+                        (virtualViewId - dayPositionInWeek) + 1,
+                        (DEFAULT_NUM_DAYS - dayPositionInWeek) + virtualViewId));
+            } else {
+                node.setContentDescription(getItemDescription(virtualViewId));
+            }
             node.setBoundsInParent(mTempRect);
             node.addAction(AccessibilityNodeInfo.ACTION_CLICK);
             if (mSelectedDay != View.NO_ID && virtualViewId == mSelectedDay) {
@@ -1515,6 +1533,15 @@ public class SeslSimpleMonthView extends View {
             return true;
         }
 
+        //sesl9
+        private int getDayPositionInWeek(int day) {
+            final int index = day - 1 + findDayOffset();
+            // Notes computes (getDayOfWeekStart() - 1 + day) % 7 with raw
+            // Java %, which goes negative for early days in Saturday-start
+            // locales and garbles the announced range; keep it positive.
+            return ((index % DEFAULT_NUM_DAYS) + DEFAULT_NUM_DAYS) % DEFAULT_NUM_DAYS + 1;
+        }
+
         private void getItemBounds(int day, Rect rect) {
             final int offsetX = mPadding;
             final int offsetY = (int) (mContext.getResources()
@@ -1527,9 +1554,13 @@ public class SeslSimpleMonthView extends View {
             final int row = index / mNumDays;
             final int column = index % mNumDays;
 
-            final int x = offsetX + (column * cellWidth);
             final int y = offsetY + (row * cellHeight);
-            rect.set(x, y, x + cellWidth, y + cellHeight);
+            if (mMode == DATE_MODE_WEEK_SELECT) {
+                rect.set(0, y, mCalendarWidth, y + cellHeight);
+            } else {
+                final int x = offsetX + (column * cellWidth);
+                rect.set(x, y, x + cellWidth, y + cellHeight);
+            }
         }
 
         private CharSequence getItemDescription(int day) {
@@ -1575,6 +1606,13 @@ public class SeslSimpleMonthView extends View {
 
             return SeslLunarDateUtilsReflector
                     .buildLunarDateString(mPathClassLoader, calendar, getContext());
+        }
+
+        //sesl9
+        private String getItemDescriptionWeek(int startDay, int endDay) {
+            return String.format(mContext.getString(
+                    R.string.sesl_date_picker_week_select_content_description),
+                    getItemDescription(startDay), getItemDescription(endDay));
         }
     }
 
