@@ -2218,7 +2218,8 @@ public class SeslDatePicker extends LinearLayout
                 return;
             }
 
-            if (activity == null || !activity.isInMultiWindowMode() || isEmbedded) {
+            if (activity == null || Build.VERSION.SDK_INT < 24
+                    || !activity.isInMultiWindowMode() || isEmbedded) {
                 manageCalendarHeaderLayoutClick(false);
             } else if (height <= 0 || height >= mDatePickerHeight) {
                 manageCalendarHeaderLayoutClick(false);

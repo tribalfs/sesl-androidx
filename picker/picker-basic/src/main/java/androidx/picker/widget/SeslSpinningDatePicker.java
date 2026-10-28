@@ -1864,7 +1864,8 @@ public class SeslSpinningDatePicker extends LinearLayout
             return;
         }
 
-        if (activity == null || !activity.isInMultiWindowMode()) {
+        if (activity == null || Build.VERSION.SDK_INT < 24
+                || !activity.isInMultiWindowMode()) {
             if (mDatePickerSpinner != null && mDatePickerSpinner.getOnSpinnerDateClickListener() == null) {
                 mDatePickerSpinner.setOnSpinnerDateClickListener(mOnSpinnerDateClickListener);
             }
