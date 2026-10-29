@@ -1405,7 +1405,13 @@ public class SeslSimpleMonthView extends View {
                     }
                 }
 
-                return day + findDayOffset();
+                final int viewId = day + findDayOffset();
+                //custom: prevents negative-remainder error at month boundaries
+                if (mMode == DATE_MODE_WEEK_SELECT) {
+                    final int weekEnd = viewId + DEFAULT_NUM_DAYS - 1;
+                    return weekEnd - (weekEnd % DEFAULT_NUM_DAYS);
+                }
+                return viewId;
             }
             return ExploreByTouchHelper.INVALID_ID;
         }
