@@ -14,3 +14,9 @@
 -keepclassmembernames,allowobfuscation,allowshrinking class androidx.core.widget.EdgeEffectCompat$Api*Impl {
   <methods>;
 }
+
+# Overrides the hidden View#onDrawVerticalScrollBar (not visible in android.jar) to apply
+# the scrollbar vertical padding on devices without View#semSetScrollBarTopPadding.
+-keepclassmembers class androidx.core.widget.NestedScrollView {
+    protected void onDrawVerticalScrollBar(android.graphics.Canvas, android.graphics.drawable.Drawable, int, int, int, int);
+}

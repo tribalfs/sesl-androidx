@@ -86,6 +86,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityRecordCompat;
 import androidx.core.widget.SeslGoToTopController.OnGoToTopClickListener;
+import androidx.reflect.DeviceInfo;
+import androidx.reflect.SeslBaseReflector;
 import androidx.reflect.os.SeslSystemPropertiesReflector;
 import androidx.reflect.provider.SeslSettingsReflector;
 import androidx.reflect.view.SeslPointerIconReflector;
@@ -3642,9 +3644,44 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
     }
 
     private void updateScrollbarVerticalPadding() {
-        SeslViewReflector.semSetScrollBarTopPadding(this, mScrollbarTopPadding + mScrollBarTopOffset);
-        SeslViewReflector.semSetScrollBarBottomPadding(this, mScrollbarBottomPadding + mScrollBarBottomOffset);
+        //custom
+        if (isSemScrollBarPaddingSupported()) {
+            SeslViewReflector.semSetScrollBarTopPadding(this, mScrollbarTopPadding + mScrollBarTopOffset);
+            SeslViewReflector.semSetScrollBarBottomPadding(this, mScrollbarBottomPadding + mScrollBarBottomOffset);
+        } else {
+            invalidate();
+        }
     }
+
+    //Custom
+    private static Boolean sIsSemScrollBarPaddingSupported = null;
+
+    private static boolean isSemScrollBarPaddingSupported() {
+        if (sIsSemScrollBarPaddingSupported == null) {
+            sIsSemScrollBarPaddingSupported = DeviceInfo.isOneUI()
+                    && SeslBaseReflector.getDeclaredMethod(View.class,
+                    "semSetScrollBarTopPadding", Integer.TYPE) != null;
+        }
+        return sIsSemScrollBarPaddingSupported;
+    }
+
+    /**
+     * Applies the scrollbar vertical padding on devices without
+     * {@code View#semSetScrollBarTopPadding}/{@code View#semSetScrollBarBottomPadding}.
+     * This overrides the hidden {@code View#onDrawVerticalScrollBar}
+     * and is kept by keepRules/rules.keep.
+     */
+    @RestrictTo(LIBRARY_GROUP_PREFIX)
+    protected void onDrawVerticalScrollBar(@NonNull Canvas canvas, @NonNull Drawable scrollBar,
+            int l, int t, int r, int b) {
+        if (!isSemScrollBarPaddingSupported()) {
+            t += mScrollbarTopPadding + mScrollBarTopOffset;
+            b = Math.max(t, b - (mScrollbarBottomPadding + mScrollBarBottomOffset));
+        }
+        scrollBar.setBounds(l, t, r, b);
+        scrollBar.draw(canvas);
+    }
+    //custom
 
     private void adjustNestedScrollRange() {
         getLocationInWindow(mWindowOffsets);
