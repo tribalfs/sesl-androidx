@@ -32,22 +32,21 @@
         android:minHeight="?attr/listPreferredItemHeightSmall"
         android:paddingEnd="@dimen/sesl_list_item_padding_end">
 
-        <LinearLayout
+        <FrameLayout
             android:id="@+id/icon_frame"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:gravity="start|center_vertical"
             android:minWidth="@dimen/sesl_list_icon_frame_width"
-            android:orientation="horizontal"
             android:paddingEnd="@dimen/sesl_list_image_end_padding">
 
             <androidx.preference.internal.PreferenceImageView
                 android:id="@android:id/icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 app:maxHeight="@dimen/sesl_preference_item_icon_size"
                 app:maxWidth="@dimen/sesl_preference_item_icon_size" />
-        </LinearLayout>
+        </FrameLayout>
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -96,6 +95,7 @@
                 android:layout_alignStart="@+id/title_frame"
                 android:ellipsize="end"
                 android:maxLines="10"
+                android:paddingTop="@dimen/sesl_preference_summary_padding_top"
                 android:paddingEnd="@dimen/sesl_preference_dot_frame_size"
                 android:textAlignment="viewStart"
                 android:textAppearance="?android:attr/textAppearanceSmall" />

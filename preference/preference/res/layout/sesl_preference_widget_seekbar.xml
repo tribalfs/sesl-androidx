@@ -18,6 +18,7 @@
 
 <!-- Layout used by SeekBarPreference for the seekbar widget style. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
@@ -35,7 +36,9 @@
             android:id="@android:id/icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            app:maxHeight="@dimen/sesl_preference_item_icon_size"
+            app:maxWidth="@dimen/sesl_preference_item_icon_size" />
     </LinearLayout>
 
     <RelativeLayout
@@ -62,6 +65,7 @@
             android:layout_alignStart="@android:id/title"
             android:ellipsize="end"
             android:maxLines="4"
+            android:paddingTop="@dimen/sesl_preference_summary_padding_top"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <LinearLayout
