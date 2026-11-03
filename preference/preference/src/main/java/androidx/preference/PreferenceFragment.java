@@ -29,7 +29,6 @@ import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Parcelable;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
@@ -187,6 +186,7 @@ public abstract class PreferenceFragment extends android.app.Fragment implements
                 ((configuration.screenWidthDp > 320 || configuration.fontScale < FONT_SCALE_MEDIUM)
                 && (configuration.screenWidthDp >= 411 || configuration.fontScale < FONT_SCALE_LARGE))
                 ? SWITCH_PREFERENCE_LAYOUT : SWITCH_PREFERENCE_LAYOUT_LARGE;
+        mScreenWidthDp = configuration.screenWidthDp;//sesl9
         mIsReducedMargin = configuration.screenWidthDp <= 250;
         //sesl
 
@@ -276,6 +276,23 @@ public abstract class PreferenceFragment extends android.app.Fragment implements
         }
 
         mList = listView;
+
+        //sesl9
+        registerOnPreDrawListener(listView);
+
+        mList.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(@NonNull View view) {
+            }
+
+            @Override
+            public void onViewDetachedFromWindow(@NonNull View view) {
+                view.getViewTreeObserver().removeOnPreDrawListener(mOnPreDrawListener);
+                view.removeOnAttachStateChangeListener(this);
+                mOnPreDrawListener = null;
+            }
+        });
+        //sesl9
 
         listView.addItemDecoration(mDividerDecoration);
         setDivider(divider);
@@ -392,6 +409,11 @@ public abstract class PreferenceFragment extends android.app.Fragment implements
         if (mHavePrefs) {
             unbindPreferences();
         }
+        //sesl9
+        if (mOnPreDrawListener != null && mList != null) {
+            mList.getViewTreeObserver().removeOnPreDrawListener(mOnPreDrawListener);
+        }
+        //sesl9
         mList = null;
         super.onDestroyView();
     }
@@ -1020,31 +1042,42 @@ public abstract class PreferenceFragment extends android.app.Fragment implements
     //Sesl
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
-        if (getListView() != null) {
-            if (mOnPreDrawListener == null) {
-                ViewTreeObserver viewTreeObserver = getListView().getViewTreeObserver();
-                createOnPreDrawListner();
-                viewTreeObserver.addOnPreDrawListener(mOnPreDrawListener);
-            }
-            RecyclerView.Adapter<?> adapter = getListView().getAdapter();
-            RecyclerView.LayoutManager layoutManager = getListView().getLayoutManager();
+        RecyclerView listView = getListView();
+        if (listView != null) {
+            registerOnPreDrawListener(listView);//sesl9
+            RecyclerView.Adapter<?> adapter = listView.getAdapter();
             boolean isSmallScreenWidth = newConfig.screenWidthDp <= 250;
-            if (isSmallScreenWidth != mIsReducedMargin && (adapter instanceof PreferenceGroupAdapter) && layoutManager != null) {
+            if (isSmallScreenWidth != mIsReducedMargin && (adapter instanceof PreferenceGroupAdapter)) {//sesl9
                 mIsReducedMargin = isSmallScreenWidth;
-                TypedArray obtainStyledAttributes =  mStyledContext.obtainStyledAttributes(null,
-                        R.styleable.PreferenceFragmentCompat,
-                        R.attr.preferenceFragmentCompatStyle, 0);
+                //sesl9: framework PreferenceFragment styleable/default style
+                TypedArray obtainStyledAttributes = mStyledContext.obtainStyledAttributes(null,
+                        R.styleable.PreferenceFragment,
+                        TypedArrayUtils.getAttr(mStyledContext, R.attr.preferenceFragmentStyle,
+                                android.R.attr.preferenceFragmentStyle), 0);
                 try {
                     setDivider(obtainStyledAttributes.getDrawable(R.styleable.PreferenceFragment_android_divider));
-                    Parcelable onSaveInstanceState = layoutManager.onSaveInstanceState();
-                    getListView().setAdapter(getListView().getAdapter());
-                    layoutManager.onRestoreInstanceState(onSaveInstanceState);
+                    listView.setAdapter(listView.getAdapter());
+                    //sesl9
+                    RecyclerView.LayoutManager layoutManager = listView.getLayoutManager();
+                    if (layoutManager != null) {
+                        layoutManager.onRestoreInstanceState(layoutManager.onSaveInstanceState());
+                    }
+                    //sesl9
                 } finally {
                     obtainStyledAttributes.recycle();
                 }
             }
         }
         super.onConfigurationChanged(newConfig);
+    }
+
+    //sesl9
+    private void registerOnPreDrawListener(RecyclerView listView) {
+        if (mOnPreDrawListener == null) {
+            ViewTreeObserver viewTreeObserver = listView.getViewTreeObserver();
+            createOnPreDrawListner();
+            viewTreeObserver.addOnPreDrawListener(mOnPreDrawListener);
+        }
     }
 
     public final void createOnPreDrawListner() {
@@ -1064,7 +1097,7 @@ public abstract class PreferenceFragment extends android.app.Fragment implements
                                 mIsLargeLayout = i2;
                                 for (int i3 = 0; i3 < pgAdapter.getItemCount(); i3++) {
                                     Preference item = pgAdapter.getItem(i3);
-                                    if (item != null && pgAdapter.isSwitchLayout(item) && (item instanceof SwitchPreferenceCompat)) {
+                                    if (item != null && pgAdapter.isSwitchLayout(item) && (item instanceof SwitchPreferenceCompat || item instanceof SwitchPreference/*sesl9*/)) {
                                         adapter.notifyItemChanged(i3);
                                     }
                                 }
@@ -1107,7 +1140,8 @@ public abstract class PreferenceFragment extends android.app.Fragment implements
             list.setPadding(mLeft, mTop, mRight, mBottom);
             boolean fillHorizontal = mLeft != 0 || mRight != 0 || mTop != 0 || mBottom != 0;
             list.seslSetFillHorizontalPaddingEnabled(fillHorizontal);
-            list.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
+            list.setScrollBarStyle((mLeft > 0 || mRight > 0)
+                    ? View.SCROLLBARS_OUTSIDE_OVERLAY : View.SCROLLBARS_INSIDE_OVERLAY);//sesl9
         }
     }
     //sesl
