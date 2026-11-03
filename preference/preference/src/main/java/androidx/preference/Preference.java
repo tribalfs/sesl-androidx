@@ -27,6 +27,7 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.graphics.text.LineBreakConfig;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcel;
@@ -123,6 +124,7 @@ public class Preference implements Comparable<Preference> {
 
     private String mDotDescription;
     //sesl
+    private int mDividerStartOffset = 0;//sesl9
 
     /**
      * Specify for {@link #setOrder(int)} if a specific order is not required.
@@ -564,6 +566,7 @@ public class Preference implements Comparable<Preference> {
             final CharSequence summary = getSummary();
             if (!TextUtils.isEmpty(summary)) {
                 summaryView.setText(summary);
+                setLineBreakWordStyle(summaryView);//sesl9
                 //Sesl
                 if (mChangedSummaryColor) {
                     summaryView.setTextColor(mSummaryColor);
@@ -584,6 +587,7 @@ public class Preference implements Comparable<Preference> {
             }
         }
 
+        holder.seslSetDividerStartOffset(mDividerStartOffset);//sesl9
         holder.setPreferenceBackgroundType(mIsPreferenceRoundedBg, mWhere, mSubheaderRound);//sesl
 
         final TextView titleView = (TextView) holder.findViewById(android.R.id.title);
@@ -672,6 +676,14 @@ public class Preference implements Comparable<Preference> {
         }
         mItemView = itemView;//sesl
     }
+
+    //sesl9
+    private void setLineBreakWordStyle(TextView textView) {
+        if (Build.VERSION.SDK_INT >= 33) {
+            textView.setLineBreakWordStyle(LineBreakConfig.LINE_BREAK_WORD_STYLE_PHRASE);
+        }
+    }
+    //sesl9
 
     /**
      * Makes sure the view (and any children) get the enabled state changed.
@@ -2380,6 +2392,17 @@ public class Preference implements Comparable<Preference> {
             mItemView.getGlobalVisibleRect(bounds);
         }
     }
+
+    //sesl9
+    public void seslSetDividerStartOffset(int offset) {
+        mDividerStartOffset = offset;
+    }
+
+    @RestrictTo(LIBRARY_GROUP_PREFIX)
+    public boolean onKey(@NonNull View view, int keyCode, @NonNull KeyEvent event) {
+        return false;
+    }
+    //sesl9
 
 
     public void seslSetSummaryColor(@ColorInt int color) {

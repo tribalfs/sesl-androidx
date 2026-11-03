@@ -80,12 +80,13 @@ public class EditTextPreferenceDialogFragment extends PreferenceDialogFragment {
         super.onBindDialogView(view);
 
         mEditText = view.findViewById(android.R.id.edit);
-        mEditText.requestFocus();
 
         if (mEditText == null) {
             throw new IllegalStateException("Dialog view must contain an EditText with id"
                     + " @android:id/edit");
         }
+
+        mEditText.requestFocus();//sesl9: after the null check
 
         mEditText.setText(mText);
         // Place cursor at the end

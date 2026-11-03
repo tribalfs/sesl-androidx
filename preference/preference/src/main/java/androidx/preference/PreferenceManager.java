@@ -404,8 +404,10 @@ public class PreferenceManager {
                     break;
             }
 
-            mSharedPreferences = storageContext.getSharedPreferences(mSharedPreferencesName,
-                    mSharedPreferencesMode);
+            if (storageContext != null) {//sesl9
+                mSharedPreferences = storageContext.getSharedPreferences(mSharedPreferencesName,
+                        mSharedPreferencesMode);
+            }
         }
 
         return mSharedPreferences;

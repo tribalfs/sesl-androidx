@@ -17,6 +17,7 @@
 package androidx.preference;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.AttributeSet;
 
 import androidx.annotation.NonNull;
@@ -44,4 +45,14 @@ public class SeslPreferenceCaption extends PreferenceCategory {
     public SeslPreferenceCaption(@NonNull Context context) {
         this(context, null);
     }
+
+    //sesl9
+    @Override
+    public void onBindViewHolder(@NonNull PreferenceViewHolder holder) {
+        super.onBindViewHolder(holder);
+        if (Build.VERSION.SDK_INT >= 28) {
+            holder.itemView.setAccessibilityHeading(false);
+        }
+    }
+    //sesl9
 }

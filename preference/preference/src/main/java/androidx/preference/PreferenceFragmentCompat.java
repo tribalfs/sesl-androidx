@@ -1173,7 +1173,8 @@ public abstract class PreferenceFragmentCompat extends Fragment implements
             list.setPadding(mLeft, mTop, mRight, mBottom);
             boolean fillHorizontal = mLeft != 0 || mRight != 0 || mTop != 0 || mBottom != 0;
             list.seslSetFillHorizontalPaddingEnabled(fillHorizontal);
-            list.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
+            list.setScrollBarStyle((mLeft > 0 || mRight > 0)
+                    ? View.SCROLLBARS_OUTSIDE_OVERLAY : View.SCROLLBARS_INSIDE_OVERLAY);//sesl9
         }
     }
     //sesl

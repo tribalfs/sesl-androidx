@@ -1,5 +1,7 @@
 package androidx.preference;
 
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP_PREFIX;
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Parcel;
@@ -13,6 +15,7 @@ import androidx.appcompat.widget.SeslSeekBar.OnSeekBarChangeListener;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
 
 /**
  * (SESL modified) Preference based on android.preference.SeekBarPreference but uses support preference as a base
@@ -195,6 +198,20 @@ public class SeekBarPreference extends Preference {
         //updateLabelValue(mSeekBarValue);//sesl
         mSeekBar.setEnabled(isEnabled());
     }
+
+    //sesl9
+    @RestrictTo(LIBRARY_GROUP_PREFIX)
+    @Override
+    public boolean onKey(@NonNull View view, int keyCode, @NonNull KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+            SeslSeekBar seekBar = view.findViewById(R.id.seekbar);
+            if (seekBar != null) {
+                return seekBar.onKeyDown(keyCode, event);
+            }
+        }
+        return false;
+    }
+    //sesl9
 
     @Override
     protected void onSetInitialValue(@Nullable Object defaultValue) {

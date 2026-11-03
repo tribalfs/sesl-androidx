@@ -373,7 +373,7 @@ public class PreferenceGroupAdapter extends RecyclerView.Adapter<PreferenceViewH
 
     @Override
     public long getItemId(int position) {
-        if (!hasStableIds()) {
+        if (!hasStableIds() || getItem(position) == null) {//sesl9
             return RecyclerView.NO_ID;
         }
         return this.getItem(position).getId();
@@ -560,12 +560,12 @@ public class PreferenceGroupAdapter extends RecyclerView.Adapter<PreferenceViewH
     //Sesl
     final List<Integer> createAccessibilityPositionTable() {
         ArrayList<Integer> arrayList = new ArrayList<>();
-        int i = 0;
+        int i = -1;//sesl9
         for (Preference preference : this.mVisiblePreferences) {
-            arrayList.add(i);
             if (preference.getLayoutResource() != R.layout.sesl_preference_category_empty) {
                 i++;
             }
+            arrayList.add(Math.max(i, 0));//sesl9
         }
         int arraySize = arrayList.size();
         if (arraySize > 0

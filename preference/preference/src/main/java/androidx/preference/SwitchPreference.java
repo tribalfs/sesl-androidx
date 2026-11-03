@@ -220,7 +220,7 @@ public class SwitchPreference extends TwoStatePreference {
     private void syncViewIfAccessibilityEnabled(View view) {
         AccessibilityManager accessibilityManager = (AccessibilityManager)
                 getContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
-        if (!accessibilityManager.isEnabled()) {
+        if (accessibilityManager != null && !accessibilityManager.isEnabled()) {//sesl9
             return;
         }
 
