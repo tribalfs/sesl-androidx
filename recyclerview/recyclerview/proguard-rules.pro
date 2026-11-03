@@ -23,3 +23,9 @@
     public void suppressLayout(boolean);
     public boolean isLayoutSuppressed();
 }
+
+# Overrides the hidden View#onDrawVerticalScrollBar (not visible in android.jar) to apply
+# the scrollbar vertical padding on devices without View#semSetScrollBarTopPadding.
+-keepclassmembers class androidx.recyclerview.widget.RecyclerView {
+    protected void onDrawVerticalScrollBar(android.graphics.Canvas, android.graphics.drawable.Drawable, int, int, int, int);
+}
