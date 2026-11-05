@@ -3804,8 +3804,10 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
 
     @Override
     public void seslSetScrollBarTopOffset(int offset) {
-        if (mScrollBarTopOffset != offset) {
-            mScrollBarTopOffset = Math.max(0, offset);
+        // custom (fix): compare the clamped value that is stored
+        final int newOffset = Math.max(0, offset);
+        if (mScrollBarTopOffset != newOffset) {
+            mScrollBarTopOffset = newOffset;
             updateScrollbarVerticalPadding();
         }
     }
@@ -3820,9 +3822,11 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
 
     @Override
     public void seslSetScrollBarBottomOffset(int offset) {
-        final int newOffset = offset - mScrollBarTopOffset;
+        // custom (fix): compare the clamped value that is stored; below the top offset the raw
+        // difference never matched it, so every call redid the padding update
+        final int newOffset = Math.max(0, offset - mScrollBarTopOffset);
         if (mScrollBarBottomOffset != newOffset) {
-            mScrollBarBottomOffset = Math.max(0, newOffset);
+            mScrollBarBottomOffset = newOffset;
             updateScrollbarVerticalPadding();
         }
     }
