@@ -18509,9 +18509,11 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
 
     @Override
     public void seslSetScrollBarBottomOffset(int offset) {
-        int diff = offset - mScrollBarTopOffset;
-        if (mScrollBarBottomOffset != diff) {
-            mScrollBarBottomOffset = Math.max(diff, 0);
+        // custom (fix): compare the clamped value that is stored; below the top offset the raw
+        // difference never matched it, so every call redid the padding update and the listener
+        final int newOffset = Math.max(offset - mScrollBarTopOffset, 0);
+        if (mScrollBarBottomOffset != newOffset) {
+            mScrollBarBottomOffset = newOffset;
             updateScrollbarVerticalPadding();
 
             SeslRecyclerViewFastScroller fastScroller = mFastScroller;
@@ -18532,8 +18534,10 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
 
     @Override
     public void seslSetScrollBarTopOffset(int offset) {
-        if (mScrollBarTopOffset != offset) {
-            mScrollBarTopOffset = Math.max(offset, 0);
+        // custom (fix): compare the clamped value that is stored
+        final int newOffset = Math.max(offset, 0);
+        if (mScrollBarTopOffset != newOffset) {
+            mScrollBarTopOffset = newOffset;
             updateScrollbarVerticalPadding();
             if (mFastScroller != null) {
                 mFastScroller.setScrollBarTopOffset(mScrollBarTopOffset);
