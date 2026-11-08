@@ -257,6 +257,13 @@ class SeslIndexTipView extends View {
         } else {
             applySolidBackground(color);
         }
+        if (!mBlurController.isBlurEnabled()) {
+            //custom - BackgroundProvider's md token is tuned for the blurred state. Without blur
+            //nothing else separates the pill from list content, whose light theme background is
+            //exactly this fill colour, so every non-blur route (pre-API-36 and API 36+ where the
+            //Samsung blur API is absent) asks for lg instead.
+            setElevation(res.getDimension(R.dimen.sesl_figma_elevation_lg));
+        }
 
         StaticLayout layout = buildSingleLineLayout("");
         mTextLayout = layout;
