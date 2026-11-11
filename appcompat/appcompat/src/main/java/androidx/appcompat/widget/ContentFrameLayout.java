@@ -23,6 +23,8 @@ import static android.view.View.MeasureSpec.getMode;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY;
 
 import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -30,11 +32,13 @@ import android.util.TypedValue;
 import android.widget.FrameLayout;
 
 import androidx.annotation.RestrictTo;
+import androidx.appcompat.R;
 
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 /**
+ * <b>SESL Variant</b>
  */
 @RestrictTo(LIBRARY)
 public class ContentFrameLayout extends FrameLayout {
@@ -55,6 +59,8 @@ public class ContentFrameLayout extends FrameLayout {
 
     private OnAttachListener mAttachListener;
 
+    private float mAvailableWidth; //sesl9
+
     public ContentFrameLayout(@NonNull Context context) {
         this(context, null);
     }
@@ -67,6 +73,14 @@ public class ContentFrameLayout extends FrameLayout {
             @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mDecorPadding = new Rect();
+        updateAvailableWidth(); //sesl9
+    }
+
+    //sesl9
+    private void updateAvailableWidth() {
+        final Resources res = getResources();
+        mAvailableWidth = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                res.getConfiguration().screenWidthDp, res.getDisplayMetrics());
     }
 
     /**
@@ -153,15 +167,18 @@ public class ContentFrameLayout extends FrameLayout {
                 if (tv.type == TypedValue.TYPE_DIMENSION) {
                     min = (int) tv.getDimension(metrics);
                 } else if (tv.type == TypedValue.TYPE_FRACTION) {
-                    min = (int) tv.getFraction(metrics.widthPixels, metrics.widthPixels);
+                    //Sesl9
+                    updateAvailableWidth();
+                    min = (int) tv.getFraction(mAvailableWidth, mAvailableWidth);
+                    //sesl9
                 }
                 if (min > 0) {
                     min -= (mDecorPadding.left + mDecorPadding.right);
                 }
-                if (width < min) {
-                    widthMeasureSpec = MeasureSpec.makeMeasureSpec(min, EXACTLY);
-                    measure = true;
-                }
+                //sesl9: re-measure at the resolved minimum width whenever the attribute is set,
+                //not only when the measured width falls below it
+                widthMeasureSpec = MeasureSpec.makeMeasureSpec(min, EXACTLY);
+                measure = true;
             }
         }
 
@@ -214,5 +231,20 @@ public class ContentFrameLayout extends FrameLayout {
         if (mAttachListener != null) {
             mAttachListener.onDetachedFromWindow();
         }
+    }
+
+    //sesl9
+    @Override
+    protected void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        if (mMinWidthMinor == null) mMinWidthMinor = new TypedValue();
+        getContext().getTheme().resolveAttribute(R.attr.windowMinWidthMinor,
+                mMinWidthMinor, true);
+        if (mMinWidthMajor == null) mMinWidthMajor = new TypedValue();
+        getContext().getTheme().resolveAttribute(R.attr.windowMinWidthMajor,
+                mMinWidthMajor, true);
+
+        updateAvailableWidth();
     }
 }
