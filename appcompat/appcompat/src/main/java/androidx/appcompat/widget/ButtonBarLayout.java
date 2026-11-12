@@ -164,8 +164,9 @@ public class ButtonBarLayout extends LinearLayout {
         if (ViewCompat.getMinimumHeight(this) != minHeight) {
             setMinimumHeight(minHeight);
 
-            // Re-measure immediately to fill excess space.
-            if (heightMeasureSpec == MeasureSpec.UNSPECIFIED) {
+            // Re-measure immediately to fill excess space. sesl9 also re-measures after un-stacking,
+            // which would otherwise keep the stacked bar's taller minimum height.
+            if (heightMeasureSpec == MeasureSpec.UNSPECIFIED || needsRemeasure) {
                 super.onMeasure(widthMeasureSpec, heightMeasureSpec);
             }
         }
@@ -192,12 +193,16 @@ public class ButtonBarLayout extends LinearLayout {
                 spacer.setVisibility(stacked ? View.GONE : View.INVISIBLE);
             }
 
-            // Reverse the child order. This is specific to the Material button
-            // bar's layout XML and will probably not generalize.
-            final int childCount = getChildCount();
-            for (int i = childCount - 2; i >= 0; i--) {
-                bringChildToFront(getChildAt(i));
-            }
+            // sesl keeps the XML child order when stacking. Reversing it (stock) moved the
+            // positive button off the last slot, so it kept applyButtonMargin()'s bottom margin
+
+//            // after un-stacking: clearButtonMargin() skips the last child.
+//            // Reverse the child order. This is specific to the Material button
+//            // bar's layout XML and will probably not generalize.
+//            final int childCount = getChildCount();
+//            for (int i = childCount - 2; i >= 0; i--) {
+//                bringChildToFront(getChildAt(i));
+//            }
         }
     }
 
